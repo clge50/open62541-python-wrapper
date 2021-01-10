@@ -32,7 +32,8 @@ def generateIntermediateApi():
 		UA_ClientConfig *UA_Client_getConfig(UA_Client *client);
 		UA_StatusCode UA_Client_connect(UA_Client *client, const char *endpointUrl);
 		""")
-	os.chdir(dirname + r"/src")
+	os.system("mkdir build")
+	os.chdir(dirname + r"/build")
 	ffibuilder.compile(verbose=True)
 	print("finished building generateIntermediateApi")
 
