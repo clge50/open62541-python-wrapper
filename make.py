@@ -17,7 +17,7 @@ def setupOpen62541():
 
 def generateIntermediateApi():
 	ffibuilder = FFI()
-	ffibuilder.set_source("_intermediateApi",
+	ffibuilder.set_source("intermediateApi",
 		r"""#include "open62541.h" """,
 		include_dirs=[dirname + r"/open62541/build"],
 		library_dirs=[dirname + r"/open62541/build/bin"],
@@ -31,6 +31,8 @@ def generateIntermediateApi():
 		UA_StatusCode UA_ClientConfig_setDefault(UA_ClientConfig *config);
 		UA_ClientConfig *UA_Client_getConfig(UA_Client *client);
 		UA_StatusCode UA_Client_connect(UA_Client *client, const char *endpointUrl);
+
+
 		""")
 	os.system("mkdir build")
 	os.chdir(dirname + r"/build")
