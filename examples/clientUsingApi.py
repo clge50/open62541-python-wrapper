@@ -27,4 +27,4 @@ if retval == api.StatusCode.good() and False == value.hasScalarType(api.DataType
 		api.Utils.uint16(dts.hour), 
 		api.Utils.uint16(dts.min), 
 		api.Utils.uint16(dts.sec), 
-		api.Utils.uint16(dts.milliSec)
+		api.Utils.uint16(dts.milliSec))
