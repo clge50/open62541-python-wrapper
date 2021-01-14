@@ -14,6 +14,8 @@ def setupOpen62541():
 	os.chdir(dirname + r"/open62541/build")
 	os.system("cmake .. -DUA_ENABLE_AMALGAMATION=TRUE")
 	os.system("make")
+	os.chdir(dirname)
+	os.system("gcc -std=c99 ./open62541/build/open62541.c ./examples/server.c -o ./examples/server")
 
 def generateIntermediateApi():
 	ffibuilder = FFI()
@@ -59,30 +61,30 @@ def generateIntermediateApi():
 		UA_StatusCode UA_Client_readValueAttribute(UA_Client *client, const UA_NodeId nodeId, UA_Variant *outValue);
 
 
-typedef enum {
-    UA_LOGCATEGORY_NETWORK = 0,
-    UA_LOGCATEGORY_SECURECHANNEL,
-    UA_LOGCATEGORY_SESSION,
-    UA_LOGCATEGORY_SERVER,
-    UA_LOGCATEGORY_CLIENT,
-    UA_LOGCATEGORY_USERLAND,
-    UA_LOGCATEGORY_SECURITYPOLICY
-} UA_LogCategory;
+		typedef enum {
+    		UA_LOGCATEGORY_NETWORK = 0,
+    		UA_LOGCATEGORY_SECURECHANNEL,
+	    	UA_LOGCATEGORY_SESSION,
+		    UA_LOGCATEGORY_SERVER,
+		    UA_LOGCATEGORY_CLIENT,
+		    UA_LOGCATEGORY_USERLAND,
+		    UA_LOGCATEGORY_SECURITYPOLICY
+		} UA_LogCategory;
 
 
-typedef struct {...;} UA_Logger;
+		typedef struct {...;} UA_Logger;
 
 		typedef struct UA_DateTimeStruct {
-    UA_UInt16 nanoSec;
-    UA_UInt16 microSec;
-    UA_UInt16 milliSec;
-    UA_UInt16 sec;
-    UA_UInt16 min;
-    UA_UInt16 hour;
-    UA_UInt16 day;   /* From 1 to 31 */
-    UA_UInt16 month; /* From 1 to 12 */
-    UA_UInt16 year;
-} UA_DateTimeStruct;
+		    UA_UInt16 nanoSec;
+		    UA_UInt16 microSec;
+		    UA_UInt16 milliSec;
+		    UA_UInt16 sec;
+		    UA_UInt16 min;
+		    UA_UInt16 hour;
+		    UA_UInt16 day;   /* From 1 to 31 */
+		    UA_UInt16 month; /* From 1 to 12 */
+		    UA_UInt16 year;
+		} UA_DateTimeStruct;
 
 
 		UA_Logger *UA_Log_Stdout;
@@ -97,7 +99,7 @@ typedef struct {...;} UA_Logger;
 	os.system("mkdir build")
 	os.chdir(dirname + r"/build")
 	ffibuilder.compile(verbose=True)
-	print("finished building generateIntermediateApi")
+	print("finished building intermediateApi")
 
 setupOpen62541()
 os.chdir(dirname)

@@ -4,7 +4,7 @@ from intermediateApi import ffi, lib
 
 client = lib.UA_Client_new()
 lib.UA_ClientConfig_setDefault(lib.UA_Client_getConfig(client))
-retval = lib.UA_Client_connect(client, b"opc.tcp://127.0.0.1:16664")
+retval = lib.UA_Client_connect(client, b"opc.tcp://christian-ThinkPad:4840/")
 
 if retval != lib.UA_STATUSCODE_GOOD:
 	print("An error occurred. stopping client")
@@ -14,7 +14,6 @@ value = ffi.new("UA_Variant*")
 lib.UA_Variant_init(value)
 
 dataType = ffi.new("UA_DataType*", lib.UA_TYPES[lib.UA_TYPES_DATETIME])
-print(dataType)
 nodeId = lib.UA_NODEID_NUMERIC(0, lib.UA_NS0ID_SERVER_SERVERSTATUS_CURRENTTIME)
 retval = lib.UA_Client_readValueAttribute(client, nodeId, value);
 
