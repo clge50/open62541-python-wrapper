@@ -76,9 +76,15 @@ class Log:
 		return lib.UA_LOGCATEGORY_USERLAND
 
 	@staticmethod
-	def loginfo(channel, mode, str, *args):
-		lib.UA_LOG_INFO(channel, mode, str, *args)
+	def loginfo(channel, mode, string, *args):
+		lib.UA_LOG_INFO(channel, mode, string.encode(), *args)
 
+class DateTime:
+	def __init__(self, value):
+		self.dts = lib.UA_DateTime_toStruct(value)
+
+	def __str__(self):
+		return "{}-{}-{} {}:{}:{}.{}".format(self.dts.day, self.dts.month, self.dts.year, self.dts.hour, self.dts.min, self.dts.sec, self.dts.milliSec) 
 
 #class UaServer:
 #	def __init__(self):
