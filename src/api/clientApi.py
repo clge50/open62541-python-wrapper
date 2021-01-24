@@ -1,5 +1,3 @@
-import sys
-sys.path.append("../build/")
 from intermediateApi import ffi, lib
 
 
@@ -212,7 +210,7 @@ class UaClient:
 		return lib.UA_Client_getConfig(self.ua_client)
 
 	def set_default_config(self):
-		lib.UA_ClientConfig_setDefault(self.ua_client.config)
+		lib.UA_ClientConfig_setDefault(self.get_config())
 
 	def find_data_type(self, type_id):
 		return lib.UA_Client_findDataType(self.ua_client, type_id);
