@@ -1,0 +1,101 @@
+typedef enum {
+    UA_NODECLASS_UNSPECIFIED = 0,
+    UA_NODECLASS_OBJECT = 1,
+    UA_NODECLASS_VARIABLE = 2,
+    UA_NODECLASS_METHOD = 4,
+    UA_NODECLASS_OBJECTTYPE = 8,
+    UA_NODECLASS_VARIABLETYPE = 16,
+    UA_NODECLASS_REFERENCETYPE = 32,
+    UA_NODECLASS_DATATYPE = 64,
+    UA_NODECLASS_VIEW = 128,
+    __UA_NODECLASS_FORCE32BIT = 0x7fffffff
+} UA_NodeClass;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Variant value;
+    UA_NodeId dataType;
+    UA_Int32 valueRank;
+    size_t arrayDimensionsSize;
+    UA_UInt32 *arrayDimensions;
+    UA_Byte accessLevel;
+    UA_Byte userAccessLevel;
+    UA_Double minimumSamplingInterval;
+    UA_Boolean historizing;
+} UA_VariableAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Variant value;
+    UA_NodeId dataType;
+    UA_Int32 valueRank;
+    size_t arrayDimensionsSize;
+    UA_UInt32 *arrayDimensions;
+    UA_Boolean isAbstract;
+} UA_VariableTypeAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Boolean executable;
+    UA_Boolean userExecutable;
+} UA_MethodAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Byte eventNotifier;
+} UA_ObjectAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Boolean isAbstract;
+} UA_ObjectTypeAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Boolean isAbstract;
+    UA_Boolean symmetric;
+    UA_LocalizedText inverseName;
+} UA_ReferenceTypeAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Boolean isAbstract;
+} UA_DataTypeAttributes;
+
+typedef struct {
+    UA_UInt32 specifiedAttributes;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    UA_UInt32 userWriteMask;
+    UA_Boolean containsNoLoops;
+    UA_Byte eventNotifier;
+} UA_ViewAttributes;

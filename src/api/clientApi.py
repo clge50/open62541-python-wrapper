@@ -1,11 +1,23 @@
 import sys
-sys.path.append("../../build/")
+sys.path.append("../build/")
 from intermediateApi import ffi, lib
+
+
+class DefaultAttributes:
+	VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
+	VARIABLE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_VariableTypeAttributes_default
+	METHOD_ATTRIBUTED_DEFAULT = lib.UA_MethodAttributes_default
+	OBJECT_ATTRIBUTES_DEFAULT = lib.UA_ObjectAttributes_default
+	OBJECT_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ObjectTypeAttributes_default
+	REFERENCE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ReferenceTypeAttributes_default
+	DATA_TYPE_ATTRIBUTES_DEFAULT = lib.UA_DataTypeAttributes_default
+	VIEW_ATTRIBUTES_DEFAULT = lib.UA_ViewAttributes_default
+
 
 class UaClient:
 	def __init__(self):
 		self.ua_client = lib.UA_Client_new()
-		set_default_config()
+		self.set_default_config()
 
 
 	# connection
@@ -92,7 +104,7 @@ class UaClient:
 		return lib.UA_Client_writeNodeClassAttribute(self.ua_client, node_id, new_node_class)
 
 	def writeBrowseNameAttribute(self, node_id, new_browse_name):
-		return lib.UA_Client_writeBrowseNameAttribute(self.ua_client, const UA_NodeId nodeId, const UA_QualifiedName *newBrowseName)
+		return lib.UA_Client_writeBrowseNameAttribute(self.ua_client, node_id, new_browse_name)
 
 	def writeDisplayNameAttribute(self, node_id, new_display_name):
 		return lib.UA_Client_writeDisplayNameAttribute(self.ua_client, node_id, new_display_name)
@@ -116,13 +128,13 @@ class UaClient:
 		return lib.UA_Client_writeInverseNameAttribute(self.ua_client, node_id, new_inverse_name)
 
 	def writeInverseNameAttribute(self, node_id, new_inverse_name):
-		return lib.UA_Client_writeInverseNameAttribute(self.ua_client, const UA_NodeId nodeId, new_inverse_name)
+		return lib.UA_Client_writeInverseNameAttribute(self.ua_client, node_id, new_inverse_name)
 
 	def writeContainsNoLoopsAttribute(self, node_id, new_contains_no_loops):
 		return lib.UA_Client_writeContainsNoLoopsAttribute(self.ua_client, node_id, new_contains_no_loops)
 
 	def writeEventNotifierAttribute(self, node_id, new_event_notifier):
-		return lib.UA_Client_writeEventNotifierAttribute(self.ua_client, const UA_NodeId nodeId, new_event_notifier)
+		return lib.UA_Client_writeEventNotifierAttribute(self.ua_client, node_id, new_event_notifier)
 
 	def writeValueAttribute(self, node_id, new_value):
 		return lib.UA_Client_writeValueAttribute(self.ua_client, node_id, new_value)
@@ -190,7 +202,7 @@ class UaClient:
 	def addDataTypeNode(self, requested_node_id, parent_node_id, reference_type_id, browse_name, out_new_node_id, attr = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
 		return lib.UA_Client_addDataTypeNode(self.ua_client, requested_node_id, parent_node_id, reference_type_id, browse_name, attr, out_new_node_id)
 
-	def addMethodNode(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, out_new_node_id, attr = DefaultAttributes.METHOD_ATTRIBUTED_DEFAULT)
+	def addMethodNode(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, out_new_node_id, attr = DefaultAttributes.METHOD_ATTRIBUTED_DEFAULT):
 		return lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr, out_new_node_id)
 
 
@@ -203,14 +215,5 @@ class UaClient:
 		lib.UA_ClientConfig_setDefault(self.ua_client.config)
 
 	def find_data_type(self, type_id):
-		return UA_Client_findDataType(self.ua_client, type_id);
+		return lib.UA_Client_findDataType(self.ua_client, type_id);
 
-class DefaultAttributes:
-	VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
-	VARIABLE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_VariableTypeAttributes_default
-	METHOD_ATTRIBUTED_DEFAULT = lib.UA_MethodAttributes_default
-	OBJECT_ATTRIBUTES_DEFAULT = lib.UA_ObjectAttributes_default
-	OBJECT_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ObjectTypeAttributes_default
-	REFERENCE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ReferenceTypeAttributes_default
-	DATA_TYPE_ATTRIBUTES_DEFAULT = lib.UA_DataTypeAttributes_default
-	VIEW_ATTRIBUTES_DEFAULT = lib.UA_ViewAttributes_default

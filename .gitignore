@@ -1,2 +1,5 @@
 build
 open62541
+deprecated/build
+deprecated/open62541
+.idea
