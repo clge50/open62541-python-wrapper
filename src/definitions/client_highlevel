@@ -5,12 +5,12 @@ UA_StatusCode UA_Client_readBrowseNameAttribute(UA_Client *client, const UA_Node
 UA_StatusCode UA_Client_readDisplayNameAttribute(UA_Client *client, const UA_NodeId nodeId, UA_LocalizedText *outDisplayName);
 UA_StatusCode UA_Client_readDescriptionAttribute(UA_Client *client, const UA_NodeId nodeId, UA_LocalizedText *outDescription);
 UA_StatusCode UA_Client_readWriteMaskAttribute(UA_Client *client, const UA_NodeId nodeId, UA_UInt32 *outWriteMask);
-UA_StatusCode UA_Client_readUserWriteMaskAttribute(UA_Client *client, const UA_NodeId nodeId,  UA_UInt32 *outUserWriteMask) {
+UA_StatusCode UA_Client_readUserWriteMaskAttribute(UA_Client *client, const UA_NodeId nodeId,  UA_UInt32 *outUserWriteMask);
 UA_StatusCode UA_Client_readIsAbstractAttribute(UA_Client *client, const UA_NodeId nodeId, UA_Boolean *outIsAbstract);
 UA_StatusCode UA_Client_readSymmetricAttribute(UA_Client *client, const UA_NodeId nodeId, UA_Boolean *outSymmetric);
 UA_StatusCode UA_Client_readInverseNameAttribute(UA_Client *client, const UA_NodeId nodeId, UA_LocalizedText *outInverseName);
 UA_StatusCode UA_Client_readContainsNoLoopsAttribute(UA_Client *client, const UA_NodeId nodeId, UA_Boolean *outContainsNoLoops);
-UA_StatusCode UA_Client_readEventNotifierAttribute(UA_Client *client, const UA_NodeId nodeId, UA_Byte *outEventNotifier)
+UA_StatusCode UA_Client_readEventNotifierAttribute(UA_Client *client, const UA_NodeId nodeId, UA_Byte *outEventNotifier);
 UA_StatusCode UA_Client_readValueAttribute(UA_Client *client, const UA_NodeId nodeId,  UA_Variant *outValue);
 UA_StatusCode UA_Client_readDataTypeAttribute(UA_Client *client, const UA_NodeId nodeId, UA_NodeId *outDataType);
 UA_StatusCode UA_Client_readValueRankAttribute(UA_Client *client, const UA_NodeId nodeId,  UA_Int32 *outValueRank);
@@ -29,21 +29,21 @@ UA_StatusCode UA_Client_writeDisplayNameAttribute(UA_Client *client, const UA_No
 UA_StatusCode UA_Client_writeDescriptionAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_LocalizedText *newDescription);
 UA_StatusCode UA_Client_writeWriteMaskAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_UInt32 *newWriteMask);
 UA_StatusCode UA_Client_writeUserWriteMaskAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_UInt32 *newUserWriteMask);
-UA_StatusCode UA_Client_writeIsAbstractAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newIsAbstract)
-UA_StatusCode UA_Client_writeSymmetricAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newSymmetric)
-UA_StatusCode UA_Client_writeInverseNameAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_LocalizedText *newInverseName)
+UA_StatusCode UA_Client_writeIsAbstractAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newIsAbstract);
+UA_StatusCode UA_Client_writeSymmetricAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newSymmetric);
+UA_StatusCode UA_Client_writeInverseNameAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_LocalizedText *newInverseName);
 UA_StatusCode UA_Client_writeContainsNoLoopsAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newContainsNoLoops);
 UA_StatusCode UA_Client_writeEventNotifierAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Byte *newEventNotifier);
 UA_StatusCode UA_Client_writeValueAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Variant *newValue);
 UA_StatusCode UA_Client_writeDataTypeAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_NodeId *newDataType);
-UA_StatusCode UA_Client_writeValueRankAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Int32 *newValueRank)
+UA_StatusCode UA_Client_writeValueRankAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Int32 *newValueRank);
 UA_StatusCode UA_Client_writeArrayDimensionsAttribute(UA_Client *client, const UA_NodeId nodeId, size_t newArrayDimensionsSize, const UA_UInt32 *newArrayDimensions);
 UA_StatusCode UA_Client_writeAccessLevelAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Byte *newAccessLevel);
 UA_StatusCode UA_Client_writeUserAccessLevelAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Byte *newUserAccessLevel);
 UA_StatusCode UA_Client_writeMinimumSamplingIntervalAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Double *newMinInterval);
 UA_StatusCode UA_Client_writeHistorizingAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newHistorizing);
 UA_StatusCode UA_Client_writeExecutableAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newExecutable);
-UA_StatusCode UA_Client_writeUserExecutableAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newUserExecutable)
+UA_StatusCode UA_Client_writeUserExecutableAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newUserExecutable);
 
 // misc service calls
 UA_StatusCode UA_Client_call(UA_Client *client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, size_t *outputSize, UA_Variant **output);

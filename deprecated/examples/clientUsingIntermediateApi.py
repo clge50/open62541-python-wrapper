@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../build/")
+sys.path.append("../../build/")
 from intermediateApi import ffi, lib
 
 client = lib.UA_Client_new()
