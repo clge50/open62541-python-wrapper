@@ -1,0 +1,3 @@
+UA_Client * UA_Client_new(void);
+
+UA_StatusCode UA_ClientConfig_setDefault(UA_ClientConfig *config);
