@@ -1,0 +1,27 @@
+UA_Server * UA_Server_new(void);
+
+
+struct UA_ServerConfig {
+    ...;
+};
+
+typedef struct {
+    ...;
+} UA_Logger;
+
+
+UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
+
+UA_StatusCode UA_Server_run_shutdown(UA_Server *server);
+
+UA_ServerConfig * UA_Server_getConfig(UA_Server *server);
+UA_StatusCode UA_Server_run_startup(UA_Server *server);
+
+UA_UInt16 UA_Server_run_iterate(UA_Server *server, UA_Boolean waitInternal);
+
+void UA_Server_delete(UA_Server *server);
+
+UA_StatusCode UA_ServerConfig_setMinimal(UA_ServerConfig *config, UA_UInt16 portNumber, const UA_ByteString *certificate);
+UA_StatusCode UA_ServerConfig_setDefault(UA_ServerConfig *config);
+
+UA_Server * UA_Server_newWithConfig(UA_ServerConfig *config);
