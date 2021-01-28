@@ -1,7 +1,7 @@
 from intermediateApi import ffi, lib
 
-
 class DefaultAttributes:
+
 	VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
 	VARIABLE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_VariableTypeAttributes_default
 	METHOD_ATTRIBUTED_DEFAULT = lib.UA_MethodAttributes_default
