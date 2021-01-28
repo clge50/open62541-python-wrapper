@@ -28,7 +28,7 @@ class UaClient:
 	# read service
 
 	def read_node_id_attribute(self, node_id):
-		out_node_id = ffi.new("UA_NodeId**")
+		out_node_id = ffi.new("UA_NodeId*")
 		status_code = lib.UA_Client_readNodeIdAttribute(self.ua_client, node_id, out_node_id)
 		return wrap.Read_node_id_attribute(status_code, out_node_id)
 
