@@ -22,12 +22,23 @@ typedef float UA_Float;
 typedef double UA_Double;
 
 typedef uint32_t UA_StatusCode;
+UA_Boolean UA_StatusCode_isBad(const UA_StatusCode code);
 
+
+//------------  UA_STRING  --------------
 typedef struct {
     size_t length; /* The length of the string */
     UA_Byte *data; /* The content (not null-terminated) */
 } UA_String;
 
+UA_String UA_String_fromChars(const char *src);
+
+UA_Boolean UA_String_equal(const UA_String *s1, const UA_String *s2);
+
+const UA_String UA_STRING_NULL;
+
+
+//------------  UA_DATETIME  --------------
 typedef int64_t UA_DateTime;
 
 typedef struct UA_DateTimeStruct {
@@ -42,6 +53,12 @@ typedef struct UA_DateTimeStruct {
     UA_UInt16 year;
 } UA_DateTimeStruct;
 
+UA_DateTime UA_DateTime_now(void);
+UA_DateTimeStruct UA_DateTime_toStruct(UA_DateTime t);
+UA_DateTime UA_DateTime_fromStruct(UA_DateTimeStruct ts);
+
+
+//------------  UA_GUID  --------------
 typedef struct {
     UA_UInt32 data1;
     UA_UInt16 data2;
@@ -49,10 +66,20 @@ typedef struct {
     UA_Byte   data4[8];
 } UA_Guid;
 
+extern const UA_Guid UA_GUID_NULL;
+UA_Boolean UA_Guid_equal(const UA_Guid *g1, const UA_Guid *g2);
+/* Parse the Guid format defined in Part 6, 5.1.3.
+ * Format: C496578A-0DFE-4B8F-870A-745238C6AEAE
+ *         |       |    |    |    |            |
+ *         0       8    13   18   23           36 */
+static UA_Guid UA_GUID(const char *chars);
+
+
 typedef UA_String UA_ByteString;
 
 typedef UA_String UA_XmlElement;
 
+//------------  UA_NODEID  --------------
 enum UA_NodeIdType {
     UA_NODEIDTYPE_NUMERIC    = 0, /* In the binary encoding, this can also
                                    * become 1 or 2 (two-byte and four-byte
@@ -73,21 +100,57 @@ typedef struct {
     } identifier;
 } UA_NodeId;
 
+extern const UA_NodeId UA_NODEID_NULL;
+UA_Boolean UA_NodeId_isNull(const UA_NodeId *p);
+static UA_Boolean UA_NodeId_equal(const UA_NodeId *n1, const UA_NodeId *n2);
+
+static UA_NodeId UA_NODEID_NUMERIC(UA_UInt16 nsIndex, UA_UInt32 identifier);
+static UA_NodeId UA_NODEID_STRING(UA_UInt16 nsIndex, char *chars);
+static UA_NodeId UA_NODEID_STRING_ALLOC(UA_UInt16 nsIndex, const char *chars);
+static UA_NodeId UA_NODEID_GUID(UA_UInt16 nsIndex, UA_Guid guid);
+static UA_NodeId UA_NODEID_BYTESTRING(UA_UInt16 nsIndex, char *chars);
+static UA_NodeId UA_NODEID_BYTESTRING_ALLOC(UA_UInt16 nsIndex, const char *chars);
+
+//----------- UA_EXPANDEDNODEID ------------------
 typedef struct {
     UA_NodeId nodeId;
     UA_String namespaceUri;
     UA_UInt32 serverIndex;
 } UA_ExpandedNodeId;
 
+extern const UA_ExpandedNodeId UA_EXPANDEDNODEID_NULL;
+
+static UA_ExpandedNodeId UA_EXPANDEDNODEID_NUMERIC(UA_UInt16 nsIndex, UA_UInt32 identifier);
+static UA_ExpandedNodeId UA_EXPANDEDNODEID_STRING(UA_UInt16 nsIndex, char *chars);
+static UA_ExpandedNodeId UA_EXPANDEDNODEID_STRING_ALLOC(UA_UInt16 nsIndex, const char *chars);
+static UA_ExpandedNodeId UA_EXPANDEDNODEID_STRING_GUID(UA_UInt16 nsIndex, UA_Guid guid);
+static UA_ExpandedNodeId UA_EXPANDEDNODEID_BYTESTRING(UA_UInt16 nsIndex, char *chars);
+
+UA_Boolean UA_ExpandedNodeId_isLocal(const UA_ExpandedNodeId *n);
+
+//----------------------- UA_QUALIFIEDNAME --------------------------
 typedef struct {
     UA_UInt16 namespaceIndex;
     UA_String name;
 } UA_QualifiedName;
 
+static UA_Boolean UA_QualifiedName_isNull(const UA_QualifiedName *q);
+UA_UInt32 UA_QualifiedName_hash(const UA_QualifiedName *q);
+static UA_QualifiedName UA_QUALIFIEDNAME(UA_UInt16 nsIndex, char *chars);
+static UA_QualifiedName UA_QUALIFIEDNAME_ALLOC(UA_UInt16 nsIndex, const char *chars);
+
+UA_Boolean UA_QualifiedName_equal(const UA_QualifiedName *qn1, const UA_QualifiedName *qn2);
+
+
+//-------------------------- UA_LOCALIZEDTEXT --------------------------
 typedef struct {
     UA_String locale;
     UA_String text;
 } UA_LocalizedText;
+
+static UA_LocalizedText UA_LOCALIZEDTEXT(char *locale, char *text);
+static UA_LocalizedText UA_LOCALIZEDTEXT_ALLOC(const char *locale, const char *text);
+
 
 typedef struct {
     UA_UInt32 min;
@@ -99,6 +162,8 @@ typedef struct  {
     UA_NumericRangeDimension *dimensions;
 } UA_NumericRange;
 
+
+//--------------------- UA_VARIANT -------------------------
 struct UA_DataType;
 typedef struct UA_DataType UA_DataType;
 
@@ -119,6 +184,20 @@ typedef struct {
     UA_UInt32 *arrayDimensions;   /* The length of each dimension */
 } UA_Variant;
 
+static UA_Boolean UA_Variant_isEmpty(const UA_Variant *v);
+static UA_Boolean UA_Variant_isScalar(const UA_Variant *v);
+static UA_Boolean UA_Variant_hasScalarType(const UA_Variant *v, const UA_DataType *type);
+static UA_Boolean UA_Variant_hasArrayType(const UA_Variant *v, const UA_DataType *type);
+void UA_Variant_setScalar(UA_Variant *v, void *p, const UA_DataType *type);
+UA_StatusCode UA_Variant_setScalarCopy(UA_Variant *v, const void *p, const UA_DataType *type);
+void UA_Variant_setArray(UA_Variant *v, void *array, size_t arraySize, const UA_DataType *type);
+UA_StatusCode UA_Variant_setArrayCopy(UA_Variant *v, const void *array, size_t arraySize, const UA_DataType *type);
+UA_StatusCode UA_Variant_copyRange(const UA_Variant *src, UA_Variant *dst, const UA_NumericRange range);
+UA_StatusCode UA_Variant_setRange(UA_Variant *v, void *array, size_t arraySize, const UA_NumericRange range);
+UA_StatusCode UA_Variant_setRangeCopy(UA_Variant *v, const void *array, size_t arraySize, const UA_NumericRange range);
+
+
+
 typedef enum {
     UA_EXTENSIONOBJECT_ENCODED_NOBODY     = 0,
     UA_EXTENSIONOBJECT_ENCODED_BYTESTRING = 1,
@@ -128,6 +207,8 @@ typedef enum {
                                                  together with the
                                                  ExtensionObject */
 } UA_ExtensionObjectEncoding;
+
+
 
 typedef struct {
     UA_ExtensionObjectEncoding encoding;
@@ -143,6 +224,8 @@ typedef struct {
     } content;
 } UA_ExtensionObject;
 
+
+
 typedef struct {
     UA_Variant    value;
     UA_DateTime   sourceTimestamp;
@@ -157,6 +240,8 @@ typedef struct {
     UA_Boolean    hasSourcePicoseconds : 1;
     UA_Boolean    hasServerPicoseconds : 1;
 } UA_DataValue;
+
+
 
 typedef struct UA_DiagnosticInfo {
     UA_Boolean    hasSymbolicId          : 1;
@@ -174,6 +259,8 @@ typedef struct UA_DiagnosticInfo {
     UA_StatusCode innerStatusCode;
     struct UA_DiagnosticInfo *innerDiagnosticInfo;
 } UA_DiagnosticInfo;
+
+
 
 typedef struct {
     UA_UInt16 memberTypeIndex;    /* Index of the member in the array of data
@@ -193,6 +280,8 @@ typedef struct {
     const char *memberName;       /* Human-readable member name */
 
 } UA_DataTypeMember;
+
+
 
 typedef enum {
     UA_DATATYPEKIND_BOOLEAN = 0,
@@ -228,6 +317,8 @@ typedef enum {
     UA_DATATYPEKIND_BITFIELDCLUSTER = 30 /* bitfields + padding */
 } UA_DataTypeKind;
 
+
+
 struct UA_DataType {
     UA_NodeId typeId;                /* The nodeid of the type */
     UA_NodeId binaryEncodingId;      /* NodeId of datatype when encoded as binary */
@@ -246,6 +337,27 @@ struct UA_DataType {
      * stays within the cacheline. */
     const char *typeName;
 };
+
+UA_Boolean UA_DataType_isNumeric(const UA_DataType *type);
+
+const UA_DataType *UA_findDataType(const UA_NodeId *typeId);
+
+void *UA_new(const UA_DataType *type);
+static  void UA_init(void *p, const UA_DataType *type) ;
+UA_StatusCode UA_copy(const void *src, void *dst, const UA_DataType *type);
+
+
+//--------------- Array Handling ------------------
+void *UA_Array_new(size_t size, const UA_DataType *type);
+UA_StatusCode UA_Array_copy(const void *src, size_t size, void **dst, const UA_DataType *type);
+
+
+//--------------- Randomize ---------------------
+void  UA_random_seed(UA_UInt64 seed);
+UA_UInt32 UA_UInt32_random(void);
+UA_Guid UA_Guid_random(void);
+
+
 
 typedef struct UA_DataTypeArray {
     const struct UA_DataTypeArray *next;
