@@ -35,8 +35,10 @@ def generateApi():
 	with open("./src/definitions/client_config_default") as file_handler:
 		client_config_default = file_handler.read()
 
+	with open("./src/definitions/server") as file_handler:
+		server = file_handler.read()
 
-	cffi_input = types + "\n" + types_generated + "\n" + util + "\n" + client + "\n" + client_highlevel + "\n" + client_config_default
+	cffi_input = types + "\n" + types_generated + "\n" + util + "\n" + client + "\n" + client_highlevel + "\n" + client_config_default + "\n" + server
 
 
 	ffibuilder = FFI()
