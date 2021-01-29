@@ -99,3 +99,271 @@ typedef struct {
     UA_Boolean containsNoLoops;
     UA_Byte eventNotifier;
 } UA_ViewAttributes;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_DataValue *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_ReadResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_StatusCode *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_WriteResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_CallMethodResult *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_CallResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_AddNodesResult *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_AddNodesResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_StatusCode *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_AddReferencesResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_StatusCode *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_DeleteNodesResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_StatusCode *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_DeleteReferencesResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_BrowseResult *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_BrowseResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_BrowseResult *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_BrowseNextResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t resultsSize;
+    UA_BrowsePathResult *results;
+    size_t diagnosticInfosSize;
+    UA_DiagnosticInfo *diagnosticInfos;
+    */
+} UA_TranslateBrowsePathsToNodeIdsResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    size_t registeredNodeIdsSize;
+    UA_NodeId *registeredNodeIds;
+    */
+} UA_RegisterNodesResponse;
+
+typedef struct {
+...;
+/*
+    UA_ResponseHeader responseHeader;
+    */
+} UA_UnregisterNodesResponse;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    UA_Double maxAge;
+    UA_TimestampsToReturn timestampsToReturn;
+    size_t nodesToReadSize;
+    UA_ReadValueId *nodesToRead;
+    */
+} UA_ReadRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t nodesToWriteSize;
+    UA_WriteValue *nodesToWrite;
+    */
+} UA_WriteRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t methodsToCallSize;
+    UA_CallMethodRequest *methodsToCall;
+    */
+} UA_CallRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t nodesToAddSize;
+    UA_AddNodesItem *nodesToAdd;
+    */
+} UA_AddNodesRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t referencesToAddSize;
+    UA_AddReferencesItem *referencesToAdd;
+    */
+} UA_AddReferencesRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t nodesToDeleteSize;
+    UA_DeleteNodesItem *nodesToDelete;
+    */
+} UA_DeleteNodesRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t referencesToDeleteSize;
+    UA_DeleteReferencesItem *referencesToDelete;
+    */
+} UA_DeleteReferencesRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    UA_ViewDescription view;
+    UA_UInt32 requestedMaxReferencesPerNode;
+    size_t nodesToBrowseSize;
+    UA_BrowseDescription *nodesToBrowse;
+    */
+} UA_BrowseRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    UA_Boolean releaseContinuationPoints;
+    size_t continuationPointsSize;
+    UA_ByteString *continuationPoints;
+    */
+} UA_BrowseNextRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t browsePathsSize;
+    UA_BrowsePath *browsePaths;
+    */
+} UA_TranslateBrowsePathsToNodeIdsRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t nodesToRegisterSize;
+    UA_NodeId *nodesToRegister;
+    */
+} UA_RegisterNodesRequest;
+
+typedef struct {
+...;
+/*
+    UA_RequestHeader requestHeader;
+    size_t nodesToUnregisterSize;
+    UA_NodeId *nodesToUnregister;
+    */
+} UA_UnregisterNodesRequest;
+
+typedef struct {
+...;
+/*
+    UA_String endpointUrl;
+    UA_ApplicationDescription server;
+    UA_ByteString serverCertificate;
+    UA_MessageSecurityMode securityMode;
+    UA_String securityPolicyUri;
+    size_t userIdentityTokensSize;
+    UA_UserTokenPolicy *userIdentityTokens;
+    UA_String transportProfileUri;
+    UA_Byte securityLevel;
+    */
+} UA_EndpointDescription;
+
+typedef struct {
+...;
+/*
+    UA_String applicationUri;
+    UA_String productUri;
+    UA_LocalizedText applicationName;
+    UA_ApplicationType applicationType;
+    UA_String gatewayServerUri;
+    UA_String discoveryProfileUri;
+    size_t discoveryUrlsSize;
+    UA_String *discoveryUrls;
+    */
+} UA_ApplicationDescription;

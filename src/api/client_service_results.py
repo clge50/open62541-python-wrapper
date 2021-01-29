@@ -138,7 +138,7 @@ class CallResult:
 
 # add node service
 
-class Add_node_result:
+class AddNodeResult:
     def __init__(self, status_code, out_new_node_id):
         self.status_code = status_code
         self.out_new_node_id = out_new_node_id
