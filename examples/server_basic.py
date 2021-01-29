@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../build/api")
+sys.path.append("../build/open62541")
 import serverApi as api
 
 # Create new server object

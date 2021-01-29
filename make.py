@@ -51,8 +51,10 @@ def generateApi():
     ffibuilder.cdef(cffi_input)
     os.system("mkdir build")
     os.chdir(dirname + r"/build")
-    os.system("cp -R ./../src/api ./")
-    os.chdir(dirname + r"/build/api/")
+    os.system("mkdir open62541")
+    os.chdir(dirname + r"/build/open62541")
+    os.system("cp -R ./../../src/api/* ./")
+    os.chdir(dirname + r"/build/open62541/")
     ffibuilder.compile(verbose=True)
     print("finished building intermediateApi")
 
