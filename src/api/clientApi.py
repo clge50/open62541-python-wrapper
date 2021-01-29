@@ -5,7 +5,7 @@ import client_service_results as ClientServiceResult
 class DefaultAttributes:
     VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
     VARIABLE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_VariableTypeAttributes_default
-    METHOD_ATTRIBUTED_DEFAULT = lib.UA_MethodAttributes_default
+    METHOD_ATTRIBUTES_DEFAULT = lib.UA_MethodAttributes_default
     OBJECT_ATTRIBUTES_DEFAULT = lib.UA_ObjectAttributes_default
     OBJECT_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ObjectTypeAttributes_default
     REFERENCE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ReferenceTypeAttributes_default
@@ -69,9 +69,6 @@ class UaClient:
 
     def service_unregister_node(self, request):
         return lib.UA_Client_Service_unregisterNodes(self.ua_client, request)
-
-    def service_query_first(self, request):
-        return lib.UA_Client_Service_queryFirst(self.ua_client, request)
 
     # high level read service
 
@@ -155,7 +152,8 @@ class UaClient:
         out_array_dimensions = ffi.new("UA_UInt32**")
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id, out_array_dimensions_size,
                                                                  out_array_dimensions)
-        return ClientServiceResult.ReadArrayDimensionsAttributeResult(status_code, out_array_dimensions_size, out_array_dimensions)
+        return ClientServiceResult.ReadArrayDimensionsAttributeResult(status_code, out_array_dimensions_size,
+                                                                      out_array_dimensions)
 
     def read_access_level_attribute(self, node_id):
         out_access_level = ffi.new("UA_Byte*")
@@ -323,7 +321,7 @@ class UaClient:
         return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
-                        attr=DefaultAttributes.METHOD_ATTRIBUTED_DEFAULT):
+                        attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                   reference_type_id, browse_name, attr, out_new_node_id)
@@ -343,8 +341,13 @@ class UaClient:
     def get_endpoints(self, server_url, endpoint_descriptions_size, endpoint_descriptions):
         return lib.UA_Client_getEndpoints(self.ua_client, server_url, endpoint_descriptions_size, endpoint_descriptions)
 
-    def find_servers(self, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size, registered_servers):
-        return lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size, registered_servers)
+    def find_servers(self, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size,
+                     registered_servers):
+        return lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size, locale_ids,
+                                         registered_servers_size, registered_servers)
 
-    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return, server_capability_filter_size, server_on_network_size, server_on_network):
-        return lib.UA_Client_findServersOnNetwork(self.ua_client, starting_record_id, max_records_to_return, server_capability_filter_size, server_on_network_size, server_on_network)
+#    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return,
+#                                server_capability_filter_size, server_on_network_size, server_on_network):
+#        return lib.UA_Client_findServersOnNetwork(self.ua_client, server_url, starting_record_id, max_records_to_return,
+#                                                  server_capability_filter_size, server_on_network_size,
+#                                                  server_on_network)
