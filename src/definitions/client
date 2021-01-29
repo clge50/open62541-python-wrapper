@@ -6,9 +6,27 @@ typedef struct {
 // connection
 UA_StatusCode UA_Client_connect(UA_Client *client, const char *endpointUrl);
 UA_StatusCode UA_Client_disconnect(UA_Client *client);
+UA_StatusCode UA_Client_connectSecureChannel(UA_Client *client, const char *endpointUrl);
+UA_StatusCode UA_Client_disconnectSecureChannel(UA_Client *client);
 
 // services
+UA_ReadResponse UA_Client_Service_read(UA_Client *client, const UA_ReadRequest request);
+UA_WriteResponse UA_Client_Service_write(UA_Client *client, const UA_WriteRequest request);
+UA_CallResponse UA_Client_Service_call(UA_Client *client, const UA_CallRequest request);
+UA_AddNodesResponse UA_Client_Service_addNodes(UA_Client *client, const UA_AddNodesRequest request);
+UA_AddReferencesResponse UA_Client_Service_addReferences(UA_Client *client, const UA_AddReferencesRequest request);
+UA_DeleteNodesResponse UA_Client_Service_deleteNodes(UA_Client *client, const UA_DeleteNodesRequest request);
+UA_DeleteReferencesResponse UA_Client_Service_deleteReferences(UA_Client *client, const UA_DeleteReferencesRequest request);
+UA_BrowseResponse UA_Client_Service_browse(UA_Client *client, const UA_BrowseRequest request);
+UA_BrowseNextResponse UA_Client_Service_browseNext(UA_Client *client, const UA_BrowseNextRequest request);
+UA_TranslateBrowsePathsToNodeIdsResponse UA_Client_Service_translateBrowsePathsToNodeIds(UA_Client *client, const UA_TranslateBrowsePathsToNodeIdsRequest request);
+UA_RegisterNodesResponse UA_Client_Service_registerNodes(UA_Client *client, const UA_RegisterNodesRequest request);
+UA_UnregisterNodesResponse UA_Client_Service_unregisterNodes(UA_Client *client, const UA_UnregisterNodesRequest request);
+UA_QueryFirstResponse UA_Client_Service_queryFirst(UA_Client *client, const UA_QueryFirstRequest request);
 
 // utils
 UA_ClientConfig * UA_Client_getConfig(UA_Client *client);
 const UA_DataType * UA_Client_findDataType(UA_Client *client, const UA_NodeId *typeId);
+UA_StatusCode UA_Client_getEndpoints(UA_Client *client, const char *serverUrl, size_t* endpointDescriptionsSize, UA_EndpointDescription** endpointDescriptions);
+UA_StatusCode UA_Client_findServers(UA_Client *client, const char *serverUrl, size_t serverUrisSize, UA_String *serverUris, size_t localeIdsSize, UA_String *localeIds, size_t *registeredServersSize, UA_ApplicationDescription **registeredServers);
+UA_StatusCode UA_Client_findServersOnNetwork(UA_Client *client, const char *serverUrl, UA_UInt32 startingRecordId, UA_UInt32 maxRecordsToReturn, size_t serverCapabilityFilterSize, UA_String *serverCapabilityFilter, size_t *serverOnNetworkSize, UA_ServerOnNetwork **serverOnNetwork);

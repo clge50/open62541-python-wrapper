@@ -23,7 +23,57 @@ class UaClient:
     def connect(self, address):
         return lib.UA_Client_connect(self.ua_client, address)
 
-    # read service
+    def disconnect(self):
+        return lib.UA_Client_disconnect(self.ua_client)
+
+    def connect_secure_channel(self, endpoint_url):
+        return lib.UA_Client_connectSecureChannel(self.ua_client, endpoint_url)
+
+    def disconnect_secure_channel(self):
+        return lib.UA_Client_disconnectSecureChannel(self.ua_client)
+
+    # low level service
+
+    def service_read(self, request):
+        return lib.UA_Client_Service_read(self.ua_client, request)
+
+    def service_write(self, request):
+        return lib.UA_Client_Service_write(self.ua_client, request)
+
+    def service_call(self, request):
+        return lib.UA_Client_Service_call(self.ua_client, request)
+
+    def service_add_nodes(self, request):
+        return lib.UA_Client_Service_addNodes(self.ua_client, request)
+
+    def service_add_references(self, request):
+        return lib.UA_Client_Service_addReferences(self.ua_client, request)
+
+    def service_delete_nodes(self, request):
+        return lib.UA_Client_Service_deleteNodes(self.ua_client, request)
+
+    def service_delete_references(self, request):
+        return lib.UA_Client_Service_deleteReferences(self.ua_client, request)
+
+    def service_browse(self, request):
+        return lib.UA_Client_Service_browse(self.ua_client, request)
+
+    def service_browse_next(self, request):
+        return lib.UA_Client_Service_browseNext(self.ua_client, request)
+
+    def service_translate_browse_paths_to_node_ids(self, request):
+        return lib.UA_Client_Service_translateBrowsePathsToNodeIds(self.ua_client, request)
+
+    def service_register_node(self, request):
+        return lib.UA_Client_Service_registerNodes(self.ua_client, request)
+
+    def service_unregister_node(self, request):
+        return lib.UA_Client_Service_unregisterNodes(self.ua_client, request)
+
+    def service_query_first(self, request):
+        return lib.UA_Client_Service_queryFirst(self.ua_client, request)
+
+    # high level read service
 
     def read_node_id_attribute(self, node_id):
         out_node_id = ffi.new("UA_NodeId*")
@@ -133,7 +183,7 @@ class UaClient:
         status_code = lib.UA_Client_readUserExecutableAttribute(self.ua_client, node_id, out_user_executable)
         return ClientServiceResult.ReadUserExecutableAttributeResult(status_code, out_user_executable)
 
-    # write service
+    # high level write service
 
     def write_node_id_attribute(self, node_id, new_node_id):
         return lib.UA_Client_writeNodeIdAttribute(self.ua_client, node_id, new_node_id)
@@ -199,7 +249,7 @@ class UaClient:
     def write_user_executable_attribute(self, node_id, new_user_executable):
         return lib.UA_Client_writeUserExecutableAttribute(self.ua_client, node_id, new_user_executable)
 
-    # misc service calls
+    # misc high level service
 
     def call(self, object_id, method_id, input_size, input):
         output_size = ffi.new("size_t*")
@@ -219,7 +269,7 @@ class UaClient:
     def delete_node(self, node_id, delete_target_references):
         return lib.UA_Client_deleteNode(self.ua_client, node_id, delete_target_references)
 
-    # add node services
+    # high level add node services
 
     def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
                           attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
@@ -227,14 +277,14 @@ class UaClient:
         status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                     reference_type_id, browse_name, type_definition, attr,
                                                     out_new_node_id);
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                                attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                         reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_object_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
                         attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
@@ -242,42 +292,42 @@ class UaClient:
         status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                   reference_type_id, browse_name, type_definition, attr,
                                                   out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_object_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                              attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                       reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_view_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                       attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                 reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_reference_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                                 attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                          reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_data_type_node(self, requested_node_id, parent_node_id, reference_type_id, browse_name,
                            attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_node_id, parent_node_id,
                                                     reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                         attr=DefaultAttributes.METHOD_ATTRIBUTED_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                   reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.Add_node_result(status_code, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     # utils
 
@@ -289,3 +339,12 @@ class UaClient:
 
     def find_data_type(self, type_id):
         return lib.UA_Client_findDataType(self.ua_client, type_id)
+
+    def get_endpoints(self, server_url, endpoint_descriptions_size, endpoint_descriptions):
+        return lib.UA_Client_getEndpoints(self.ua_client, server_url, endpoint_descriptions_size, endpoint_descriptions)
+
+    def find_servers(self, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size, registered_servers):
+        return lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size, registered_servers)
+
+    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return, server_capability_filter_size, server_on_network_size, server_on_network):
+        return lib.UA_Client_findServersOnNetwork(self.ua_client, starting_record_id, max_records_to_return, server_capability_filter_size, server_on_network_size, server_on_network)
