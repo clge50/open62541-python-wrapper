@@ -249,10 +249,10 @@ class UaClient:
 
     # misc high level service
 
-    def call(self, object_id, method_id, input_size, input):
+    def call(self, object_id, method_id, input_size, call_input):
         output_size = ffi.new("size_t*")
         output = ffi.new("UA_Variant **")
-        status_code = lib.UA_Client_call(self.ua_client, object_id, method_id, input_size, input, output_size, output)
+        status_code = lib.UA_Client_call(self.ua_client, object_id, method_id, input_size, call_input, output_size, output)
         return ClientServiceResult.CallResult(status_code, output_size, output)
 
     def add_reference(self, source_node_id, reference_type_id, is_forward, target_server_uri, target_node_id,
@@ -260,9 +260,9 @@ class UaClient:
         return lib.UA_Client_addReference(self.ua_client, source_node_id, reference_type_id, is_forward,
                                           target_server_uri, target_node_id, target_node_class)
 
-    def delete_reference(self, source_node_id, reference_type_id, is_forward, targetNode_id, delete_bidirectional):
+    def delete_reference(self, source_node_id, reference_type_id, is_forward, target_node_id, delete_bidirectional):
         return lib.UA_Client_deleteReference(self.ua_client, source_node_id, reference_type_id, is_forward,
-                                             targetNode_id, delete_bidirectional);
+                                             target_node_id, delete_bidirectional)
 
     def delete_node(self, node_id, delete_target_references):
         return lib.UA_Client_deleteNode(self.ua_client, node_id, delete_target_references)
@@ -274,7 +274,7 @@ class UaClient:
         out_new_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id, parent_node_id,
                                                     reference_type_id, browse_name, type_definition, attr,
-                                                    out_new_node_id);
+                                                    out_new_node_id)
         return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
     def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
