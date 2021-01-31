@@ -367,3 +367,27 @@ typedef struct {
     UA_String *discoveryUrls;
     */
 } UA_ApplicationDescription;
+
+typedef enum {
+    UA_MESSAGESECURITYMODE_INVALID = 0,
+    UA_MESSAGESECURITYMODE_NONE = 1,
+    UA_MESSAGESECURITYMODE_SIGN = 2,
+    UA_MESSAGESECURITYMODE_SIGNANDENCRYPT = 3,
+    __UA_MESSAGESECURITYMODE_FORCE32BIT = 0x7fffffff
+} UA_MessageSecurityMode;
+
+typedef enum {
+    UA_USERTOKENTYPE_ANONYMOUS = 0,
+    UA_USERTOKENTYPE_USERNAME = 1,
+    UA_USERTOKENTYPE_CERTIFICATE = 2,
+    UA_USERTOKENTYPE_ISSUEDTOKEN = 3,
+    __UA_USERTOKENTYPE_FORCE32BIT = 0x7fffffff
+} UA_UserTokenType;
+
+typedef struct {
+    UA_String policyId;
+    UA_UserTokenType tokenType;
+    UA_String issuedTokenType;
+    UA_String issuerEndpointUrl;
+    UA_String securityPolicyUri;
+} UA_UserTokenPolicy;
