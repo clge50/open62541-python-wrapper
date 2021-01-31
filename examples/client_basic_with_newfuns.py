@@ -20,7 +20,7 @@ print("parent node read status code is bad: " + str(lib.UA_StatusCode_isBad(pare
 
 wrapper = client.add_variable_node(myIntegerNodeId, parentNodeId, parentReferenceNodeId, myIntegerName, variableType)
 print("Status code is bad: " + str(lib.UA_StatusCode_isBad(wrapper.status_code)))
-print("Node id: " + wrapper.out_new_node_id.identifier.string.data)
+# print("Node id: " + wrapper.out_new_node_id.identifier.string.data)
 
 # reading node
 myIntNodeIdResult = client.read_node_id_attribute(wrapper.out_new_node_id[0])
