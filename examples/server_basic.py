@@ -7,7 +7,7 @@ import serverApi as api
 server = api.UaServer()
 
 # Start server
-retval = server.run_async([True])
+retval = server.run([True])
 
 time.sleep(100)
 server.run_shutdown()

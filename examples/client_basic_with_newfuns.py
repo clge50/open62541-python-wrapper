@@ -6,7 +6,7 @@ import clientApi
 from intermediateApi import ffi, lib
 
 client = clientApi.UaClient()
-retval = client.connect_secure_channel(b"opc.tcp://127.0.0.1:4840/")
+retval = client.connect(b"opc.tcp://127.0.0.1:4840/")
 
 # adding node
 myIntegerNodeId = lib.UA_NODEID_STRING(1, b"the.answer")
@@ -18,11 +18,11 @@ variableType = lib.UA_NODEID_NUMERIC(0, 63)
 parentNodeReadResult = client.read_node_id_attribute(parentReferenceNodeId)
 print("parent node read status code is bad: " + str(lib.UA_StatusCode_isBad(parentNodeReadResult.status_code)))
 
-wrapper = client.add_variable_node(myIntegerNodeId, parentNodeId, parentReferenceNodeId, myIntegerName, variableType)
-print("Status code is bad: " + str(lib.UA_StatusCode_isBad(wrapper.status_code)))
+#wrapper = client.add_variable_node(myIntegerNodeId, parentNodeId, parentReferenceNodeId, myIntegerName, variableType)
+#print("Status code is bad: " + str(lib.UA_StatusCode_isBad(wrapper.status_code)))
 # print("Node id: " + wrapper.out_new_node_id.identifier.string.data)
 
 # reading node
-myIntNodeIdResult = client.read_node_id_attribute(wrapper.out_new_node_id[0])
-print("Status code: " + str(myIntNodeIdResult.status_code))
-print("Node id: " + str(myIntNodeIdResult.out_node_id.identifier.numeric))
+#myIntNodeIdResult = client.read_node_id_attribute(wrapper.out_new_node_id[0])
+#print("Status code: " + str(myIntNodeIdResult.status_code))
+#print("Node id: " + str(myIntNodeIdResult.out_node_id.identifier.numeric))

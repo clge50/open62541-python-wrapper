@@ -12,9 +12,6 @@ class UaServer:
     def run(self, running):
         return lib.UA_Server_run(self.ua_server, running)
 
-    async def run_async(self, running):
-        return lib.UA_Server_run(self.ua_server, running)
-
     def run_shutdown(self):
         return lib.UA_Server_run_shutdown(self.ua_server)
 
@@ -30,8 +27,8 @@ class UaServer:
     #    def delete(self):
     #        return lib.UA_Server_delete(self.ua_server)
 
-    def set_minimal(self, port_number, certificate):
-        return lib.UA_ServerConfig_setMinimal(self.ua_server.UA_Server_getConfig(), port_number, certificate)
+    def set_minimal_config(self, port_number, certificate):
+        return lib.UA_ServerConfig_setMinimal(self.getConfig(), port_number, certificate)
 
     def set_default_config(self):
         return lib.UA_ServerConfig_setDefault(self.getConfig())
