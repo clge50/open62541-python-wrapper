@@ -6,7 +6,7 @@ import clientApi
 from intermediateApi import ffi, lib
 
 client = clientApi.UaClient()
-retval = client.connect(b"opc.tcp://127.0.0.1:4840/")
+retval = client.connect_secure_channel(b"opc.tcp://127.0.0.1:4840/")
 
 # adding node
 myIntegerNodeId = lib.UA_NODEID_STRING(1, b"the.answer")

@@ -20,8 +20,8 @@ class UaClient:
 
     # connection
 
-    def connect(self, address):
-        return lib.UA_Client_connect(self.ua_client, address)
+    def connect(self, endpoint_url):
+        return lib.UA_Client_connect(self.ua_client, endpoint_url)
 
     def disconnect(self):
         return lib.UA_Client_disconnect(self.ua_client)

@@ -13,34 +13,18 @@ class TestClientApi(unittest.TestCase):
     client = None
     running = [True]
 
-    # setup and teardown (ran before and after each test)
-    # to create a server that the client can interact with
-
-    async def run_server(self):
-        return serverApi.lib.UA_Server_run(self.server, self.running)
-
-    # TODO: find better way to start the server in the future. Currently the start method never finishes so we start
-    #  it as async.
     def setUp(self):
-        # Create new server object
-        self.server = serverApi.lib.UA_Server_new()
-        # Set minimal usable config
-        serverApi.lib.UA_ServerConfig_setDefault(serverApi.lib.UA_Server_getConfig(self.server))
-        # Set server to always run
-        # Note: must be passed as pointer to bool
-        # thus we use an array
-        # Start server
-        self.run_server()
-        time.sleep(0.5)
-        print("server running")
+        self.server = serverApi.UaServer()
+        self.server.run_async([True])
+        time.sleep(2)
+
         self.client = clientApi.UaClient()
-        retval = self.client.connect(b"opc.tcp://127.0.0.1:4840/")
+        self.client.connect(b"opc.tcp://127.0.0.1:4840/")
 
     def tearDown(self):
-        # TODO: stop server
+        self.server.run_shutdown()
         self.server = None
         self.client = None
-        pass
 
     # basic methods tests
 
