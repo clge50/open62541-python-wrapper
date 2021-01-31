@@ -1,7 +1,7 @@
 import unittest
 import sys
 import time
-
+import threading
 sys.path.append("../build/open62541")
 import serverApi
 import clientApi
@@ -12,35 +12,26 @@ class TestClientApi(unittest.TestCase):
     server = None
     client = None
     running = [True]
+    thread = None
 
-    # setup and teardown (ran before and after each test)
-    # to create a server that the client can interact with
-
-    async def run_server(self):
-        return serverApi.lib.UA_Server_run(self.server, self.running)
-
-    # TODO: find better way to start the server in the future. Currently the start method never finishes so we start
-    #  it as async.
     def setUp(self):
-        # Create new server object
-        self.server = serverApi.lib.UA_Server_new()
-        # Set minimal usable config
-        serverApi.lib.UA_ServerConfig_setDefault(serverApi.lib.UA_Server_getConfig(self.server))
-        # Set server to always run
-        # Note: must be passed as pointer to bool
-        # thus we use an array
-        # Start server
-        self.run_server()
-        time.sleep(0.5)
-        print("server running")
+        print("start of setUp")
+        self.server = serverApi.UaServer()
+        self.thread = threading.Thread(target=self.server.run, args=[self.running], daemon=True)
+        self.thread.start()
+        time.sleep(2)
+
         self.client = clientApi.UaClient()
-        retval = self.client.connect(b"opc.tcp://127.0.0.1:4840/")
+        self.client.connect(b"opc.tcp://127.0.0.1:4840/")
+        print("end of setUp")
 
     def tearDown(self):
-        # TODO: stop server
+        print("start of tearDown")
+        self.server.run_shutdown()
+        self.thread.join(1)
         self.server = None
         self.client = None
-        pass
+        print("end of tearDown")
 
     # basic methods tests
 
@@ -80,11 +71,13 @@ class TestClientApi(unittest.TestCase):
 
     # reads a node from the server and verifies the id and the status code
     def test_read_node_id_attribute(self):
+        print("Start of test_read_node_id_attribute")
         parent_node_id = lib.UA_NODEID_NUMERIC(ffi.cast("UA_UInt16", 0), ffi.cast("UA_UInt32", 85))
         res = self.client.read_node_id_attribute(parent_node_id)
         self.assertFalse(lib.UA_StatusCode_isBad(res.status_code))
         self.assertEqual(str(res.status_code), "0")
         self.assertEqual(str(res.out_node_id.identifier.numeric), "85")
+        print("End of test_read_node_id_attribute")
 
     # def test_read_node_class_attribute(self):
 
