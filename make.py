@@ -3,8 +3,10 @@ from functools import reduce
 from cffi import FFI
 import os
 from shutil import copytree
+import re
 
 dirname = os.path.dirname(os.path.abspath(__file__))
+
 
 def setup_open62541():
     open62541_repo = r"https://github.com/open62541/open62541.git"
@@ -18,8 +20,22 @@ def setup_open62541():
     os.chdir(dirname)
 
 
+def generate_status_codes():
+    with open(dirname + r"/open62541/build/src_generated/open62541/statuscodes.h") as file_handler:
+        lines = (line.rstrip() for line in file_handler)
+        lines = (line for line in lines if line.startswith("#define"))
+        lines = map(lambda l: l.replace("#define ", ""), lines)
+        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
+        lines.insert(0, "class StatusCode:\n")
+
+    os.chdir(dirname + r"/build/open62541/")
+    with open('status_code.py', 'w+') as file:
+        file.writelines(lines)
+
+
 def generate_api():
-    decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel", "client_config_default", "server"]
+    decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel",
+                       "client_config_default", "server"]
     decls_list = []
 
     for file_name in decl_files_list:
@@ -47,3 +63,4 @@ def generate_api():
 # setupOpen62541()
 os.chdir(dirname)
 generate_api()
+generate_status_codes()
