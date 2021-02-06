@@ -1,10 +1,11 @@
 import sys
 import time
+
 sys.path.append("../build/open62541")
-import serverApi as api
+import serverApi
 
 # Create new server object
-server = api.UaServer()
+server = serverApi.UaServer()
 
 # Start server
 retval = server.run([True])

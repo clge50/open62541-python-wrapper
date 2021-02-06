@@ -2,9 +2,10 @@ from functools import reduce
 
 from cffi import FFI
 import os
-from shutil import copytree
+from shutil import copytree, rmtree
 
 dirname = os.path.dirname(os.path.abspath(__file__))
+
 
 def setup_open62541():
     open62541_repo = r"https://github.com/open62541/open62541.git"
@@ -18,8 +19,36 @@ def setup_open62541():
     os.chdir(dirname)
 
 
+def generate_status_codes():
+    with open(dirname + r"/open62541/build/src_generated/open62541/statuscodes.h") as file_handler:
+        lines = (line.rstrip() for line in file_handler)
+        lines = (line.replace("#define ", "") for line in lines if line.startswith("#define"))
+        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
+        lines.insert(0, "from intermediateApi import lib\n\n\n")
+        lines.insert(1, "class StatusCode:\n")
+        lines.insert(2, "\t@staticmethod\n\tdef isBad(status_code):\n\t\treturn lib.UA_StatusCode_isBad(status_code)\n\n")
+
+    os.chdir(dirname + r"/build/open62541/")
+    with open('status_code.py', 'w+') as file:
+        file.writelines(lines)
+
+def generate_node_ids():
+    with open(dirname + r"/open62541/build/src_generated/open62541/nodeids.h") as file_handler:
+        lines = (line.rstrip() for line in file_handler)
+        lines = (line.replace("#define ", "") for line in lines if line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
+        lines = list(map(lambda l: "\t" + l + "\n", lines))
+        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
+        lines.insert(0, "class NodeIds:\n")
+
+    os.chdir(dirname + r"/build/open62541/")
+    with open('node_ids.py', 'w+') as file:
+        file.writelines(lines)
+
 def generate_api():
-    decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel", "client_config_default", "server"]
+    os.chdir(dirname)
+    #rmtree("build")
+    decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel",
+                       "client_config_default", "server"]
     decls_list = []
 
     for file_name in decl_files_list:
@@ -31,7 +60,7 @@ def generate_api():
     ffibuilder = FFI()
     ffibuilder.set_source("intermediateApi",
                           r"""#include "open62541.h"
-		""",
+                          """,
                           include_dirs=[dirname + r"/open62541/build"],
                           library_dirs=[dirname + r"/open62541/build/bin"],
                           libraries=['open62541'])
@@ -47,3 +76,5 @@ def generate_api():
 # setupOpen62541()
 os.chdir(dirname)
 generate_api()
+generate_status_codes()
+generate_node_ids()
