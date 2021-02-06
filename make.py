@@ -26,7 +26,7 @@ def generate_status_codes():
         lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
         lines.insert(0, "from intermediateApi import lib\n\n\n")
         lines.insert(1, "class StatusCode:\n")
-        lines.insert(2, "\t@staticmethod\n\tdef isGood(status_code):\n\t\treturn lib.UA_StatusCode_isBad(status_code)\n\n")
+        lines.insert(2, "\t@staticmethod\n\tdef isBad(status_code):\n\t\treturn lib.UA_StatusCode_isBad(status_code)\n\n")
 
     os.chdir(dirname + r"/build/open62541/")
     with open('status_code.py', 'w+') as file:
@@ -46,7 +46,7 @@ def generate_node_ids():
 
 def generate_api():
     os.chdir(dirname)
-    rmtree("build")
+    #rmtree("build")
     decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel",
                        "client_config_default", "server"]
     decls_list = []
@@ -60,7 +60,7 @@ def generate_api():
     ffibuilder = FFI()
     ffibuilder.set_source("intermediateApi",
                           r"""#include "open62541.h"
-		""",
+                          """,
                           include_dirs=[dirname + r"/open62541/build"],
                           library_dirs=[dirname + r"/open62541/build/bin"],
                           libraries=['open62541'])

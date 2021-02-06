@@ -24,3 +24,13 @@ class QualifiedName:
     @staticmethod
     def new(namespace_index, string):
         return lib.UA_QUALIFIEDNAME(namespace_index, bytes(string, 'utf-8'))
+
+
+class UaString:
+    @staticmethod
+    def new(string):
+        return lib.UA_String_fromChars(string)
+
+# @staticmethod
+# def to_string(ua_string):
+#     return ffi.string(lib.ua_string_to_string(ua_string), 1).decode("utf-8")
