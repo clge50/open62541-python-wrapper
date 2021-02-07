@@ -2,7 +2,7 @@ import sys
 
 sys.path.append("../build/open62541")
 import clientApi
-from ua_types import NodeId, QualifiedName, UaString
+from ua_types import UaNodeId, UaQualifiedName, UaString
 from intermediateApi import ffi, lib
 from node_ids import NodeIds
 from status_code import StatusCode
@@ -11,11 +11,11 @@ client = clientApi.UaClient()
 retval = client.connect(b"opc.tcp://127.0.0.1:4840/")
 
 # adding node
-myIntegerNodeId = NodeId.new_string(1, "Xa")
-myIntegerName = QualifiedName.new(1, "na")
-parentNodeId = NodeId.new_numeric(0, NodeIds.UA_NS0ID_OBJECTSFOLDER)
-parentReferenceNodeId = NodeId.new_numeric(0, NodeIds.UA_NS0ID_ORGANIZES)
-variableType = NodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE)
+myIntegerNodeId = UaNodeId.new_string(1, "Xa")
+myIntegerName = UaQualifiedName.new(1, "na")
+parentNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_OBJECTSFOLDER)
+parentReferenceNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_ORGANIZES)
+variableType = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE)
 
 parent_node_read_result = client.read_node_id_attribute(parentReferenceNodeId)
 print("parent node read status code is bad: " + str(StatusCode.isBad(parent_node_read_result.status_code)))
