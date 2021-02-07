@@ -18,7 +18,7 @@ def setup_open62541():
     os.system("make")
     os.chdir(dirname)
 
-
+# todo: create a generic generate function instead of multiple functions that do basically the same
 def generate_status_codes():
     with open(dirname + r"/open62541/build/src_generated/open62541/statuscodes.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
@@ -32,11 +32,12 @@ def generate_status_codes():
     with open('status_code.py', 'w+') as file:
         file.writelines(lines)
 
+
 def generate_node_ids():
     with open(dirname + r"/open62541/build/src_generated/open62541/nodeids.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
-        lines = (line.replace("#define ", "") for line in lines if line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
-        lines = list(map(lambda l: "\t" + l + "\n", lines))
+        lines = (line.replace("#define ", "") for line in lines if
+                 line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
         lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
         lines.insert(0, "class NodeIds:\n")
 
@@ -44,9 +45,21 @@ def generate_node_ids():
     with open('node_ids.py', 'w+') as file:
         file.writelines(lines)
 
+
+def generate_type_ids():
+    with open(dirname + r"/open62541/build/src_generated/open62541/types_generated.h") as file_handler:
+        lines = (line.rstrip() for line in file_handler)
+        lines = (line.replace("#define ", "") for line in lines if line.startswith("#define UA_TYPES_"))
+        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
+        lines.insert(0, "class TypeIds:\n")
+
+    os.chdir(dirname + r"/build/open62541/")
+    with open('type_ids.py', 'w+') as file:
+        file.writelines(lines)
+
 def generate_api():
     os.chdir(dirname)
-    #rmtree("build")
+    # rmtree("build")
     decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel",
                        "client_config_default", "server"]
     decls_list = []
@@ -57,19 +70,19 @@ def generate_api():
 
     cffi_input = reduce(lambda s1, s2: s1 + "\n" + s2, decls_list)
 
-    ffibuilder = FFI()
-    ffibuilder.set_source("intermediateApi",
+    ffi_builder = FFI()
+    ffi_builder.set_source("intermediateApi",
                           r"""#include "open62541.h"
                           """,
                           include_dirs=[dirname + r"/open62541/build"],
                           library_dirs=[dirname + r"/open62541/build/bin"],
                           libraries=['open62541'])
 
-    ffibuilder.cdef(cffi_input)
+    ffi_builder.cdef(cffi_input)
     os.mkdir("build")
     copytree(dirname + r"/src/api", dirname + r"/build/open62541")
     os.chdir(dirname + r"/build/open62541/")
-    ffibuilder.compile(verbose=True)
+    ffi_builder.compile(verbose=True)
     print("finished building intermediateApi")
 
 
@@ -78,3 +91,4 @@ os.chdir(dirname)
 generate_api()
 generate_status_codes()
 generate_node_ids()
+generate_type_ids()
