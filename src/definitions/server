@@ -5,6 +5,58 @@ struct UA_ServerConfig {
     ...;
 };
 
+struct UA_CallMethodRequest{
+    // Fill, when types are implemented:
+    // UA_NodeId objectId;
+    // UA_NodeId methodId;
+    // size_t inputArgumentsSize;
+    // UA_Variant *inputArguments;
+
+    ...;
+};
+
+struct UA_DataValue{
+    ...;
+};
+
+typedef struct {
+    //UA_UInt32 specifiedAttributes;
+    //UA_LocalizedText displayName;
+    //UA_LocalizedText description;
+    //UA_UInt32 writeMask;
+    //UA_UInt32 userWriteMask;
+    //UA_Variant value;
+    //UA_NodeId dataType;
+    //UA_Int32 valueRank;
+    //size_t arrayDimensionsSize;
+    //UA_UInt32 *arrayDimensions;
+    //UA_Byte accessLevel;
+    //UA_Byte userAccessLevel;
+    //UA_Double minimumSamplingInterval;
+    //UA_Boolean historizing;
+
+    ...;
+} UA_VariableAttributes;
+
+
+typedef struct {
+    //UA_NodeId nodeId;
+    //UA_UInt32 attributeId;
+    //UA_String indexRange;
+    //UA_QualifiedName dataEncoding;
+
+    ...;
+} UA_ReadValueId;
+
+
+
+typedef struct {
+    //UA_UInt16 namespaceIndex;
+    //UA_String name;
+
+    ...;
+} UA_QualifiedName;
+
 UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
 
 UA_StatusCode UA_Server_run_shutdown(UA_Server *server);
@@ -20,3 +72,7 @@ UA_StatusCode UA_ServerConfig_setMinimal(UA_ServerConfig *config, UA_UInt16 port
 UA_StatusCode UA_ServerConfig_setDefault(UA_ServerConfig *config);
 
 UA_Server * UA_Server_newWithConfig(UA_ServerConfig *config);
+
+UA_DataValue UA_Server_read(UA_Server *server, const UA_ReadValueId *item, UA_TimestampsToReturn timestamps);
+
+UA_StatusCode UA_Server_addVariableNode(UA_Server *server, const UA_NodeId requestedNewNodeId,const UA_NodeId parentNodeId,const UA_NodeId referenceTypeId,const UA_QualifiedName browseName,const UA_NodeId typeDefinition,const UA_VariableAttributes attr,void *nodeContext, UA_NodeId *outNewNodeId);
