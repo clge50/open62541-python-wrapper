@@ -19,24 +19,7 @@ struct UA_DataValue{
     ...;
 };
 
-typedef struct {
-    //UA_UInt32 specifiedAttributes;
-    //UA_LocalizedText displayName;
-    //UA_LocalizedText description;
-    //UA_UInt32 writeMask;
-    //UA_UInt32 userWriteMask;
-    //UA_Variant value;
-    //UA_NodeId dataType;
-    //UA_Int32 valueRank;
-    //size_t arrayDimensionsSize;
-    //UA_UInt32 *arrayDimensions;
-    //UA_Byte accessLevel;
-    //UA_Byte userAccessLevel;
-    //UA_Double minimumSamplingInterval;
-    //UA_Boolean historizing;
 
-    ...;
-} UA_VariableAttributes;
 
 
 typedef struct {
@@ -48,14 +31,16 @@ typedef struct {
     ...;
 } UA_ReadValueId;
 
+typedef enum {
+    UA_TIMESTAMPSTORETURN_SOURCE = 0,
+    UA_TIMESTAMPSTORETURN_SERVER = 1,
+    UA_TIMESTAMPSTORETURN_BOTH = 2,
+    UA_TIMESTAMPSTORETURN_NEITHER = 3,
+    UA_TIMESTAMPSTORETURN_INVALID = 4,
+    __UA_TIMESTAMPSTORETURN_FORCE32BIT = 0x7fffffff
+} UA_TimestampsToReturn;
 
 
-typedef struct {
-    //UA_UInt16 namespaceIndex;
-    //UA_String name;
-
-    ...;
-} UA_QualifiedName;
 
 UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
 
