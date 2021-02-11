@@ -14,9 +14,12 @@ class DefaultAttributes:
 
 
 class UaClient:
-    def __init__(self):
-        self.ua_client = lib.UA_Client_new()
-        self.set_default_config()
+    def __init__(self, config=None):
+        if config is None:
+            self.ua_client = lib.UA_Client_new()
+            self.set_default_config()
+        else:
+            self.ua_client =lib.UA_Client_newWithConfig(config)
 
     # connection
 
@@ -46,8 +49,8 @@ class UaClient:
     def service_add_nodes(self, request):
         return lib.UA_Client_Service_addNodes(self.ua_client, request)
 
-    def service_add_references(self, request):
-        return lib.UA_Client_Service_addReferences(self.ua_client, request)
+    def service_add_reference(self, request):
+        return lib.UA_Client_Service_addReference(self.ua_client, request)
 
     def service_delete_nodes(self, request):
         return lib.UA_Client_Service_deleteNodes(self.ua_client, request)

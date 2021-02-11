@@ -60,8 +60,16 @@ def generate_type_ids():
 def generate_api():
     os.chdir(dirname)
     # rmtree("build")
-    decl_files_list = ["types", "types_generated", "util", "log", "network", "client", "client_highlevel",
-                       "client_config_default", "server"]
+    decl_files_list = ["types",
+                       "types_generated",
+                       "util",
+                       "log",
+                       "network",
+                       "client",
+                       "client_highlevel",
+                       "client_highlevel_async",
+                       "client_config_default",
+                       "server"]
     decls_list = []
 
     for file_name in decl_files_list:
