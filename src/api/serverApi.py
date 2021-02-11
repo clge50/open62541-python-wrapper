@@ -10,7 +10,7 @@ class UaServer:
             self.ua_server = lib.UA_Server_newWithConfig(config)
 
     def run(self, running):
-        return lib.UA_Server_run(self.ua_server, running)
+        return lib.UA_Server_run(self.ua_server, [running])
 
     def run_shutdown(self):
         return lib.UA_Server_run_shutdown(self.ua_server)
