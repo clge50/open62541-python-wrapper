@@ -24,6 +24,8 @@ typedef void (*UA_ClientAsyncReadBrowseNameAttributeCallback)(UA_Client *client,
 typedef void (*UA_ClientAsyncReadDisplayNameAttributeCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_LocalizedText *out);
 typedef void (*UA_ClientAsyncReadMinimumSamplingIntervalAttributeCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_Double *out);
 typedef void (*UA_ClientAsyncReadHistorizingAttributeCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_Boolean *out);
+typedef void (*UA_ClientAsyncWriteCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_WriteResponse *wr);
+typedef void (*UA_ClientAsyncAddNodesCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_AddNodesResponse *ar);
 
 // read service
 UA_StatusCode UA_Client_sendAsyncReadRequest(UA_Client *client, UA_ReadRequest *request, UA_ClientAsyncReadCallback readCallback, void *userdata, UA_UInt32 *reqId);
@@ -51,7 +53,6 @@ UA_StatusCode UA_Client_readExecutableAttribute_async(UA_Client *client, const U
 UA_StatusCode UA_Client_readUserExecutableAttribute_async(UA_Client *client, const UA_NodeId nodeId, UA_ClientAsyncReadUserExecutableAttributeCallback callback, void *userdata, UA_UInt32 *reqId);
 
 // write service
-typedef void (*UA_ClientAsyncWriteCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_WriteResponse *wr);
 UA_StatusCode UA_Client_sendAsyncWriteRequest(UA_Client *client, UA_WriteRequest *request, UA_ClientAsyncWriteCallback writeCallback, void *userdata, UA_UInt32 *reqId);
 /*UA_StatusCode __UA_Client_writeAttribute_async(UA_Client *client, const UA_NodeId *nodeId, UA_AttributeId attributeId, const void *in, const UA_DataType *inDataType, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);*/
 UA_StatusCode UA_Client_writeValueAttribute_async(UA_Client *client, const UA_NodeId nodeId, const UA_Variant *newValue, UA_ClientAsyncWriteCallback callback, void *userdata, UA_UInt32 *reqId);
@@ -81,7 +82,6 @@ UA_StatusCode __UA_Client_call_async(UA_Client *client, const UA_NodeId objectId
 UA_StatusCode UA_Client_call_async(UA_Client *client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncCallCallback callback, void *userdata, UA_UInt32 *reqId);
 
 // add node service
-typedef void (*UA_ClientAsyncAddNodesCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_AddNodesResponse *ar);
 /*UA_StatusCode __UA_Client_addNode_async(UA_Client *client, const UA_NodeClass nodeClass, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_NodeAttributes *attr, const UA_DataType *attributeType, UA_NodeId *outNewNodeId, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);*/
 UA_StatusCode UA_Client_addVariableNode_async(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_VariableAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, void *userdata, UA_UInt32 *reqId);
 UA_StatusCode UA_Client_addVariableTypeNode_async(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_VariableTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, void *userdata, UA_UInt32 *reqId);
