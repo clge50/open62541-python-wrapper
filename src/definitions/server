@@ -5,19 +5,6 @@ struct UA_ServerConfig {
     ...;
 };
 
-struct UA_CallMethodRequest{
-    // Fill, when types are implemented:
-    // UA_NodeId objectId;
-    // UA_NodeId methodId;
-    // size_t inputArgumentsSize;
-    // UA_Variant *inputArguments;
-
-    ...;
-};
-
-struct UA_DataValue{
-    ...;
-};
 
 
 
