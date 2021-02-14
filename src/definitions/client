@@ -77,4 +77,4 @@ UA_StatusCode UA_Client_addRepeatedCallback(UA_Client *client, UA_ClientCallback
 UA_StatusCode UA_Client_changeRepeatedCallbackInterval(UA_Client *client, UA_UInt64 callbackId, UA_Double interval_ms);
 void UA_Client_removeCallback(UA_Client *client, UA_UInt64 callbackId);
 UA_Client * UA_Client_newWithConfig(const UA_ClientConfig *config);
-
+UA_StatusCode UA_Client_run_iterate(UA_Client *client, UA_UInt32 timeout);

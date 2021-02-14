@@ -13,6 +13,18 @@ class DefaultAttributes:
     VIEW_ATTRIBUTES_DEFAULT = lib.UA_ViewAttributes_default
 
 
+class UaCallback:
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
+        ffi.from_handle(fun)(client, request_id, ar)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+
 class UaClient:
     def __init__(self, config=None):
         if config is None:
@@ -350,160 +362,150 @@ class UaClient:
         return lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size, locale_ids,
                                          registered_servers_size, registered_servers)
 
+    def run_iterate(self, timeout):
+        return lib.UA_Client_run_iterate(self.ua_client, timeout)
 
-#    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return,
-#                                server_capability_filter_size, server_on_network_size, server_on_network):
-#        return lib.UA_Client_findServersOnNetwork(self.ua_client, server_url, starting_record_id, max_records_to_return,
-#                                                  server_capability_filter_size, server_on_network_size,
-#                                                  server_on_network)
+    #    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return,
+    #                                server_capability_filter_size, server_on_network_size, server_on_network):
+    #        return lib.UA_Client_findServersOnNetwork(self.ua_client, server_url, starting_record_id, max_records_to_return,
+    #                                                  server_capability_filter_size, server_on_network_size,
+    #                                                  server_on_network)
 
-# async read service
-def send_async_read_request(self, request, read_callback, user_data, req_id):
-    return lib.UA_Client_sendAsyncReadRequest(self.ua_client, request, read_callback, user_data, req_id)
+    # async read service
+    def send_async_read_request(self, request, read_callback, user_data, req_id):
+        return lib.UA_Client_sendAsyncReadRequest(self.ua_client, request, read_callback, user_data, req_id)
 
+    def read_data_type_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readDataTypeAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_data_type_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readDataTypeAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_value_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readValueAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_node_id_attribute_async(self, node_id, user_data, req_id):
+        return lib.UA_Client_readNodeIdAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback, user_data, ffi.new("UA_UInt32*", req_id))
 
-def read_value_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readValueAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_node_class_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readNodeClassAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_browse_name_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readBrowseNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_node_id_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readNodeIdAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_display_name_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readDisplayNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_description_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readDescriptionAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_node_class_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readNodeClassAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_write_mask_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readWriteMaskAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def readUser_write_mask_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readUserWriteMaskAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_browse_name_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readBrowseNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_is_abstract_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readIsAbstractAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_symmetric_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readSymmetricAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_display_name_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readDisplayNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_inverse_name_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readInverseNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_contains_no_loops_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readContainsNoLoopsAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_description_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readDescriptionAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_event_notifier_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readEventNotifierAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_value_rank_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readValueRankAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_write_mask_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readWriteMaskAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_access_level_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readAccessLevelAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_user_access_level_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readUserAccessLevelAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def readUser_write_mask_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readUserWriteMaskAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_minimum_sampling_interval_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readMinimumSamplingIntervalAttribute_async(self.ua_client, node_id, callback, user_data,
+                                                                        req_id)
 
+    def read_historizing_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readHistorizingAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_is_abstract_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readIsAbstractAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_executable_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.UA_Client_readExecutableAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
+    def read_user_executable_attribute_async(self, node_id, callback, user_data, req_id):
+        return lib.readUserExecutableAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
 
-def read_symmetric_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readSymmetricAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    # async write service
+    # UA_Client_sendAsyncWriteRequest(self.ua_client, request, writeCallback, user_data, req_id)
+    #
+    # UA_Client_writeValueAttribute_async(self.ua_client, node_id, newValue, callback, user_data, req_id)
+    #
+    # UA_Client_writeNodeIdAttribute_async(self.ua_client, node_id, outNodeId, callback, user_data, req_id)
+    #
+    # UA_Client_writeNodeClassAttribute_async(self.ua_client, node_id, outNodeClass, callback, user_data, req_id)
+    #
+    # UA_Client_writeBrowseNameAttribute_async(self.ua_client, node_id, outBrowseName, callback, user_data, req_id)
+    #
+    # UA_Client_writeDisplayNameAttribute_async(self.ua_client, node_id, outDisplayName, callback, user_data, req_id)
+    #
+    # UA_Client_writeDescriptionAttribute_async(self.ua_client, node_id, outDescription, callback, user_data, req_id)
+    #
+    # UA_Client_writeWriteMaskAttribute_async(self.ua_client, node_id, outWriteMask, callback, user_data, req_id)
+    #
+    # UA_Client_writeUserWriteMaskAttribute_async(self.ua_client, node_id, outUserWriteMask, callback, user_data, req_id)
+    #
+    # UA_Client_writeIsAbstractAttribute_async(self.ua_client, node_id, outIsAbstract, callback, user_data, req_id)
+    #
+    # UA_Client_writeSymmetricAttribute_async(self.ua_client, node_id, outSymmetric, callback, user_data, req_id)
+    #
+    # UA_Client_writeInverseNameAttribute_async(self.ua_client, node_id, outInverseName, callback, user_data, req_id)
+    #
+    # UA_Client_writeContainsNoLoopsAttribute_async(self.ua_client, node_id, outContainsNoLoops, callback, user_data, req_id)
+    #
+    # UA_Client_writeEventNotifierAttribute_async(self.ua_client, node_id, outEventNotifier, callback, user_data, req_id)
+    #
+    # UA_Client_writeDataTypeAttribute_async(self.ua_client, node_id, outDataType, callback, user_data, req_id)
+    #
+    # UA_Client_writeValueRankAttribute_async(self.ua_client, node_id, outValueRank, callback, user_data, req_id)
+    #
+    # UA_Client_writeAccessLevelAttribute_async(self.ua_client, node_id, outAccessLevel, callback, user_data, req_id)
+    #
+    # UA_Client_writeUserAccessLevelAttribute_async(self.ua_client, node_id, outUserAccessLevel, callback, user_data, req_id)
+    #
+    # UA_Client_writeMinimumSamplingIntervalAttribute_async(self.ua_client, outMinimumSamplingInterval, callback, user_data, req_id)
+    #
+    # UA_Client_writeHistorizingAttribute_async(self.ua_client, node_id, outHistorizing, callback, user_data, req_id)
+    #
+    # UA_Client_writeExecutableAttribute_async(self.ua_client, node_id, outExecutable, callback, user_data, req_id)
+    #
+    # UA_Client_writeUserExecutableAttribute_async(self.ua_client, node_id, outUserExecutable, callback, user_data, req_id)
 
+    # call service
+    # __UA_Client_call_async(self.ua_client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncServiceCallback callback, user_data, req_id);
+    # UA_Client_call_async(self.ua_client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncCallCallback callback, user_data, req_id);
 
-def read_inverse_name_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readInverseNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    # add node service
 
+    async def add_variable_node_async(self, requeste_new_node_id, parent_node_id, reference_type_id, browse_name,
+                                      type_definition, callback, user_data, req_id,
+                                      attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        status_code = lib.UA_Client_addVariableNode_async(self.ua_client, requeste_new_node_id, parent_node_id,
+                                                          reference_type_id, browse_name, type_definition, attr,
+                                                          out_new_node_id, callback, user_data, req_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
 
-def read_contains_no_loops_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readContainsNoLoopsAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    # UA_Client_addVariableTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_VariableTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    # UA_Client_addObjectNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_ObjectAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    # UA_Client_addObjectTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ObjectTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    # UA_Client_addViewNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ViewAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    # UA_Client_addReferenceTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ReferenceTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    # UA_Client_addDataTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_DataTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    # UA_Client_addMethodNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_MethodAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
 
-
-def read_event_notifier_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readEventNotifierAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-
-def read_value_rank_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readValueRankAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-
-def read_access_level_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readAccessLevelAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-
-def read_user_access_level_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readUserAccessLevelAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-
-def read_minimum_sampling_interval_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readMinimumSamplingIntervalAttribute_async(self.ua_client, node_id, callback, user_data,
-                                                                    req_id)
-
-
-def read_historizing_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readHistorizingAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-
-def read_executable_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.UA_Client_readExecutableAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-
-def read_user_executable_attribute_async(self, node_id, callback, user_data, req_id):
-    return lib.readUserExecutableAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
-
-# async write service
-# UA_Client_sendAsyncWriteRequest(self.ua_client, request, writeCallback, user_data, req_id)
-#
-# UA_Client_writeValueAttribute_async(self.ua_client, node_id, newValue, callback, user_data, req_id)
-#
-# UA_Client_writeNodeIdAttribute_async(self.ua_client, node_id, outNodeId, callback, user_data, req_id)
-#
-# UA_Client_writeNodeClassAttribute_async(self.ua_client, node_id, outNodeClass, callback, user_data, req_id)
-#
-# UA_Client_writeBrowseNameAttribute_async(self.ua_client, node_id, outBrowseName, callback, user_data, req_id)
-#
-# UA_Client_writeDisplayNameAttribute_async(self.ua_client, node_id, outDisplayName, callback, user_data, req_id)
-#
-# UA_Client_writeDescriptionAttribute_async(self.ua_client, node_id, outDescription, callback, user_data, req_id)
-#
-# UA_Client_writeWriteMaskAttribute_async(self.ua_client, node_id, outWriteMask, callback, user_data, req_id)
-#
-# UA_Client_writeUserWriteMaskAttribute_async(self.ua_client, node_id, outUserWriteMask, callback, user_data, req_id)
-#
-# UA_Client_writeIsAbstractAttribute_async(self.ua_client, node_id, outIsAbstract, callback, user_data, req_id)
-#
-# UA_Client_writeSymmetricAttribute_async(self.ua_client, node_id, outSymmetric, callback, user_data, req_id)
-#
-# UA_Client_writeInverseNameAttribute_async(self.ua_client, node_id, outInverseName, callback, user_data, req_id)
-#
-# UA_Client_writeContainsNoLoopsAttribute_async(self.ua_client, node_id, outContainsNoLoops, callback, user_data, req_id)
-#
-# UA_Client_writeEventNotifierAttribute_async(self.ua_client, node_id, outEventNotifier, callback, user_data, req_id)
-#
-# UA_Client_writeDataTypeAttribute_async(self.ua_client, node_id, outDataType, callback, user_data, req_id)
-#
-# UA_Client_writeValueRankAttribute_async(self.ua_client, node_id, outValueRank, callback, user_data, req_id)
-#
-# UA_Client_writeAccessLevelAttribute_async(self.ua_client, node_id, outAccessLevel, callback, user_data, req_id)
-#
-# UA_Client_writeUserAccessLevelAttribute_async(self.ua_client, node_id, outUserAccessLevel, callback, user_data, req_id)
-#
-# UA_Client_writeMinimumSamplingIntervalAttribute_async(self.ua_client, outMinimumSamplingInterval, callback, user_data, req_id)
-#
-# UA_Client_writeHistorizingAttribute_async(self.ua_client, node_id, outHistorizing, callback, user_data, req_id)
-#
-# UA_Client_writeExecutableAttribute_async(self.ua_client, node_id, outExecutable, callback, user_data, req_id)
-#
-# UA_Client_writeUserExecutableAttribute_async(self.ua_client, node_id, outUserExecutable, callback, user_data, req_id)
-
-# call service
-# __UA_Client_call_async(self.ua_client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncServiceCallback callback, user_data, req_id);
-# UA_Client_call_async(self.ua_client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncCallCallback callback, user_data, req_id);
-
-# add node service
-# UA_Client_addVariableNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_VariableAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addVariableTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_VariableTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addObjectNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_ObjectAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addObjectTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ObjectTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addViewNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ViewAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addReferenceTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ReferenceTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addDataTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_DataTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-# UA_Client_addMethodNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_MethodAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-
-# misc
-# UA_Client_sendAsyncBrowseRequest(self.ua_client, UA_BrowseRequest *request, UA_ClientAsyncBrowseCallback browseCallback, user_data, req_id);
+    # misc
+    # UA_Client_sendAsyncBrowseRequest(self.ua_client, UA_BrowseRequest *request, UA_ClientAsyncBrowseCallback browseCallback, user_data, req_id);

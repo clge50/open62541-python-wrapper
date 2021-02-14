@@ -96,3 +96,7 @@ UA_StatusCode UA_Client_addMethodNode_async(UA_Client *client, const UA_NodeId r
 /*UA_StatusCode UA_Cient_translateBrowsePathsToNodeIds_async(UA_Client *client, char **paths, UA_UInt32 *ids, size_t pathSize, UA_ClientAsyncTranslateCallback callback, void *userdata, UA_UInt32 *reqId);*/
 /*UA_StatusCode __UA_Client_translateBrowsePathsToNodeIds_async(UA_Client *client, char *paths[], UA_UInt32 ids[], size_t pathSize, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);*/
 UA_StatusCode UA_Client_sendAsyncBrowseRequest(UA_Client *client, UA_BrowseRequest *request, UA_ClientAsyncBrowseCallback browseCallback, void *userdata, UA_UInt32 *reqId);
+
+// function pointer
+extern "Python" void python_wrapper_UA_ClientAsyncAddNodesCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_AddNodesResponse *ar);
+extern "Python" void python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId, UA_NodeId *out);
