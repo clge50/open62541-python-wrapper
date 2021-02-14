@@ -14,15 +14,164 @@ class DefaultAttributes:
 
 
 class UaCallback:
+
     @staticmethod
     @ffi.def_extern()
-    def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
-        ffi.from_handle(fun)(client, request_id, ar)
+    def python_wrapper_UA_ClientAsyncTranslateCallback(client, fun, request_id, tr):
+        ffi.from_handle(fun)(client, request_id, tr)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncBrowseCallback(client, fun, request_id, wr):
+        ffi.from_handle(fun)(client, request_id, wr)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback(client, fun, request_id, var):
+        ffi.from_handle(fun)(client, request_id, var)
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(client, fun, request_id, out):
         ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadDescriptionAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadWriteMaskAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadUserWriteMaskAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadIsAbstractAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, )
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadSymmetricAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadInverseNameAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadContainsNoLoopsAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadEventNotifierAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadValueRankAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadAccessLevelAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadUserAccessLevelAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadExecutableAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadUserExecutableAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncCallCallback(client, fun, request_id, cr):
+        ffi.from_handle(fun)(client, request_id, cr)
+
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadCallback(client, fun, request_id, rr):
+        ffi.from_handle(fun)(client, request_id, rr)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadValueAttributeCallback(client, fun, request_id, var):
+        ffi.from_handle(fun)(client, request_id, var)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadNodeClassAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadBrowseNameAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadDisplayNameAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadMinimumSamplingIntervalAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncReadHistorizingAttributeCallback(client, fun, request_id, out):
+        ffi.from_handle(fun)(client, request_id, out)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncWriteCallback(client, fun, request_id, wr):
+        ffi.from_handle(fun)(client, request_id, wr)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
+        ffi.from_handle(fun)(client, request_id, ar)
+    #
+    # @staticmethod
+    # @ffi.def_extern()
+    # def python_wrapper_(client, fun, request_id, ):
+    #     ffi.from_handle(fun)(client, request_id, )
+    #
+    #
+    # @staticmethod
+    # @ffi.def_extern()
+    # def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
+    #     ffi.from_handle(fun)(client, request_id, ar)
+    #
+    # @staticmethod
+    # @ffi.def_extern()
+    # def python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(client, fun, request_id, out):
+    #     ffi.from_handle(fun)(client, request_id, out)
+    #
+    # @staticmethod
+    # @ffi.def_extern()
+    # def python_wrapper_(client, fun, request_id, ):
+    #     ffi.from_handle(fun)(client, request_id, )
+
 
 
 class UaClient:
@@ -372,72 +521,73 @@ class UaClient:
     #                                                  server_on_network)
 
     # async read service
-    def send_async_read_request(self, request, read_callback, user_data, req_id):
-        return lib.UA_Client_sendAsyncReadRequest(self.ua_client, request, read_callback, user_data, req_id)
+    # todo: improve handling (callback selection for read_callback)
+    def send_async_read_request(self, request, read_callback, callback, req_id):
+        return lib.UA_Client_sendAsyncReadRequest(self.ua_client, request, read_callback, callback, req_id)
 
-    def read_data_type_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readDataTypeAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_data_type_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readDataTypeAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback, callback, req_id)
 
-    def read_value_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readValueAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_value_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readValueAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadValueAttributeCallback, callback, req_id)
 
-    def read_node_id_attribute_async(self, node_id, user_data, req_id):
-        return lib.UA_Client_readNodeIdAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback, user_data, ffi.new("UA_UInt32*", req_id))
+    def read_node_id_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readNodeIdAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback, callback, ffi.new("UA_UInt32*", req_id))
 
-    def read_node_class_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readNodeClassAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_node_class_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readNodeClassAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadNodeClassAttributeCallback, callback, req_id)
 
-    def read_browse_name_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readBrowseNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_browse_name_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readBrowseNameAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadBrowseNameAttributeCallback, callback, req_id)
 
-    def read_display_name_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readDisplayNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_display_name_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readDisplayNameAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadDisplayNameAttributeCallback, callback, req_id)
 
-    def read_description_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readDescriptionAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_description_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readDescriptionAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadDescriptionAttributeCallback, callback, req_id)
 
-    def read_write_mask_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readWriteMaskAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_write_mask_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readWriteMaskAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadWriteMaskAttributeCallback, callback, req_id)
 
-    def readUser_write_mask_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readUserWriteMaskAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def readUser_write_mask_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readUserWriteMaskAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadUserWriteMaskAttributeCallback, callback, req_id)
 
-    def read_is_abstract_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readIsAbstractAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_is_abstract_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readIsAbstractAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadIsAbstractAttributeCallback, callback, req_id)
 
-    def read_symmetric_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readSymmetricAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_symmetric_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readSymmetricAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadSymmetricAttributeCallback, callback, req_id)
 
-    def read_inverse_name_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readInverseNameAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_inverse_name_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readInverseNameAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadInverseNameAttributeCallback, callback, req_id)
 
-    def read_contains_no_loops_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readContainsNoLoopsAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_contains_no_loops_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readContainsNoLoopsAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadContainsNoLoopsAttributeCallback, callback, req_id)
 
-    def read_event_notifier_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readEventNotifierAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_event_notifier_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readEventNotifierAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadEventNotifierAttributeCallback, callback, req_id)
 
-    def read_value_rank_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readValueRankAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_value_rank_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readValueRankAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadValueRankAttributeCallback, callback, req_id)
 
-    def read_access_level_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readAccessLevelAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_access_level_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readAccessLevelAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadAccessLevelAttributeCallback, callback, req_id)
 
-    def read_user_access_level_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readUserAccessLevelAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_user_access_level_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readUserAccessLevelAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadUserAccessLevelAttributeCallback, callback, req_id)
 
-    def read_minimum_sampling_interval_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readMinimumSamplingIntervalAttribute_async(self.ua_client, node_id, callback, user_data,
+    def read_minimum_sampling_interval_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readMinimumSamplingIntervalAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadMinimumSamplingIntervalAttributeCallback, callback,
                                                                         req_id)
 
-    def read_historizing_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readHistorizingAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_historizing_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readHistorizingAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadHistorizingAttributeCallback, callback, req_id)
 
-    def read_executable_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.UA_Client_readExecutableAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_executable_attribute_async(self, node_id, callback, req_id):
+        return lib.UA_Client_readExecutableAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadExecutableAttributeCallback, callback, req_id)
 
-    def read_user_executable_attribute_async(self, node_id, callback, user_data, req_id):
-        return lib.readUserExecutableAttribute_async(self.ua_client, node_id, callback, user_data, req_id)
+    def read_user_executable_attribute_async(self, node_id, callback, req_id):
+        return lib.readUserExecutableAttribute_async(self.ua_client, node_id, lib.python_wrapper_UA_ClientAsyncReadUserExecutableAttributeCallback, callback, req_id)
 
     # async write service
     # UA_Client_sendAsyncWriteRequest(self.ua_client, request, writeCallback, user_data, req_id)

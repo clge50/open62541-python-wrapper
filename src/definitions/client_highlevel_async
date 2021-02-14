@@ -27,6 +27,35 @@ typedef void (*UA_ClientAsyncReadHistorizingAttributeCallback)(UA_Client *client
 typedef void (*UA_ClientAsyncWriteCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_WriteResponse *wr);
 typedef void (*UA_ClientAsyncAddNodesCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_AddNodesResponse *ar);
 
+// callback function pointer implementations
+extern "Python" void python_wrapper_UA_ClientAsyncTranslateCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_TranslateBrowsePathsToNodeIdsResponse *tr);
+extern "Python" void python_wrapper_UA_ClientAsyncBrowseCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_BrowseResponse *wr);
+extern "Python" void python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_NodeId *var);
+extern "Python" void python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId, UA_NodeId *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadDescriptionAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId,UA_LocalizedText *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadWriteMaskAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_UInt32 *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadUserWriteMaskAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_UInt32 *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadIsAbstractAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Boolean *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadSymmetricAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Boolean *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadInverseNameAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_LocalizedText *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadContainsNoLoopsAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Boolean *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadEventNotifierAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Byte *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadValueRankAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Int32 *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadAccessLevelAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Byte *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadUserAccessLevelAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Byte *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadExecutableAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Boolean *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadUserExecutableAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId,UA_Boolean *out);
+extern "Python" void python_wrapper_UA_ClientAsyncCallCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_CallResponse *cr);
+extern "Python" void python_wrapper_UA_ClientAsyncReadCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_ReadResponse *rr);
+extern "Python" void python_wrapper_UA_ClientAsyncReadValueAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_Variant *var);
+extern "Python" void python_wrapper_UA_ClientAsyncReadNodeClassAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_NodeClass *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadBrowseNameAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_QualifiedName *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadDisplayNameAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_LocalizedText *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadMinimumSamplingIntervalAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_Double *out);
+extern "Python" void python_wrapper_UA_ClientAsyncReadHistorizingAttributeCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_Boolean *out);
+extern "Python" void python_wrapper_UA_ClientAsyncWriteCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_WriteResponse *wr);
+extern "Python" void python_wrapper_UA_ClientAsyncAddNodesCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_AddNodesResponse *ar);
+
 // read service
 UA_StatusCode UA_Client_sendAsyncReadRequest(UA_Client *client, UA_ReadRequest *request, UA_ClientAsyncReadCallback readCallback, void *userdata, UA_UInt32 *reqId);
 /*UA_StatusCode __UA_Client_readAttribute_async(UA_Client *client, const UA_NodeId *nodeId, UA_AttributeId attributeId, const UA_DataType *outDataType, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);*/
@@ -96,7 +125,3 @@ UA_StatusCode UA_Client_addMethodNode_async(UA_Client *client, const UA_NodeId r
 /*UA_StatusCode UA_Cient_translateBrowsePathsToNodeIds_async(UA_Client *client, char **paths, UA_UInt32 *ids, size_t pathSize, UA_ClientAsyncTranslateCallback callback, void *userdata, UA_UInt32 *reqId);*/
 /*UA_StatusCode __UA_Client_translateBrowsePathsToNodeIds_async(UA_Client *client, char *paths[], UA_UInt32 ids[], size_t pathSize, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);*/
 UA_StatusCode UA_Client_sendAsyncBrowseRequest(UA_Client *client, UA_BrowseRequest *request, UA_ClientAsyncBrowseCallback browseCallback, void *userdata, UA_UInt32 *reqId);
-
-// function pointer
-extern "Python" void python_wrapper_UA_ClientAsyncAddNodesCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_AddNodesResponse *ar);
-extern "Python" void python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(UA_Client *client,void *userdata,UA_UInt32 requestId, UA_NodeId *out);
