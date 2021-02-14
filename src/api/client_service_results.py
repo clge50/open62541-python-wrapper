@@ -142,3 +142,10 @@ class AddNodeResult:
     def __init__(self, status_code, out_new_node_id):
         self.status_code = status_code
         self.out_new_node_id = out_new_node_id
+
+
+# async service
+class AsyncResult:
+    def __init__(self, status_code, req_id):
+        self.status_code = status_code
+        self.req_id = req_id

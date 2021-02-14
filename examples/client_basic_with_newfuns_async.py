@@ -20,13 +20,14 @@ variableType = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE)
 
 fun = ffi.new_handle(lambda _client, req_id, out: print("Node id: " + str(out.identifier.numeric) + ", request-id: " + str(req_id))) # todo: the request id is ignored somehow? We print 5 every time.
 parent_node_read_result = client.read_node_id_attribute_async(parentReferenceNodeId, fun)
+print("req_id: " + str(parent_node_read_result.req_id))
 client.read_node_id_attribute_async(parentReferenceNodeId, fun)
 client.read_node_id_attribute_async(parentReferenceNodeId, fun)
 print("a")
 while True:
     time.sleep(4)
     client.run_iterate(4)
-    print("parent node read status code is bad: " + str(StatusCode.isBad(parent_node_read_result)))
+    print("parent node read status code is bad: " + str(StatusCode.isBad(parent_node_read_result.status_code)))
 
 #time.sleep(10)
 #print("parent node read status code is bad: " + str(StatusCode.isBad(parent_node_read_result.status_code)))
