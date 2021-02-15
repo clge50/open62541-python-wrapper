@@ -18,7 +18,7 @@ parentNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_OBJECTSFOLDER)
 parentReferenceNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_ORGANIZES)
 variableType = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE)
 
-fun = ffi.new_handle(lambda _client, req_id, out: print("Node id: " + str(out.identifier.numeric) + ", request-id: " + str(req_id))) # todo: the request id is ignored somehow? We print 5 every time.
+fun = ffi.new_handle(lambda _client, req_id, out, user_data="Test": print(f"Node id: {str(out.identifier.numeric)}, request-id: {str(req_id)} user_data: {user_data}"))
 parent_node_read_result = client.read_node_id_attribute_async(parentReferenceNodeId, fun)
 print("req_id: " + str(parent_node_read_result.req_id))
 client.read_node_id_attribute_async(parentReferenceNodeId, fun)
