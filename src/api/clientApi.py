@@ -161,7 +161,7 @@ class UaClient:
     # connection
 
     def connect(self, endpoint_url):
-        return lib.UA_Client_connect(self.ua_client, endpoint_url)
+        return lib.UA_Client_connect(self.ua_client, bytes(endpoint_url, 'utf-8'))
 
     def disconnect(self):
         return lib.UA_Client_disconnect(self.ua_client)

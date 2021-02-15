@@ -8,7 +8,7 @@ from node_ids import NodeIds
 from status_code import StatusCode
 
 client = clientApi.UaClient()
-retval = client.connect(b"opc.tcp://127.0.0.1:4840/")
+retval = client.connect("opc.tcp://127.0.0.1:4840/")
 
 # adding node
 myIntegerNodeId = UaNodeId.new_string(1, "a")
