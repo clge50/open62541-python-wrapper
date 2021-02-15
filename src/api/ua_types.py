@@ -48,9 +48,9 @@ class UaString:
         return lib.UA_String_equal_ignorecase(ua_string_1, ua_string_2)
 
 
-# @staticmethod
-# def to_string(ua_string):
-#     return ffi.string(lib.ua_string_to_string(ua_string), 1).decode("utf-8")
+    @staticmethod
+    def to_string(ua_string):
+        return ffi.string(ffi.cast(f"char[{ua_string.length}]", ua_string.data), ua_string.length).decode("utf-8")
 
 class UaDateTime:
     @staticmethod

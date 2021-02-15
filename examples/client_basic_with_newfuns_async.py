@@ -27,10 +27,13 @@ print("parent node read status code is bad: " + str(StatusCode.isBad(parent_node
 
 fun2 = ffi.new_handle(lambda _client, req_id, ar, user_data="Test": print(f"Request-id: {str(req_id)} user_data: {user_data}"))
 add_variable_node_result = client.add_variable_node_async(myIntegerNodeId, parentNodeId, parentReferenceNodeId, myIntegerName, variableType, fun2)
-print("Status code is bad: " + str(lib.UA_StatusCode_isBad(add_variable_node_result.status_code)))
-print("Node id: " + UaString.to_string(add_variable_node_result.out_new_node_id.identifier.string))
-client.run_iterate(4)
+
+for i in range(0, 4):
+    print("Status code is bad: " + str(lib.UA_StatusCode_isBad(add_variable_node_result.status_code)))
+    time.sleep(5)
+    client.run_iterate(4)
+
 # reading node
-myIntNodeIdResult = client.read_node_id_attribute_async(add_variable_node_result.out_new_node_id[0])
-print("Status code: " + str(myIntNodeIdResult.status_code))
-print("Node id: " + str(myIntNodeIdResult.out_node_id.identifier.numeric))
+#myIntNodeIdResult = client.read_node_id_attribute_async(add_variable_node_result.out_new_node_id[0])
+#print("Status code: " + str(myIntNodeIdResult.status_code))
+#print("Node id: " + str(myIntNodeIdResult.out_node_id.identifier.numeric))
