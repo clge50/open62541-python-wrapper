@@ -1,11 +1,15 @@
 
 class UaType:
-    def __init__(self, val):
+    def __init__(self, val, is_pointer=False):
         self._value = val
+        self._is_pointer = val
 
     @property
     def value(self):
-        return self._value[0]
+        if self._is_pointer:
+            return self._value
+        else:
+            return self._value[0]
 
     def __str__(self):
         return str(self._value)
@@ -856,5 +860,3 @@ class UaStatusCode(UaType):
 
     def is_bad(self):
         return lib.UA_StatusCode_isBad(self.value)
-
-

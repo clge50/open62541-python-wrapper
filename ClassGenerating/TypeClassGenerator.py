@@ -1,24 +1,25 @@
 import xml.etree.ElementTree as ET
 import re
+import inflection
 
-
+# attribute_to_type is a dict {"<attributename>": ("<attributename>", <is pointer>)...}
 # The use of this class generator is base on two assumptions:
 #   1. syntax: the struct name starts with UA_
 #   2. semantics: there were already python classes generated for all nested types of the struct
 #       -> especially: there are classes for the base types (as stop for the recursion)
-
 def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
     tab = "    "
-    class_str = f""" 
-# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
-
+    empty = ""
+    pointer_str = ", True"
+    class_str = f"""# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
 """
     class_str += """class """ + to_python_class_name(struct_name) + f"""(UaType):
     def __init__(self, val=ffi.new("{struct_name}*")):
         super().__init__(val)\n"""
 
     for attribute, typename in attribute_to_type.items():
-        class_str += f"{tab * 2}self._{attribute} = {to_python_class_name(typename)}(val.{attribute})\n"
+        class_str += f"{tab * 2}self._{attribute} = " \
+                     f"{to_python_class_name(typename[0])}(val.{attribute}{pointer_str if typename[1] else empty})\n"
     class_str += f"{tab}\n"
 
     for attribute, typename in attribute_to_type.items():
@@ -36,14 +37,14 @@ def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
     class_str += (f"""
     def __str__(self):
         return ("{to_python_class_name(struct_name)}:\\n" + """ +
-                  " +".join(map(lambda s: f"\n{tab*4}self._{s}.str_helper(1)", attribute_to_type.values())) +
+                  " +".join(map(lambda s: f"\n{tab*4}self._{s}.str_helper(1)", attribute_to_type.keys())) +
                   f")\n{tab}")
 
     class_str += (f"""
     def str_helper(self, n: int):
         return ("\\t"*n + "{to_python_class_name(struct_name)}:\\n" + """ +
-                  " +".join(map(lambda s: f"\n{tab * 4}self._{s}.str_helper(n+1)", attribute_to_type.values())) +
-                  f")\n{tab * 4}")
+                  " +".join(map(lambda s: f"\n{tab * 4}self._{s}.str_helper(n+1)", attribute_to_type.keys())) +
+                  f")\n\n")
 
     return class_str
 
@@ -52,12 +53,9 @@ def ua_enum_class_generator(enum_name: str, ident_to_val: dict):
     tab = "    "
     quotes = "\""
     newline = "\n"
-    class_str = f""" 
-
-# +++++++++++++++++++ {to_python_class_name(enum_name)} +++++++++++++++++++++++
+    class_str = f"""# +++++++++++++++++++ {to_python_class_name(enum_name)} +++++++++++++++++++++++
 """
-    class_str += f"""
-class {to_python_class_name(enum_name)}(UaType):
+    class_str += f"""class {to_python_class_name(enum_name)}(UaType):
 {newline.join(map(lambda ident: f"{tab}{ident} = {ident_to_val[ident]}", ident_to_val.keys()))}
 
     val_to_string = dict([
@@ -145,11 +143,13 @@ def get_attr_to_type(s: str):
     attr_type = []
 
     for line in s.splitlines():
-# TODO: Handle Pointer
+        is_pointer = False
+        if "*" in line:
+            is_pointer = True
+            line = line.replace("*", "")
         line = line.replace(";", "").strip()
         pair = line.split(" ")
-#TODO: parse attr to snakecase
-        pair = (pair[1], pair[0])
+        pair = (inflection.underscore(pair[1]), (pair[0], is_pointer))
         attr_type.append(pair)
 
     return dict(attr_type)
@@ -201,8 +201,7 @@ handle = open("UaBaseTypeClasses.py", "r")
 base_type_classes = handle.read()
 handle.close()
 
-type_classes = """from intermediateApi import ffi, lib
-"""
+type_classes = """from intermediateApi import ffi, lib"""
 
 type_classes += """
 # -------------------------------------------------------------
@@ -221,7 +220,7 @@ type_classes += """
 # The static attributes are the Python equivalents to the members of the enum.
 
 """
-type_classes += "\n\n".join(map(lambda pair: ua_enum_class_generator(pair[0], pair[1]), enum_dict))
+type_classes += "".join(map(lambda pair: ua_enum_class_generator(pair[0], pair[1]), enum_dict))
 
 type_classes += """
 # -------------------------------------------------------------
