@@ -1,5 +1,3 @@
-from intermediateApi import ffi, lib
-
 
 class UaType:
     def __init__(self, val):
