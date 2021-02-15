@@ -11,8 +11,8 @@ client = clientApi.UaClient()
 retval = client.connect(b"opc.tcp://127.0.0.1:4840/")
 
 # adding node
-myIntegerNodeId = UaNodeId.new_string(1, "Xa")
-myIntegerName = UaQualifiedName.new(1, "na")
+myIntegerNodeId = UaNodeId.new_string(1, "a")
+myIntegerName = UaQualifiedName.new(1, "b")
 parentNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_OBJECTSFOLDER)
 parentReferenceNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_ORGANIZES)
 variableType = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE)
