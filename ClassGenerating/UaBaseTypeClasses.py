@@ -1,4 +1,6 @@
 
+# TODO: How to handle arrays?
+
 class UaType:
     def __init__(self, val, is_pointer=False):
         self._value = val
@@ -16,9 +18,9 @@ class UaType:
 
 
 class UaBoolean(UaType):
-    def __init__(self, val=None):
+    def __init__(self, val=None, p_val=False):
         if val is None:
-            super().__init__(ffi.new("UA_Boolean*"))
+            super().__init__(ffi.new("UA_Boolean*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -41,12 +43,12 @@ class UaBoolean(UaType):
 
 
 class UaSByte(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is not None:
             super().__init__(val)
             self._p_value = val[0]
         else:
-            super().__init__(ffi.new("UA_SByte*"))
+            super().__init__(ffi.new("UA_SByte*", p_val))
             self._p_value = None
 
     @property
@@ -69,9 +71,9 @@ class UaSByte(UaType):
 
 
 class UaByte(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Byte*"))
+            super().__init__(ffi.new("UA_Byte*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -97,9 +99,9 @@ class UaByte(UaType):
 
 
 class UaInt16(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int16*"))
+            super().__init__(ffi.new("UA_Int16*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -125,9 +127,9 @@ class UaInt16(UaType):
 
 
 class UaUInt16(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt16*"))
+            super().__init__(ffi.new("UA_UInt16*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -153,9 +155,9 @@ class UaUInt16(UaType):
 
 
 class UaInt32(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int32*"))
+            super().__init__(ffi.new("UA_Int32*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -181,9 +183,9 @@ class UaInt32(UaType):
 
 
 class UaUInt32(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt32*"))
+            super().__init__(ffi.new("UA_UInt32*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -209,9 +211,9 @@ class UaUInt32(UaType):
 
 
 class UaInt64(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int64*"))
+            super().__init__(ffi.new("UA_Int64*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -237,9 +239,9 @@ class UaInt64(UaType):
 
 
 class UaUInt64(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt64*"))
+            super().__init__(ffi.new("UA_UInt64*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -265,9 +267,9 @@ class UaUInt64(UaType):
 
 
 class UaFloat(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0.0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Float*"))
+            super().__init__(ffi.new("UA_Float*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -293,9 +295,9 @@ class UaFloat(UaType):
 
 
 class UaDouble(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0.0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Double*"))
+            super().__init__(ffi.new("UA_Double*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -832,9 +834,40 @@ class UaStatusCode(UaType):
         (0x80B60000, "UA_STATUSCODE_BADSYNTAXERROR"),
         (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED") ])
 
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_StatusCode*"))
+            super().__init__(ffi.new("UA_StatusCode*", p_val))
+            self._p_value = None
+        else:
+            super().__init__(val)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            self._value = ffi.new("UA_StatusCode*", val)
+        else:
+            raise ValueError(f"{val} is no legal status code")
+
+    def __str__(self):
+        return f"UaStatusCode: {UaStatusCode.val_to_string[self._p_value]} ({self._p_value})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + self.__str__()
+
+    def is_bad(self):
+        return lib.UA_StatusCode_isBad(self.value)
+
+
+class UaDateTime(UaType):
+    def __init__(self, p_val=0, val=None):
+        if val is None:
+            super().__init__(ffi.new("UA_DateTime*", p_val))
             self._p_value = None
         else:
             super().__init__(val)
@@ -848,15 +881,19 @@ class UaStatusCode(UaType):
     def p_value(self, val):
         try:
             self._p_value = val
-            self._value = ffi.new("UA_StatusCode*", val)
+            self._value = ffi.new("UA_DateTime*", val)
         except OverflowError as e:
-            raise OverflowError(f"{val} is not in range 0 .. 4,294,967,295") from e
+            raise OverflowError(f"{val} is not in range -4,294,967,295 .. 4,294,967,295") from e
 
     def __str__(self):
-        return f"UaStatusCode: {UaStatusCode.val_to_string[self._p_value]} ({self._p_value})"
+        return f"UA_DateTime: {self._p_value}"
 
     def str_helper(self, n: int):
-        return "\t" * n + "UaStatusCode: " + str(self._p_value)
+        return "\t" * n + self.__str__()
 
-    def is_bad(self):
-        return lib.UA_StatusCode_isBad(self.value)
+    @staticmethod
+    def now():
+        return UaDateTime(lib.UA_DateTime_now())
+
+
+

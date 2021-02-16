@@ -7,6 +7,8 @@ import inflection
 #   1. syntax: the struct name starts with UA_
 #   2. semantics: there were already python classes generated for all nested types of the struct
 #       -> especially: there are classes for the base types (as stop for the recursion)
+
+#TODO? cannot handle const attributes!!!
 def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
     tab = "    "
     empty = ""
@@ -18,19 +20,19 @@ def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
         super().__init__(val)\n"""
 
     for attribute, typename in attribute_to_type.items():
-        class_str += f"{tab * 2}self._{attribute} = " \
+        class_str += f"{tab * 2}self._{inflection.underscore(attribute)} = " \
                      f"{to_python_class_name(typename[0])}(val.{attribute}{pointer_str if typename[1] else empty})\n"
     class_str += f"{tab}\n"
 
     for attribute, typename in attribute_to_type.items():
         class_str += f"""
     @property
-    def {attribute}(self):
-        return self._{attribute}
+    def {inflection.underscore(attribute)}(self):
+        return self._{inflection.underscore(attribute)}
 
-    @{attribute}.setter
-    def {attribute}(self, val):
-        self._{attribute} = val
+    @{inflection.underscore(attribute)}.setter
+    def {inflection.underscore(attribute)}(self, val):
+        self._{inflection.underscore(attribute)} = val
         self._value.{attribute} = val.value
 """
 
@@ -44,7 +46,7 @@ def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
     def str_helper(self, n: int):
         return ("\\t"*n + "{to_python_class_name(struct_name)}:\\n" + """ +
                   " +".join(map(lambda s: f"\n{tab * 4}self._{s}.str_helper(n+1)", attribute_to_type.keys())) +
-                  f")\n\n")
+                  f")\n")
 
     return class_str
 
@@ -149,7 +151,7 @@ def get_attr_to_type(s: str):
             line = line.replace("*", "")
         line = line.replace(";", "").strip()
         pair = line.split(" ")
-        pair = (inflection.underscore(pair[1]), (pair[0], is_pointer))
+        pair = (pair[1], (pair[0], is_pointer))
         attr_type.append(pair)
 
     return dict(attr_type)
@@ -195,7 +197,7 @@ def defs_from_h():
     return struct_list, enum_list
 
 
-struct_dict, enum_dict = defs_from_h()
+struct_list, enum_list = defs_from_h()
 
 handle = open("UaBaseTypeClasses.py", "r")
 base_type_classes = handle.read()
@@ -219,8 +221,9 @@ type_classes += """
 # So a member of this class represents a variable with type of that enum
 # The static attributes are the Python equivalents to the members of the enum.
 
+
 """
-type_classes += "".join(map(lambda pair: ua_enum_class_generator(pair[0], pair[1]), enum_dict))
+type_classes += "".join(map(lambda pair: ua_enum_class_generator(pair[0], pair[1]), enum_list))
 
 type_classes += """
 # -------------------------------------------------------------
@@ -230,8 +233,9 @@ type_classes += """
 # The attribute val holds a ffi POINTER(!) on a a variable with the Type of the corresponding struct.
 # The other attributes are the Python equivalents to the attributes of the c struct.
 
+
 """
-type_classes += "\n\n".join(map(lambda pair: ua_struct_class_generator(pair[0], pair[1]), struct_dict))
+type_classes += "\n\n".join(map(lambda pair: ua_struct_class_generator(pair[0], pair[1]), struct_list))
 
 handle = open("UaGeneratedTypeClasses.py", "w")
 handle.write(type_classes)
