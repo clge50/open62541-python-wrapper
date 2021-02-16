@@ -1,3 +1,7 @@
+# TODO: val=... in contructor calls
+# TODO: add is_pointer so subclass constructor and calls
+# TODO: add UaSizeT, UaExtensionObject, UaBytestring, UaXmlElement, UaDataType
+
 # +++++++++++++++++++ UaNodeIdType +++++++++++++++++++++++
 class UaNodeIdType(UaType):
     UA_NODEIDTYPE_NUMERIC = 0
@@ -338,7 +342,7 @@ class UaGuid(UaType):
 class UaNodeId(UaType):
     NULL = lib.UA_NODEID_NULL
 
-    def __init__(self, val=ffi.new("UA_ExpandedNodeId*"), ns_index=None, ident=None):
+    def __init__(self, ns_index=None, ident=None, val=ffi.new("UA_ExpandedNodeId*")):
         if ns_index is int:
             if ident is int:
                 val = lib.UA_NODEID_NUMERIC(UaUInt16(ns_index), UaUInt32(ident))
@@ -346,6 +350,8 @@ class UaNodeId(UaType):
                 val = lib.UA_NODEID_NUMERIC(UaUInt16(ns_index), ident)
             elif ident is str:
                 val = lib.UA_NODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_NODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), ident)
             elif ident is UaString:
                 val = lib.UA_NODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
             elif ident is UaGuid:
@@ -441,11 +447,50 @@ class UaNodeId(UaType):
 class UaExpandedNodeId(UaType):
     NULL = lib.UA_EXPANDEDNODEID_NULL
 
-    def __init__(self, val=ffi.new("UA_ExpandedNodeId*")):
+    def __init__(self, ns_index=None, ident=None, val=ffi.new("UA_ExpandedNodeId*")):
+        if ns_index is int:
+            if ident is int:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(UaUInt16(ns_index), UaUInt32(ident))
+            elif ident is UaUInt32:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(UaUInt16(ns_index), ident)
+            elif ident is str:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), ident)
+            elif ident is UaString:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
+            elif ident is UaGuid:
+                val = lib.UA_EXPANDEDNODEID_STRING_GUID(UaUInt16(ns_index), ident)
+            elif ident is UaByteString:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
+            else:
+                raise TypeError(f"ident={ident} hast invalid type, must be int, UaUInt32, "
+                                f"str, bytearray, UaString, UaGuid or UaByteString")
+        elif ns_index is UaUInt16:
+            if ident is int:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, UaUInt32(ident))
+            elif ident is UaUInt32:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, ident)
+            elif ident is str:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index, bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index, ident)
+            elif ident is UaString:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
+            elif ident is UaGuid:
+                val = lib.UA_EXPANDEDNODEID_STRING_GUID(ns_index, ident)
+            elif ident is UaByteString:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
+            else:
+                raise TypeError(f"ident={ident} hast invalid type, must be int, UaUInt32, "
+                                f"str, bytearray, UaString, UaGuid or UaByteString")
+        else:
+            raise TypeError(f"ns_index={ns_index} hast invalid type, must be UaUInt16 or int")
+
         super().__init__(val)
-        self._node_id = UaNodeId(val.node_id)
-        self._namespace_uri = UaString(val.namespace_uri)
-        self._server_index = UaUInt32(val.server_index)
+        self._node_id = UaNodeId(val.nodeId)
+        self._namespace_uri = UaString(val.namespaceUri)
+        self._server_index = UaUInt32(val.serverIndex)
 
     @property
     def node_id(self):
@@ -454,7 +499,7 @@ class UaExpandedNodeId(UaType):
     @node_id.setter
     def node_id(self, val):
         self._node_id = val
-        self._value.node_id = val.value
+        self._value.nodeId = val.value
 
     @property
     def namespace_uri(self):
@@ -463,7 +508,7 @@ class UaExpandedNodeId(UaType):
     @namespace_uri.setter
     def namespace_uri(self, val):
         self._namespace_uri = val
-        self._value.namespace_uri = val.value
+        self._value.namespaceUri = val.value
 
     @property
     def server_index(self):
@@ -472,7 +517,7 @@ class UaExpandedNodeId(UaType):
     @server_index.setter
     def server_index(self, val):
         self._server_index = val
-        self._value.server_index = val.value
+        self._value.serverIndex = val.value
 
     def __str__(self):
         return ("UaExpandedNodeId:\n" + 
@@ -486,12 +531,17 @@ class UaExpandedNodeId(UaType):
                 self._namespace_uri.str_helper(n+1) +
                 self._server_index.str_helper(n+1))
 
+    def is_local(self):
+        lib.UA_ExpandedNodeId_isLocal(self.value)
+
+# TODO: continue here
+
 
 # +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
 class UaQualifiedName(UaType):
     def __init__(self, val=ffi.new("UA_QualifiedName*")):
         super().__init__(val)
-        self._namespace_index = UaUInt16(val.namespace_index)
+        self._namespace_index = UaUInt16(val.namespaceIndex)
         self._name = UaString(val.name)
     
 
@@ -766,3 +816,52 @@ class UaDataValue(UaType):
                 self._has_status.str_helper(n+1) +
                 self._has_source_timestamp.str_helper(n+1) +
                 self._has_server_timestamp.str_helper(n+1))
+
+
+# +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
+class UaDataTypeArray(UaType):
+    def __init__(self, val=ffi.new("UaDataTypeArray*")):
+        super().__init__(val)
+        self._next = UaDataTypeArray(val.next, True)
+        self._types_size = UaSizeT(val.typesSize)
+        self._types = UaDataType(val.types, True)
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, val):
+        self._next = val
+        self._value.next = val.value
+
+    @property
+    def types_size(self):
+        return self._types_size
+
+    @types_size.setter
+    def types_size(self, val):
+        self._types_size = val
+        self._value.typesSize = val.value
+
+    @property
+    def types(self):
+        return self._has_status
+
+    @types.setter
+    def types(self, val):
+        self._types = val
+        self._value.types = val.value
+
+
+    def __str__(self):
+        return ("UaDataValue:\n" +
+                self._next.str_helper(1) +
+                self._types_size.str_helper(1) +
+                self._types.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("UaDataValue:\n" +
+                self._next.str_helper(n+1) +
+                self._types_size.str_helper(n+1) +
+                self._types.str_helper(n+1))

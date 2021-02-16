@@ -4,6 +4,7 @@ from intermediateApi import ffi, lib
 # -------------------------------------------------------------
 
 # TODO: How to handle arrays?
+# TODO: val=... in contructor calls
 
 class UaType:
     def __init__(self, val, is_pointer=False):

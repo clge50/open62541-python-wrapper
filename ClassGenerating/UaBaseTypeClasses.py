@@ -1,10 +1,10 @@
-
 # TODO: How to handle arrays?
+# TODO: insert content of basetypes.py in this file
 
 class UaType:
     def __init__(self, val, is_pointer=False):
         self._value = val
-        self._is_pointer = val
+        self._is_pointer = is_pointer
 
     @property
     def value(self):
@@ -17,13 +17,518 @@ class UaType:
         return str(self._value)
 
 
-class UaBoolean(UaType):
-    def __init__(self, val=None, p_val=False):
+# -----------------------------------------------------------------
+# ----------------------------- common.h --------------------------
+# -----------------------------------------------------------------
+
+# +++++++++++++++++++ UaAttributeId +++++++++++++++++++++++
+class UaAttributeId(UaType):
+    UA_ATTRIBUTEID_NODEID = 1
+    UA_ATTRIBUTEID_NODECLASS = 2
+    UA_ATTRIBUTEID_BROWSENAME = 3
+    UA_ATTRIBUTEID_DISPLAYNAME = 4
+    UA_ATTRIBUTEID_DESCRIPTION = 5
+    UA_ATTRIBUTEID_WRITEMASK = 6
+    UA_ATTRIBUTEID_USERWRITEMASK = 7
+    UA_ATTRIBUTEID_ISABSTRACT = 8
+    UA_ATTRIBUTEID_SYMMETRIC = 9
+    UA_ATTRIBUTEID_INVERSENAME = 10
+    UA_ATTRIBUTEID_CONTAINSNOLOOPS = 11
+    UA_ATTRIBUTEID_EVENTNOTIFIER = 12
+    UA_ATTRIBUTEID_VALUE = 13
+    UA_ATTRIBUTEID_DATATYPE = 14
+    UA_ATTRIBUTEID_VALUERANK = 15
+    UA_ATTRIBUTEID_ARRAYDIMENSIONS = 16
+    UA_ATTRIBUTEID_ACCESSLEVEL = 17
+    UA_ATTRIBUTEID_USERACCESSLEVEL = 18
+    UA_ATTRIBUTEID_MINIMUMSAMPLINGINTERVAL = 19
+    UA_ATTRIBUTEID_HISTORIZING = 20
+    UA_ATTRIBUTEID_EXECUTABLE = 21
+    UA_ATTRIBUTEID_USEREXECUTABLE = 22
+    UA_ATTRIBUTEID_DATATYPEDEFINITION = 23
+    UA_ATTRIBUTEID_ROLEPERMISSIONS = 24
+    UA_ATTRIBUTEID_USERROLEPERMISSIONS = 25
+    UA_ATTRIBUTEID_ACCESSRESTRICTIONS = 26
+    UA_ATTRIBUTEID_ACCESSLEVELEX = 27
+
+    val_to_string = dict([
+        (1, "UA_ATTRIBUTEID_NODEID"),
+        (2, "UA_ATTRIBUTEID_NODECLASS"),
+        (3, "UA_ATTRIBUTEID_BROWSENAME"),
+        (4, "UA_ATTRIBUTEID_DISPLAYNAME"),
+        (5, "UA_ATTRIBUTEID_DESCRIPTION"),
+        (6, "UA_ATTRIBUTEID_WRITEMASK"),
+        (7, "UA_ATTRIBUTEID_USERWRITEMASK"),
+        (8, "UA_ATTRIBUTEID_ISABSTRACT"),
+        (9, "UA_ATTRIBUTEID_SYMMETRIC"),
+        (10, "UA_ATTRIBUTEID_INVERSENAME"),
+        (11, "UA_ATTRIBUTEID_CONTAINSNOLOOPS"),
+        (12, "UA_ATTRIBUTEID_EVENTNOTIFIER"),
+        (13, "UA_ATTRIBUTEID_VALUE"),
+        (14, "UA_ATTRIBUTEID_DATATYPE"),
+        (15, "UA_ATTRIBUTEID_VALUERANK"),
+        (16, "UA_ATTRIBUTEID_ARRAYDIMENSIONS"),
+        (17, "UA_ATTRIBUTEID_ACCESSLEVEL"),
+        (18, "UA_ATTRIBUTEID_USERACCESSLEVEL"),
+        (19, "UA_ATTRIBUTEID_MINIMUMSAMPLINGINTERVAL"),
+        (20, "UA_ATTRIBUTEID_HISTORIZING"),
+        (21, "UA_ATTRIBUTEID_EXECUTABLE"),
+        (22, "UA_ATTRIBUTEID_USEREXECUTABLE"),
+        (23, "UA_ATTRIBUTEID_DATATYPEDEFINITION"),
+        (24, "UA_ATTRIBUTEID_ROLEPERMISSIONS"),
+        (25, "UA_ATTRIBUTEID_USERROLEPERMISSIONS"),
+        (26, "UA_ATTRIBUTEID_ACCESSRESTRICTIONS"),
+        (27, "UA_ATTRIBUTEID_ACCESSLEVELEX")])
+
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_Boolean*", p_val))
+            super().__init__(ffi.new("UA_AttributeId*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_AttributeId*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaAttributeId: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
+class UaRuleHandling(UaType):
+    UA_RULEHANDLING_DEFAULT = 0
+    UA_RULEHANDLING_ABORT = 1
+    UA_RULEHANDLING_WARN = 2
+    UA_RULEHANDLING_ACCEPT = 3
+
+    val_to_string = dict([
+        (0, "UA_RULEHANDLING_DEFAULT"),
+        (1, "UA_RULEHANDLING_ABORT"),
+        (2, "UA_RULEHANDLING_WARN"),
+        (3, "UA_RULEHANDLING_ACCEPT")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_RuleHandling*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_RuleHandling*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaRuleHandling: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaOrder +++++++++++++++++++++++
+class UaOrder(UaType):
+    UA_ORDER_LESS = -1
+    UA_ORDER_EQ = 0
+    UA_ORDER_MORE = 1
+
+    val_to_string = dict([
+        (-1, "UA_ORDER_LESS"),
+        (0, "UA_ORDER_EQ"),
+        (1, "UA_ORDER_MORE")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_Order*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_Order*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaOrder: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
+class UaSecureChannelState(UaType):
+    UA_SECURECHANNELSTATE_CLOSED = 0
+    UA_SECURECHANNELSTATE_HEL_SENT = 1
+    UA_SECURECHANNELSTATE_HEL_RECEIVED = 2
+    UA_SECURECHANNELSTATE_ACK_SENT = 3
+    UA_SECURECHANNELSTATE_ACK_RECEIVED = 4
+    UA_SECURECHANNELSTATE_OPN_SENT = 5
+    UA_SECURECHANNELSTATE_OPEN = 6
+    UA_SECURECHANNELSTATE_CLOSING = 7
+
+    val_to_string = dict([
+        (0, "UA_SECURECHANNELSTATE_CLOSED"),
+        (1, "UA_SECURECHANNELSTATE_HEL_SENT"),
+        (2, "UA_SECURECHANNELSTATE_HEL_RECEIVED"),
+        (3, "UA_SECURECHANNELSTATE_ACK_SENT"),
+        (4, "UA_SECURECHANNELSTATE_ACK_RECEIVED"),
+        (5, "UA_SECURECHANNELSTATE_OPN_SENT"),
+        (6, "UA_SECURECHANNELSTATE_OPEN"),
+        (7, "UA_SECURECHANNELSTATE_CLOSING")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_SecureChannelState*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_SecureChannelState*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaSecureChannelState: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
+class UaSessionState(UaType):
+    UA_SESSIONSTATE_CLOSED = 0
+    UA_SESSIONSTATE_CREATE_REQUESTED = 1
+    UA_SESSIONSTATE_CREATED = 2
+    UA_SESSIONSTATE_ACTIVATE_REQUESTED = 3
+    UA_SESSIONSTATE_ACTIVATED = 4
+    UA_SESSIONSTATE_CLOSING = 5
+
+    val_to_string = dict([
+        (0, "UA_SESSIONSTATE_CLOSED"),
+        (1, "UA_SESSIONSTATE_CREATE_REQUESTED"),
+        (2, "UA_SESSIONSTATE_CREATED"),
+        (3, "UA_SESSIONSTATE_ACTIVATE_REQUESTED"),
+        (4, "UA_SESSIONSTATE_ACTIVATED"),
+        (5, "UA_SESSIONSTATE_CLOSING")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_SessionState*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_SessionState*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaSessionState: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
+class UaNetworkStatistics(UaType):
+    def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._current_connection_count = UaSizeT(val.currentConnectionCount)
+        self._cumulated_connection_count = UaSizeT(val.cumulatedConnectionCount)
+        self._rejected_connection_count = UaSizeT(val.rejectedConnectionCount)
+        self._connection_timeout_count = UaSizeT(val.connectionTimeoutCount)
+        self._connection_abort_count = UaSizeT(val.connectionAbortCount)
+
+    @property
+    def current_connection_count(self):
+        return self._current_connection_count
+
+    @current_connection_count.setter
+    def current_connection_count(self, val):
+        self._current_connection_count = val
+        self._value.currentConnectionCount = val.value
+
+    @property
+    def cumulated_connection_count(self):
+        return self._cumulated_connection_count
+
+    @cumulated_connection_count.setter
+    def cumulated_connection_count(self, val):
+        self._cumulated_connection_count = val
+        self._value.cumulatedConnectionCount = val.value
+
+    @property
+    def rejected_connection_count(self):
+        return self._rejected_connection_count
+
+    @rejected_connection_count.setter
+    def rejected_connection_count(self, val):
+        self._rejected_connection_count = val
+        self._value.rejectedConnectionCount = val.value
+
+    @property
+    def connection_timeout_count(self):
+        return self._connection_timeout_count
+
+    @connection_timeout_count.setter
+    def connection_timeout_count(self, val):
+        self._connection_timeout_count = val
+        self._value.connectionTimeoutCount = val.value
+
+    @property
+    def connection_abort_count(self):
+        return self._connection_abort_count
+
+    @connection_abort_count.setter
+    def connection_abort_count(self, val):
+        self._connection_abort_count = val
+        self._value.connectionAbortCount = val.value
+
+    def __str__(self):
+        return ("UaNetworkStatistics:\n" +
+                self._current_connection_count.str_helper(1) +
+                self._cumulated_connection_count.str_helper(1) +
+                self._rejected_connection_count.str_helper(1) +
+                self._connection_timeout_count.str_helper(1) +
+                self._connection_abort_count.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaNetworkStatistics:\n" +
+                self._current_connection_count.str_helper(n + 1) +
+                self._cumulated_connection_count.str_helper(n + 1) +
+                self._rejected_connection_count.str_helper(n + 1) +
+                self._connection_timeout_count.str_helper(n + 1) +
+                self._connection_abort_count.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
+class UaSecureChannelStatistics(UaType):
+    def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._current_channel_count = UaSizeT(val.currentChannelCount)
+        self._cumulated_channel_count = UaSizeT(val.cumulatedChannelCount)
+        self._rejected_channel_count = UaSizeT(val.rejectedChannelCount)
+        self._channel_timeout_count = UaSizeT(val.channelTimeoutCount)
+        self._channel_abort_count = UaSizeT(val.channelAbortCount)
+        self._channel_purge_count = UaSizeT(val.channelPurgeCount)
+
+    @property
+    def current_channel_count(self):
+        return self._current_channel_count
+
+    @current_channel_count.setter
+    def current_channel_count(self, val):
+        self._current_channel_count = val
+        self._value.currentChannelCount = val.value
+
+    @property
+    def cumulated_channel_count(self):
+        return self._cumulated_channel_count
+
+    @cumulated_channel_count.setter
+    def cumulated_channel_count(self, val):
+        self._cumulated_channel_count = val
+        self._value.cumulatedChannelCount = val.value
+
+    @property
+    def rejected_channel_count(self):
+        return self._rejected_channel_count
+
+    @rejected_channel_count.setter
+    def rejected_channel_count(self, val):
+        self._rejected_channel_count = val
+        self._value.rejectedChannelCount = val.value
+
+    @property
+    def channel_timeout_count(self):
+        return self._channel_timeout_count
+
+    @channel_timeout_count.setter
+    def channel_timeout_count(self, val):
+        self._channel_timeout_count = val
+        self._value.channelTimeoutCount = val.value
+
+    @property
+    def channel_abort_count(self):
+        return self._channel_abort_count
+
+    @channel_abort_count.setter
+    def channel_abort_count(self, val):
+        self._channel_abort_count = val
+        self._value.channelAbortCount = val.value
+
+    @property
+    def channel_purge_count(self):
+        return self._channel_purge_count
+
+    @channel_purge_count.setter
+    def channel_purge_count(self, val):
+        self._channel_purge_count = val
+        self._value.channelPurgeCount = val.value
+
+    def __str__(self):
+        return ("UaSecureChannelStatistics:\n" +
+                self._current_channel_count.str_helper(1) +
+                self._cumulated_channel_count.str_helper(1) +
+                self._rejected_channel_count.str_helper(1) +
+                self._channel_timeout_count.str_helper(1) +
+                self._channel_abort_count.str_helper(1) +
+                self._channel_purge_count.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaSecureChannelStatistics:\n" +
+                self._current_channel_count.str_helper(n + 1) +
+                self._cumulated_channel_count.str_helper(n + 1) +
+                self._rejected_channel_count.str_helper(n + 1) +
+                self._channel_timeout_count.str_helper(n + 1) +
+                self._channel_abort_count.str_helper(n + 1) +
+                self._channel_purge_count.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaSessionStatistics +++++++++++++++++++++++
+class UaSessionStatistics(UaType):
+    def __init__(self, val=ffi.new("UA_SessionStatistics*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._current_session_count = UaSizeT(val.currentSessionCount)
+        self._cumulated_session_count = UaSizeT(val.cumulatedSessionCount)
+        self._security_rejected_session_count = UaSizeT(val.securityRejectedSessionCount)
+        self._rejected_session_count = UaSizeT(val.rejectedSessionCount)
+        self._session_timeout_count = UaSizeT(val.sessionTimeoutCount)
+        self._session_abort_count = UaSizeT(val.sessionAbortCount)
+
+    @property
+    def current_session_count(self):
+        return self._current_session_count
+
+    @current_session_count.setter
+    def current_session_count(self, val):
+        self._current_session_count = val
+        self._value.currentSessionCount = val.value
+
+    @property
+    def cumulated_session_count(self):
+        return self._cumulated_session_count
+
+    @cumulated_session_count.setter
+    def cumulated_session_count(self, val):
+        self._cumulated_session_count = val
+        self._value.cumulatedSessionCount = val.value
+
+    @property
+    def security_rejected_session_count(self):
+        return self._security_rejected_session_count
+
+    @security_rejected_session_count.setter
+    def security_rejected_session_count(self, val):
+        self._security_rejected_session_count = val
+        self._value.securityRejectedSessionCount = val.value
+
+    @property
+    def rejected_session_count(self):
+        return self._rejected_session_count
+
+    @rejected_session_count.setter
+    def rejected_session_count(self, val):
+        self._rejected_session_count = val
+        self._value.rejectedSessionCount = val.value
+
+    @property
+    def session_timeout_count(self):
+        return self._session_timeout_count
+
+    @session_timeout_count.setter
+    def session_timeout_count(self, val):
+        self._session_timeout_count = val
+        self._value.sessionTimeoutCount = val.value
+
+    @property
+    def session_abort_count(self):
+        return self._session_abort_count
+
+    @session_abort_count.setter
+    def session_abort_count(self, val):
+        self._session_abort_count = val
+        self._value.sessionAbortCount = val.value
+
+    def __str__(self):
+        return ("UaSessionStatistics:\n" +
+                self._current_session_count.str_helper(1) +
+                self._cumulated_session_count.str_helper(1) +
+                self._security_rejected_session_count.str_helper(1) +
+                self._rejected_session_count.str_helper(1) +
+                self._session_timeout_count.str_helper(1) +
+                self._session_abort_count.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaSessionStatistics:\n" +
+                self._current_session_count.str_helper(n + 1) +
+                self._cumulated_session_count.str_helper(n + 1) +
+                self._security_rejected_session_count.str_helper(n + 1) +
+                self._rejected_session_count.str_helper(n + 1) +
+                self._session_timeout_count.str_helper(n + 1) +
+                self._session_abort_count.str_helper(n + 1))
+
+
+# -----------------------------------------------------------------
+# ----------------------------- types.h --------------------------
+# -----------------------------------------------------------------
+
+# +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
+class UaBoolean(UaType):
+    def __init__(self, p_val=False, is_pointer=False, val=None):
+        if val is None:
+            super().__init__(ffi.new("UA_Boolean*", p_val),is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -42,13 +547,14 @@ class UaBoolean(UaType):
         return "\t" * n + "UaBoolean: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is not None:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
         else:
-            super().__init__(ffi.new("UA_SByte*", p_val))
+            super().__init__(ffi.new("UA_SByte*", p_val), is_pointer)
             self._p_value = None
 
     @property
@@ -70,13 +576,14 @@ class UaSByte(UaType):
         return "\t" * n + "UaSByte: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Byte*", p_val))
+            super().__init__(ffi.new("UA_Byte*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -98,13 +605,14 @@ class UaByte(UaType):
         return "\t" * n + "UaByte: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int16*", p_val))
+            super().__init__(ffi.new("UA_Int16*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val,is_pointer)
             self._p_value = val[0]
 
     @property
@@ -126,13 +634,14 @@ class UaInt16(UaType):
         return "\t" * n + "UaInt16: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt16*", p_val))
+            super().__init__(ffi.new("UA_UInt16*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -153,14 +662,14 @@ class UaUInt16(UaType):
     def str_helper(self, n: int):
         return "\t" * n + "UaUInt16: " + str(self._p_value)
 
-
+# +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int32*", p_val))
+            super().__init__(ffi.new("UA_Int32*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -182,13 +691,14 @@ class UaInt32(UaType):
         return "\t" * n + "UaInt32: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt32*", p_val))
+            super().__init__(ffi.new("UA_UInt32*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -210,13 +720,14 @@ class UaUInt32(UaType):
         return "\t" * n + "UaUInt32: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int64*", p_val))
+            super().__init__(ffi.new("UA_Int64*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -238,13 +749,14 @@ class UaInt64(UaType):
         return "\t" * n + "UaInt64: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt64*", p_val))
+            super().__init__(ffi.new("UA_UInt64*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -266,13 +778,14 @@ class UaUInt64(UaType):
         return "\t" * n + "UaUInt64: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
-    def __init__(self, p_val=0.0, val=None):
+    def __init__(self, p_val=0.0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Float*", p_val))
+            super().__init__(ffi.new("UA_Float*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -294,13 +807,14 @@ class UaFloat(UaType):
         return "\t" * n + "UaFloat: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
-    def __init__(self, p_val=0.0, val=None):
+    def __init__(self, p_val=0.0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Double*", p_val))
+            super().__init__(ffi.new("UA_Double*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -322,6 +836,7 @@ class UaDouble(UaType):
         return "\t" * n + "UaDouble: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
     @staticmethod
     def code_is_bad(status_code):
@@ -832,14 +1347,14 @@ class UaStatusCode(UaType):
         (0x80B40000, "UA_STATUSCODE_BADEXPECTEDSTREAMTOBLOCK"),
         (0x80B50000, "UA_STATUSCODE_BADWOULDBLOCK"),
         (0x80B60000, "UA_STATUSCODE_BADSYNTAXERROR"),
-        (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED") ])
+        (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED")])
 
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_StatusCode*", p_val))
+            super().__init__(ffi.new("UA_StatusCode*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -864,13 +1379,14 @@ class UaStatusCode(UaType):
         return lib.UA_StatusCode_isBad(self.value)
 
 
+# +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
-    def __init__(self, p_val=0, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_DateTime*", p_val))
+            super().__init__(ffi.new("UA_DateTime*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -894,6 +1410,5 @@ class UaDateTime(UaType):
     @staticmethod
     def now():
         return UaDateTime(lib.UA_DateTime_now())
-
 
 
