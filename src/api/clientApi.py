@@ -1,5 +1,7 @@
 from intermediateApi import ffi, lib
+
 import client_service_results as ClientServiceResult
+
 
 class DefaultAttributes:
     VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
@@ -278,7 +280,7 @@ class UaClient:
         return ClientServiceResult.ReadValueAttributeResult(status_code, value)
 
     def read_data_type_attribute(self, node_id):
-
+        out_data_type = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_readDataTypeAttribute(self.ua_client, node_id, out_data_type)
         return ClientServiceResult.ReadDataTypeAttribute(status_code, out_data_type)
 
@@ -656,14 +658,14 @@ class UaClient:
         req_id = ffi.new("UA_UInt32*")
         return lib.UA_Client_sendAsyncWriteRequest(self.ua_client, request, write_callback, callback, req_id)
 
-    def write_alue_attribute_async(self, node_id, new_value, callback):
+    def write_value_attribute_async(self, node_id, new_value, callback):
         req_id = ffi.new("UA_UInt32*")
         status_code = lib.UA_Client_writeValueAttribute_async(self.ua_client, node_id, new_value,
                                                               lib.python_wrapper_UA_ClientAsyncWriteCallback, callback,
                                                               req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
-    def write_nodeId_attribute_async(self, node_id, callback):
+    def write_node_id_attribute_async(self, node_id, callback):
         req_id = ffi.new("UA_UInt32*")
         out_node_id = ffi.new("UA_NodeId*")
         status_code = lib.UA_Client_writeNodeIdAttribute_async(self.ua_client, node_id, out_node_id,
@@ -791,10 +793,10 @@ class UaClient:
                                                                         callback, req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
-    # todo: check if this is correct. this is different in the synchronous version
+    # todo: check if this is correct. this is different in the synchronous version. the naming of out_minimum_sampling_interval suggests that it is a return value but I think it is evaluated by the service again as an argument
     def write_minimum_sampling_interval_attribute_async(self, node_id, callback, out_minimum_sampling_interval):
         req_id = ffi.new("UA_UInt32*")
-        status_code = lib.UA_Client_writeMinimumSamplingIntervalAttribute_async(self.ua_client,
+        status_code = lib.UA_Client_writeMinimumSamplingIntervalAttribute_async(self.ua_client, node_id,
                                                                                 out_minimum_sampling_interval,
                                                                                 lib.python_wrapper_UA_ClientAsyncServiceCallback,
                                                                                 callback, req_id)
@@ -825,8 +827,12 @@ class UaClient:
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     # call service
-    # __UA_Client_call_async(self.ua_client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncServiceCallback callback, user_data, req_id);
-    # UA_Client_call_async(self.ua_client, const UA_NodeId objectId, const UA_NodeId methodId, size_t inputSize, const UA_Variant *input, UA_ClientAsyncCallCallback callback, user_data, req_id);
+    # todo: these two methods have to be reworked. currently not sure how they are supposed to be used
+    # def _call_async(self, object_id, method_id, input_size, _input, callback_default, callback, req_id):
+    #    return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input, callback_default, callback, req_id)
+
+    # def call_async(self, object_id, method_id, input_size, _input, callback_default, callback, req_id):
+    #    return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input, callback_default, callback, req_id)
 
     # add node service
 
@@ -841,13 +847,83 @@ class UaClient:
                                                           req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id)
 
-    # UA_Client_addVariableTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_VariableTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-    # UA_Client_addObjectNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_ObjectAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-    # UA_Client_addObjectTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ObjectTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-    # UA_Client_addViewNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ViewAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-    # UA_Client_addReferenceTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ReferenceTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-    # UA_Client_addDataTypeNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_DataTypeAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
-    # UA_Client_addMethodNode_async(self.ua_client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_MethodAttributes attr, UA_NodeId *outNewNodeId, UA_ClientAsyncAddNodesCallback callback, user_data, req_id);
+    def add_variable_type_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                                     callback, attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addVariableTypeNode_async(self.ua_client, requested_new_node_id, parent_node_id,
+                                                              reference_type_id, browse_name, attr, out_new_node_id,
+                                                              lib.python_wrapper_UA_ClientAsyncAddNodesCallback,
+                                                              callback,
+                                                              req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_object_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                              type_definition, callback, attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addObjectNode_async(self.ua_client, requested_new_node_id, parent_node_id,
+                                                        reference_type_id, browse_name, type_definition, attr,
+                                                        out_new_node_id,
+                                                        lib.python_wrapper_UA_ClientAsyncAddNodesCallback, callback,
+                                                        req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_object_type_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                                   callback, attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addObjectTypeNode_async(self.ua_client, requested_new_node_id, parent_node_id,
+                                                            reference_type_id, browse_name, attr, out_new_node_id,
+                                                            lib.python_wrapper_UA_ClientAsyncAddNodesCallback, callback,
+                                                            req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_view_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback,
+                            attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addViewNode_async(self.ua_client, requested_new_node_id, parent_node_id,
+                                                      reference_type_id, browse_name, attr, out_new_node_id,
+                                                      lib.python_wrapper_UA_ClientAsyncAddNodesCallback, callback,
+                                                      req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_reference_type_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                                      callback, attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addReferenceTypeNode_async(self.ua_client, requested_new_node_id, parent_node_id,
+                                                               reference_type_id, browse_name, attr, out_new_node_id,
+                                                               lib.python_wrapper_UA_ClientAsyncAddNodesCallback,
+                                                               callback, req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_data_type_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                                 callback, attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addDataTypeNode_async(self, requested_new_node_id, parent_node_id,
+                                                          reference_type_id, browse_name, attr, out_new_node_id,
+                                                          lib.python_wrapper_UA_ClientAsyncAddNodesCallback, callback,
+                                                          req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_method_node_async(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                              callback, attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_addMethodNode_async(self.ua_client, requested_new_node_id, parent_node_id,
+                                                        reference_type_id, browse_name, attr, out_new_node_id,
+                                                        lib.python_wrapper_UA_ClientAsyncAddNodesCallback, callback,
+                                                        req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     # misc
-    # UA_Client_sendAsyncBrowseRequest(self.ua_client, UA_BrowseRequest *request, UA_ClientAsyncBrowseCallback browseCallback, user_data, req_id);
+
+    def UA_Client_sendAsyncBrowseRequest(self, request, callback):
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.UA_Client_sendAsyncBrowseRequest(self.ua_client, request,
+                                                           lib.python_wrapper_UA_ClientAsyncBrowseCallback, callback,
+                                                           req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
