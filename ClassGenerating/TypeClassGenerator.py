@@ -8,7 +8,8 @@ import inflection
 #   2. semantics: there were already python classes generated for all nested types of the struct
 #       -> especially: there are classes for the base types (as stop for the recursion)
 
-#TODO? cannot handle const attributes!!!
+# TODO? cannot handle const attributes!!!
+# TODO: NodeIds
 def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
     tab = "    "
     empty = ""
