@@ -2,14 +2,13 @@ from intermediateApi import ffi, lib
 # -------------------------------------------------------------
 # ------------- Classes from open62541 types.h ----------------
 # -------------------------------------------------------------
-
 # TODO: How to handle arrays?
-# TODO: val=... in contructor calls
+# TODO: insert content of basetypes.py in this file
 
 class UaType:
     def __init__(self, val, is_pointer=False):
         self._value = val
-        self._is_pointer = val
+        self._is_pointer = is_pointer
 
     @property
     def value(self):
@@ -18,17 +17,585 @@ class UaType:
         else:
             return self._value[0]
 
+    def _ref(self):
+        return self._value
+
+    def _deref(self):
+        return self._value[0]
+
     def __str__(self):
         return str(self._value)
 
 
-class UaBoolean(UaType):
-    def __init__(self, val=None):
+# +++++++++++++++++++ SizeT +++++++++++++++++++++++
+class SizeT(UaType):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Boolean*"))
+            super().__init__(ffi.new("SizeT*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        try:
+            self._p_value = val
+            self._value = ffi.new("SizeT*", val)
+        except OverflowError as e:
+            raise OverflowError(f"{val} is not in range") from e
+
+    def __str__(self):
+        return "SizeT: " + str(self._p_value)
+
+    def str_helper(self, n: int):
+        return "\t" * n + "SizeT: " + str(self._p_value)
+
+
+# +++++++++++++++++++ Char +++++++++++++++++++++++
+class Char(UaType):
+    def __init__(self, p_val: bytes = bytes(), is_pointer=True, val=None):
+        if p_val is None:
+            p_val = []
+        if val is None:
+            super().__init__(ffi.new("char[]", p_val), is_pointer)
+            self._p_value = p_val
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = ffi.string(val)
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val:bytes):
+        self._p_value = val
+        self._value = ffi.new("char[]", self._p_value)
+
+    def __str__(self):
+        return "Char*: " + str(self._p_value)
+
+    def str_helper(self, n: int):
+        return "\t" * n + "Char*: " + str(self._p_value)
+
+
+# -----------------------------------------------------------------
+# ----------------------------- common.h --------------------------
+# -----------------------------------------------------------------
+
+# +++++++++++++++++++ UaAttributeId +++++++++++++++++++++++
+class UaAttributeId(UaType):
+    UA_ATTRIBUTEID_NODEID = 1
+    UA_ATTRIBUTEID_NODECLASS = 2
+    UA_ATTRIBUTEID_BROWSENAME = 3
+    UA_ATTRIBUTEID_DISPLAYNAME = 4
+    UA_ATTRIBUTEID_DESCRIPTION = 5
+    UA_ATTRIBUTEID_WRITEMASK = 6
+    UA_ATTRIBUTEID_USERWRITEMASK = 7
+    UA_ATTRIBUTEID_ISABSTRACT = 8
+    UA_ATTRIBUTEID_SYMMETRIC = 9
+    UA_ATTRIBUTEID_INVERSENAME = 10
+    UA_ATTRIBUTEID_CONTAINSNOLOOPS = 11
+    UA_ATTRIBUTEID_EVENTNOTIFIER = 12
+    UA_ATTRIBUTEID_VALUE = 13
+    UA_ATTRIBUTEID_DATATYPE = 14
+    UA_ATTRIBUTEID_VALUERANK = 15
+    UA_ATTRIBUTEID_ARRAYDIMENSIONS = 16
+    UA_ATTRIBUTEID_ACCESSLEVEL = 17
+    UA_ATTRIBUTEID_USERACCESSLEVEL = 18
+    UA_ATTRIBUTEID_MINIMUMSAMPLINGINTERVAL = 19
+    UA_ATTRIBUTEID_HISTORIZING = 20
+    UA_ATTRIBUTEID_EXECUTABLE = 21
+    UA_ATTRIBUTEID_USEREXECUTABLE = 22
+    UA_ATTRIBUTEID_DATATYPEDEFINITION = 23
+    UA_ATTRIBUTEID_ROLEPERMISSIONS = 24
+    UA_ATTRIBUTEID_USERROLEPERMISSIONS = 25
+    UA_ATTRIBUTEID_ACCESSRESTRICTIONS = 26
+    UA_ATTRIBUTEID_ACCESSLEVELEX = 27
+
+    val_to_string = dict([
+        (1, "UA_ATTRIBUTEID_NODEID"),
+        (2, "UA_ATTRIBUTEID_NODECLASS"),
+        (3, "UA_ATTRIBUTEID_BROWSENAME"),
+        (4, "UA_ATTRIBUTEID_DISPLAYNAME"),
+        (5, "UA_ATTRIBUTEID_DESCRIPTION"),
+        (6, "UA_ATTRIBUTEID_WRITEMASK"),
+        (7, "UA_ATTRIBUTEID_USERWRITEMASK"),
+        (8, "UA_ATTRIBUTEID_ISABSTRACT"),
+        (9, "UA_ATTRIBUTEID_SYMMETRIC"),
+        (10, "UA_ATTRIBUTEID_INVERSENAME"),
+        (11, "UA_ATTRIBUTEID_CONTAINSNOLOOPS"),
+        (12, "UA_ATTRIBUTEID_EVENTNOTIFIER"),
+        (13, "UA_ATTRIBUTEID_VALUE"),
+        (14, "UA_ATTRIBUTEID_DATATYPE"),
+        (15, "UA_ATTRIBUTEID_VALUERANK"),
+        (16, "UA_ATTRIBUTEID_ARRAYDIMENSIONS"),
+        (17, "UA_ATTRIBUTEID_ACCESSLEVEL"),
+        (18, "UA_ATTRIBUTEID_USERACCESSLEVEL"),
+        (19, "UA_ATTRIBUTEID_MINIMUMSAMPLINGINTERVAL"),
+        (20, "UA_ATTRIBUTEID_HISTORIZING"),
+        (21, "UA_ATTRIBUTEID_EXECUTABLE"),
+        (22, "UA_ATTRIBUTEID_USEREXECUTABLE"),
+        (23, "UA_ATTRIBUTEID_DATATYPEDEFINITION"),
+        (24, "UA_ATTRIBUTEID_ROLEPERMISSIONS"),
+        (25, "UA_ATTRIBUTEID_USERROLEPERMISSIONS"),
+        (26, "UA_ATTRIBUTEID_ACCESSRESTRICTIONS"),
+        (27, "UA_ATTRIBUTEID_ACCESSLEVELEX")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_AttributeId*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_AttributeId*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaAttributeId: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
+class UaRuleHandling(UaType):
+    UA_RULEHANDLING_DEFAULT = 0
+    UA_RULEHANDLING_ABORT = 1
+    UA_RULEHANDLING_WARN = 2
+    UA_RULEHANDLING_ACCEPT = 3
+
+    val_to_string = dict([
+        (0, "UA_RULEHANDLING_DEFAULT"),
+        (1, "UA_RULEHANDLING_ABORT"),
+        (2, "UA_RULEHANDLING_WARN"),
+        (3, "UA_RULEHANDLING_ACCEPT")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_RuleHandling*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_RuleHandling*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaRuleHandling: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaOrder +++++++++++++++++++++++
+class UaOrder(UaType):
+    UA_ORDER_LESS = -1
+    UA_ORDER_EQ = 0
+    UA_ORDER_MORE = 1
+
+    val_to_string = dict([
+        (-1, "UA_ORDER_LESS"),
+        (0, "UA_ORDER_EQ"),
+        (1, "UA_ORDER_MORE")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_Order*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_Order*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaOrder: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
+class UaSecureChannelState(UaType):
+    UA_SECURECHANNELSTATE_CLOSED = 0
+    UA_SECURECHANNELSTATE_HEL_SENT = 1
+    UA_SECURECHANNELSTATE_HEL_RECEIVED = 2
+    UA_SECURECHANNELSTATE_ACK_SENT = 3
+    UA_SECURECHANNELSTATE_ACK_RECEIVED = 4
+    UA_SECURECHANNELSTATE_OPN_SENT = 5
+    UA_SECURECHANNELSTATE_OPEN = 6
+    UA_SECURECHANNELSTATE_CLOSING = 7
+
+    val_to_string = dict([
+        (0, "UA_SECURECHANNELSTATE_CLOSED"),
+        (1, "UA_SECURECHANNELSTATE_HEL_SENT"),
+        (2, "UA_SECURECHANNELSTATE_HEL_RECEIVED"),
+        (3, "UA_SECURECHANNELSTATE_ACK_SENT"),
+        (4, "UA_SECURECHANNELSTATE_ACK_RECEIVED"),
+        (5, "UA_SECURECHANNELSTATE_OPN_SENT"),
+        (6, "UA_SECURECHANNELSTATE_OPEN"),
+        (7, "UA_SECURECHANNELSTATE_CLOSING")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_SecureChannelState*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_SecureChannelState*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaSecureChannelState: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
+class UaSessionState(UaType):
+    UA_SESSIONSTATE_CLOSED = 0
+    UA_SESSIONSTATE_CREATE_REQUESTED = 1
+    UA_SESSIONSTATE_CREATED = 2
+    UA_SESSIONSTATE_ACTIVATE_REQUESTED = 3
+    UA_SESSIONSTATE_ACTIVATED = 4
+    UA_SESSIONSTATE_CLOSING = 5
+
+    val_to_string = dict([
+        (0, "UA_SESSIONSTATE_CLOSED"),
+        (1, "UA_SESSIONSTATE_CREATE_REQUESTED"),
+        (2, "UA_SESSIONSTATE_CREATED"),
+        (3, "UA_SESSIONSTATE_ACTIVATE_REQUESTED"),
+        (4, "UA_SESSIONSTATE_ACTIVATED"),
+        (5, "UA_SESSIONSTATE_CLOSING")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_SessionState*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_SessionState*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaSessionState: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
+class UaNetworkStatistics(UaType):
+    def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._current_connection_count = SizeT(val=val.currentConnectionCount, is_pointer=is_pointer)
+        self._cumulated_connection_count = SizeT(val=val.cumulatedConnectionCount, is_pointer=is_pointer)
+        self._rejected_connection_count = SizeT(val=val.rejectedConnectionCount, is_pointer=is_pointer)
+        self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=is_pointer)
+        self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=is_pointer)
+
+    @property
+    def current_connection_count(self):
+        return self._current_connection_count
+
+    @current_connection_count.setter
+    def current_connection_count(self, val):
+        self._current_connection_count = val
+        self._value.currentConnectionCount = val.value
+
+    @property
+    def cumulated_connection_count(self):
+        return self._cumulated_connection_count
+
+    @cumulated_connection_count.setter
+    def cumulated_connection_count(self, val):
+        self._cumulated_connection_count = val
+        self._value.cumulatedConnectionCount = val.value
+
+    @property
+    def rejected_connection_count(self):
+        return self._rejected_connection_count
+
+    @rejected_connection_count.setter
+    def rejected_connection_count(self, val):
+        self._rejected_connection_count = val
+        self._value.rejectedConnectionCount = val.value
+
+    @property
+    def connection_timeout_count(self):
+        return self._connection_timeout_count
+
+    @connection_timeout_count.setter
+    def connection_timeout_count(self, val):
+        self._connection_timeout_count = val
+        self._value.connectionTimeoutCount = val.value
+
+    @property
+    def connection_abort_count(self):
+        return self._connection_abort_count
+
+    @connection_abort_count.setter
+    def connection_abort_count(self, val):
+        self._connection_abort_count = val
+        self._value.connectionAbortCount = val.value
+
+    def __str__(self):
+        return ("UaNetworkStatistics:\n" +
+                self._current_connection_count.str_helper(1) +
+                self._cumulated_connection_count.str_helper(1) +
+                self._rejected_connection_count.str_helper(1) +
+                self._connection_timeout_count.str_helper(1) +
+                self._connection_abort_count.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaNetworkStatistics:\n" +
+                self._current_connection_count.str_helper(n + 1) +
+                self._cumulated_connection_count.str_helper(n + 1) +
+                self._rejected_connection_count.str_helper(n + 1) +
+                self._connection_timeout_count.str_helper(n + 1) +
+                self._connection_abort_count.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
+class UaSecureChannelStatistics(UaType):
+    def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._current_channel_count = SizeT(val=val.currentChannelCount, is_pointer=is_pointer)
+        self._cumulated_channel_count = SizeT(val=val.cumulatedChannelCount, is_pointer=is_pointer)
+        self._rejected_channel_count = SizeT(val=val.rejectedChannelCount, is_pointer=is_pointer)
+        self._channel_timeout_count = SizeT(val=val.channelTimeoutCount, is_pointer=is_pointer)
+        self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=is_pointer)
+        self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=is_pointer)
+
+    @property
+    def current_channel_count(self):
+        return self._current_channel_count
+
+    @current_channel_count.setter
+    def current_channel_count(self, val):
+        self._current_channel_count = val
+        self._value.currentChannelCount = val.value
+
+    @property
+    def cumulated_channel_count(self):
+        return self._cumulated_channel_count
+
+    @cumulated_channel_count.setter
+    def cumulated_channel_count(self, val):
+        self._cumulated_channel_count = val
+        self._value.cumulatedChannelCount = val.value
+
+    @property
+    def rejected_channel_count(self):
+        return self._rejected_channel_count
+
+    @rejected_channel_count.setter
+    def rejected_channel_count(self, val):
+        self._rejected_channel_count = val
+        self._value.rejectedChannelCount = val.value
+
+    @property
+    def channel_timeout_count(self):
+        return self._channel_timeout_count
+
+    @channel_timeout_count.setter
+    def channel_timeout_count(self, val):
+        self._channel_timeout_count = val
+        self._value.channelTimeoutCount = val.value
+
+    @property
+    def channel_abort_count(self):
+        return self._channel_abort_count
+
+    @channel_abort_count.setter
+    def channel_abort_count(self, val):
+        self._channel_abort_count = val
+        self._value.channelAbortCount = val.value
+
+    @property
+    def channel_purge_count(self):
+        return self._channel_purge_count
+
+    @channel_purge_count.setter
+    def channel_purge_count(self, val):
+        self._channel_purge_count = val
+        self._value.channelPurgeCount = val.value
+
+    def __str__(self):
+        return ("UaSecureChannelStatistics:\n" +
+                self._current_channel_count.str_helper(1) +
+                self._cumulated_channel_count.str_helper(1) +
+                self._rejected_channel_count.str_helper(1) +
+                self._channel_timeout_count.str_helper(1) +
+                self._channel_abort_count.str_helper(1) +
+                self._channel_purge_count.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaSecureChannelStatistics:\n" +
+                self._current_channel_count.str_helper(n + 1) +
+                self._cumulated_channel_count.str_helper(n + 1) +
+                self._rejected_channel_count.str_helper(n + 1) +
+                self._channel_timeout_count.str_helper(n + 1) +
+                self._channel_abort_count.str_helper(n + 1) +
+                self._channel_purge_count.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaSessionStatistics +++++++++++++++++++++++
+class UaSessionStatistics(UaType):
+    def __init__(self, val=ffi.new("UA_SessionStatistics*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._current_session_count = SizeT(val=val.currentSessionCount, is_pointer=is_pointer)
+        self._cumulated_session_count = SizeT(val=val.cumulatedSessionCount, is_pointer=is_pointer)
+        self._security_rejected_session_count = SizeT(val=val.securityRejectedSessionCount, is_pointer=is_pointer)
+        self._rejected_session_count = SizeT(val=val.rejectedSessionCount, is_pointer=is_pointer)
+        self._session_timeout_count = SizeT(val=val.sessionTimeoutCount, is_pointer=is_pointer)
+        self._session_abort_count = SizeT(val=val.sessionAbortCount, is_pointer=is_pointer)
+
+    @property
+    def current_session_count(self):
+        return self._current_session_count
+
+    @current_session_count.setter
+    def current_session_count(self, val):
+        self._current_session_count = val
+        self._value.currentSessionCount = val.value
+
+    @property
+    def cumulated_session_count(self):
+        return self._cumulated_session_count
+
+    @cumulated_session_count.setter
+    def cumulated_session_count(self, val):
+        self._cumulated_session_count = val
+        self._value.cumulatedSessionCount = val.value
+
+    @property
+    def security_rejected_session_count(self):
+        return self._security_rejected_session_count
+
+    @security_rejected_session_count.setter
+    def security_rejected_session_count(self, val):
+        self._security_rejected_session_count = val
+        self._value.securityRejectedSessionCount = val.value
+
+    @property
+    def rejected_session_count(self):
+        return self._rejected_session_count
+
+    @rejected_session_count.setter
+    def rejected_session_count(self, val):
+        self._rejected_session_count = val
+        self._value.rejectedSessionCount = val.value
+
+    @property
+    def session_timeout_count(self):
+        return self._session_timeout_count
+
+    @session_timeout_count.setter
+    def session_timeout_count(self, val):
+        self._session_timeout_count = val
+        self._value.sessionTimeoutCount = val.value
+
+    @property
+    def session_abort_count(self):
+        return self._session_abort_count
+
+    @session_abort_count.setter
+    def session_abort_count(self, val):
+        self._session_abort_count = val
+        self._value.sessionAbortCount = val.value
+
+    def __str__(self):
+        return ("UaSessionStatistics:\n" +
+                self._current_session_count.str_helper(1) +
+                self._cumulated_session_count.str_helper(1) +
+                self._security_rejected_session_count.str_helper(1) +
+                self._rejected_session_count.str_helper(1) +
+                self._session_timeout_count.str_helper(1) +
+                self._session_abort_count.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaSessionStatistics:\n" +
+                self._current_session_count.str_helper(n + 1) +
+                self._cumulated_session_count.str_helper(n + 1) +
+                self._security_rejected_session_count.str_helper(n + 1) +
+                self._rejected_session_count.str_helper(n + 1) +
+                self._session_timeout_count.str_helper(n + 1) +
+                self._session_abort_count.str_helper(n + 1))
+
+
+# -----------------------------------------------------------------
+# ----------------------------- types.h --------------------------
+# -----------------------------------------------------------------
+
+# +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
+class UaBoolean(UaType):
+    def __init__(self, p_val=False, is_pointer=False, val=None):
+        if val is None:
+            super().__init__(ffi.new("UA_Boolean*", p_val), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -47,13 +614,14 @@ class UaBoolean(UaType):
         return "\t" * n + "UaBoolean: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is not None:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
         else:
-            super().__init__(ffi.new("UA_SByte*"))
+            super().__init__(ffi.new("UA_SByte*", p_val), is_pointer)
             self._p_value = None
 
     @property
@@ -75,13 +643,14 @@ class UaSByte(UaType):
         return "\t" * n + "UaSByte: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Byte*"))
+            super().__init__(ffi.new("UA_Byte*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -103,13 +672,14 @@ class UaByte(UaType):
         return "\t" * n + "UaByte: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int16*"))
+            super().__init__(ffi.new("UA_Int16*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val,is_pointer)
             self._p_value = val[0]
 
     @property
@@ -131,13 +701,14 @@ class UaInt16(UaType):
         return "\t" * n + "UaInt16: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt16*"))
+            super().__init__(ffi.new("UA_UInt16*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -158,14 +729,14 @@ class UaUInt16(UaType):
     def str_helper(self, n: int):
         return "\t" * n + "UaUInt16: " + str(self._p_value)
 
-
+# +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int32*"))
+            super().__init__(ffi.new("UA_Int32*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -187,13 +758,14 @@ class UaInt32(UaType):
         return "\t" * n + "UaInt32: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt32*"))
+            super().__init__(ffi.new("UA_UInt32*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -215,13 +787,14 @@ class UaUInt32(UaType):
         return "\t" * n + "UaUInt32: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Int64*"))
+            super().__init__(ffi.new("UA_Int64*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -243,13 +816,14 @@ class UaInt64(UaType):
         return "\t" * n + "UaInt64: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_UInt64*"))
+            super().__init__(ffi.new("UA_UInt64*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -271,13 +845,14 @@ class UaUInt64(UaType):
         return "\t" * n + "UaUInt64: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0.0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Float*"))
+            super().__init__(ffi.new("UA_Float*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -299,13 +874,14 @@ class UaFloat(UaType):
         return "\t" * n + "UaFloat: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0.0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Double*"))
+            super().__init__(ffi.new("UA_Double*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -327,6 +903,7 @@ class UaDouble(UaType):
         return "\t" * n + "UaDouble: " + str(self._p_value)
 
 
+# +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
     @staticmethod
     def code_is_bad(status_code):
@@ -837,14 +1414,14 @@ class UaStatusCode(UaType):
         (0x80B40000, "UA_STATUSCODE_BADEXPECTEDSTREAMTOBLOCK"),
         (0x80B50000, "UA_STATUSCODE_BADWOULDBLOCK"),
         (0x80B60000, "UA_STATUSCODE_BADSYNTAXERROR"),
-        (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED") ])
+        (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED")])
 
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_StatusCode*"))
+            super().__init__(ffi.new("UA_StatusCode*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -869,13 +1446,14 @@ class UaStatusCode(UaType):
         return lib.UA_StatusCode_isBad(self.value)
 
 
+# +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
-    def __init__(self, val=None):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_DateTime*"))
+            super().__init__(ffi.new("UA_DateTime*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -899,6 +1477,1637 @@ class UaDateTime(UaType):
     @staticmethod
     def now():
         return UaDateTime(lib.UA_DateTime_now())
+
+
+# +++++++++++++++++++ UaNodeIdType +++++++++++++++++++++++
+class UaNodeIdType(UaType):
+    UA_NODEIDTYPE_NUMERIC = 0
+    UA_NODEIDTYPE_NUMERIC_TWO_BYTE = 1
+    UA_NODEIDTYPE_NUMERIC_FOUR_BYTE = 2
+    UA_NODEIDTYPE_STRING = 3
+    UA_NODEIDTYPE_GUID = 4
+    UA_NODEIDTYPE_BYTESTRING = 5
+
+    val_to_string = dict([
+        (0, "UA_NODEIDTYPE_NUMERIC"),
+        (1, "UA_NODEIDTYPE_NUMERIC_TWO_BYTE"),
+        (2, "UA_NODEIDTYPE_NUMERIC_FOUR_BYTE"),
+        (3, "UA_NODEIDTYPE_STRING"),
+        (4, "UA_NODEIDTYPE_GUID"),
+        (5, "UA_NODEIDTYPE_BYTESTRING")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("enum UA_NodeIdType*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("enum UA_NodeIdType*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaNodeIdType: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaVariantStorageType +++++++++++++++++++++++
+class UaVariantStorageType(UaType):
+    UA_VARIANT_DATA = 0
+    UA_VARIANT_DATA_NODELETE = 1
+
+    val_to_string = dict([
+        (0, "UA_VARIANT_DATA"),
+        (1, "UA_VARIANT_DATA_NODELETE")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_VariantStorageType*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_VariantStorageType*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaVariantStorageType: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
+class UaExtensionObjectEncoding(UaType):
+    UA_EXTENSIONOBJECT_ENCODED_NOBODY = 0
+    UA_EXTENSIONOBJECT_ENCODED_BYTESTRING = 1
+    UA_EXTENSIONOBJECT_ENCODED_XML = 2
+    UA_EXTENSIONOBJECT_DECODED = 3
+    UA_EXTENSIONOBJECT_DECODED_NODELETE = 4
+
+    val_to_string = dict([
+        (0, "UA_EXTENSIONOBJECT_ENCODED_NOBODY    "),
+        (1, "UA_EXTENSIONOBJECT_ENCODED_BYTESTRING"),
+        (2, "UA_EXTENSIONOBJECT_ENCODED_XML       "),
+        (3, "UA_EXTENSIONOBJECT_DECODED           "),
+        (4, "UA_EXTENSIONOBJECT_DECODED_NODELETE  ")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_ExtensionObjectEncoding*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_ExtensionObjectEncoding*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaExtensionObjectEncoding: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
+class UaDataTypeKind(UaType):
+    UA_DATATYPEKIND_BOOLEAN = 0
+    UA_DATATYPEKIND_SBYTE = 1
+    UA_DATATYPEKIND_BYTE = 2
+    UA_DATATYPEKIND_INT16 = 3
+    UA_DATATYPEKIND_UINT16 = 4
+    UA_DATATYPEKIND_INT32 = 5
+    UA_DATATYPEKIND_UINT32 = 6
+    UA_DATATYPEKIND_INT64 = 7
+    UA_DATATYPEKIND_UINT64 = 8
+    UA_DATATYPEKIND_FLOAT = 9
+    UA_DATATYPEKIND_DOUBLE = 10
+    UA_DATATYPEKIND_STRING = 11
+    UA_DATATYPEKIND_DATETIME = 12
+    UA_DATATYPEKIND_GUID = 13
+    UA_DATATYPEKIND_BYTESTRING = 14
+    UA_DATATYPEKIND_XMLELEMENT = 15
+    UA_DATATYPEKIND_NODEID = 16
+    UA_DATATYPEKIND_EXPANDEDNODEID = 17
+    UA_DATATYPEKIND_STATUSCODE = 18
+    UA_DATATYPEKIND_QUALIFIEDNAME = 19
+    UA_DATATYPEKIND_LOCALIZEDTEXT = 20
+    UA_DATATYPEKIND_EXTENSIONOBJECT = 21
+    UA_DATATYPEKIND_DATAVALUE = 22
+    UA_DATATYPEKIND_VARIANT = 23
+    UA_DATATYPEKIND_DIAGNOSTICINFO = 24
+    UA_DATATYPEKIND_DECIMAL = 25
+    UA_DATATYPEKIND_ENUM = 26
+    UA_DATATYPEKIND_STRUCTURE = 27
+    UA_DATATYPEKIND_OPTSTRUCT = 28
+    UA_DATATYPEKIND_UNION = 29
+    UA_DATATYPEKIND_BITFIELDCLUSTER = 30
+
+    val_to_string = dict([
+        (0, "UA_DATATYPEKIND_BOOLEAN"),
+        (1, "UA_DATATYPEKIND_SBYTE"),
+        (2, "UA_DATATYPEKIND_BYTE"),
+        (3, "UA_DATATYPEKIND_INT16"),
+        (4, "UA_DATATYPEKIND_UINT16"),
+        (5, "UA_DATATYPEKIND_INT32"),
+        (6, "UA_DATATYPEKIND_UINT32"),
+        (7, "UA_DATATYPEKIND_INT64"),
+        (8, "UA_DATATYPEKIND_UINT64"),
+        (9, "UA_DATATYPEKIND_FLOAT"),
+        (10, "UA_DATATYPEKIND_DOUBLE"),
+        (11, "UA_DATATYPEKIND_STRING"),
+        (12, "UA_DATATYPEKIND_DATETIME"),
+        (13, "UA_DATATYPEKIND_GUID"),
+        (14, "UA_DATATYPEKIND_BYTESTRING"),
+        (15, "UA_DATATYPEKIND_XMLELEMENT"),
+        (16, "UA_DATATYPEKIND_NODEID"),
+        (17, "UA_DATATYPEKIND_EXPANDEDNODEID"),
+        (18, "UA_DATATYPEKIND_STATUSCODE"),
+        (19, "UA_DATATYPEKIND_QUALIFIEDNAME"),
+        (20, "UA_DATATYPEKIND_LOCALIZEDTEXT"),
+        (21, "UA_DATATYPEKIND_EXTENSIONOBJECT"),
+        (22, "UA_DATATYPEKIND_DATAVALUE"),
+        (23, "UA_DATATYPEKIND_VARIANT"),
+        (24, "UA_DATATYPEKIND_DIAGNOSTICINFO"),
+        (25, "UA_DATATYPEKIND_DECIMAL"),
+        (26, "UA_DATATYPEKIND_ENUM"),
+        (27, "UA_DATATYPEKIND_STRUCTURE"),
+        (28, "UA_DATATYPEKIND_OPTSTRUCT"),
+        (29, "UA_DATATYPEKIND_UNION"),
+        (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_DataTypeKind*"), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        if val in self.val_to_string.keys():
+            self._p_value = val
+            super().__init__(ffi.new("UA_DataTypeKind*", val), self._is_pointer)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self):
+        return f"UaDataTypeKind: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+################################################################
+
+# +++++++++++++++++++ UaString +++++++++++++++++++++++
+class UaString(UaType):
+    def __init__(self, string="", is_pointer=False, val=ffi.new("UA_String*")):
+        if string != "":
+            val = lib.UA_String_fromChars(bytes(string, 'utf-8'))
+        super().__init__(val, is_pointer)
+        self._length = SizeT(val=val.length)
+        self._data = UaByte(val=val.data, is_pointer=True)
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def data(self):
+        return self._data
+
+    def __eq__(self, ua_string):
+        return lib.UA_String_equal(self._value, ua_string._value)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def equal_ignore_case(self, ua_string):
+        return lib.UA_String_equal_ignorecase(self._value, ua_string._value)
+
+    def to_string(self):
+        return ffi.string(ffi.cast(f"char[{self.length}]", self.data), self.length).decode("utf-8")
+
+    def __str__(self):
+        return "UaString: " + self.to_string()
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaByteString +++++++++++++++++++++++
+class UaByteString(UaType):
+    def __init__(self, string="", is_pointer=False, val=ffi.new("UA_ByteString*")):
+        if string != "":
+            val = lib.UA_String_fromChars(bytes(string, 'utf-8'))
+        super().__init__(val, is_pointer)
+        self._length = SizeT(val=val.length)
+        self._data = UaByte(val=val.data, is_pointer=True)
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def data(self):
+        return self._data
+
+    def __eq__(self, ua_string):
+        return lib.UA_String_equal(self._value, ua_string._value)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def equal_ignore_case(self, ua_string):
+        return lib.UA_String_equal_ignorecase(self._value, ua_string._value)
+
+    def to_string(self):
+        return ffi.string(ffi.cast(f"char[{self.length}]", self.data), self.length).decode("utf-8")
+
+    def __str__(self):
+        return "UaByteString: " + self.to_string()
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaXmlElement +++++++++++++++++++++++
+class UaXmlElement(UaType):
+    def __init__(self, string="", is_pointer=False, val=ffi.new("UA_XmlElement*")):
+        if string != "":
+            val = lib.UA_String_fromChars(bytes(string, 'utf-8'))
+        super().__init__(val, is_pointer)
+        self._length = SizeT(val=val.length)
+        self._data = UaByte(val=val.data, is_pointer=True)
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def data(self):
+        return self._data
+
+    def __eq__(self, ua_string):
+        return lib.UA_String_equal(self._value, ua_string._value)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def equal_ignore_case(self, ua_string):
+        return lib.UA_String_equal_ignorecase(self._value, ua_string._value)
+
+    def to_string(self):
+        return ffi.string(ffi.cast(f"char[{self.length}]", self.data), self.length).decode("utf-8")
+
+    def __str__(self):
+        return "UaXmlElement: " + self.to_string()
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaGuid +++++++++++++++++++++++
+class UaGuid(UaType):
+    NULL = lib.UA_GUID_NULL
+
+    def __init__(self, string="", is_pointer=False, val=ffi.new("UA_Guid*")):
+        if string != "":
+            val = lib.UA_GUID(bytes(string, 'utf-8'))
+            if val == UaGuid.NULL:
+                raise ValueError(
+                    f""""{string}" has to be formated like: 
+"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX", with X in [0..9, A..F]""")
+        super().__init__(val, is_pointer)
+        self._data1 = UaUInt32(val=val.data1)
+        self._data2 = UaUInt16(val=val.data2)
+        self._data3 = UaUInt16(val=val.data3)
+        self._data4 = UaByte(val=val.data4, is_pointer=True)
+
+    @staticmethod
+    def random():
+        # TODO: does there have to be a seed set before using the random fun?
+        # lib.UA_random_seed(ffi.new("UA_UInt64*", ))
+        return UaGuid(lib.UA_Guid_random())
+
+    @property
+    def data1(self):
+        return self._data1
+
+    @data1.setter
+    def data1(self, val):
+        self._data1 = val
+        self._value.data1 = val.value
+
+    @property
+    def data2(self):
+        return self._data2
+
+    @data2.setter
+    def data2(self, val):
+        self._data2 = val
+        self._value.data2 = val.value
+
+    @property
+    def data3(self):
+        return self._data3
+
+    @data3.setter
+    def data3(self, val):
+        self._data3 = val
+        self._value.data3 = val.value
+
+    @property
+    def data4(self):
+        return self._data4
+
+    # byte array of length 8
+    @data4.setter
+    def data4(self, val):
+        self._data4 = val
+        self._value.data4 = val.value
+
+    def __eq__(self, other):
+        return lib.UA_Guid_equal(self._value, other._value)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __str__(self):
+        d1 = '{0:0{1}X}'.format(self._data1.value, 8)
+        d2 = '{0:0{1}X}'.format(self._data2.value, 4)
+        d3 = '{0:0{1}X}'.format(self._data3.value, 4)
+        d4 = ""
+        for i in range(2):
+            d4 += '{0:0{1}X}'.format(self._data4.value[i], 2)
+        d5 = ""
+        for i in range(2, 8):
+            d5 += '{0:0{1}X}'.format(self._data4.value[i], 2)
+
+        return "UaGuid: " + f"{d1}-{d2}-{d3}-{d4}-{d5}"
+
+    def str_helper(self, n: int):
+        return "\t" * n + str(self)
+
+
+# +++++++++++++++++++ UaNodeId +++++++++++++++++++++++
+class UaNodeId(UaType):
+    NULL = lib.UA_NODEID_NULL
+
+    def __init__(self, ns_index=None, ident=None, is_pointer=False, val=ffi.new("UA_NodeId*")):
+        if ns_index is int:
+            if ident is int:
+                val = lib.UA_NODEID_NUMERIC(UaUInt16(ns_index), UaUInt32(ident))
+            elif ident is UaUInt32:
+                val = lib.UA_NODEID_NUMERIC(UaUInt16(ns_index), ident)
+            elif ident is str:
+                val = lib.UA_NODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_NODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), ident)
+            elif ident is UaString:
+                val = lib.UA_NODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
+            elif ident is UaGuid:
+                val = lib.A_NODEID_GUID(UaUInt16(ns_index), ident)
+            elif ident is UaByteString:
+                val = lib.UA_NODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
+            else:
+                raise TypeError(f"ident={ident} hast invalid type, must be int, UaUInt32, "
+                                f"str, bytearray, UaString, UaGuid or UaByteString")
+        elif ns_index is UaUInt16:
+            if ident is int:
+                val = lib.UA_NODEID_NUMERIC(ns_index, UaUInt32(ident))
+            elif ident is UaUInt32:
+                val = lib.UA_NODEID_NUMERIC(ns_index, ident)
+            elif ident is str:
+                val = lib.UA_NODEID_STRING_ALLOC(ns_index, bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index, ident)
+            elif ident is UaString:
+                val = lib.UA_NODEID_STRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
+            elif ident is UaGuid:
+                val = lib.A_NODEID_GUID(ns_index, ident)
+            elif ident is UaByteString:
+                val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
+            else:
+                raise TypeError(f"ident={ident} hast invalid type, must be int, UaUInt32, "
+                                f"str, bytearray, UaString, UaGuid or UaByteString")
+        else:
+            raise TypeError(f"ns_index={ns_index} hast invalid type, must be UaUInt16 or int")
+
+        super().__init__(val, is_pointer)
+        self._namespace_index = UaUInt16(val=val.namespaceIndex)
+        self._identifier_type = UaNodeIdType(val=val.identifierType)
+        cases = {
+            0: lambda: UaUInt32(val=val.identifier),
+            1: lambda: UaUInt32(val=val.identifier),
+            2: lambda: UaUInt32(val=val.identifier),
+            3: lambda: UaString(val=val.identifier),
+            4: lambda: UaGuid(val=val.identifier),
+            5: lambda: UaByteString(val=val.identifier),
+        }
+        self._identifier = cases[self._identifier_type]
+
+    @property
+    def namespace_index(self):
+        return self._namespace_index
+
+    @namespace_index.setter
+    def namespace_index(self, val):
+        self._namespace_index = val
+        self._value.namespaceIndex = val.value
+
+    @property
+    def identifier_type(self):
+        return self._identifier_type
+
+    @identifier_type.setter
+    def identifier_type(self, val):
+        self._identifier_type = val
+        self._value.identifierType = val.value
+
+    @property
+    def identifier(self):
+        return self._identifier
+
+    @identifier.setter
+    def identifier(self, val):
+        self._identifier = val
+        self._value.identifier = val.value
+
+    def __str__(self):
+        return ("UaNodeId:\n" +
+                self._namespace_index.str_helper(1) +
+                self._identifier_type.str_helper(1) +
+                self._identifier.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaNodeId:\n" +
+                self._namespace_index.str_helper(n + 1) +
+                self._identifier_type.str_helper(n + 1) +
+                self._identifier.str_helper(n + 1))
+
+    def __eq__(self, other):
+        return lib.UA_NodeId_equal(self._value, other._value)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def is_null(self):
+        return lib.UA_NodeId_isNull(self._value)
+
+
+# +++++++++++++++++++ UaExpandedNodeId +++++++++++++++++++++++
+class UaExpandedNodeId(UaType):
+    NULL = lib.UA_EXPANDEDNODEID_NULL
+
+    def __init__(self, ns_index=None, ident=None, val=ffi.new("UA_ExpandedNodeId*"), is_pointer=False):
+        if ns_index is int:
+            if ident is int:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(UaUInt16(ns_index), UaUInt32(ident))
+            elif ident is UaUInt32:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(UaUInt16(ns_index), ident)
+            elif ident is str:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), ident)
+            elif ident is UaString:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
+            elif ident is UaGuid:
+                val = lib.UA_EXPANDEDNODEID_STRING_GUID(UaUInt16(ns_index), ident)
+            elif ident is UaByteString:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(UaUInt16(ns_index), bytes(str(ident), 'utf-8'))
+            else:
+                raise TypeError(f"ident={ident} hast invalid type, must be int, UaUInt32, "
+                                f"str, bytearray, UaString, UaGuid or UaByteString")
+        elif ns_index is UaUInt16:
+            if ident is int:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, UaUInt32(ident))
+            elif ident is UaUInt32:
+                val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, ident)
+            elif ident is str:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index, bytes(ident, 'utf-8'))
+            elif ident is bytearray:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index, ident)
+            elif ident is UaString:
+                val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
+            elif ident is UaGuid:
+                val = lib.UA_EXPANDEDNODEID_STRING_GUID(ns_index, ident)
+            elif ident is UaByteString:
+                val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
+            else:
+                raise TypeError(f"ident={ident} hast invalid type, must be int, UaUInt32, "
+                                f"str, bytearray, UaString, UaGuid or UaByteString")
+        else:
+            raise TypeError(f"ns_index={ns_index} hast invalid type, must be UaUInt16 or int")
+
+        super().__init__(val, is_pointer)
+        self._node_id = UaNodeId(val=val.nodeId)
+        self._namespace_uri = UaString(val=val.namespaceUri)
+        self._server_index = UaUInt32(val=val.serverIndex)
+
+    @property
+    def node_id(self):
+        return self._node_id
+
+    @node_id.setter
+    def node_id(self, val):
+        self._node_id = val
+        self._value.nodeId = val.value
+
+    @property
+    def namespace_uri(self):
+        return self._namespace_uri
+
+    @namespace_uri.setter
+    def namespace_uri(self, val):
+        self._namespace_uri = val
+        self._value.namespaceUri = val.value
+
+    @property
+    def server_index(self):
+        return self._server_index
+
+    @server_index.setter
+    def server_index(self, val):
+        self._server_index = val
+        self._value.serverIndex = val.value
+
+    def __str__(self):
+        return ("UaExpandedNodeId:\n" +
+                self._node_id.str_helper(1) +
+                self._namespace_uri.str_helper(1) +
+                self._server_index.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaExpandedNodeId:\n" +
+                self._node_id.str_helper(n + 1) +
+                self._namespace_uri.str_helper(n + 1) +
+                self._server_index.str_helper(n + 1))
+
+    def is_local(self):
+        return lib.UA_ExpandedNodeId_isLocal(self._value)
+
+    def __eq__(self, other):
+        return lib.UA_ExpandedNodeId_equal(self._value, other._value)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __gt__(self, other):
+        return lib.UA_ExpandedNodeId_order(self._value, other._value) == 1
+
+    def __lt__(self, other):
+        return lib.UA_ExpandedNodeId_order(self._value, other._value) == -1
+
+    def __ge__(self, other):
+        return lib.UA_ExpandedNodeId_order(self._value, other._value) in [1, 0]
+
+    def __le__(self, other):
+        return lib.UA_ExpandedNodeId_order(self._value, other._value) in [-1, 0]
+
+    def __hash__(self):
+        return lib.UA_ExpandedNodeId_hash(self._value)
+
+
+# +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
+class UaQualifiedName(UaType):
+    def __init__(self, ns_index=None, string=None, val=ffi.new("UA_QualifiedName*"), is_pointer=False):
+        if ns_index is not None and string is not None:
+            if ns_index is int:
+                if string is str:
+                    val = lib.UA_QUALIFIEDNAME_ALLOC(ffi.cast("UA_UInt16", ns_index), bytes(string, "utf-8"))
+                if string is UaString:
+                    val = lib.UA_QUALIFIEDNAME_ALLOC(ffi.cast("UA_UInt16", ns_index), bytes(str(string), "utf-8"))
+                else:
+                    raise AttributeError(f"string={string} has to be str or UaString")
+            if ns_index is UaUInt16:
+                if string is str:
+                    val = lib.UA_QUALIFIEDNAME_ALLOC(ns_index, bytes(string, "utf-8"))
+                if string is UaString:
+                    val = lib.UA_QUALIFIEDNAME_ALLOC(ns_index, bytes(str(string), "utf-8"))
+                else:
+                    raise AttributeError(f"string={string} has to be str or UaString")
+            else:
+                raise AttributeError(f"ns_index={ns_index} has to be int or UaUInt16")
+
+        super().__init__(val, is_pointer)
+        self._namespace_index = UaUInt16(val=val.namespaceIndex)
+        self._name = UaString(val=val.name)
+
+    @property
+    def namespace_index(self):
+        return self._namespace_index
+
+    @namespace_index.setter
+    def namespace_index(self, val):
+        self._namespace_index = val
+        self._value.namespace_index = val.value
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, val):
+        self._name = val
+        self._value.name = val.value
+
+    def __str__(self):
+        return ("UaQualifiedName:\n" +
+                self._namespace_index.str_helper(1) +
+                self._name.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaQualifiedName:\n" +
+                self._namespace_index.str_helper(n + 1) +
+                self._name.str_helper(n + 1))
+
+    def is_null(self):
+        return lib.UA_QualifiedName_isNull(self._value)
+
+    def __hash__(self):
+        return lib.UA_QualifiedName_hash(self._value)
+
+    def __eq__(self, other):
+        return lib.UA_QualifiedName_equal(self._value, other._value)
+
+
+# +++++++++++++++++++ UaLocalizedText +++++++++++++++++++++++
+class UaLocalizedText(UaType):
+    def __init__(self, locale=None, text=None, val=ffi.new("UA_LocalizedText*"), is_pointer=False):
+        if locale is not None and text is not None:
+            if locale is str:
+                if text is str:
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(text, "utf-8"))
+                if text is UaString:
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(str(text), "utf-8"))
+                else:
+                    raise AttributeError(f"text={text} has to be str or UaString")
+            if locale is UaString:
+                if text is str:
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(str(locale), "utf-8"), bytes(text, "utf-8"))
+                if text is UaString:
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(str(locale), "utf-8"), bytes(str(text), "utf-8"))
+                else:
+                    raise AttributeError(f"text={text} has to be str or UaString")
+            else:
+                raise AttributeError(f"locale={locale} has to be str or UaUInt16")
+        super().__init__(val, is_pointer)
+        self._locale = UaString(val=val.locale)
+        self._text = UaString(val=val.text)
+
+    @property
+    def locale(self):
+        return self._locale
+
+    @locale.setter
+    def locale(self, val):
+        self._locale = val
+        self._value.locale = val.value
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, val):
+        self._text = val
+        self._value.text = val.value
+
+    def __str__(self):
+        return ("UaLocalizedText:\n" +
+                self._locale.str_helper(1) +
+                self._text.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaLocalizedText:\n" +
+                self._locale.str_helper(n + 1) +
+                self._text.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
+class UaNumericRangeDimension(UaType):
+    def __init__(self, val=ffi.new("UA_NumericRangeDimension*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._min = UaUInt32(val=val.min)
+        self._max = UaUInt32(val=val.max)
+
+    @property
+    def min(self):
+        return self._min
+
+    @min.setter
+    def min(self, val):
+        self._min = val
+        self._value.min = val.value
+
+    @property
+    def max(self):
+        return self._max
+
+    @max.setter
+    def max(self, val):
+        self._max = val
+        self._value.max = val.value
+
+    def __str__(self):
+        return ("UaNumericRangeDimension:\n" +
+                self._min.str_helper(1) +
+                self._max.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaNumericRangeDimension:\n" +
+                self._min.str_helper(n + 1) +
+                self._max.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
+class UaNumericRange(UaType):
+    def __init__(self, val=ffi.new("UA_NumericRange*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._dimension_size = SizeT(val=val.dimensionsSize)
+        self._dimension = UaNumericRangeDimension(val=val.dimensions, is_pointer=True)
+
+    @property
+    def dimension_size(self):
+        return self._dimension_size
+
+    @dimension_size.setter
+    def dimension_size(self, val):
+        self._dimension_size = val
+        self._value.dimensionsSize = val.value
+
+    @property
+    def dimension(self):
+        return self._dimension
+
+    @dimension.setter
+    def dimension(self, val):
+        self._dimension = val
+        self._value.dimension = val.value
+
+    def __str__(self):
+        return ("UaNumericRangeDimension:\n" +
+                self._dimension_size.str_helper(1) +
+                self._dimension.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaNumericRangeDimension:\n" +
+                self._dimension_size.str_helper(n + 1) +
+                self._dimension.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaVariant +++++++++++++++++++++++
+class UaVariant(UaType):
+    def __init__(self, val=ffi.new("UA_Variant*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._type = UaDataType(val=val.type, is_pointer=True)
+        self._storage_type = UaVariantStorageType(val=val.storageType)
+        self._array_length = SizeT(val=val.arrayLength)
+        self._data = SizeT(val=val.data, is_pointer=True)
+        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize)
+        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, val):
+        self.type = val
+        self._value.type = val.value
+
+    @property
+    def storage_type(self):
+        return self._storage_type
+
+    @storage_type.setter
+    def storage_type(self, val):
+        self._storage_type = val
+        self._value.storageType = val.value
+
+    @property
+    def array_length(self):
+        return self._array_length
+
+    @array_length.setter
+    def array_length(self, val):
+        self._array_length = val
+        self._value.arrayLength = val.value
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        self._data = val
+        self._value.data = val.value
+
+    @property
+    def array_dimensions_size(self):
+        return self._array_dimensions_size
+
+    @array_dimensions_size.setter
+    def array_dimensions_size(self, val):
+        self._array_dimensions_size = val
+        self._value.arrayDimensionsSize = val.value
+
+    @property
+    def array_dimensions(self):
+        return self._array_dimensions
+
+    @array_dimensions.setter
+    def array_dimensions(self, val):
+        self._array_dimensions = val
+        self._value.arrayDimensions = val.value
+
+    def __str__(self):
+        return ("UaVariant:\n" +
+                self._type.str_helper(1) +
+                self._storage_type.str_helper(1) +
+                self._array_length.str_helper(1) +
+                self._data.str_helper(1) +
+                self._array_dimensions_size.str_helper(1) +
+                self._array_dimensions.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaVariant:\n" +
+                self._type.str_helper(n + 1) +
+                self._storage_type.str_helper(n + 1) +
+                self._array_length.str_helper(n + 1) +
+                self._data.str_helper(n + 1) +
+                self._array_dimensions_size.str_helper(n + 1) +
+                self._array_dimensions.str_helper(n + 1))
+
+    def is_empty(self):
+        lib.UA_Variant_isEmpty(self._value)
+
+    def is_scalar(self):
+        lib.UA_Variant_isScalar(self._value)
+
+    def has_scalar_type(self, data_type):
+        lib.UA_Variant_hasScalarType(self._value, data_type._ref())
+
+    def has_array_type(self, data_type):
+        lib.UA_Variant_hasArrayType(self._value, data_type._ref())
+
+    def _set_attributes(self):
+        self._type = self._value.type
+        self._storage_type = self._value.storageType
+        self._array_length = self._value.arrayLength
+        self._data = self._value.data
+        self._array_dimensions_size = self._value.arrayDimensionsSize
+        self._array_dimensions = self._value.arrayDimensions
+
+    def set_scalar(self, data, data_type):
+        lib.UA_Variant_setScalarCopy(self.value, ffi.new_handle(data), data_type._ref())
+        self._set_attributes()
+
+    def set_array(self, array, size, data_type):
+        if size is int:
+            size = SizeT(size)
+        if size is not SizeT:
+            raise AttributeError(f"size={size} has to be int or SizeT")
+        status_code = lib.UA_Variant_setArrayCopy(self._value, ffi.new_handle(array), size._deref(), data_type._ref())
+        status_code = UaStatusCode(status_code)
+        if not status_code.is_bad():
+            self._set_attributes()
+        else:
+            raise Exception(f"An Error occured - {str(status_code)}")
+
+    def copy_range_to(self, variant, num_range: UaNumericRange):
+        status_code = lib.UA_Variant_copyRange(self._value, variant._ref(), num_range._deref())
+        status_code = UaStatusCode(status_code)
+        if not status_code.is_bad():
+            self._set_attributes()
+        else:
+            raise AttributeError(f"An Error occured - {str(status_code)}")
+
+    def set_range_copy(self, array, size, num_range: UaNumericRange):
+        if size is int:
+            size = SizeT(size)
+        if size is not SizeT:
+            raise AttributeError(f"size={size} has to be int or SizeT")
+        status_code = lib.UA_Variant_setRangeCopy(self._value, ffi.new_handle(array), size, num_range._deref())
+        status_code = UaStatusCode(status_code)
+        if not status_code.is_bad():
+            self._set_attributes()
+        else:
+            raise AttributeError(f"An Error occured - {str(status_code)}")
+
+
+# +++++++++++++++++++ UaExtensionObject +++++++++++++++++++++++
+class UaExtensionObject(UaType):
+    def __init__(self, val=ffi.new("UA_ExtensionObject*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._encoding = UaExtensionObjectEncoding(val=val.encoding)
+        if self._encoding in [0, 1, 2]:
+            self._type = UaNodeId(val=val.content.encoded.typeId)
+            self._data = UaByteString(val=val.content.encoded.body)
+        elif self._encoding in [3, 4]:
+            self._type = UaDataType(val=val.content.decoded.type, is_pointer=True)
+            # data not void *
+            self._data = ffi.from_handle(val.content.encoded.body)
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, val):
+        if self._encoding in [0, 1, 2] and val not in UaNodeId:
+            raise AttributeError(f"encoding is {str(self._encoding)} so value must be in UaNodeId")
+        if self._encoding in [3, 4] and val not in UaDataType:
+            raise AttributeError(f"encoding is {str(self._encoding)} so value must be in UaDataType")
+        self._type = val
+        self._value.type = val.value
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        if self._encoding in [0, 1, 2] and val not in UaByteString:
+            raise AttributeError(f"encoding is {str(self._encoding)} so value must be in UaNodeId")
+        if self._encoding in [3, 4] and val is not type(ffi.new_handle()):
+            self._data = val
+            val = ffi.new_handle(val)
+
+        self._value.data = val
+
+    def __str__(self):
+        return ("UaExtensionObject:\n" +
+                self._type.str_helper(1) +
+                self._data.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaExtensionObject:\n" +
+                self._type.str_helper(n + 1) +
+                self._data.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
+class UaDataValue(UaType):
+    def __init__(self, val=ffi.new("UA_DataValue*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._variant = UaVariant(val=val.value)
+        self._source_timestamp = UaDateTime(val=val.sourceTimestamp)
+        self._server_timestamp = UaDateTime(val=val.serverTimestamp)
+        self._source_picoseconds = UaUInt16(val=val.sourcePicoseconds)
+        self._server_picoseconds = UaUInt16(val=val.serverPicoseconds)
+        self._status = UaStatusCode(val=val.status)
+        self._has_value = UaBoolean(val=val.hasValue)
+        self._has_status = UaBoolean(val=val.hasStatus)
+        self._has_source_timestamp = UaBoolean(val=val.hasSourceTimestamp)
+        self._has_server_timestamp = UaBoolean(val=val.hasServerTimestamp)
+        self._has_source_picoseconds = UaBoolean(val=val.hasSourcePicoseconds)
+        self._has_server_picoseconds = UaBoolean(val=val.hasServerPicoseconds)
+
+    @property
+    def variant(self):
+        return self._variant
+
+    @variant.setter
+    def variant(self, val):
+        self._variant = val
+        self._value.value = val.value
+
+    @property
+    def source_timestamp(self):
+        return self._source_timestamp
+
+    @source_timestamp.setter
+    def source_timestamp(self, val):
+        self._source_timestamp = val
+        self._value.sourceTimestamp = val.value
+
+    @property
+    def server_timestamp(self):
+        return self._server_timestamp
+
+    @server_timestamp.setter
+    def server_timestamp(self, val):
+        self._server_timestamp = val
+        self._value.serverTimestamp = val.value
+
+    @property
+    def source_picoseconds(self):
+        return self._source_picoseconds
+
+    @source_picoseconds.setter
+    def source_picoseconds(self, val):
+        self._source_picoseconds = val
+        self._value.sourcePicoseconds = val.value
+
+    @property
+    def server_picoseconds(self):
+        return self._server_picoseconds
+
+    @server_picoseconds.setter
+    def server_picoseconds(self, val):
+        self._server_picoseconds = val
+        self._value.serverPicoseconds = val.value
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, val):
+        self._status = val
+        self._value.status = val.value
+
+    @property
+    def has_value(self):
+        return self._has_value
+
+    @has_value.setter
+    def has_value(self, val):
+        self._has_value = val
+        self._value.hasValue = val.value
+
+    @property
+    def has_status(self):
+        return self._has_status
+
+    @has_status.setter
+    def has_status(self, val):
+        self._has_status = val
+        self._value.hasStatus = val.value
+
+    @property
+    def has_source_timestamp(self):
+        return self._has_source_timestamp
+
+    @has_source_timestamp.setter
+    def has_source_timestamp(self, val):
+        self._has_source_timestamp = val
+        self._value.hasSourceTimestamp = val.value
+
+    @property
+    def has_server_timestamp(self):
+        return self._has_server_timestamp
+
+    @has_server_timestamp.setter
+    def has_server_timestamp(self, val):
+        self._has_server_timestamp = val
+        self._value.hasServerTimestamp = val.value
+
+    @property
+    def has_source_picoseconds(self):
+        return self._has_source_timestamp
+
+    @has_source_picoseconds.setter
+    def has_source_picoseconds(self, val):
+        self._has_source_picoseconds = val
+        self._value.hasSourcePicoseconds = val.value
+
+    @property
+    def has_server_picoseconds(self):
+        return self._has_server_picoseconds
+
+    @has_server_picoseconds.setter
+    def has_server_picoseconds(self, val):
+        self._has_server_picoseconds = val
+        self._value.hasServerPicoseconds = val.value
+
+    def __str__(self):
+        return ("UaDataValue:\n" +
+                self._variant.str_helper(1) +
+                self._source_timestamp.str_helper(1) +
+                self._server_timestamp.str_helper(1) +
+                self._source_picoseconds.str_helper(1) +
+                self._server_picoseconds.str_helper(1) +
+                self._status.str_helper(1) +
+                self._has_value.str_helper(1) +
+                self._has_status.str_helper(1) +
+                self._has_source_timestamp.str_helper(1) +
+                self._has_server_timestamp.str_helper(1) +
+                self._has_source_picoseconds.str_helper(1) +
+                self._has_server_picoseconds.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaDataValue:\n" +
+                self._variant.str_helper(n + 1) +
+                self._source_timestamp.str_helper(n + 1) +
+                self._server_timestamp.str_helper(n + 1) +
+                self._source_picoseconds.str_helper(n + 1) +
+                self._server_picoseconds.str_helper(n + 1) +
+                self._status.str_helper(n + 1) +
+                self._has_value.str_helper(n + 1) +
+                self._has_status.str_helper(n + 1) +
+                self._has_source_timestamp.str_helper(n + 1) +
+                self._has_server_timestamp.str_helper(n + 1) +
+                self._has_source_picoseconds.str_helper(n + 1) +
+                self._has_server_picoseconds.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
+class UaDiagnosticInfo(UaType):
+    def __init__(self, val=ffi.new("UA_DiagnosticInfo*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._has_symbolic_id = UaBoolean(val=val.hasSymbolicId)
+        self._has_namespace_uri = UaBoolean(val=val.hasNamespaceUri)
+        self._has_localized_text = UaBoolean(val=val.hasLocalizedText)
+        self._has_locale = UaBoolean(val=val.hasLocale)
+        self._has_additional_info = UaBoolean(val=val.hasAdditionalInfo)
+        self._has_inner_status_code = UaBoolean(val=val.hasInnerStatusCode)
+        self._has_inner_diagnostic_info = UaBoolean(val=val.hasInnerDiagnosticInfo)
+        self._symbolic_id = UaInt32(val=val.symbolicId)
+        self._namespace_uri = UaInt32(val=val.namespaceUri)
+        self._localized_text = UaInt32(val=val.localizedText)
+        self._locale = UaInt32(val=val.locale)
+        self._additional_info = UaString(val=val.additionalInfo)
+        self._inner_status_code = UaStatusCode(val=val.innerStatusCode)
+        self._inner_diagnostic_info = UaDiagnosticInfo(val=val.innerDiagnosticInfo, is_pointer=True)
+
+    @property
+    def has_symbolic_id(self):
+        return self._has_symbolic_id
+
+    @has_symbolic_id.setter
+    def has_symbolic_id(self, val):
+        self._has_symbolic_id = val
+        self._value.hasSymbolicId = val.value
+
+    @property
+    def has_namespace_uri(self):
+        return self._has_namespace_uri
+
+    @has_namespace_uri.setter
+    def has_namespace_uri(self, val):
+        self._has_namespace_uri = val
+        self._value.hasNamespaceUri = val.value
+
+    @property
+    def has_localized_text(self):
+        return self._has_localized_text
+
+    @has_localized_text.setter
+    def has_localized_text(self, val):
+        self._has_localized_text = val
+        self._value.hasLocalizedText = val.value
+
+    @property
+    def has_locale(self):
+        return self._has_locale
+
+    @has_locale.setter
+    def has_locale(self, val):
+        self._has_locale = val
+        self._value.hasLocale = val.value
+
+    @property
+    def has_additional_info(self):
+        return self._has_additional_info
+
+    @has_additional_info.setter
+    def has_additional_info(self, val):
+        self._has_additional_info = val
+        self._value.hasAdditionalInfo = val.value
+
+    @property
+    def has_inner_status_code(self):
+        return self._has_inner_status_code
+
+    @has_inner_status_code.setter
+    def has_inner_status_code(self, val):
+        self._has_inner_status_code = val
+        self._value.hasInnerStatusCode = val.value
+
+    @property
+    def has_inner_diagnostic_info(self):
+        return self._has_inner_diagnostic_info
+
+    @has_inner_diagnostic_info.setter
+    def has_inner_diagnostic_info(self, val):
+        self._has_inner_diagnostic_info = val
+        self._value.hasInnerDiagnosticInfo = val.value
+
+    @property
+    def symbolic_id(self):
+        return self._symbolic_id
+
+    @symbolic_id.setter
+    def symbolic_id(self, val):
+        self._symbolic_id = val
+        self._value.symbolicId = val.value
+
+    @property
+    def namespace_uri(self):
+        return self._namespace_uri
+
+    @namespace_uri.setter
+    def namespace_uri(self, val):
+        self._namespace_uri = val
+        self._value.namespaceUri = val.value
+
+    @property
+    def localized_text(self):
+        return self._localized_text
+
+    @localized_text.setter
+    def localized_text(self, val):
+        self._localized_text = val
+        self._value.localizedText = val.value
+
+    @property
+    def locale(self):
+        return self._locale
+
+    @locale.setter
+    def locale(self, val):
+        self._locale = val
+        self._value.locale = val.value
+
+    @property
+    def additional_info(self):
+        return self._additional_info
+
+    @additional_info.setter
+    def additional_info(self, val):
+        self._additional_info = val
+        self._value.additionalInfo = val.value
+
+    @property
+    def inner_status_code(self):
+        return self._inner_status_code
+
+    @inner_status_code.setter
+    def inner_status_code(self, val):
+        self._inner_status_code = val
+        self._value.innerStatusCode = val.value
+
+    @property
+    def inner_diagnostic_info(self):
+        return self._inner_diagnostic_info
+
+    @inner_diagnostic_info.setter
+    def inner_diagnostic_info(self, val):
+        self._inner_diagnostic_info = val
+        self._value.innerDiagnosticInfo = val.value
+
+    def __str__(self):
+        return ("UaDiagnosticInfo:\n" +
+                self._has_symbolic_id.str_helper(1) +
+                self._has_namespace_uri.str_helper(1) +
+                self._has_localized_text.str_helper(1) +
+                self._has_locale.str_helper(1) +
+                self._has_additional_info.str_helper(1) +
+                self._has_inner_status_code.str_helper(1) +
+                self._has_inner_diagnostic_info.str_helper(1) +
+                self._symbolic_id.str_helper(1) +
+                self._namespace_uri.str_helper(1) +
+                self._localized_text.str_helper(1) +
+                self._locale.str_helper(1) +
+                self._additional_info.str_helper(1) +
+                self._inner_status_code.str_helper(1) +
+                self._inner_diagnostic_info.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaDiagnosticInfo:\n" +
+                self._has_symbolic_id.str_helper(n + 1) +
+                self._has_namespace_uri.str_helper(n + 1) +
+                self._has_localized_text.str_helper(n + 1) +
+                self._has_locale.str_helper(n + 1) +
+                self._has_additional_info.str_helper(n + 1) +
+                self._has_inner_status_code.str_helper(n + 1) +
+                self._has_inner_diagnostic_info.str_helper(n + 1) +
+                self._symbolic_id.str_helper(n + 1) +
+                self._namespace_uri.str_helper(n + 1) +
+                self._localized_text.str_helper(n + 1) +
+                self._locale.str_helper(n + 1) +
+                self._additional_info.str_helper(n + 1) +
+                self._inner_status_code.str_helper(n + 1) +
+                self._inner_diagnostic_info.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
+class UaDataTypeMember(UaType):
+    def __init__(self, val=ffi.new("UA_DataTypeMember*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._member_type_index = UaUInt16(val=val.memberTypeIndex)
+        self._padding = UaByte(val=val.padding)
+        self._namespace_zero = UaBoolean(val=val.namespaceZero)
+        self._is_array = UaBoolean(val=val.isArray)
+        self._is_optional = UaBoolean(val=val.isOptional)
+        self._member_name = Char(val=val.memberName)
+
+    @property
+    def member_type_index(self):
+        return self._member_type_index
+
+    @member_type_index.setter
+    def member_type_index(self, val):
+        self._member_type_index = val
+        self._value.memberTypeIndex = val.value
+
+    @property
+    def padding(self):
+        return self._padding
+
+    @padding.setter
+    def padding(self, val):
+        self._padding = val
+        self._value.padding = val.value
+
+    @property
+    def namespace_zero(self):
+        return self._namespace_zero
+
+    @namespace_zero.setter
+    def namespace_zero(self, val):
+        self._namespace_zero = val
+        self._value.namespaceZero = val.value
+
+    @property
+    def is_array(self):
+        return self._is_array
+
+    @is_array.setter
+    def is_array(self, val):
+        self._is_array = val
+        self._value.isArray = val.value
+
+    @property
+    def is_optional(self):
+        return self._is_optional
+
+    @is_optional.setter
+    def is_optional(self, val):
+        self._is_optional = val
+        self._value.isOptional = val.value
+
+    @property
+    def member_name(self):
+        return self._member_name
+
+    @member_name.setter
+    def member_name(self, val):
+        self._member_name = val
+        self._value.memberName = val.value
+
+    def __str__(self):
+        return ("UaDataTypeMember:\n" +
+                self._member_type_index.str_helper(1) +
+                self._padding.str_helper(1) +
+                self._namespace_zero.str_helper(1) +
+                self._is_array.str_helper(1) +
+                self._is_optional.str_helper(1) +
+                self._member_name.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaDataTypeMember:\n" +
+                self._member_type_index.str_helper(n + 1) +
+                self._padding.str_helper(n + 1) +
+                self._namespace_zero.str_helper(n + 1) +
+                self._is_array.str_helper(n + 1) +
+                self._is_optional.str_helper(n + 1) +
+                self._member_name.str_helper(n + 1))
+
+
+# +++++++++++++++++++ UaDataType +++++++++++++++++++++++
+class UaDataType(UaType):
+    def __init__(self, val=ffi.new("UA_DataType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._type_id = UaNodeId(val=val.typeId)
+        self._binary_encoding_id = UaNodeId(val=val.binaryEncodingId)
+        self._mem_size = UaUInt16(val=val.memSize)
+        self._type_index = UaUInt16(val=val.typeIndex)
+        self._type_kind = UaUInt32(val=val.typeKind)
+        self._pointer_free = UaUInt32(val=val.pointerFree)
+        self._overlayable = UaUInt32(val=val.overlayable)
+        self._members_size = UaUInt32(val=val.membersSize)
+        self._members = UaDataTypeMember(val=val.members, is_pointer=True)
+        self._type_name = Char(val=val.typeName, is_pointer=True)
+
+    @property
+    def type_id(self):
+        return self._type_id
+
+    @type_id.setter
+    def type_id(self, val):
+        self._type_id = val
+        self._value.typeId = val.value
+
+    @property
+    def binary_encoding_id(self):
+        return self._binary_encoding_id
+
+    @binary_encoding_id.setter
+    def binary_encoding_id(self, val):
+        self._binary_encoding_id = val
+        self._value.binaryEncodingId = val.value
+
+    @property
+    def mem_size(self):
+        return self._mem_size
+
+    @mem_size.setter
+    def mem_size(self, val):
+        self._mem_size = val
+        self._value.memSize = val.value
+
+    @property
+    def type_index(self):
+        return self._type_index
+
+    @type_index.setter
+    def type_index(self, val):
+        self._type_index = val
+        self._value.typeIndex = val.value
+
+    @property
+    def type_kind(self):
+        return self._type_kind
+
+    @type_kind.setter
+    def type_kind(self, val):
+        self._type_kind = val
+        self._value.typeKind = val.value
+
+    @property
+    def pointer_free(self):
+        return self._pointer_free
+
+    @pointer_free.setter
+    def pointer_free(self, val):
+        self._pointer_free = val
+        self._value.pointerFree = val.value
+
+    @property
+    def overlayable(self):
+        return self._overlayable
+
+    @overlayable.setter
+    def overlayable(self, val):
+        self._overlayable = val
+        self._value.overlayable = val.value
+
+    @property
+    def members_size(self):
+        return self._members_size
+
+    @members_size.setter
+    def members_size(self, val):
+        self._members_size = val
+        self._value.membersSize = val.value
+
+    @property
+    def members(self):
+        return self._members
+
+    @members.setter
+    def members(self, val):
+        self._members = val
+        self._value.members = val.value
+
+    @property
+    def type_name(self):
+        return self._type_name
+
+    @type_name.setter
+    def type_name(self, val):
+        self._type_name = val
+        self._value.typeName = val.value
+
+    def __str__(self):
+        return ("UaDataType:\n" +
+                self._type_id.str_helper(1) +
+                self._binary_encoding_id.str_helper(1) +
+                self._mem_size.str_helper(1) +
+                self._type_index.str_helper(1) +
+                self._type_kind.str_helper(1) +
+                self._pointer_free.str_helper(1) +
+                self._overlayable.str_helper(1) +
+                self._members_size.str_helper(1) +
+                self._members.str_helper(1) +
+                self._type_name.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaDataType:\n" +
+                self._type_id.str_helper(n + 1) +
+                self._binary_encoding_id.str_helper(n + 1) +
+                self._mem_size.str_helper(n + 1) +
+                self._type_index.str_helper(n + 1) +
+                self._type_kind.str_helper(n + 1) +
+                self._pointer_free.str_helper(n + 1) +
+                self._overlayable.str_helper(n + 1) +
+                self._members_size.str_helper(n + 1) +
+                self._members.str_helper(n + 1) +
+                self._type_name.str_helper(n + 1))
+
+    def is_numeric(self):
+        return lib.UA_DataType_isNumeric(self._value)
+
+    @staticmethod
+    def find_by_node_id(type_id: UaNodeId):
+        return UaDataType(val=lib.UA_findDataType(type_id._ref()), is_pointer=True)
+
+    # TODO: generic type handling!!!
+    # ----> init, copy, new, array_new, array_copy should be methods of a class, which represent members of an in an
+    # attribute provided UaDataType
+    # returns void ptr
+    def new_instance(self):
+        return lib.UA_new(self._value)
+
+
+# +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
+class UaDataTypeArray(UaType):
+    def __init__(self, val=ffi.new("UA_DataTypeArray*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._next = UaDataTypeArray(val=val.next, is_pointer=True)
+        self._types_size = SizeT(val=val.typesSize)
+        self._types = UaDataType(val=val.types, is_pointer=True)
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, val):
+        self._next = val
+        self._value.next = val.value
+
+    @property
+    def types_size(self):
+        return self._types_size
+
+    @types_size.setter
+    def types_size(self, val):
+        self._types_size = val
+        self._value.typesSize = val.value
+
+    @property
+    def types(self):
+        return self._types
+
+    @types.setter
+    def types(self, val):
+        self._types = val
+        self._value.types = val.value
+
+    def __str__(self):
+        return ("UaDataValue:\n" +
+                self._next.str_helper(1) +
+                self._types_size.str_helper(1) +
+                self._types.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("UaDataValue:\n" +
+                self._next.str_helper(n + 1) +
+                self._types_size.str_helper(n + 1) +
+                self._types.str_helper(n + 1))
+
+
+class Randomize:
+    @staticmethod
+    def random_uint_32():
+        return lib.UA_UInt32_random()
+
+    @staticmethod
+    def ua_random_seed(seed: int):
+        lib.UA_random_seed(ffi.cast("UA_UInt64*", seed))
 
 
 
@@ -927,12 +3136,12 @@ class UaMessageSecurityMode(UaType):
         (3, "UA_MESSAGESECURITYMODE_SIGNANDENCRYPT"),
         (2147483647, "__UA_MESSAGESECURITYMODE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_MessageSecurityMode*"))
+            super().__init__(ffi.new("UA_MessageSecurityMode*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -943,7 +3152,7 @@ class UaMessageSecurityMode(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_MessageSecurityMode*", val))
+            super().__init__(ffi.new("UA_MessageSecurityMode*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -967,12 +3176,12 @@ class UaStructureType(UaType):
         (2, "UA_STRUCTURETYPE_UNION"),
         (2147483647, "__UA_STRUCTURETYPE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_StructureType*"))
+            super().__init__(ffi.new("UA_StructureType*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -983,7 +3192,7 @@ class UaStructureType(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_StructureType*", val))
+            super().__init__(ffi.new("UA_StructureType*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1007,12 +3216,12 @@ class UaMonitoringMode(UaType):
         (2, "UA_MONITORINGMODE_REPORTING"),
         (2147483647, "__UA_MONITORINGMODE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_MonitoringMode*"))
+            super().__init__(ffi.new("UA_MonitoringMode*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1023,7 +3232,7 @@ class UaMonitoringMode(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_MonitoringMode*", val))
+            super().__init__(ffi.new("UA_MonitoringMode*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1061,12 +3270,12 @@ class UaBrowseResultMask(UaType):
         (60, "UA_BROWSERESULTMASK_TARGETINFO"),
         (2147483647, "__UA_BROWSERESULTMASK_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_BrowseResultMask*"))
+            super().__init__(ffi.new("UA_BrowseResultMask*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1077,7 +3286,7 @@ class UaBrowseResultMask(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_BrowseResultMask*", val))
+            super().__init__(ffi.new("UA_BrowseResultMask*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1101,12 +3310,12 @@ class UaAxisScaleEnumeration(UaType):
         (2, "UA_AXISSCALEENUMERATION_LN"),
         (2147483647, "__UA_AXISSCALEENUMERATION_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_AxisScaleEnumeration*"))
+            super().__init__(ffi.new("UA_AxisScaleEnumeration*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1117,7 +3326,7 @@ class UaAxisScaleEnumeration(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_AxisScaleEnumeration*", val))
+            super().__init__(ffi.new("UA_AxisScaleEnumeration*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1143,12 +3352,12 @@ class UaBrowseDirection(UaType):
         (3, "UA_BROWSEDIRECTION_INVALID"),
         (2147483647, "__UA_BROWSEDIRECTION_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_BrowseDirection*"))
+            super().__init__(ffi.new("UA_BrowseDirection*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1159,7 +3368,7 @@ class UaBrowseDirection(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_BrowseDirection*", val))
+            super().__init__(ffi.new("UA_BrowseDirection*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1187,12 +3396,12 @@ class UaTimestampsToReturn(UaType):
         (4, "UA_TIMESTAMPSTORETURN_INVALID"),
         (2147483647, "__UA_TIMESTAMPSTORETURN_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_TimestampsToReturn*"))
+            super().__init__(ffi.new("UA_TimestampsToReturn*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1203,7 +3412,7 @@ class UaTimestampsToReturn(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_TimestampsToReturn*", val))
+            super().__init__(ffi.new("UA_TimestampsToReturn*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1239,12 +3448,12 @@ class UaNodeClass(UaType):
         (128, "UA_NODECLASS_VIEW"),
         (2147483647, "__UA_NODECLASS_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_NodeClass*"))
+            super().__init__(ffi.new("UA_NodeClass*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1255,7 +3464,7 @@ class UaNodeClass(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_NodeClass*", val))
+            super().__init__(ffi.new("UA_NodeClass*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1277,12 +3486,12 @@ class UaSecurityTokenRequestType(UaType):
         (1, "UA_SECURITYTOKENREQUESTTYPE_RENEW"),
         (2147483647, "__UA_SECURITYTOKENREQUESTTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_SecurityTokenRequestType*"))
+            super().__init__(ffi.new("UA_SecurityTokenRequestType*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1293,7 +3502,7 @@ class UaSecurityTokenRequestType(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_SecurityTokenRequestType*", val))
+            super().__init__(ffi.new("UA_SecurityTokenRequestType*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1319,12 +3528,12 @@ class UaApplicationType(UaType):
         (3, "UA_APPLICATIONTYPE_DISCOVERYSERVER"),
         (2147483647, "__UA_APPLICATIONTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_ApplicationType*"))
+            super().__init__(ffi.new("UA_ApplicationType*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1335,7 +3544,7 @@ class UaApplicationType(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_ApplicationType*", val))
+            super().__init__(ffi.new("UA_ApplicationType*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1359,12 +3568,12 @@ class UaDeadbandType(UaType):
         (2, "UA_DEADBANDTYPE_PERCENT"),
         (2147483647, "__UA_DEADBANDTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_DeadbandType*"))
+            super().__init__(ffi.new("UA_DeadbandType*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1375,7 +3584,7 @@ class UaDeadbandType(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_DeadbandType*", val))
+            super().__init__(ffi.new("UA_DeadbandType*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1399,12 +3608,12 @@ class UaDataChangeTrigger(UaType):
         (2, "UA_DATACHANGETRIGGER_STATUSVALUETIMESTAMP"),
         (2147483647, "__UA_DATACHANGETRIGGER_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_DataChangeTrigger*"))
+            super().__init__(ffi.new("UA_DataChangeTrigger*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1415,7 +3624,7 @@ class UaDataChangeTrigger(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_DataChangeTrigger*", val))
+            super().__init__(ffi.new("UA_DataChangeTrigger*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1441,12 +3650,12 @@ class UaUserTokenType(UaType):
         (3, "UA_USERTOKENTYPE_ISSUEDTOKEN"),
         (2147483647, "__UA_USERTOKENTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_UserTokenType*"))
+            super().__init__(ffi.new("UA_UserTokenType*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1457,7 +3666,7 @@ class UaUserTokenType(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_UserTokenType*", val))
+            super().__init__(ffi.new("UA_UserTokenType*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1545,12 +3754,12 @@ class UaNodeAttributesMask(UaType):
         (26501356, "UA_NODEATTRIBUTESMASK_VIEW"),
         (2147483647, "__UA_NODEATTRIBUTESMASK_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_NodeAttributesMask*"))
+            super().__init__(ffi.new("UA_NodeAttributesMask*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1561,7 +3770,7 @@ class UaNodeAttributesMask(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_NodeAttributesMask*", val))
+            super().__init__(ffi.new("UA_NodeAttributesMask*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1595,12 +3804,12 @@ class UaServerState(UaType):
         (7, "UA_SERVERSTATE_UNKNOWN"),
         (2147483647, "__UA_SERVERSTATE_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_ServerState*"))
+            super().__init__(ffi.new("UA_ServerState*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1611,7 +3820,7 @@ class UaServerState(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_ServerState*", val))
+            super().__init__(ffi.new("UA_ServerState*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1665,12 +3874,12 @@ class UaFilterOperator(UaType):
         (17, "UA_FILTEROPERATOR_BITWISEOR"),
         (2147483647, "__UA_FILTEROPERATOR_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_FilterOperator*"))
+            super().__init__(ffi.new("UA_FilterOperator*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1681,7 +3890,7 @@ class UaFilterOperator(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_FilterOperator*", val))
+            super().__init__(ffi.new("UA_FilterOperator*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1711,12 +3920,12 @@ class UaRedundancySupport(UaType):
         (5, "UA_REDUNDANCYSUPPORT_HOTANDMIRRORED"),
         (2147483647, "__UA_REDUNDANCYSUPPORT_FORCE32BIT")])
 
-    def __init__(self, val=None):
+    def __init__(self, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("UA_RedundancySupport*"))
+            super().__init__(ffi.new("UA_RedundancySupport*"), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val)
+            super().__init__(val, is_pointer)
             self._p_value = val[0]
 
     @property
@@ -1727,7 +3936,7 @@ class UaRedundancySupport(UaType):
     def p_value(self, val):
         if val in self.val_to_string.keys():
             self._p_value = val
-            super.__init__(ffi.new("UA_RedundancySupport*", val))
+            super().__init__(ffi.new("UA_RedundancySupport*", val), self._is_pointer)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
@@ -1749,15 +3958,15 @@ class UaRedundancySupport(UaType):
 
 # +++++++++++++++++++ UaViewAttributes +++++++++++++++++++++++
 class UaViewAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ViewAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._contains_no_loops = UaBoolean(val.containsNoLoops)
-        self._event_notifier = UaByte(val.eventNotifier)
+    def __init__(self, val=ffi.new("UA_ViewAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._contains_no_loops = UaBoolean(val=val.containsNoLoops)
+        self._event_notifier = UaByte(val=val.eventNotifier)
     
 
     @property
@@ -1825,31 +4034,31 @@ class UaViewAttributes(UaType):
 
     def __str__(self):
         return ("UaViewAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
-                self._containsNoLoops.str_helper(1) +
-                self._eventNotifier.str_helper(1))
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
+                self._contains_no_loops.str_helper(1) +
+                self._event_notifier.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaViewAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
-                self._containsNoLoops.str_helper(n+1) +
-                self._eventNotifier.str_helper(n+1))
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
+                self._contains_no_loops.str_helper(n+1) +
+                self._event_notifier.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaXVType +++++++++++++++++++++++
 class UaXVType(UaType):
-    def __init__(self, val=ffi.new("UA_XVType*")):
-        super().__init__(val)
-        self._x = UaDouble(val.x)
-        self._value = UaFloat(val.value)
+    def __init__(self, val=ffi.new("UA_XVType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._x = UaDouble(val=val.x)
+        self._value = UaFloat(val=val.value)
     
 
     @property
@@ -1883,9 +4092,9 @@ class UaXVType(UaType):
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
 class UaElementOperand(UaType):
-    def __init__(self, val=ffi.new("UA_ElementOperand*")):
-        super().__init__(val)
-        self._index = UaUInt32(val.index)
+    def __init__(self, val=ffi.new("UA_ElementOperand*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._index = UaUInt32(val=val.index)
     
 
     @property
@@ -1908,22 +4117,22 @@ class UaElementOperand(UaType):
 
 # +++++++++++++++++++ UaVariableAttributes +++++++++++++++++++++++
 class UaVariableAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_VariableAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._value = UaVariant(val.value)
-        self._data_type = UaNodeId(val.dataType)
-        self._value_rank = UaInt32(val.valueRank)
-        self._array_dimensions_size = UaSizeT(val.arrayDimensionsSize)
-        self._array_dimensions = UaUInt32(val.arrayDimensions, True)
-        self._access_level = UaByte(val.accessLevel)
-        self._user_access_level = UaByte(val.userAccessLevel)
-        self._minimum_sampling_interval = UaDouble(val.minimumSamplingInterval)
-        self._historizing = UaBoolean(val.historizing)
+    def __init__(self, val=ffi.new("UA_VariableAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._value = UaVariant(val=val.value)
+        self._data_type = UaNodeId(val=val.dataType)
+        self._value_rank = UaInt32(val=val.valueRank)
+        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize)
+        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+        self._access_level = UaByte(val=val.accessLevel)
+        self._user_access_level = UaByte(val=val.userAccessLevel)
+        self._minimum_sampling_interval = UaDouble(val=val.minimumSamplingInterval)
+        self._historizing = UaBoolean(val=val.historizing)
     
 
     @property
@@ -2054,46 +4263,46 @@ class UaVariableAttributes(UaType):
 
     def __str__(self):
         return ("UaVariableAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
                 self._value.str_helper(1) +
-                self._dataType.str_helper(1) +
-                self._valueRank.str_helper(1) +
-                self._arrayDimensionsSize.str_helper(1) +
-                self._arrayDimensions.str_helper(1) +
-                self._accessLevel.str_helper(1) +
-                self._userAccessLevel.str_helper(1) +
-                self._minimumSamplingInterval.str_helper(1) +
+                self._data_type.str_helper(1) +
+                self._value_rank.str_helper(1) +
+                self._array_dimensions_size.str_helper(1) +
+                self._array_dimensions.str_helper(1) +
+                self._access_level.str_helper(1) +
+                self._user_access_level.str_helper(1) +
+                self._minimum_sampling_interval.str_helper(1) +
                 self._historizing.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaVariableAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
                 self._value.str_helper(n+1) +
-                self._dataType.str_helper(n+1) +
-                self._valueRank.str_helper(n+1) +
-                self._arrayDimensionsSize.str_helper(n+1) +
-                self._arrayDimensions.str_helper(n+1) +
-                self._accessLevel.str_helper(n+1) +
-                self._userAccessLevel.str_helper(n+1) +
-                self._minimumSamplingInterval.str_helper(n+1) +
+                self._data_type.str_helper(n+1) +
+                self._value_rank.str_helper(n+1) +
+                self._array_dimensions_size.str_helper(n+1) +
+                self._array_dimensions.str_helper(n+1) +
+                self._access_level.str_helper(n+1) +
+                self._user_access_level.str_helper(n+1) +
+                self._minimum_sampling_interval.str_helper(n+1) +
                 self._historizing.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEnumValueType +++++++++++++++++++++++
 class UaEnumValueType(UaType):
-    def __init__(self, val=ffi.new("UA_EnumValueType*")):
-        super().__init__(val)
-        self._value = UaInt64(val.value)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
+    def __init__(self, val=ffi.new("UA_EnumValueType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._value = UaInt64(val=val.value)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
     
 
     @property
@@ -2126,23 +4335,23 @@ class UaEnumValueType(UaType):
     def __str__(self):
         return ("UaEnumValueType:\n" + 
                 self._value.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEnumValueType:\n" + 
                 self._value.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEventFieldList +++++++++++++++++++++++
 class UaEventFieldList(UaType):
-    def __init__(self, val=ffi.new("UA_EventFieldList*")):
-        super().__init__(val)
-        self._client_handle = UaUInt32(val.clientHandle)
-        self._event_fields_size = UaSizeT(val.eventFieldsSize)
-        self._event_fields = UaVariant(val.eventFields, True)
+    def __init__(self, val=ffi.new("UA_EventFieldList*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._client_handle = UaUInt32(val=val.clientHandle)
+        self._event_fields_size = SizeT(val=val.eventFieldsSize)
+        self._event_fields = UaVariant(val=val.eventFields, is_pointer=True)
     
 
     @property
@@ -2174,26 +4383,26 @@ class UaEventFieldList(UaType):
 
     def __str__(self):
         return ("UaEventFieldList:\n" + 
-                self._clientHandle.str_helper(1) +
-                self._eventFieldsSize.str_helper(1) +
-                self._eventFields.str_helper(1))
+                self._client_handle.str_helper(1) +
+                self._event_fields_size.str_helper(1) +
+                self._event_fields.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEventFieldList:\n" + 
-                self._clientHandle.str_helper(n+1) +
-                self._eventFieldsSize.str_helper(n+1) +
-                self._eventFields.str_helper(n+1))
+                self._client_handle.str_helper(n+1) +
+                self._event_fields_size.str_helper(n+1) +
+                self._event_fields.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMonitoredItemCreateResult +++++++++++++++++++++++
 class UaMonitoredItemCreateResult(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemCreateResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._monitored_item_id = UaUInt32(val.monitoredItemId)
-        self._revised_sampling_interval = UaDouble(val.revisedSamplingInterval)
-        self._revised_queue_size = UaUInt32(val.revisedQueueSize)
-        self._filter_result = UaExtensionObject(val.filterResult)
+    def __init__(self, val=ffi.new("UA_MonitoredItemCreateResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._monitored_item_id = UaUInt32(val=val.monitoredItemId)
+        self._revised_sampling_interval = UaDouble(val=val.revisedSamplingInterval)
+        self._revised_queue_size = UaUInt32(val=val.revisedQueueSize)
+        self._filter_result = UaExtensionObject(val=val.filterResult)
     
 
     @property
@@ -2243,29 +4452,29 @@ class UaMonitoredItemCreateResult(UaType):
 
     def __str__(self):
         return ("UaMonitoredItemCreateResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._monitoredItemId.str_helper(1) +
-                self._revisedSamplingInterval.str_helper(1) +
-                self._revisedQueueSize.str_helper(1) +
-                self._filterResult.str_helper(1))
+                self._status_code.str_helper(1) +
+                self._monitored_item_id.str_helper(1) +
+                self._revised_sampling_interval.str_helper(1) +
+                self._revised_queue_size.str_helper(1) +
+                self._filter_result.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMonitoredItemCreateResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._monitoredItemId.str_helper(n+1) +
-                self._revisedSamplingInterval.str_helper(n+1) +
-                self._revisedQueueSize.str_helper(n+1) +
-                self._filterResult.str_helper(n+1))
+                self._status_code.str_helper(n+1) +
+                self._monitored_item_id.str_helper(n+1) +
+                self._revised_sampling_interval.str_helper(n+1) +
+                self._revised_queue_size.str_helper(n+1) +
+                self._filter_result.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEUInformation +++++++++++++++++++++++
 class UaEUInformation(UaType):
-    def __init__(self, val=ffi.new("UA_EUInformation*")):
-        super().__init__(val)
-        self._namespace_uri = UaString(val.namespaceUri)
-        self._unit_id = UaInt32(val.unitId)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
+    def __init__(self, val=ffi.new("UA_EUInformation*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._namespace_uri = UaString(val=val.namespaceUri)
+        self._unit_id = UaInt32(val=val.unitId)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
     
 
     @property
@@ -2306,35 +4515,35 @@ class UaEUInformation(UaType):
 
     def __str__(self):
         return ("UaEUInformation:\n" + 
-                self._namespaceUri.str_helper(1) +
-                self._unitId.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._namespace_uri.str_helper(1) +
+                self._unit_id.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEUInformation:\n" + 
-                self._namespaceUri.str_helper(n+1) +
-                self._unitId.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._namespace_uri.str_helper(n+1) +
+                self._unit_id.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaServerDiagnosticsSummaryDataType +++++++++++++++++++++++
 class UaServerDiagnosticsSummaryDataType(UaType):
-    def __init__(self, val=ffi.new("UA_ServerDiagnosticsSummaryDataType*")):
-        super().__init__(val)
-        self._server_view_count = UaUInt32(val.serverViewCount)
-        self._current_session_count = UaUInt32(val.currentSessionCount)
-        self._cumulated_session_count = UaUInt32(val.cumulatedSessionCount)
-        self._security_rejected_session_count = UaUInt32(val.securityRejectedSessionCount)
-        self._rejected_session_count = UaUInt32(val.rejectedSessionCount)
-        self._session_timeout_count = UaUInt32(val.sessionTimeoutCount)
-        self._session_abort_count = UaUInt32(val.sessionAbortCount)
-        self._current_subscription_count = UaUInt32(val.currentSubscriptionCount)
-        self._cumulated_subscription_count = UaUInt32(val.cumulatedSubscriptionCount)
-        self._publishing_interval_count = UaUInt32(val.publishingIntervalCount)
-        self._security_rejected_requests_count = UaUInt32(val.securityRejectedRequestsCount)
-        self._rejected_requests_count = UaUInt32(val.rejectedRequestsCount)
+    def __init__(self, val=ffi.new("UA_ServerDiagnosticsSummaryDataType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._server_view_count = UaUInt32(val=val.serverViewCount)
+        self._current_session_count = UaUInt32(val=val.currentSessionCount)
+        self._cumulated_session_count = UaUInt32(val=val.cumulatedSessionCount)
+        self._security_rejected_session_count = UaUInt32(val=val.securityRejectedSessionCount)
+        self._rejected_session_count = UaUInt32(val=val.rejectedSessionCount)
+        self._session_timeout_count = UaUInt32(val=val.sessionTimeoutCount)
+        self._session_abort_count = UaUInt32(val=val.sessionAbortCount)
+        self._current_subscription_count = UaUInt32(val=val.currentSubscriptionCount)
+        self._cumulated_subscription_count = UaUInt32(val=val.cumulatedSubscriptionCount)
+        self._publishing_interval_count = UaUInt32(val=val.publishingIntervalCount)
+        self._security_rejected_requests_count = UaUInt32(val=val.securityRejectedRequestsCount)
+        self._rejected_requests_count = UaUInt32(val=val.rejectedRequestsCount)
     
 
     @property
@@ -2447,44 +4656,44 @@ class UaServerDiagnosticsSummaryDataType(UaType):
 
     def __str__(self):
         return ("UaServerDiagnosticsSummaryDataType:\n" + 
-                self._serverViewCount.str_helper(1) +
-                self._currentSessionCount.str_helper(1) +
-                self._cumulatedSessionCount.str_helper(1) +
-                self._securityRejectedSessionCount.str_helper(1) +
-                self._rejectedSessionCount.str_helper(1) +
-                self._sessionTimeoutCount.str_helper(1) +
-                self._sessionAbortCount.str_helper(1) +
-                self._currentSubscriptionCount.str_helper(1) +
-                self._cumulatedSubscriptionCount.str_helper(1) +
-                self._publishingIntervalCount.str_helper(1) +
-                self._securityRejectedRequestsCount.str_helper(1) +
-                self._rejectedRequestsCount.str_helper(1))
+                self._server_view_count.str_helper(1) +
+                self._current_session_count.str_helper(1) +
+                self._cumulated_session_count.str_helper(1) +
+                self._security_rejected_session_count.str_helper(1) +
+                self._rejected_session_count.str_helper(1) +
+                self._session_timeout_count.str_helper(1) +
+                self._session_abort_count.str_helper(1) +
+                self._current_subscription_count.str_helper(1) +
+                self._cumulated_subscription_count.str_helper(1) +
+                self._publishing_interval_count.str_helper(1) +
+                self._security_rejected_requests_count.str_helper(1) +
+                self._rejected_requests_count.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaServerDiagnosticsSummaryDataType:\n" + 
-                self._serverViewCount.str_helper(n+1) +
-                self._currentSessionCount.str_helper(n+1) +
-                self._cumulatedSessionCount.str_helper(n+1) +
-                self._securityRejectedSessionCount.str_helper(n+1) +
-                self._rejectedSessionCount.str_helper(n+1) +
-                self._sessionTimeoutCount.str_helper(n+1) +
-                self._sessionAbortCount.str_helper(n+1) +
-                self._currentSubscriptionCount.str_helper(n+1) +
-                self._cumulatedSubscriptionCount.str_helper(n+1) +
-                self._publishingIntervalCount.str_helper(n+1) +
-                self._securityRejectedRequestsCount.str_helper(n+1) +
-                self._rejectedRequestsCount.str_helper(n+1))
+                self._server_view_count.str_helper(n+1) +
+                self._current_session_count.str_helper(n+1) +
+                self._cumulated_session_count.str_helper(n+1) +
+                self._security_rejected_session_count.str_helper(n+1) +
+                self._rejected_session_count.str_helper(n+1) +
+                self._session_timeout_count.str_helper(n+1) +
+                self._session_abort_count.str_helper(n+1) +
+                self._current_subscription_count.str_helper(n+1) +
+                self._cumulated_subscription_count.str_helper(n+1) +
+                self._publishing_interval_count.str_helper(n+1) +
+                self._security_rejected_requests_count.str_helper(n+1) +
+                self._rejected_requests_count.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaContentFilterElementResult +++++++++++++++++++++++
 class UaContentFilterElementResult(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterElementResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._operand_status_codes_size = UaSizeT(val.operandStatusCodesSize)
-        self._operand_status_codes = UaStatusCode(val.operandStatusCodes, True)
-        self._operand_diagnostic_infos_size = UaSizeT(val.operandDiagnosticInfosSize)
-        self._operand_diagnostic_infos = UaDiagnosticInfo(val.operandDiagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_ContentFilterElementResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._operand_status_codes_size = SizeT(val=val.operandStatusCodesSize)
+        self._operand_status_codes = UaStatusCode(val=val.operandStatusCodes, is_pointer=True)
+        self._operand_diagnostic_infos_size = SizeT(val=val.operandDiagnosticInfosSize)
+        self._operand_diagnostic_infos = UaDiagnosticInfo(val=val.operandDiagnosticInfos, is_pointer=True)
     
 
     @property
@@ -2534,26 +4743,26 @@ class UaContentFilterElementResult(UaType):
 
     def __str__(self):
         return ("UaContentFilterElementResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._operandStatusCodesSize.str_helper(1) +
-                self._operandStatusCodes.str_helper(1) +
-                self._operandDiagnosticInfosSize.str_helper(1) +
-                self._operandDiagnosticInfos.str_helper(1))
+                self._status_code.str_helper(1) +
+                self._operand_status_codes_size.str_helper(1) +
+                self._operand_status_codes.str_helper(1) +
+                self._operand_diagnostic_infos_size.str_helper(1) +
+                self._operand_diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaContentFilterElementResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._operandStatusCodesSize.str_helper(n+1) +
-                self._operandStatusCodes.str_helper(n+1) +
-                self._operandDiagnosticInfosSize.str_helper(n+1) +
-                self._operandDiagnosticInfos.str_helper(n+1))
+                self._status_code.str_helper(n+1) +
+                self._operand_status_codes_size.str_helper(n+1) +
+                self._operand_status_codes.str_helper(n+1) +
+                self._operand_diagnostic_infos_size.str_helper(n+1) +
+                self._operand_diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaLiteralOperand +++++++++++++++++++++++
 class UaLiteralOperand(UaType):
-    def __init__(self, val=ffi.new("UA_LiteralOperand*")):
-        super().__init__(val)
-        self._value = UaVariant(val.value)
+    def __init__(self, val=ffi.new("UA_LiteralOperand*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._value = UaVariant(val=val.value)
     
 
     @property
@@ -2576,9 +4785,9 @@ class UaLiteralOperand(UaType):
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
 class UaUserIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_UserIdentityToken*")):
-        super().__init__(val)
-        self._policy_id = UaString(val.policyId)
+    def __init__(self, val=ffi.new("UA_UserIdentityToken*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._policy_id = UaString(val=val.policyId)
     
 
     @property
@@ -2592,19 +4801,19 @@ class UaUserIdentityToken(UaType):
 
     def __str__(self):
         return ("UaUserIdentityToken:\n" + 
-                self._policyId.str_helper(1))
+                self._policy_id.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaUserIdentityToken:\n" + 
-                self._policyId.str_helper(n+1))
+                self._policy_id.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaX509IdentityToken +++++++++++++++++++++++
 class UaX509IdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_X509IdentityToken*")):
-        super().__init__(val)
-        self._policy_id = UaString(val.policyId)
-        self._certificate_data = UaByteString(val.certificateData)
+    def __init__(self, val=ffi.new("UA_X509IdentityToken*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._policy_id = UaString(val=val.policyId)
+        self._certificate_data = UaByteString(val=val.certificateData)
     
 
     @property
@@ -2627,21 +4836,21 @@ class UaX509IdentityToken(UaType):
 
     def __str__(self):
         return ("UaX509IdentityToken:\n" + 
-                self._policyId.str_helper(1) +
-                self._certificateData.str_helper(1))
+                self._policy_id.str_helper(1) +
+                self._certificate_data.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaX509IdentityToken:\n" + 
-                self._policyId.str_helper(n+1) +
-                self._certificateData.str_helper(n+1))
+                self._policy_id.str_helper(n+1) +
+                self._certificate_data.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMonitoredItemNotification +++++++++++++++++++++++
 class UaMonitoredItemNotification(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemNotification*")):
-        super().__init__(val)
-        self._client_handle = UaUInt32(val.clientHandle)
-        self._value = UaDataValue(val.value)
+    def __init__(self, val=ffi.new("UA_MonitoredItemNotification*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._client_handle = UaUInt32(val=val.clientHandle)
+        self._value = UaDataValue(val=val.value)
     
 
     @property
@@ -2664,26 +4873,26 @@ class UaMonitoredItemNotification(UaType):
 
     def __str__(self):
         return ("UaMonitoredItemNotification:\n" + 
-                self._clientHandle.str_helper(1) +
+                self._client_handle.str_helper(1) +
                 self._value.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMonitoredItemNotification:\n" + 
-                self._clientHandle.str_helper(n+1) +
+                self._client_handle.str_helper(n+1) +
                 self._value.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
 class UaResponseHeader(UaType):
-    def __init__(self, val=ffi.new("UA_ResponseHeader*")):
-        super().__init__(val)
-        self._timestamp = UaDateTime(val.timestamp)
-        self._request_handle = UaUInt32(val.requestHandle)
-        self._service_result = UaStatusCode(val.serviceResult)
-        self._service_diagnostics = UaDiagnosticInfo(val.serviceDiagnostics)
-        self._string_table_size = UaSizeT(val.stringTableSize)
-        self._string_table = UaString(val.stringTable, True)
-        self._additional_header = UaExtensionObject(val.additionalHeader)
+    def __init__(self, val=ffi.new("UA_ResponseHeader*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._timestamp = UaDateTime(val=val.timestamp)
+        self._request_handle = UaUInt32(val=val.requestHandle)
+        self._service_result = UaStatusCode(val=val.serviceResult)
+        self._service_diagnostics = UaDiagnosticInfo(val=val.serviceDiagnostics)
+        self._string_table_size = SizeT(val=val.stringTableSize)
+        self._string_table = UaString(val=val.stringTable, is_pointer=True)
+        self._additional_header = UaExtensionObject(val=val.additionalHeader)
     
 
     @property
@@ -2752,30 +4961,30 @@ class UaResponseHeader(UaType):
     def __str__(self):
         return ("UaResponseHeader:\n" + 
                 self._timestamp.str_helper(1) +
-                self._requestHandle.str_helper(1) +
-                self._serviceResult.str_helper(1) +
-                self._serviceDiagnostics.str_helper(1) +
-                self._stringTableSize.str_helper(1) +
-                self._stringTable.str_helper(1) +
-                self._additionalHeader.str_helper(1))
+                self._request_handle.str_helper(1) +
+                self._service_result.str_helper(1) +
+                self._service_diagnostics.str_helper(1) +
+                self._string_table_size.str_helper(1) +
+                self._string_table.str_helper(1) +
+                self._additional_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaResponseHeader:\n" + 
                 self._timestamp.str_helper(n+1) +
-                self._requestHandle.str_helper(n+1) +
-                self._serviceResult.str_helper(n+1) +
-                self._serviceDiagnostics.str_helper(n+1) +
-                self._stringTableSize.str_helper(n+1) +
-                self._stringTable.str_helper(n+1) +
-                self._additionalHeader.str_helper(n+1))
+                self._request_handle.str_helper(n+1) +
+                self._service_result.str_helper(n+1) +
+                self._service_diagnostics.str_helper(n+1) +
+                self._string_table_size.str_helper(n+1) +
+                self._string_table.str_helper(n+1) +
+                self._additional_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSignatureData +++++++++++++++++++++++
 class UaSignatureData(UaType):
-    def __init__(self, val=ffi.new("UA_SignatureData*")):
-        super().__init__(val)
-        self._algorithm = UaString(val.algorithm)
-        self._signature = UaByteString(val.signature)
+    def __init__(self, val=ffi.new("UA_SignatureData*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._algorithm = UaString(val=val.algorithm)
+        self._signature = UaByteString(val=val.signature)
     
 
     @property
@@ -2809,12 +5018,12 @@ class UaSignatureData(UaType):
 
 # +++++++++++++++++++ UaModifySubscriptionResponse +++++++++++++++++++++++
 class UaModifySubscriptionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ModifySubscriptionResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._revised_publishing_interval = UaDouble(val.revisedPublishingInterval)
-        self._revised_lifetime_count = UaUInt32(val.revisedLifetimeCount)
-        self._revised_max_keep_alive_count = UaUInt32(val.revisedMaxKeepAliveCount)
+    def __init__(self, val=ffi.new("UA_ModifySubscriptionResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._revised_publishing_interval = UaDouble(val=val.revisedPublishingInterval)
+        self._revised_lifetime_count = UaUInt32(val=val.revisedLifetimeCount)
+        self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount)
     
 
     @property
@@ -2855,28 +5064,28 @@ class UaModifySubscriptionResponse(UaType):
 
     def __str__(self):
         return ("UaModifySubscriptionResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._revisedPublishingInterval.str_helper(1) +
-                self._revisedLifetimeCount.str_helper(1) +
-                self._revisedMaxKeepAliveCount.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._revised_publishing_interval.str_helper(1) +
+                self._revised_lifetime_count.str_helper(1) +
+                self._revised_max_keep_alive_count.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaModifySubscriptionResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._revisedPublishingInterval.str_helper(n+1) +
-                self._revisedLifetimeCount.str_helper(n+1) +
-                self._revisedMaxKeepAliveCount.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._revised_publishing_interval.str_helper(n+1) +
+                self._revised_lifetime_count.str_helper(n+1) +
+                self._revised_max_keep_alive_count.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaNodeAttributes +++++++++++++++++++++++
 class UaNodeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_NodeAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
+    def __init__(self, val=ffi.new("UA_NodeAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
     
 
     @property
@@ -2926,31 +5135,31 @@ class UaNodeAttributes(UaType):
 
     def __str__(self):
         return ("UaNodeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1))
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaNodeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1))
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaActivateSessionResponse +++++++++++++++++++++++
 class UaActivateSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ActivateSessionResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._server_nonce = UaByteString(val.serverNonce)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_ActivateSessionResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._server_nonce = UaByteString(val=val.serverNonce)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -3009,31 +5218,31 @@ class UaActivateSessionResponse(UaType):
 
     def __str__(self):
         return ("UaActivateSessionResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._serverNonce.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._server_nonce.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaActivateSessionResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._serverNonce.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._server_nonce.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEnumField +++++++++++++++++++++++
 class UaEnumField(UaType):
-    def __init__(self, val=ffi.new("UA_EnumField*")):
-        super().__init__(val)
-        self._value = UaInt64(val.value)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._name = UaString(val.name)
+    def __init__(self, val=ffi.new("UA_EnumField*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._value = UaInt64(val=val.value)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._name = UaString(val=val.name)
     
 
     @property
@@ -3075,33 +5284,33 @@ class UaEnumField(UaType):
     def __str__(self):
         return ("UaEnumField:\n" + 
                 self._value.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
                 self._name.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEnumField:\n" + 
                 self._value.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
                 self._name.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaVariableTypeAttributes +++++++++++++++++++++++
 class UaVariableTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_VariableTypeAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._value = UaVariant(val.value)
-        self._data_type = UaNodeId(val.dataType)
-        self._value_rank = UaInt32(val.valueRank)
-        self._array_dimensions_size = UaSizeT(val.arrayDimensionsSize)
-        self._array_dimensions = UaUInt32(val.arrayDimensions, True)
-        self._is_abstract = UaBoolean(val.isAbstract)
+    def __init__(self, val=ffi.new("UA_VariableTypeAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._value = UaVariant(val=val.value)
+        self._data_type = UaNodeId(val=val.dataType)
+        self._value_rank = UaInt32(val=val.valueRank)
+        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize)
+        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+        self._is_abstract = UaBoolean(val=val.isAbstract)
     
 
     @property
@@ -3205,44 +5414,44 @@ class UaVariableTypeAttributes(UaType):
 
     def __str__(self):
         return ("UaVariableTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
                 self._value.str_helper(1) +
-                self._dataType.str_helper(1) +
-                self._valueRank.str_helper(1) +
-                self._arrayDimensionsSize.str_helper(1) +
-                self._arrayDimensions.str_helper(1) +
-                self._isAbstract.str_helper(1))
+                self._data_type.str_helper(1) +
+                self._value_rank.str_helper(1) +
+                self._array_dimensions_size.str_helper(1) +
+                self._array_dimensions.str_helper(1) +
+                self._is_abstract.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaVariableTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
                 self._value.str_helper(n+1) +
-                self._dataType.str_helper(n+1) +
-                self._valueRank.str_helper(n+1) +
-                self._arrayDimensionsSize.str_helper(n+1) +
-                self._arrayDimensions.str_helper(n+1) +
-                self._isAbstract.str_helper(n+1))
+                self._data_type.str_helper(n+1) +
+                self._value_rank.str_helper(n+1) +
+                self._array_dimensions_size.str_helper(n+1) +
+                self._array_dimensions.str_helper(n+1) +
+                self._is_abstract.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCallMethodResult +++++++++++++++++++++++
 class UaCallMethodResult(UaType):
-    def __init__(self, val=ffi.new("UA_CallMethodResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._input_argument_results_size = UaSizeT(val.inputArgumentResultsSize)
-        self._input_argument_results = UaStatusCode(val.inputArgumentResults, True)
-        self._input_argument_diagnostic_infos_size = UaSizeT(val.inputArgumentDiagnosticInfosSize)
-        self._input_argument_diagnostic_infos = UaDiagnosticInfo(val.inputArgumentDiagnosticInfos, True)
-        self._output_arguments_size = UaSizeT(val.outputArgumentsSize)
-        self._output_arguments = UaVariant(val.outputArguments, True)
+    def __init__(self, val=ffi.new("UA_CallMethodResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._input_argument_results_size = SizeT(val=val.inputArgumentResultsSize)
+        self._input_argument_results = UaStatusCode(val=val.inputArgumentResults, is_pointer=True)
+        self._input_argument_diagnostic_infos_size = SizeT(val=val.inputArgumentDiagnosticInfosSize)
+        self._input_argument_diagnostic_infos = UaDiagnosticInfo(val=val.inputArgumentDiagnosticInfos, is_pointer=True)
+        self._output_arguments_size = SizeT(val=val.outputArgumentsSize)
+        self._output_arguments = UaVariant(val=val.outputArguments, is_pointer=True)
     
 
     @property
@@ -3310,34 +5519,34 @@ class UaCallMethodResult(UaType):
 
     def __str__(self):
         return ("UaCallMethodResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._inputArgumentResultsSize.str_helper(1) +
-                self._inputArgumentResults.str_helper(1) +
-                self._inputArgumentDiagnosticInfosSize.str_helper(1) +
-                self._inputArgumentDiagnosticInfos.str_helper(1) +
-                self._outputArgumentsSize.str_helper(1) +
-                self._outputArguments.str_helper(1))
+                self._status_code.str_helper(1) +
+                self._input_argument_results_size.str_helper(1) +
+                self._input_argument_results.str_helper(1) +
+                self._input_argument_diagnostic_infos_size.str_helper(1) +
+                self._input_argument_diagnostic_infos.str_helper(1) +
+                self._output_arguments_size.str_helper(1) +
+                self._output_arguments.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCallMethodResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._inputArgumentResultsSize.str_helper(n+1) +
-                self._inputArgumentResults.str_helper(n+1) +
-                self._inputArgumentDiagnosticInfosSize.str_helper(n+1) +
-                self._inputArgumentDiagnosticInfos.str_helper(n+1) +
-                self._outputArgumentsSize.str_helper(n+1) +
-                self._outputArguments.str_helper(n+1))
+                self._status_code.str_helper(n+1) +
+                self._input_argument_results_size.str_helper(n+1) +
+                self._input_argument_results.str_helper(n+1) +
+                self._input_argument_diagnostic_infos_size.str_helper(n+1) +
+                self._input_argument_diagnostic_infos.str_helper(n+1) +
+                self._output_arguments_size.str_helper(n+1) +
+                self._output_arguments.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSetMonitoringModeResponse +++++++++++++++++++++++
 class UaSetMonitoringModeResponse(UaType):
-    def __init__(self, val=ffi.new("UA_SetMonitoringModeResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_SetMonitoringModeResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -3387,32 +5596,32 @@ class UaSetMonitoringModeResponse(UaType):
 
     def __str__(self):
         return ("UaSetMonitoringModeResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSetMonitoringModeResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRequestHeader +++++++++++++++++++++++
 class UaRequestHeader(UaType):
-    def __init__(self, val=ffi.new("UA_RequestHeader*")):
-        super().__init__(val)
-        self._authentication_token = UaNodeId(val.authenticationToken)
-        self._timestamp = UaDateTime(val.timestamp)
-        self._request_handle = UaUInt32(val.requestHandle)
-        self._return_diagnostics = UaUInt32(val.returnDiagnostics)
-        self._audit_entry_id = UaString(val.auditEntryId)
-        self._timeout_hint = UaUInt32(val.timeoutHint)
-        self._additional_header = UaExtensionObject(val.additionalHeader)
+    def __init__(self, val=ffi.new("UA_RequestHeader*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._authentication_token = UaNodeId(val=val.authenticationToken)
+        self._timestamp = UaDateTime(val=val.timestamp)
+        self._request_handle = UaUInt32(val=val.requestHandle)
+        self._return_diagnostics = UaUInt32(val=val.returnDiagnostics)
+        self._audit_entry_id = UaString(val=val.auditEntryId)
+        self._timeout_hint = UaUInt32(val=val.timeoutHint)
+        self._additional_header = UaExtensionObject(val=val.additionalHeader)
     
 
     @property
@@ -3480,33 +5689,33 @@ class UaRequestHeader(UaType):
 
     def __str__(self):
         return ("UaRequestHeader:\n" + 
-                self._authenticationToken.str_helper(1) +
+                self._authentication_token.str_helper(1) +
                 self._timestamp.str_helper(1) +
-                self._requestHandle.str_helper(1) +
-                self._returnDiagnostics.str_helper(1) +
-                self._auditEntryId.str_helper(1) +
-                self._timeoutHint.str_helper(1) +
-                self._additionalHeader.str_helper(1))
+                self._request_handle.str_helper(1) +
+                self._return_diagnostics.str_helper(1) +
+                self._audit_entry_id.str_helper(1) +
+                self._timeout_hint.str_helper(1) +
+                self._additional_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRequestHeader:\n" + 
-                self._authenticationToken.str_helper(n+1) +
+                self._authentication_token.str_helper(n+1) +
                 self._timestamp.str_helper(n+1) +
-                self._requestHandle.str_helper(n+1) +
-                self._returnDiagnostics.str_helper(n+1) +
-                self._auditEntryId.str_helper(n+1) +
-                self._timeoutHint.str_helper(n+1) +
-                self._additionalHeader.str_helper(n+1))
+                self._request_handle.str_helper(n+1) +
+                self._return_diagnostics.str_helper(n+1) +
+                self._audit_entry_id.str_helper(n+1) +
+                self._timeout_hint.str_helper(n+1) +
+                self._additional_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMonitoredItemModifyResult +++++++++++++++++++++++
 class UaMonitoredItemModifyResult(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemModifyResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._revised_sampling_interval = UaDouble(val.revisedSamplingInterval)
-        self._revised_queue_size = UaUInt32(val.revisedQueueSize)
-        self._filter_result = UaExtensionObject(val.filterResult)
+    def __init__(self, val=ffi.new("UA_MonitoredItemModifyResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._revised_sampling_interval = UaDouble(val=val.revisedSamplingInterval)
+        self._revised_queue_size = UaUInt32(val=val.revisedQueueSize)
+        self._filter_result = UaExtensionObject(val=val.filterResult)
     
 
     @property
@@ -3547,24 +5756,24 @@ class UaMonitoredItemModifyResult(UaType):
 
     def __str__(self):
         return ("UaMonitoredItemModifyResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._revisedSamplingInterval.str_helper(1) +
-                self._revisedQueueSize.str_helper(1) +
-                self._filterResult.str_helper(1))
+                self._status_code.str_helper(1) +
+                self._revised_sampling_interval.str_helper(1) +
+                self._revised_queue_size.str_helper(1) +
+                self._filter_result.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMonitoredItemModifyResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._revisedSamplingInterval.str_helper(n+1) +
-                self._revisedQueueSize.str_helper(n+1) +
-                self._filterResult.str_helper(n+1))
+                self._status_code.str_helper(n+1) +
+                self._revised_sampling_interval.str_helper(n+1) +
+                self._revised_queue_size.str_helper(n+1) +
+                self._filter_result.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCloseSecureChannelRequest +++++++++++++++++++++++
 class UaCloseSecureChannelRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSecureChannelRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
+    def __init__(self, val=ffi.new("UA_CloseSecureChannelRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
     
 
     @property
@@ -3578,21 +5787,21 @@ class UaCloseSecureChannelRequest(UaType):
 
     def __str__(self):
         return ("UaCloseSecureChannelRequest:\n" + 
-                self._requestHeader.str_helper(1))
+                self._request_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCloseSecureChannelRequest:\n" + 
-                self._requestHeader.str_helper(n+1))
+                self._request_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaNotificationMessage +++++++++++++++++++++++
 class UaNotificationMessage(UaType):
-    def __init__(self, val=ffi.new("UA_NotificationMessage*")):
-        super().__init__(val)
-        self._sequence_number = UaUInt32(val.sequenceNumber)
-        self._publish_time = UaDateTime(val.publishTime)
-        self._notification_data_size = UaSizeT(val.notificationDataSize)
-        self._notification_data = UaExtensionObject(val.notificationData, True)
+    def __init__(self, val=ffi.new("UA_NotificationMessage*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._sequence_number = UaUInt32(val=val.sequenceNumber)
+        self._publish_time = UaDateTime(val=val.publishTime)
+        self._notification_data_size = SizeT(val=val.notificationDataSize)
+        self._notification_data = UaExtensionObject(val=val.notificationData, is_pointer=True)
     
 
     @property
@@ -3633,28 +5842,28 @@ class UaNotificationMessage(UaType):
 
     def __str__(self):
         return ("UaNotificationMessage:\n" + 
-                self._sequenceNumber.str_helper(1) +
-                self._publishTime.str_helper(1) +
-                self._notificationDataSize.str_helper(1) +
-                self._notificationData.str_helper(1))
+                self._sequence_number.str_helper(1) +
+                self._publish_time.str_helper(1) +
+                self._notification_data_size.str_helper(1) +
+                self._notification_data.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaNotificationMessage:\n" + 
-                self._sequenceNumber.str_helper(n+1) +
-                self._publishTime.str_helper(n+1) +
-                self._notificationDataSize.str_helper(n+1) +
-                self._notificationData.str_helper(n+1))
+                self._sequence_number.str_helper(n+1) +
+                self._publish_time.str_helper(n+1) +
+                self._notification_data_size.str_helper(n+1) +
+                self._notification_data.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCreateSubscriptionResponse +++++++++++++++++++++++
 class UaCreateSubscriptionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSubscriptionResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._revised_publishing_interval = UaDouble(val.revisedPublishingInterval)
-        self._revised_lifetime_count = UaUInt32(val.revisedLifetimeCount)
-        self._revised_max_keep_alive_count = UaUInt32(val.revisedMaxKeepAliveCount)
+    def __init__(self, val=ffi.new("UA_CreateSubscriptionResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._revised_publishing_interval = UaDouble(val=val.revisedPublishingInterval)
+        self._revised_lifetime_count = UaUInt32(val=val.revisedLifetimeCount)
+        self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount)
     
 
     @property
@@ -3704,27 +5913,27 @@ class UaCreateSubscriptionResponse(UaType):
 
     def __str__(self):
         return ("UaCreateSubscriptionResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._revisedPublishingInterval.str_helper(1) +
-                self._revisedLifetimeCount.str_helper(1) +
-                self._revisedMaxKeepAliveCount.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._revised_publishing_interval.str_helper(1) +
+                self._revised_lifetime_count.str_helper(1) +
+                self._revised_max_keep_alive_count.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCreateSubscriptionResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._revisedPublishingInterval.str_helper(n+1) +
-                self._revisedLifetimeCount.str_helper(n+1) +
-                self._revisedMaxKeepAliveCount.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._revised_publishing_interval.str_helper(n+1) +
+                self._revised_lifetime_count.str_helper(n+1) +
+                self._revised_max_keep_alive_count.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEnumDefinition +++++++++++++++++++++++
 class UaEnumDefinition(UaType):
-    def __init__(self, val=ffi.new("UA_EnumDefinition*")):
-        super().__init__(val)
-        self._fields_size = UaSizeT(val.fieldsSize)
-        self._fields = UaEnumField(val.fields, True)
+    def __init__(self, val=ffi.new("UA_EnumDefinition*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._fields_size = SizeT(val=val.fieldsSize)
+        self._fields = UaEnumField(val=val.fields, is_pointer=True)
     
 
     @property
@@ -3747,23 +5956,23 @@ class UaEnumDefinition(UaType):
 
     def __str__(self):
         return ("UaEnumDefinition:\n" + 
-                self._fieldsSize.str_helper(1) +
+                self._fields_size.str_helper(1) +
                 self._fields.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEnumDefinition:\n" + 
-                self._fieldsSize.str_helper(n+1) +
+                self._fields_size.str_helper(n+1) +
                 self._fields.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCallMethodRequest +++++++++++++++++++++++
 class UaCallMethodRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CallMethodRequest*")):
-        super().__init__(val)
-        self._object_id = UaNodeId(val.objectId)
-        self._method_id = UaNodeId(val.methodId)
-        self._input_arguments_size = UaSizeT(val.inputArgumentsSize)
-        self._input_arguments = UaVariant(val.inputArguments, True)
+    def __init__(self, val=ffi.new("UA_CallMethodRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._object_id = UaNodeId(val=val.objectId)
+        self._method_id = UaNodeId(val=val.methodId)
+        self._input_arguments_size = SizeT(val=val.inputArgumentsSize)
+        self._input_arguments = UaVariant(val=val.inputArguments, is_pointer=True)
     
 
     @property
@@ -3804,28 +6013,28 @@ class UaCallMethodRequest(UaType):
 
     def __str__(self):
         return ("UaCallMethodRequest:\n" + 
-                self._objectId.str_helper(1) +
-                self._methodId.str_helper(1) +
-                self._inputArgumentsSize.str_helper(1) +
-                self._inputArguments.str_helper(1))
+                self._object_id.str_helper(1) +
+                self._method_id.str_helper(1) +
+                self._input_arguments_size.str_helper(1) +
+                self._input_arguments.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCallMethodRequest:\n" + 
-                self._objectId.str_helper(n+1) +
-                self._methodId.str_helper(n+1) +
-                self._inputArgumentsSize.str_helper(n+1) +
-                self._inputArguments.str_helper(n+1))
+                self._object_id.str_helper(n+1) +
+                self._method_id.str_helper(n+1) +
+                self._input_arguments_size.str_helper(n+1) +
+                self._input_arguments.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaReadResponse +++++++++++++++++++++++
 class UaReadResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ReadResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaDataValue(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_ReadResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaDataValue(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -3875,31 +6084,31 @@ class UaReadResponse(UaType):
 
     def __str__(self):
         return ("UaReadResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaReadResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaObjectTypeAttributes +++++++++++++++++++++++
 class UaObjectTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ObjectTypeAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._is_abstract = UaBoolean(val.isAbstract)
+    def __init__(self, val=ffi.new("UA_ObjectTypeAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._is_abstract = UaBoolean(val=val.isAbstract)
     
 
     @property
@@ -3958,28 +6167,28 @@ class UaObjectTypeAttributes(UaType):
 
     def __str__(self):
         return ("UaObjectTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
-                self._isAbstract.str_helper(1))
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
+                self._is_abstract.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaObjectTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
-                self._isAbstract.str_helper(n+1))
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
+                self._is_abstract.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCloseSessionResponse +++++++++++++++++++++++
 class UaCloseSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSessionResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
+    def __init__(self, val=ffi.new("UA_CloseSessionResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
     
 
     @property
@@ -3993,21 +6202,21 @@ class UaCloseSessionResponse(UaType):
 
     def __str__(self):
         return ("UaCloseSessionResponse:\n" + 
-                self._responseHeader.str_helper(1))
+                self._response_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCloseSessionResponse:\n" + 
-                self._responseHeader.str_helper(n+1))
+                self._response_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSetPublishingModeRequest +++++++++++++++++++++++
 class UaSetPublishingModeRequest(UaType):
-    def __init__(self, val=ffi.new("UA_SetPublishingModeRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._publishing_enabled = UaBoolean(val.publishingEnabled)
-        self._subscription_ids_size = UaSizeT(val.subscriptionIdsSize)
-        self._subscription_ids = UaUInt32(val.subscriptionIds, True)
+    def __init__(self, val=ffi.new("UA_SetPublishingModeRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._publishing_enabled = UaBoolean(val=val.publishingEnabled)
+        self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize)
+        self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
     
 
     @property
@@ -4048,26 +6257,26 @@ class UaSetPublishingModeRequest(UaType):
 
     def __str__(self):
         return ("UaSetPublishingModeRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._publishingEnabled.str_helper(1) +
-                self._subscriptionIdsSize.str_helper(1) +
-                self._subscriptionIds.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._publishing_enabled.str_helper(1) +
+                self._subscription_ids_size.str_helper(1) +
+                self._subscription_ids.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSetPublishingModeRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._publishingEnabled.str_helper(n+1) +
-                self._subscriptionIdsSize.str_helper(n+1) +
-                self._subscriptionIds.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._publishing_enabled.str_helper(n+1) +
+                self._subscription_ids_size.str_helper(n+1) +
+                self._subscription_ids.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaIssuedIdentityToken +++++++++++++++++++++++
 class UaIssuedIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_IssuedIdentityToken*")):
-        super().__init__(val)
-        self._policy_id = UaString(val.policyId)
-        self._token_data = UaByteString(val.tokenData)
-        self._encryption_algorithm = UaString(val.encryptionAlgorithm)
+    def __init__(self, val=ffi.new("UA_IssuedIdentityToken*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._policy_id = UaString(val=val.policyId)
+        self._token_data = UaByteString(val=val.tokenData)
+        self._encryption_algorithm = UaString(val=val.encryptionAlgorithm)
     
 
     @property
@@ -4099,26 +6308,26 @@ class UaIssuedIdentityToken(UaType):
 
     def __str__(self):
         return ("UaIssuedIdentityToken:\n" + 
-                self._policyId.str_helper(1) +
-                self._tokenData.str_helper(1) +
-                self._encryptionAlgorithm.str_helper(1))
+                self._policy_id.str_helper(1) +
+                self._token_data.str_helper(1) +
+                self._encryption_algorithm.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaIssuedIdentityToken:\n" + 
-                self._policyId.str_helper(n+1) +
-                self._tokenData.str_helper(n+1) +
-                self._encryptionAlgorithm.str_helper(n+1))
+                self._policy_id.str_helper(n+1) +
+                self._token_data.str_helper(n+1) +
+                self._encryption_algorithm.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsResponse +++++++++++++++++++++++
 class UaDeleteMonitoredItemsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -4168,29 +6377,29 @@ class UaDeleteMonitoredItemsResponse(UaType):
 
     def __str__(self):
         return ("UaDeleteMonitoredItemsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteMonitoredItemsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowseNextRequest +++++++++++++++++++++++
 class UaBrowseNextRequest(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseNextRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._release_continuation_points = UaBoolean(val.releaseContinuationPoints)
-        self._continuation_points_size = UaSizeT(val.continuationPointsSize)
-        self._continuation_points = UaByteString(val.continuationPoints, True)
+    def __init__(self, val=ffi.new("UA_BrowseNextRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._release_continuation_points = UaBoolean(val=val.releaseContinuationPoints)
+        self._continuation_points_size = SizeT(val=val.continuationPointsSize)
+        self._continuation_points = UaByteString(val=val.continuationPoints, is_pointer=True)
     
 
     @property
@@ -4231,30 +6440,30 @@ class UaBrowseNextRequest(UaType):
 
     def __str__(self):
         return ("UaBrowseNextRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._releaseContinuationPoints.str_helper(1) +
-                self._continuationPointsSize.str_helper(1) +
-                self._continuationPoints.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._release_continuation_points.str_helper(1) +
+                self._continuation_points_size.str_helper(1) +
+                self._continuation_points.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowseNextRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._releaseContinuationPoints.str_helper(n+1) +
-                self._continuationPointsSize.str_helper(n+1) +
-                self._continuationPoints.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._release_continuation_points.str_helper(n+1) +
+                self._continuation_points_size.str_helper(n+1) +
+                self._continuation_points.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaModifySubscriptionRequest +++++++++++++++++++++++
 class UaModifySubscriptionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ModifySubscriptionRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._requested_publishing_interval = UaDouble(val.requestedPublishingInterval)
-        self._requested_lifetime_count = UaUInt32(val.requestedLifetimeCount)
-        self._requested_max_keep_alive_count = UaUInt32(val.requestedMaxKeepAliveCount)
-        self._max_notifications_per_publish = UaUInt32(val.maxNotificationsPerPublish)
-        self._priority = UaByte(val.priority)
+    def __init__(self, val=ffi.new("UA_ModifySubscriptionRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._requested_publishing_interval = UaDouble(val=val.requestedPublishingInterval)
+        self._requested_lifetime_count = UaUInt32(val=val.requestedLifetimeCount)
+        self._requested_max_keep_alive_count = UaUInt32(val=val.requestedMaxKeepAliveCount)
+        self._max_notifications_per_publish = UaUInt32(val=val.maxNotificationsPerPublish)
+        self._priority = UaByte(val=val.priority)
     
 
     @property
@@ -4322,35 +6531,35 @@ class UaModifySubscriptionRequest(UaType):
 
     def __str__(self):
         return ("UaModifySubscriptionRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._requestedPublishingInterval.str_helper(1) +
-                self._requestedLifetimeCount.str_helper(1) +
-                self._requestedMaxKeepAliveCount.str_helper(1) +
-                self._maxNotificationsPerPublish.str_helper(1) +
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._requested_publishing_interval.str_helper(1) +
+                self._requested_lifetime_count.str_helper(1) +
+                self._requested_max_keep_alive_count.str_helper(1) +
+                self._max_notifications_per_publish.str_helper(1) +
                 self._priority.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaModifySubscriptionRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._requestedPublishingInterval.str_helper(n+1) +
-                self._requestedLifetimeCount.str_helper(n+1) +
-                self._requestedMaxKeepAliveCount.str_helper(n+1) +
-                self._maxNotificationsPerPublish.str_helper(n+1) +
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._requested_publishing_interval.str_helper(n+1) +
+                self._requested_lifetime_count.str_helper(n+1) +
+                self._requested_max_keep_alive_count.str_helper(n+1) +
+                self._max_notifications_per_publish.str_helper(n+1) +
                 self._priority.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowseDescription +++++++++++++++++++++++
 class UaBrowseDescription(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseDescription*")):
-        super().__init__(val)
-        self._node_id = UaNodeId(val.nodeId)
-        self._browse_direction = UaBrowseDirection(val.browseDirection)
-        self._reference_type_id = UaNodeId(val.referenceTypeId)
-        self._include_subtypes = UaBoolean(val.includeSubtypes)
-        self._node_class_mask = UaUInt32(val.nodeClassMask)
-        self._result_mask = UaUInt32(val.resultMask)
+    def __init__(self, val=ffi.new("UA_BrowseDescription*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._node_id = UaNodeId(val=val.nodeId)
+        self._browse_direction = UaBrowseDirection(val=val.browseDirection)
+        self._reference_type_id = UaNodeId(val=val.referenceTypeId)
+        self._include_subtypes = UaBoolean(val=val.includeSubtypes)
+        self._node_class_mask = UaUInt32(val=val.nodeClassMask)
+        self._result_mask = UaUInt32(val=val.resultMask)
     
 
     @property
@@ -4409,29 +6618,29 @@ class UaBrowseDescription(UaType):
 
     def __str__(self):
         return ("UaBrowseDescription:\n" + 
-                self._nodeId.str_helper(1) +
-                self._browseDirection.str_helper(1) +
-                self._referenceTypeId.str_helper(1) +
-                self._includeSubtypes.str_helper(1) +
-                self._nodeClassMask.str_helper(1) +
-                self._resultMask.str_helper(1))
+                self._node_id.str_helper(1) +
+                self._browse_direction.str_helper(1) +
+                self._reference_type_id.str_helper(1) +
+                self._include_subtypes.str_helper(1) +
+                self._node_class_mask.str_helper(1) +
+                self._result_mask.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowseDescription:\n" + 
-                self._nodeId.str_helper(n+1) +
-                self._browseDirection.str_helper(n+1) +
-                self._referenceTypeId.str_helper(n+1) +
-                self._includeSubtypes.str_helper(n+1) +
-                self._nodeClassMask.str_helper(n+1) +
-                self._resultMask.str_helper(n+1))
+                self._node_id.str_helper(n+1) +
+                self._browse_direction.str_helper(n+1) +
+                self._reference_type_id.str_helper(n+1) +
+                self._include_subtypes.str_helper(n+1) +
+                self._node_class_mask.str_helper(n+1) +
+                self._result_mask.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSignedSoftwareCertificate +++++++++++++++++++++++
 class UaSignedSoftwareCertificate(UaType):
-    def __init__(self, val=ffi.new("UA_SignedSoftwareCertificate*")):
-        super().__init__(val)
-        self._certificate_data = UaByteString(val.certificateData)
-        self._signature = UaByteString(val.signature)
+    def __init__(self, val=ffi.new("UA_SignedSoftwareCertificate*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._certificate_data = UaByteString(val=val.certificateData)
+        self._signature = UaByteString(val=val.signature)
     
 
     @property
@@ -4454,21 +6663,21 @@ class UaSignedSoftwareCertificate(UaType):
 
     def __str__(self):
         return ("UaSignedSoftwareCertificate:\n" + 
-                self._certificateData.str_helper(1) +
+                self._certificate_data.str_helper(1) +
                 self._signature.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSignedSoftwareCertificate:\n" + 
-                self._certificateData.str_helper(n+1) +
+                self._certificate_data.str_helper(n+1) +
                 self._signature.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowsePathTarget +++++++++++++++++++++++
 class UaBrowsePathTarget(UaType):
-    def __init__(self, val=ffi.new("UA_BrowsePathTarget*")):
-        super().__init__(val)
-        self._target_id = UaExpandedNodeId(val.targetId)
-        self._remaining_path_index = UaUInt32(val.remainingPathIndex)
+    def __init__(self, val=ffi.new("UA_BrowsePathTarget*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._target_id = UaExpandedNodeId(val=val.targetId)
+        self._remaining_path_index = UaUInt32(val=val.remainingPathIndex)
     
 
     @property
@@ -4491,24 +6700,24 @@ class UaBrowsePathTarget(UaType):
 
     def __str__(self):
         return ("UaBrowsePathTarget:\n" + 
-                self._targetId.str_helper(1) +
-                self._remainingPathIndex.str_helper(1))
+                self._target_id.str_helper(1) +
+                self._remaining_path_index.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowsePathTarget:\n" + 
-                self._targetId.str_helper(n+1) +
-                self._remainingPathIndex.str_helper(n+1))
+                self._target_id.str_helper(n+1) +
+                self._remaining_path_index.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaWriteResponse +++++++++++++++++++++++
 class UaWriteResponse(UaType):
-    def __init__(self, val=ffi.new("UA_WriteResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_WriteResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -4558,27 +6767,27 @@ class UaWriteResponse(UaType):
 
     def __str__(self):
         return ("UaWriteResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaWriteResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddNodesResult +++++++++++++++++++++++
 class UaAddNodesResult(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._added_node_id = UaNodeId(val.addedNodeId)
+    def __init__(self, val=ffi.new("UA_AddNodesResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._added_node_id = UaNodeId(val=val.addedNodeId)
     
 
     @property
@@ -4601,25 +6810,25 @@ class UaAddNodesResult(UaType):
 
     def __str__(self):
         return ("UaAddNodesResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._addedNodeId.str_helper(1))
+                self._status_code.str_helper(1) +
+                self._added_node_id.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddNodesResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._addedNodeId.str_helper(n+1))
+                self._status_code.str_helper(n+1) +
+                self._added_node_id.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddReferencesItem +++++++++++++++++++++++
 class UaAddReferencesItem(UaType):
-    def __init__(self, val=ffi.new("UA_AddReferencesItem*")):
-        super().__init__(val)
-        self._source_node_id = UaNodeId(val.sourceNodeId)
-        self._reference_type_id = UaNodeId(val.referenceTypeId)
-        self._is_forward = UaBoolean(val.isForward)
-        self._target_server_uri = UaString(val.targetServerUri)
-        self._target_node_id = UaExpandedNodeId(val.targetNodeId)
-        self._target_node_class = UaNodeClass(val.targetNodeClass)
+    def __init__(self, val=ffi.new("UA_AddReferencesItem*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._source_node_id = UaNodeId(val=val.sourceNodeId)
+        self._reference_type_id = UaNodeId(val=val.referenceTypeId)
+        self._is_forward = UaBoolean(val=val.isForward)
+        self._target_server_uri = UaString(val=val.targetServerUri)
+        self._target_node_id = UaExpandedNodeId(val=val.targetNodeId)
+        self._target_node_class = UaNodeClass(val=val.targetNodeClass)
     
 
     @property
@@ -4678,32 +6887,32 @@ class UaAddReferencesItem(UaType):
 
     def __str__(self):
         return ("UaAddReferencesItem:\n" + 
-                self._sourceNodeId.str_helper(1) +
-                self._referenceTypeId.str_helper(1) +
-                self._isForward.str_helper(1) +
-                self._targetServerUri.str_helper(1) +
-                self._targetNodeId.str_helper(1) +
-                self._targetNodeClass.str_helper(1))
+                self._source_node_id.str_helper(1) +
+                self._reference_type_id.str_helper(1) +
+                self._is_forward.str_helper(1) +
+                self._target_server_uri.str_helper(1) +
+                self._target_node_id.str_helper(1) +
+                self._target_node_class.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddReferencesItem:\n" + 
-                self._sourceNodeId.str_helper(n+1) +
-                self._referenceTypeId.str_helper(n+1) +
-                self._isForward.str_helper(n+1) +
-                self._targetServerUri.str_helper(n+1) +
-                self._targetNodeId.str_helper(n+1) +
-                self._targetNodeClass.str_helper(n+1))
+                self._source_node_id.str_helper(n+1) +
+                self._reference_type_id.str_helper(n+1) +
+                self._is_forward.str_helper(n+1) +
+                self._target_server_uri.str_helper(n+1) +
+                self._target_node_id.str_helper(n+1) +
+                self._target_node_class.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesResponse +++++++++++++++++++++++
 class UaDeleteReferencesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteReferencesResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_DeleteReferencesResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -4753,29 +6962,29 @@ class UaDeleteReferencesResponse(UaType):
 
     def __str__(self):
         return ("UaDeleteReferencesResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteReferencesResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRelativePathElement +++++++++++++++++++++++
 class UaRelativePathElement(UaType):
-    def __init__(self, val=ffi.new("UA_RelativePathElement*")):
-        super().__init__(val)
-        self._reference_type_id = UaNodeId(val.referenceTypeId)
-        self._is_inverse = UaBoolean(val.isInverse)
-        self._include_subtypes = UaBoolean(val.includeSubtypes)
-        self._target_name = UaQualifiedName(val.targetName)
+    def __init__(self, val=ffi.new("UA_RelativePathElement*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._reference_type_id = UaNodeId(val=val.referenceTypeId)
+        self._is_inverse = UaBoolean(val=val.isInverse)
+        self._include_subtypes = UaBoolean(val=val.includeSubtypes)
+        self._target_name = UaQualifiedName(val=val.targetName)
     
 
     @property
@@ -4816,25 +7025,25 @@ class UaRelativePathElement(UaType):
 
     def __str__(self):
         return ("UaRelativePathElement:\n" + 
-                self._referenceTypeId.str_helper(1) +
-                self._isInverse.str_helper(1) +
-                self._includeSubtypes.str_helper(1) +
-                self._targetName.str_helper(1))
+                self._reference_type_id.str_helper(1) +
+                self._is_inverse.str_helper(1) +
+                self._include_subtypes.str_helper(1) +
+                self._target_name.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRelativePathElement:\n" + 
-                self._referenceTypeId.str_helper(n+1) +
-                self._isInverse.str_helper(n+1) +
-                self._includeSubtypes.str_helper(n+1) +
-                self._targetName.str_helper(n+1))
+                self._reference_type_id.str_helper(n+1) +
+                self._is_inverse.str_helper(n+1) +
+                self._include_subtypes.str_helper(n+1) +
+                self._target_name.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSubscriptionAcknowledgement +++++++++++++++++++++++
 class UaSubscriptionAcknowledgement(UaType):
-    def __init__(self, val=ffi.new("UA_SubscriptionAcknowledgement*")):
-        super().__init__(val)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._sequence_number = UaUInt32(val.sequenceNumber)
+    def __init__(self, val=ffi.new("UA_SubscriptionAcknowledgement*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._sequence_number = UaUInt32(val=val.sequenceNumber)
     
 
     @property
@@ -4857,22 +7066,22 @@ class UaSubscriptionAcknowledgement(UaType):
 
     def __str__(self):
         return ("UaSubscriptionAcknowledgement:\n" + 
-                self._subscriptionId.str_helper(1) +
-                self._sequenceNumber.str_helper(1))
+                self._subscription_id.str_helper(1) +
+                self._sequence_number.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSubscriptionAcknowledgement:\n" + 
-                self._subscriptionId.str_helper(n+1) +
-                self._sequenceNumber.str_helper(n+1))
+                self._subscription_id.str_helper(n+1) +
+                self._sequence_number.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaTransferResult +++++++++++++++++++++++
 class UaTransferResult(UaType):
-    def __init__(self, val=ffi.new("UA_TransferResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._available_sequence_numbers_size = UaSizeT(val.availableSequenceNumbersSize)
-        self._available_sequence_numbers = UaUInt32(val.availableSequenceNumbers, True)
+    def __init__(self, val=ffi.new("UA_TransferResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._available_sequence_numbers_size = SizeT(val=val.availableSequenceNumbersSize)
+        self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
     
 
     @property
@@ -4904,26 +7113,26 @@ class UaTransferResult(UaType):
 
     def __str__(self):
         return ("UaTransferResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._availableSequenceNumbersSize.str_helper(1) +
-                self._availableSequenceNumbers.str_helper(1))
+                self._status_code.str_helper(1) +
+                self._available_sequence_numbers_size.str_helper(1) +
+                self._available_sequence_numbers.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaTransferResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._availableSequenceNumbersSize.str_helper(n+1) +
-                self._availableSequenceNumbers.str_helper(n+1))
+                self._status_code.str_helper(n+1) +
+                self._available_sequence_numbers_size.str_helper(n+1) +
+                self._available_sequence_numbers.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCreateMonitoredItemsResponse +++++++++++++++++++++++
 class UaCreateMonitoredItemsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CreateMonitoredItemsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaMonitoredItemCreateResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_CreateMonitoredItemsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaMonitoredItemCreateResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -4973,30 +7182,30 @@ class UaCreateMonitoredItemsResponse(UaType):
 
     def __str__(self):
         return ("UaCreateMonitoredItemsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCreateMonitoredItemsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesItem +++++++++++++++++++++++
 class UaDeleteReferencesItem(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteReferencesItem*")):
-        super().__init__(val)
-        self._source_node_id = UaNodeId(val.sourceNodeId)
-        self._reference_type_id = UaNodeId(val.referenceTypeId)
-        self._is_forward = UaBoolean(val.isForward)
-        self._target_node_id = UaExpandedNodeId(val.targetNodeId)
-        self._delete_bidirectional = UaBoolean(val.deleteBidirectional)
+    def __init__(self, val=ffi.new("UA_DeleteReferencesItem*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._source_node_id = UaNodeId(val=val.sourceNodeId)
+        self._reference_type_id = UaNodeId(val=val.referenceTypeId)
+        self._is_forward = UaBoolean(val=val.isForward)
+        self._target_node_id = UaExpandedNodeId(val=val.targetNodeId)
+        self._delete_bidirectional = UaBoolean(val=val.deleteBidirectional)
     
 
     @property
@@ -5046,29 +7255,29 @@ class UaDeleteReferencesItem(UaType):
 
     def __str__(self):
         return ("UaDeleteReferencesItem:\n" + 
-                self._sourceNodeId.str_helper(1) +
-                self._referenceTypeId.str_helper(1) +
-                self._isForward.str_helper(1) +
-                self._targetNodeId.str_helper(1) +
-                self._deleteBidirectional.str_helper(1))
+                self._source_node_id.str_helper(1) +
+                self._reference_type_id.str_helper(1) +
+                self._is_forward.str_helper(1) +
+                self._target_node_id.str_helper(1) +
+                self._delete_bidirectional.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteReferencesItem:\n" + 
-                self._sourceNodeId.str_helper(n+1) +
-                self._referenceTypeId.str_helper(n+1) +
-                self._isForward.str_helper(n+1) +
-                self._targetNodeId.str_helper(n+1) +
-                self._deleteBidirectional.str_helper(n+1))
+                self._source_node_id.str_helper(n+1) +
+                self._reference_type_id.str_helper(n+1) +
+                self._is_forward.str_helper(n+1) +
+                self._target_node_id.str_helper(n+1) +
+                self._delete_bidirectional.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaWriteValue +++++++++++++++++++++++
 class UaWriteValue(UaType):
-    def __init__(self, val=ffi.new("UA_WriteValue*")):
-        super().__init__(val)
-        self._node_id = UaNodeId(val.nodeId)
-        self._attribute_id = UaUInt32(val.attributeId)
-        self._index_range = UaString(val.indexRange)
-        self._value = UaDataValue(val.value)
+    def __init__(self, val=ffi.new("UA_WriteValue*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._node_id = UaNodeId(val=val.nodeId)
+        self._attribute_id = UaUInt32(val=val.attributeId)
+        self._index_range = UaString(val=val.indexRange)
+        self._value = UaDataValue(val=val.value)
     
 
     @property
@@ -5109,29 +7318,29 @@ class UaWriteValue(UaType):
 
     def __str__(self):
         return ("UaWriteValue:\n" + 
-                self._nodeId.str_helper(1) +
-                self._attributeId.str_helper(1) +
-                self._indexRange.str_helper(1) +
+                self._node_id.str_helper(1) +
+                self._attribute_id.str_helper(1) +
+                self._index_range.str_helper(1) +
                 self._value.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaWriteValue:\n" + 
-                self._nodeId.str_helper(n+1) +
-                self._attributeId.str_helper(n+1) +
-                self._indexRange.str_helper(n+1) +
+                self._node_id.str_helper(n+1) +
+                self._attribute_id.str_helper(n+1) +
+                self._index_range.str_helper(n+1) +
                 self._value.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDataTypeAttributes +++++++++++++++++++++++
 class UaDataTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_DataTypeAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._is_abstract = UaBoolean(val.isAbstract)
+    def __init__(self, val=ffi.new("UA_DataTypeAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._is_abstract = UaBoolean(val=val.isAbstract)
     
 
     @property
@@ -5190,32 +7399,32 @@ class UaDataTypeAttributes(UaType):
 
     def __str__(self):
         return ("UaDataTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
-                self._isAbstract.str_helper(1))
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
+                self._is_abstract.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDataTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
-                self._isAbstract.str_helper(n+1))
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
+                self._is_abstract.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaTransferSubscriptionsResponse +++++++++++++++++++++++
 class UaTransferSubscriptionsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_TransferSubscriptionsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaTransferResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_TransferSubscriptionsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaTransferResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -5265,30 +7474,30 @@ class UaTransferSubscriptionsResponse(UaType):
 
     def __str__(self):
         return ("UaTransferSubscriptionsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaTransferSubscriptionsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddReferencesResponse +++++++++++++++++++++++
 class UaAddReferencesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_AddReferencesResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_AddReferencesResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -5338,31 +7547,31 @@ class UaAddReferencesResponse(UaType):
 
     def __str__(self):
         return ("UaAddReferencesResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddReferencesResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBuildInfo +++++++++++++++++++++++
 class UaBuildInfo(UaType):
-    def __init__(self, val=ffi.new("UA_BuildInfo*")):
-        super().__init__(val)
-        self._product_uri = UaString(val.productUri)
-        self._manufacturer_name = UaString(val.manufacturerName)
-        self._product_name = UaString(val.productName)
-        self._software_version = UaString(val.softwareVersion)
-        self._build_number = UaString(val.buildNumber)
-        self._build_date = UaDateTime(val.buildDate)
+    def __init__(self, val=ffi.new("UA_BuildInfo*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._product_uri = UaString(val=val.productUri)
+        self._manufacturer_name = UaString(val=val.manufacturerName)
+        self._product_name = UaString(val=val.productName)
+        self._software_version = UaString(val=val.softwareVersion)
+        self._build_number = UaString(val=val.buildNumber)
+        self._build_date = UaDateTime(val=val.buildDate)
     
 
     @property
@@ -5421,32 +7630,32 @@ class UaBuildInfo(UaType):
 
     def __str__(self):
         return ("UaBuildInfo:\n" + 
-                self._productUri.str_helper(1) +
-                self._manufacturerName.str_helper(1) +
-                self._productName.str_helper(1) +
-                self._softwareVersion.str_helper(1) +
-                self._buildNumber.str_helper(1) +
-                self._buildDate.str_helper(1))
+                self._product_uri.str_helper(1) +
+                self._manufacturer_name.str_helper(1) +
+                self._product_name.str_helper(1) +
+                self._software_version.str_helper(1) +
+                self._build_number.str_helper(1) +
+                self._build_date.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBuildInfo:\n" + 
-                self._productUri.str_helper(n+1) +
-                self._manufacturerName.str_helper(n+1) +
-                self._productName.str_helper(n+1) +
-                self._softwareVersion.str_helper(n+1) +
-                self._buildNumber.str_helper(n+1) +
-                self._buildDate.str_helper(n+1))
+                self._product_uri.str_helper(n+1) +
+                self._manufacturer_name.str_helper(n+1) +
+                self._product_name.str_helper(n+1) +
+                self._software_version.str_helper(n+1) +
+                self._build_number.str_helper(n+1) +
+                self._build_date.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMonitoringParameters +++++++++++++++++++++++
 class UaMonitoringParameters(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoringParameters*")):
-        super().__init__(val)
-        self._client_handle = UaUInt32(val.clientHandle)
-        self._sampling_interval = UaDouble(val.samplingInterval)
-        self._filter = UaExtensionObject(val.filter)
-        self._queue_size = UaUInt32(val.queueSize)
-        self._discard_oldest = UaBoolean(val.discardOldest)
+    def __init__(self, val=ffi.new("UA_MonitoringParameters*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._client_handle = UaUInt32(val=val.clientHandle)
+        self._sampling_interval = UaDouble(val=val.samplingInterval)
+        self._filter = UaExtensionObject(val=val.filter)
+        self._queue_size = UaUInt32(val=val.queueSize)
+        self._discard_oldest = UaBoolean(val=val.discardOldest)
     
 
     @property
@@ -5496,27 +7705,27 @@ class UaMonitoringParameters(UaType):
 
     def __str__(self):
         return ("UaMonitoringParameters:\n" + 
-                self._clientHandle.str_helper(1) +
-                self._samplingInterval.str_helper(1) +
+                self._client_handle.str_helper(1) +
+                self._sampling_interval.str_helper(1) +
                 self._filter.str_helper(1) +
-                self._queueSize.str_helper(1) +
-                self._discardOldest.str_helper(1))
+                self._queue_size.str_helper(1) +
+                self._discard_oldest.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMonitoringParameters:\n" + 
-                self._clientHandle.str_helper(n+1) +
-                self._samplingInterval.str_helper(n+1) +
+                self._client_handle.str_helper(n+1) +
+                self._sampling_interval.str_helper(n+1) +
                 self._filter.str_helper(n+1) +
-                self._queueSize.str_helper(n+1) +
-                self._discardOldest.str_helper(n+1))
+                self._queue_size.str_helper(n+1) +
+                self._discard_oldest.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDoubleComplexNumberType +++++++++++++++++++++++
 class UaDoubleComplexNumberType(UaType):
-    def __init__(self, val=ffi.new("UA_DoubleComplexNumberType*")):
-        super().__init__(val)
-        self._real = UaDouble(val.real)
-        self._imaginary = UaDouble(val.imaginary)
+    def __init__(self, val=ffi.new("UA_DoubleComplexNumberType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._real = UaDouble(val=val.real)
+        self._imaginary = UaDouble(val=val.imaginary)
     
 
     @property
@@ -5550,10 +7759,10 @@ class UaDoubleComplexNumberType(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesItem +++++++++++++++++++++++
 class UaDeleteNodesItem(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteNodesItem*")):
-        super().__init__(val)
-        self._node_id = UaNodeId(val.nodeId)
-        self._delete_target_references = UaBoolean(val.deleteTargetReferences)
+    def __init__(self, val=ffi.new("UA_DeleteNodesItem*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._node_id = UaNodeId(val=val.nodeId)
+        self._delete_target_references = UaBoolean(val=val.deleteTargetReferences)
     
 
     @property
@@ -5576,23 +7785,23 @@ class UaDeleteNodesItem(UaType):
 
     def __str__(self):
         return ("UaDeleteNodesItem:\n" + 
-                self._nodeId.str_helper(1) +
-                self._deleteTargetReferences.str_helper(1))
+                self._node_id.str_helper(1) +
+                self._delete_target_references.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteNodesItem:\n" + 
-                self._nodeId.str_helper(n+1) +
-                self._deleteTargetReferences.str_helper(n+1))
+                self._node_id.str_helper(n+1) +
+                self._delete_target_references.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaReadValueId +++++++++++++++++++++++
 class UaReadValueId(UaType):
-    def __init__(self, val=ffi.new("UA_ReadValueId*")):
-        super().__init__(val)
-        self._node_id = UaNodeId(val.nodeId)
-        self._attribute_id = UaUInt32(val.attributeId)
-        self._index_range = UaString(val.indexRange)
-        self._data_encoding = UaQualifiedName(val.dataEncoding)
+    def __init__(self, val=ffi.new("UA_ReadValueId*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._node_id = UaNodeId(val=val.nodeId)
+        self._attribute_id = UaUInt32(val=val.attributeId)
+        self._index_range = UaString(val=val.indexRange)
+        self._data_encoding = UaQualifiedName(val=val.dataEncoding)
     
 
     @property
@@ -5633,26 +7842,26 @@ class UaReadValueId(UaType):
 
     def __str__(self):
         return ("UaReadValueId:\n" + 
-                self._nodeId.str_helper(1) +
-                self._attributeId.str_helper(1) +
-                self._indexRange.str_helper(1) +
-                self._dataEncoding.str_helper(1))
+                self._node_id.str_helper(1) +
+                self._attribute_id.str_helper(1) +
+                self._index_range.str_helper(1) +
+                self._data_encoding.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaReadValueId:\n" + 
-                self._nodeId.str_helper(n+1) +
-                self._attributeId.str_helper(n+1) +
-                self._indexRange.str_helper(n+1) +
-                self._dataEncoding.str_helper(n+1))
+                self._node_id.str_helper(n+1) +
+                self._attribute_id.str_helper(n+1) +
+                self._index_range.str_helper(n+1) +
+                self._data_encoding.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCallRequest +++++++++++++++++++++++
 class UaCallRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CallRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._methods_to_call_size = UaSizeT(val.methodsToCallSize)
-        self._methods_to_call = UaCallMethodRequest(val.methodsToCall, True)
+    def __init__(self, val=ffi.new("UA_CallRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._methods_to_call_size = SizeT(val=val.methodsToCallSize)
+        self._methods_to_call = UaCallMethodRequest(val=val.methodsToCall, is_pointer=True)
     
 
     @property
@@ -5684,23 +7893,23 @@ class UaCallRequest(UaType):
 
     def __str__(self):
         return ("UaCallRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._methodsToCallSize.str_helper(1) +
-                self._methodsToCall.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._methods_to_call_size.str_helper(1) +
+                self._methods_to_call.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCallRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._methodsToCallSize.str_helper(n+1) +
-                self._methodsToCall.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._methods_to_call_size.str_helper(n+1) +
+                self._methods_to_call.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRelativePath +++++++++++++++++++++++
 class UaRelativePath(UaType):
-    def __init__(self, val=ffi.new("UA_RelativePath*")):
-        super().__init__(val)
-        self._elements_size = UaSizeT(val.elementsSize)
-        self._elements = UaRelativePathElement(val.elements, True)
+    def __init__(self, val=ffi.new("UA_RelativePath*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._elements_size = SizeT(val=val.elementsSize)
+        self._elements = UaRelativePathElement(val=val.elements, is_pointer=True)
     
 
     @property
@@ -5723,22 +7932,22 @@ class UaRelativePath(UaType):
 
     def __str__(self):
         return ("UaRelativePath:\n" + 
-                self._elementsSize.str_helper(1) +
+                self._elements_size.str_helper(1) +
                 self._elements.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRelativePath:\n" + 
-                self._elementsSize.str_helper(n+1) +
+                self._elements_size.str_helper(n+1) +
                 self._elements.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteNodesRequest +++++++++++++++++++++++
 class UaDeleteNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteNodesRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._nodes_to_delete_size = UaSizeT(val.nodesToDeleteSize)
-        self._nodes_to_delete = UaDeleteNodesItem(val.nodesToDelete, True)
+    def __init__(self, val=ffi.new("UA_DeleteNodesRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._nodes_to_delete_size = SizeT(val=val.nodesToDeleteSize)
+        self._nodes_to_delete = UaDeleteNodesItem(val=val.nodesToDelete, is_pointer=True)
     
 
     @property
@@ -5770,23 +7979,23 @@ class UaDeleteNodesRequest(UaType):
 
     def __str__(self):
         return ("UaDeleteNodesRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._nodesToDeleteSize.str_helper(1) +
-                self._nodesToDelete.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._nodes_to_delete_size.str_helper(1) +
+                self._nodes_to_delete.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteNodesRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._nodesToDeleteSize.str_helper(n+1) +
-                self._nodesToDelete.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._nodes_to_delete_size.str_helper(n+1) +
+                self._nodes_to_delete.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMonitoredItemModifyRequest +++++++++++++++++++++++
 class UaMonitoredItemModifyRequest(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemModifyRequest*")):
-        super().__init__(val)
-        self._monitored_item_id = UaUInt32(val.monitoredItemId)
-        self._requested_parameters = UaMonitoringParameters(val.requestedParameters)
+    def __init__(self, val=ffi.new("UA_MonitoredItemModifyRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._monitored_item_id = UaUInt32(val=val.monitoredItemId)
+        self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters)
     
 
     @property
@@ -5809,24 +8018,24 @@ class UaMonitoredItemModifyRequest(UaType):
 
     def __str__(self):
         return ("UaMonitoredItemModifyRequest:\n" + 
-                self._monitoredItemId.str_helper(1) +
-                self._requestedParameters.str_helper(1))
+                self._monitored_item_id.str_helper(1) +
+                self._requested_parameters.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMonitoredItemModifyRequest:\n" + 
-                self._monitoredItemId.str_helper(n+1) +
-                self._requestedParameters.str_helper(n+1))
+                self._monitored_item_id.str_helper(n+1) +
+                self._requested_parameters.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAggregateConfiguration +++++++++++++++++++++++
 class UaAggregateConfiguration(UaType):
-    def __init__(self, val=ffi.new("UA_AggregateConfiguration*")):
-        super().__init__(val)
-        self._use_server_capabilities_defaults = UaBoolean(val.useServerCapabilitiesDefaults)
-        self._treat_uncertain_as_bad = UaBoolean(val.treatUncertainAsBad)
-        self._percent_data_bad = UaByte(val.percentDataBad)
-        self._percent_data_good = UaByte(val.percentDataGood)
-        self._use_sloped_extrapolation = UaBoolean(val.useSlopedExtrapolation)
+    def __init__(self, val=ffi.new("UA_AggregateConfiguration*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._use_server_capabilities_defaults = UaBoolean(val=val.useServerCapabilitiesDefaults)
+        self._treat_uncertain_as_bad = UaBoolean(val=val.treatUncertainAsBad)
+        self._percent_data_bad = UaByte(val=val.percentDataBad)
+        self._percent_data_good = UaByte(val=val.percentDataGood)
+        self._use_sloped_extrapolation = UaBoolean(val=val.useSlopedExtrapolation)
     
 
     @property
@@ -5876,26 +8085,26 @@ class UaAggregateConfiguration(UaType):
 
     def __str__(self):
         return ("UaAggregateConfiguration:\n" + 
-                self._useServerCapabilitiesDefaults.str_helper(1) +
-                self._treatUncertainAsBad.str_helper(1) +
-                self._percentDataBad.str_helper(1) +
-                self._percentDataGood.str_helper(1) +
-                self._useSlopedExtrapolation.str_helper(1))
+                self._use_server_capabilities_defaults.str_helper(1) +
+                self._treat_uncertain_as_bad.str_helper(1) +
+                self._percent_data_bad.str_helper(1) +
+                self._percent_data_good.str_helper(1) +
+                self._use_sloped_extrapolation.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAggregateConfiguration:\n" + 
-                self._useServerCapabilitiesDefaults.str_helper(n+1) +
-                self._treatUncertainAsBad.str_helper(n+1) +
-                self._percentDataBad.str_helper(n+1) +
-                self._percentDataGood.str_helper(n+1) +
-                self._useSlopedExtrapolation.str_helper(n+1))
+                self._use_server_capabilities_defaults.str_helper(n+1) +
+                self._treat_uncertain_as_bad.str_helper(n+1) +
+                self._percent_data_bad.str_helper(n+1) +
+                self._percent_data_good.str_helper(n+1) +
+                self._use_sloped_extrapolation.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaUnregisterNodesResponse +++++++++++++++++++++++
 class UaUnregisterNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_UnregisterNodesResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
+    def __init__(self, val=ffi.new("UA_UnregisterNodesResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
     
 
     @property
@@ -5909,21 +8118,21 @@ class UaUnregisterNodesResponse(UaType):
 
     def __str__(self):
         return ("UaUnregisterNodesResponse:\n" + 
-                self._responseHeader.str_helper(1))
+                self._response_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaUnregisterNodesResponse:\n" + 
-                self._responseHeader.str_helper(n+1))
+                self._response_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaContentFilterResult +++++++++++++++++++++++
 class UaContentFilterResult(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterResult*")):
-        super().__init__(val)
-        self._element_results_size = UaSizeT(val.elementResultsSize)
-        self._element_results = UaContentFilterElementResult(val.elementResults, True)
-        self._element_diagnostic_infos_size = UaSizeT(val.elementDiagnosticInfosSize)
-        self._element_diagnostic_infos = UaDiagnosticInfo(val.elementDiagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_ContentFilterResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._element_results_size = SizeT(val=val.elementResultsSize)
+        self._element_results = UaContentFilterElementResult(val=val.elementResults, is_pointer=True)
+        self._element_diagnostic_infos_size = SizeT(val=val.elementDiagnosticInfosSize)
+        self._element_diagnostic_infos = UaDiagnosticInfo(val=val.elementDiagnosticInfos, is_pointer=True)
     
 
     @property
@@ -5964,28 +8173,28 @@ class UaContentFilterResult(UaType):
 
     def __str__(self):
         return ("UaContentFilterResult:\n" + 
-                self._elementResultsSize.str_helper(1) +
-                self._elementResults.str_helper(1) +
-                self._elementDiagnosticInfosSize.str_helper(1) +
-                self._elementDiagnosticInfos.str_helper(1))
+                self._element_results_size.str_helper(1) +
+                self._element_results.str_helper(1) +
+                self._element_diagnostic_infos_size.str_helper(1) +
+                self._element_diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaContentFilterResult:\n" + 
-                self._elementResultsSize.str_helper(n+1) +
-                self._elementResults.str_helper(n+1) +
-                self._elementDiagnosticInfosSize.str_helper(n+1) +
-                self._elementDiagnosticInfos.str_helper(n+1))
+                self._element_results_size.str_helper(n+1) +
+                self._element_results.str_helper(n+1) +
+                self._element_diagnostic_infos_size.str_helper(n+1) +
+                self._element_diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaUserTokenPolicy +++++++++++++++++++++++
 class UaUserTokenPolicy(UaType):
-    def __init__(self, val=ffi.new("UA_UserTokenPolicy*")):
-        super().__init__(val)
-        self._policy_id = UaString(val.policyId)
-        self._token_type = UaUserTokenType(val.tokenType)
-        self._issued_token_type = UaString(val.issuedTokenType)
-        self._issuer_endpoint_url = UaString(val.issuerEndpointUrl)
-        self._security_policy_uri = UaString(val.securityPolicyUri)
+    def __init__(self, val=ffi.new("UA_UserTokenPolicy*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._policy_id = UaString(val=val.policyId)
+        self._token_type = UaUserTokenType(val=val.tokenType)
+        self._issued_token_type = UaString(val=val.issuedTokenType)
+        self._issuer_endpoint_url = UaString(val=val.issuerEndpointUrl)
+        self._security_policy_uri = UaString(val=val.securityPolicyUri)
     
 
     @property
@@ -6035,29 +8244,29 @@ class UaUserTokenPolicy(UaType):
 
     def __str__(self):
         return ("UaUserTokenPolicy:\n" + 
-                self._policyId.str_helper(1) +
-                self._tokenType.str_helper(1) +
-                self._issuedTokenType.str_helper(1) +
-                self._issuerEndpointUrl.str_helper(1) +
-                self._securityPolicyUri.str_helper(1))
+                self._policy_id.str_helper(1) +
+                self._token_type.str_helper(1) +
+                self._issued_token_type.str_helper(1) +
+                self._issuer_endpoint_url.str_helper(1) +
+                self._security_policy_uri.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaUserTokenPolicy:\n" + 
-                self._policyId.str_helper(n+1) +
-                self._tokenType.str_helper(n+1) +
-                self._issuedTokenType.str_helper(n+1) +
-                self._issuerEndpointUrl.str_helper(n+1) +
-                self._securityPolicyUri.str_helper(n+1))
+                self._policy_id.str_helper(n+1) +
+                self._token_type.str_helper(n+1) +
+                self._issued_token_type.str_helper(n+1) +
+                self._issuer_endpoint_url.str_helper(n+1) +
+                self._security_policy_uri.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsRequest +++++++++++++++++++++++
 class UaDeleteMonitoredItemsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._monitored_item_ids_size = UaSizeT(val.monitoredItemIdsSize)
-        self._monitored_item_ids = UaUInt32(val.monitoredItemIds, True)
+    def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._monitored_item_ids_size = SizeT(val=val.monitoredItemIdsSize)
+        self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
     
 
     @property
@@ -6098,28 +8307,28 @@ class UaDeleteMonitoredItemsRequest(UaType):
 
     def __str__(self):
         return ("UaDeleteMonitoredItemsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._monitoredItemIdsSize.str_helper(1) +
-                self._monitoredItemIds.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._monitored_item_ids_size.str_helper(1) +
+                self._monitored_item_ids.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteMonitoredItemsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._monitoredItemIdsSize.str_helper(n+1) +
-                self._monitoredItemIds.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._monitored_item_ids_size.str_helper(n+1) +
+                self._monitored_item_ids.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSetMonitoringModeRequest +++++++++++++++++++++++
 class UaSetMonitoringModeRequest(UaType):
-    def __init__(self, val=ffi.new("UA_SetMonitoringModeRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._monitoring_mode = UaMonitoringMode(val.monitoringMode)
-        self._monitored_item_ids_size = UaSizeT(val.monitoredItemIdsSize)
-        self._monitored_item_ids = UaUInt32(val.monitoredItemIds, True)
+    def __init__(self, val=ffi.new("UA_SetMonitoringModeRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._monitoring_mode = UaMonitoringMode(val=val.monitoringMode)
+        self._monitored_item_ids_size = SizeT(val=val.monitoredItemIdsSize)
+        self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
     
 
     @property
@@ -6169,33 +8378,33 @@ class UaSetMonitoringModeRequest(UaType):
 
     def __str__(self):
         return ("UaSetMonitoringModeRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._monitoringMode.str_helper(1) +
-                self._monitoredItemIdsSize.str_helper(1) +
-                self._monitoredItemIds.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._monitoring_mode.str_helper(1) +
+                self._monitored_item_ids_size.str_helper(1) +
+                self._monitored_item_ids.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSetMonitoringModeRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._monitoringMode.str_helper(n+1) +
-                self._monitoredItemIdsSize.str_helper(n+1) +
-                self._monitoredItemIds.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._monitoring_mode.str_helper(n+1) +
+                self._monitored_item_ids_size.str_helper(n+1) +
+                self._monitored_item_ids.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaReferenceTypeAttributes +++++++++++++++++++++++
 class UaReferenceTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ReferenceTypeAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._is_abstract = UaBoolean(val.isAbstract)
-        self._symmetric = UaBoolean(val.symmetric)
-        self._inverse_name = UaLocalizedText(val.inverseName)
+    def __init__(self, val=ffi.new("UA_ReferenceTypeAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._is_abstract = UaBoolean(val=val.isAbstract)
+        self._symmetric = UaBoolean(val=val.symmetric)
+        self._inverse_name = UaLocalizedText(val=val.inverseName)
     
 
     @property
@@ -6272,37 +8481,37 @@ class UaReferenceTypeAttributes(UaType):
 
     def __str__(self):
         return ("UaReferenceTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
-                self._isAbstract.str_helper(1) +
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
+                self._is_abstract.str_helper(1) +
                 self._symmetric.str_helper(1) +
-                self._inverseName.str_helper(1))
+                self._inverse_name.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaReferenceTypeAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
-                self._isAbstract.str_helper(n+1) +
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
+                self._is_abstract.str_helper(n+1) +
                 self._symmetric.str_helper(n+1) +
-                self._inverseName.str_helper(n+1))
+                self._inverse_name.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaGetEndpointsRequest +++++++++++++++++++++++
 class UaGetEndpointsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_GetEndpointsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._endpoint_url = UaString(val.endpointUrl)
-        self._locale_ids_size = UaSizeT(val.localeIdsSize)
-        self._locale_ids = UaString(val.localeIds, True)
-        self._profile_uris_size = UaSizeT(val.profileUrisSize)
-        self._profile_uris = UaString(val.profileUris, True)
+    def __init__(self, val=ffi.new("UA_GetEndpointsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._endpoint_url = UaString(val=val.endpointUrl)
+        self._locale_ids_size = SizeT(val=val.localeIdsSize)
+        self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
+        self._profile_uris_size = SizeT(val=val.profileUrisSize)
+        self._profile_uris = UaString(val=val.profileUris, is_pointer=True)
     
 
     @property
@@ -6361,28 +8570,28 @@ class UaGetEndpointsRequest(UaType):
 
     def __str__(self):
         return ("UaGetEndpointsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._endpointUrl.str_helper(1) +
-                self._localeIdsSize.str_helper(1) +
-                self._localeIds.str_helper(1) +
-                self._profileUrisSize.str_helper(1) +
-                self._profileUris.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._endpoint_url.str_helper(1) +
+                self._locale_ids_size.str_helper(1) +
+                self._locale_ids.str_helper(1) +
+                self._profile_uris_size.str_helper(1) +
+                self._profile_uris.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaGetEndpointsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._endpointUrl.str_helper(n+1) +
-                self._localeIdsSize.str_helper(n+1) +
-                self._localeIds.str_helper(n+1) +
-                self._profileUrisSize.str_helper(n+1) +
-                self._profileUris.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._endpoint_url.str_helper(n+1) +
+                self._locale_ids_size.str_helper(n+1) +
+                self._locale_ids.str_helper(n+1) +
+                self._profile_uris_size.str_helper(n+1) +
+                self._profile_uris.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCloseSecureChannelResponse +++++++++++++++++++++++
 class UaCloseSecureChannelResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSecureChannelResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
+    def __init__(self, val=ffi.new("UA_CloseSecureChannelResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
     
 
     @property
@@ -6396,20 +8605,20 @@ class UaCloseSecureChannelResponse(UaType):
 
     def __str__(self):
         return ("UaCloseSecureChannelResponse:\n" + 
-                self._responseHeader.str_helper(1))
+                self._response_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCloseSecureChannelResponse:\n" + 
-                self._responseHeader.str_helper(n+1))
+                self._response_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaViewDescription +++++++++++++++++++++++
 class UaViewDescription(UaType):
-    def __init__(self, val=ffi.new("UA_ViewDescription*")):
-        super().__init__(val)
-        self._view_id = UaNodeId(val.viewId)
-        self._timestamp = UaDateTime(val.timestamp)
-        self._view_version = UaUInt32(val.viewVersion)
+    def __init__(self, val=ffi.new("UA_ViewDescription*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._view_id = UaNodeId(val=val.viewId)
+        self._timestamp = UaDateTime(val=val.timestamp)
+        self._view_version = UaUInt32(val=val.viewVersion)
     
 
     @property
@@ -6441,26 +8650,26 @@ class UaViewDescription(UaType):
 
     def __str__(self):
         return ("UaViewDescription:\n" + 
-                self._viewId.str_helper(1) +
+                self._view_id.str_helper(1) +
                 self._timestamp.str_helper(1) +
-                self._viewVersion.str_helper(1))
+                self._view_version.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaViewDescription:\n" + 
-                self._viewId.str_helper(n+1) +
+                self._view_id.str_helper(n+1) +
                 self._timestamp.str_helper(n+1) +
-                self._viewVersion.str_helper(n+1))
+                self._view_version.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSetPublishingModeResponse +++++++++++++++++++++++
 class UaSetPublishingModeResponse(UaType):
-    def __init__(self, val=ffi.new("UA_SetPublishingModeResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_SetPublishingModeResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -6510,27 +8719,27 @@ class UaSetPublishingModeResponse(UaType):
 
     def __str__(self):
         return ("UaSetPublishingModeResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSetPublishingModeResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaStatusChangeNotification +++++++++++++++++++++++
 class UaStatusChangeNotification(UaType):
-    def __init__(self, val=ffi.new("UA_StatusChangeNotification*")):
-        super().__init__(val)
-        self._status = UaStatusCode(val.status)
-        self._diagnostic_info = UaDiagnosticInfo(val.diagnosticInfo)
+    def __init__(self, val=ffi.new("UA_StatusChangeNotification*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status = UaStatusCode(val=val.status)
+        self._diagnostic_info = UaDiagnosticInfo(val=val.diagnosticInfo)
     
 
     @property
@@ -6554,26 +8763,26 @@ class UaStatusChangeNotification(UaType):
     def __str__(self):
         return ("UaStatusChangeNotification:\n" + 
                 self._status.str_helper(1) +
-                self._diagnosticInfo.str_helper(1))
+                self._diagnostic_info.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaStatusChangeNotification:\n" + 
                 self._status.str_helper(n+1) +
-                self._diagnosticInfo.str_helper(n+1))
+                self._diagnostic_info.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaStructureField +++++++++++++++++++++++
 class UaStructureField(UaType):
-    def __init__(self, val=ffi.new("UA_StructureField*")):
-        super().__init__(val)
-        self._name = UaString(val.name)
-        self._description = UaLocalizedText(val.description)
-        self._data_type = UaNodeId(val.dataType)
-        self._value_rank = UaInt32(val.valueRank)
-        self._array_dimensions_size = UaSizeT(val.arrayDimensionsSize)
-        self._array_dimensions = UaUInt32(val.arrayDimensions, True)
-        self._max_string_length = UaUInt32(val.maxStringLength)
-        self._is_optional = UaBoolean(val.isOptional)
+    def __init__(self, val=ffi.new("UA_StructureField*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._name = UaString(val=val.name)
+        self._description = UaLocalizedText(val=val.description)
+        self._data_type = UaNodeId(val=val.dataType)
+        self._value_rank = UaInt32(val=val.valueRank)
+        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize)
+        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+        self._max_string_length = UaUInt32(val=val.maxStringLength)
+        self._is_optional = UaBoolean(val=val.isOptional)
     
 
     @property
@@ -6652,34 +8861,34 @@ class UaStructureField(UaType):
         return ("UaStructureField:\n" + 
                 self._name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._dataType.str_helper(1) +
-                self._valueRank.str_helper(1) +
-                self._arrayDimensionsSize.str_helper(1) +
-                self._arrayDimensions.str_helper(1) +
-                self._maxStringLength.str_helper(1) +
-                self._isOptional.str_helper(1))
+                self._data_type.str_helper(1) +
+                self._value_rank.str_helper(1) +
+                self._array_dimensions_size.str_helper(1) +
+                self._array_dimensions.str_helper(1) +
+                self._max_string_length.str_helper(1) +
+                self._is_optional.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaStructureField:\n" + 
                 self._name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._dataType.str_helper(n+1) +
-                self._valueRank.str_helper(n+1) +
-                self._arrayDimensionsSize.str_helper(n+1) +
-                self._arrayDimensions.str_helper(n+1) +
-                self._maxStringLength.str_helper(n+1) +
-                self._isOptional.str_helper(n+1))
+                self._data_type.str_helper(n+1) +
+                self._value_rank.str_helper(n+1) +
+                self._array_dimensions_size.str_helper(n+1) +
+                self._array_dimensions.str_helper(n+1) +
+                self._max_string_length.str_helper(n+1) +
+                self._is_optional.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEventFilterResult +++++++++++++++++++++++
 class UaEventFilterResult(UaType):
-    def __init__(self, val=ffi.new("UA_EventFilterResult*")):
-        super().__init__(val)
-        self._select_clause_results_size = UaSizeT(val.selectClauseResultsSize)
-        self._select_clause_results = UaStatusCode(val.selectClauseResults, True)
-        self._select_clause_diagnostic_infos_size = UaSizeT(val.selectClauseDiagnosticInfosSize)
-        self._select_clause_diagnostic_infos = UaDiagnosticInfo(val.selectClauseDiagnosticInfos, True)
-        self._where_clause_result = UaContentFilterResult(val.whereClauseResult)
+    def __init__(self, val=ffi.new("UA_EventFilterResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._select_clause_results_size = SizeT(val=val.selectClauseResultsSize)
+        self._select_clause_results = UaStatusCode(val=val.selectClauseResults, is_pointer=True)
+        self._select_clause_diagnostic_infos_size = SizeT(val=val.selectClauseDiagnosticInfosSize)
+        self._select_clause_diagnostic_infos = UaDiagnosticInfo(val=val.selectClauseDiagnosticInfos, is_pointer=True)
+        self._where_clause_result = UaContentFilterResult(val=val.whereClauseResult)
     
 
     @property
@@ -6729,28 +8938,28 @@ class UaEventFilterResult(UaType):
 
     def __str__(self):
         return ("UaEventFilterResult:\n" + 
-                self._selectClauseResultsSize.str_helper(1) +
-                self._selectClauseResults.str_helper(1) +
-                self._selectClauseDiagnosticInfosSize.str_helper(1) +
-                self._selectClauseDiagnosticInfos.str_helper(1) +
-                self._whereClauseResult.str_helper(1))
+                self._select_clause_results_size.str_helper(1) +
+                self._select_clause_results.str_helper(1) +
+                self._select_clause_diagnostic_infos_size.str_helper(1) +
+                self._select_clause_diagnostic_infos.str_helper(1) +
+                self._where_clause_result.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEventFilterResult:\n" + 
-                self._selectClauseResultsSize.str_helper(n+1) +
-                self._selectClauseResults.str_helper(n+1) +
-                self._selectClauseDiagnosticInfosSize.str_helper(n+1) +
-                self._selectClauseDiagnosticInfos.str_helper(n+1) +
-                self._whereClauseResult.str_helper(n+1))
+                self._select_clause_results_size.str_helper(n+1) +
+                self._select_clause_results.str_helper(n+1) +
+                self._select_clause_diagnostic_infos_size.str_helper(n+1) +
+                self._select_clause_diagnostic_infos.str_helper(n+1) +
+                self._where_clause_result.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMonitoredItemCreateRequest +++++++++++++++++++++++
 class UaMonitoredItemCreateRequest(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemCreateRequest*")):
-        super().__init__(val)
-        self._item_to_monitor = UaReadValueId(val.itemToMonitor)
-        self._monitoring_mode = UaMonitoringMode(val.monitoringMode)
-        self._requested_parameters = UaMonitoringParameters(val.requestedParameters)
+    def __init__(self, val=ffi.new("UA_MonitoredItemCreateRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._item_to_monitor = UaReadValueId(val=val.itemToMonitor)
+        self._monitoring_mode = UaMonitoringMode(val=val.monitoringMode)
+        self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters)
     
 
     @property
@@ -6782,23 +8991,23 @@ class UaMonitoredItemCreateRequest(UaType):
 
     def __str__(self):
         return ("UaMonitoredItemCreateRequest:\n" + 
-                self._itemToMonitor.str_helper(1) +
-                self._monitoringMode.str_helper(1) +
-                self._requestedParameters.str_helper(1))
+                self._item_to_monitor.str_helper(1) +
+                self._monitoring_mode.str_helper(1) +
+                self._requested_parameters.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMonitoredItemCreateRequest:\n" + 
-                self._itemToMonitor.str_helper(n+1) +
-                self._monitoringMode.str_helper(n+1) +
-                self._requestedParameters.str_helper(n+1))
+                self._item_to_monitor.str_helper(n+1) +
+                self._monitoring_mode.str_helper(n+1) +
+                self._requested_parameters.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaComplexNumberType +++++++++++++++++++++++
 class UaComplexNumberType(UaType):
-    def __init__(self, val=ffi.new("UA_ComplexNumberType*")):
-        super().__init__(val)
-        self._real = UaFloat(val.real)
-        self._imaginary = UaFloat(val.imaginary)
+    def __init__(self, val=ffi.new("UA_ComplexNumberType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._real = UaFloat(val=val.real)
+        self._imaginary = UaFloat(val=val.imaginary)
     
 
     @property
@@ -6832,10 +9041,10 @@ class UaComplexNumberType(UaType):
 
 # +++++++++++++++++++ UaRange +++++++++++++++++++++++
 class UaRange(UaType):
-    def __init__(self, val=ffi.new("UA_Range*")):
-        super().__init__(val)
-        self._low = UaDouble(val.low)
-        self._high = UaDouble(val.high)
+    def __init__(self, val=ffi.new("UA_Range*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._low = UaDouble(val=val.low)
+        self._high = UaDouble(val=val.high)
     
 
     @property
@@ -6869,12 +9078,12 @@ class UaRange(UaType):
 
 # +++++++++++++++++++ UaDataChangeNotification +++++++++++++++++++++++
 class UaDataChangeNotification(UaType):
-    def __init__(self, val=ffi.new("UA_DataChangeNotification*")):
-        super().__init__(val)
-        self._monitored_items_size = UaSizeT(val.monitoredItemsSize)
-        self._monitored_items = UaMonitoredItemNotification(val.monitoredItems, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_DataChangeNotification*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._monitored_items_size = SizeT(val=val.monitoredItemsSize)
+        self._monitored_items = UaMonitoredItemNotification(val=val.monitoredItems, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -6915,29 +9124,29 @@ class UaDataChangeNotification(UaType):
 
     def __str__(self):
         return ("UaDataChangeNotification:\n" + 
-                self._monitoredItemsSize.str_helper(1) +
-                self._monitoredItems.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._monitored_items_size.str_helper(1) +
+                self._monitored_items.str_helper(1) +
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDataChangeNotification:\n" + 
-                self._monitoredItemsSize.str_helper(n+1) +
-                self._monitoredItems.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._monitored_items_size.str_helper(n+1) +
+                self._monitored_items.str_helper(n+1) +
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaArgument +++++++++++++++++++++++
 class UaArgument(UaType):
-    def __init__(self, val=ffi.new("UA_Argument*")):
-        super().__init__(val)
-        self._name = UaString(val.name)
-        self._data_type = UaNodeId(val.dataType)
-        self._value_rank = UaInt32(val.valueRank)
-        self._array_dimensions_size = UaSizeT(val.arrayDimensionsSize)
-        self._array_dimensions = UaUInt32(val.arrayDimensions, True)
-        self._description = UaLocalizedText(val.description)
+    def __init__(self, val=ffi.new("UA_Argument*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._name = UaString(val=val.name)
+        self._data_type = UaNodeId(val=val.dataType)
+        self._value_rank = UaInt32(val=val.valueRank)
+        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize)
+        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+        self._description = UaLocalizedText(val=val.description)
     
 
     @property
@@ -6997,30 +9206,30 @@ class UaArgument(UaType):
     def __str__(self):
         return ("UaArgument:\n" + 
                 self._name.str_helper(1) +
-                self._dataType.str_helper(1) +
-                self._valueRank.str_helper(1) +
-                self._arrayDimensionsSize.str_helper(1) +
-                self._arrayDimensions.str_helper(1) +
+                self._data_type.str_helper(1) +
+                self._value_rank.str_helper(1) +
+                self._array_dimensions_size.str_helper(1) +
+                self._array_dimensions.str_helper(1) +
                 self._description.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaArgument:\n" + 
                 self._name.str_helper(n+1) +
-                self._dataType.str_helper(n+1) +
-                self._valueRank.str_helper(n+1) +
-                self._arrayDimensionsSize.str_helper(n+1) +
-                self._arrayDimensions.str_helper(n+1) +
+                self._data_type.str_helper(n+1) +
+                self._value_rank.str_helper(n+1) +
+                self._array_dimensions_size.str_helper(n+1) +
+                self._array_dimensions.str_helper(n+1) +
                 self._description.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaTransferSubscriptionsRequest +++++++++++++++++++++++
 class UaTransferSubscriptionsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_TransferSubscriptionsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_ids_size = UaSizeT(val.subscriptionIdsSize)
-        self._subscription_ids = UaUInt32(val.subscriptionIds, True)
-        self._send_initial_values = UaBoolean(val.sendInitialValues)
+    def __init__(self, val=ffi.new("UA_TransferSubscriptionsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize)
+        self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
+        self._send_initial_values = UaBoolean(val=val.sendInitialValues)
     
 
     @property
@@ -7061,27 +9270,27 @@ class UaTransferSubscriptionsRequest(UaType):
 
     def __str__(self):
         return ("UaTransferSubscriptionsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionIdsSize.str_helper(1) +
-                self._subscriptionIds.str_helper(1) +
-                self._sendInitialValues.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_ids_size.str_helper(1) +
+                self._subscription_ids.str_helper(1) +
+                self._send_initial_values.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaTransferSubscriptionsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionIdsSize.str_helper(n+1) +
-                self._subscriptionIds.str_helper(n+1) +
-                self._sendInitialValues.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_ids_size.str_helper(n+1) +
+                self._subscription_ids.str_helper(n+1) +
+                self._send_initial_values.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaChannelSecurityToken +++++++++++++++++++++++
 class UaChannelSecurityToken(UaType):
-    def __init__(self, val=ffi.new("UA_ChannelSecurityToken*")):
-        super().__init__(val)
-        self._channel_id = UaUInt32(val.channelId)
-        self._token_id = UaUInt32(val.tokenId)
-        self._created_at = UaDateTime(val.createdAt)
-        self._revised_lifetime = UaUInt32(val.revisedLifetime)
+    def __init__(self, val=ffi.new("UA_ChannelSecurityToken*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._channel_id = UaUInt32(val=val.channelId)
+        self._token_id = UaUInt32(val=val.tokenId)
+        self._created_at = UaDateTime(val=val.createdAt)
+        self._revised_lifetime = UaUInt32(val=val.revisedLifetime)
     
 
     @property
@@ -7122,25 +9331,25 @@ class UaChannelSecurityToken(UaType):
 
     def __str__(self):
         return ("UaChannelSecurityToken:\n" + 
-                self._channelId.str_helper(1) +
-                self._tokenId.str_helper(1) +
-                self._createdAt.str_helper(1) +
-                self._revisedLifetime.str_helper(1))
+                self._channel_id.str_helper(1) +
+                self._token_id.str_helper(1) +
+                self._created_at.str_helper(1) +
+                self._revised_lifetime.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaChannelSecurityToken:\n" + 
-                self._channelId.str_helper(n+1) +
-                self._tokenId.str_helper(n+1) +
-                self._createdAt.str_helper(n+1) +
-                self._revisedLifetime.str_helper(n+1))
+                self._channel_id.str_helper(n+1) +
+                self._token_id.str_helper(n+1) +
+                self._created_at.str_helper(n+1) +
+                self._revised_lifetime.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEventNotificationList +++++++++++++++++++++++
 class UaEventNotificationList(UaType):
-    def __init__(self, val=ffi.new("UA_EventNotificationList*")):
-        super().__init__(val)
-        self._events_size = UaSizeT(val.eventsSize)
-        self._events = UaEventFieldList(val.events, True)
+    def __init__(self, val=ffi.new("UA_EventNotificationList*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._events_size = SizeT(val=val.eventsSize)
+        self._events = UaEventFieldList(val=val.events, is_pointer=True)
     
 
     @property
@@ -7163,20 +9372,20 @@ class UaEventNotificationList(UaType):
 
     def __str__(self):
         return ("UaEventNotificationList:\n" + 
-                self._eventsSize.str_helper(1) +
+                self._events_size.str_helper(1) +
                 self._events.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEventNotificationList:\n" + 
-                self._eventsSize.str_helper(n+1) +
+                self._events_size.str_helper(n+1) +
                 self._events.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAnonymousIdentityToken +++++++++++++++++++++++
 class UaAnonymousIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_AnonymousIdentityToken*")):
-        super().__init__(val)
-        self._policy_id = UaString(val.policyId)
+    def __init__(self, val=ffi.new("UA_AnonymousIdentityToken*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._policy_id = UaString(val=val.policyId)
     
 
     @property
@@ -7190,21 +9399,21 @@ class UaAnonymousIdentityToken(UaType):
 
     def __str__(self):
         return ("UaAnonymousIdentityToken:\n" + 
-                self._policyId.str_helper(1))
+                self._policy_id.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAnonymousIdentityToken:\n" + 
-                self._policyId.str_helper(n+1))
+                self._policy_id.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAggregateFilter +++++++++++++++++++++++
 class UaAggregateFilter(UaType):
-    def __init__(self, val=ffi.new("UA_AggregateFilter*")):
-        super().__init__(val)
-        self._start_time = UaDateTime(val.startTime)
-        self._aggregate_type = UaNodeId(val.aggregateType)
-        self._processing_interval = UaDouble(val.processingInterval)
-        self._aggregate_configuration = UaAggregateConfiguration(val.aggregateConfiguration)
+    def __init__(self, val=ffi.new("UA_AggregateFilter*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._start_time = UaDateTime(val=val.startTime)
+        self._aggregate_type = UaNodeId(val=val.aggregateType)
+        self._processing_interval = UaDouble(val=val.processingInterval)
+        self._aggregate_configuration = UaAggregateConfiguration(val=val.aggregateConfiguration)
     
 
     @property
@@ -7245,25 +9454,25 @@ class UaAggregateFilter(UaType):
 
     def __str__(self):
         return ("UaAggregateFilter:\n" + 
-                self._startTime.str_helper(1) +
-                self._aggregateType.str_helper(1) +
-                self._processingInterval.str_helper(1) +
-                self._aggregateConfiguration.str_helper(1))
+                self._start_time.str_helper(1) +
+                self._aggregate_type.str_helper(1) +
+                self._processing_interval.str_helper(1) +
+                self._aggregate_configuration.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAggregateFilter:\n" + 
-                self._startTime.str_helper(n+1) +
-                self._aggregateType.str_helper(n+1) +
-                self._processingInterval.str_helper(n+1) +
-                self._aggregateConfiguration.str_helper(n+1))
+                self._start_time.str_helper(n+1) +
+                self._aggregate_type.str_helper(n+1) +
+                self._processing_interval.str_helper(n+1) +
+                self._aggregate_configuration.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRepublishResponse +++++++++++++++++++++++
 class UaRepublishResponse(UaType):
-    def __init__(self, val=ffi.new("UA_RepublishResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._notification_message = UaNotificationMessage(val.notificationMessage)
+    def __init__(self, val=ffi.new("UA_RepublishResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._notification_message = UaNotificationMessage(val=val.notificationMessage)
     
 
     @property
@@ -7286,24 +9495,24 @@ class UaRepublishResponse(UaType):
 
     def __str__(self):
         return ("UaRepublishResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._notificationMessage.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._notification_message.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRepublishResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._notificationMessage.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._notification_message.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteSubscriptionsResponse +++++++++++++++++++++++
 class UaDeleteSubscriptionsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteSubscriptionsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_DeleteSubscriptionsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -7353,28 +9562,28 @@ class UaDeleteSubscriptionsResponse(UaType):
 
     def __str__(self):
         return ("UaDeleteSubscriptionsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteSubscriptionsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRegisterNodesRequest +++++++++++++++++++++++
 class UaRegisterNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_RegisterNodesRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._nodes_to_register_size = UaSizeT(val.nodesToRegisterSize)
-        self._nodes_to_register = UaNodeId(val.nodesToRegister, True)
+    def __init__(self, val=ffi.new("UA_RegisterNodesRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._nodes_to_register_size = SizeT(val=val.nodesToRegisterSize)
+        self._nodes_to_register = UaNodeId(val=val.nodesToRegister, is_pointer=True)
     
 
     @property
@@ -7406,26 +9615,26 @@ class UaRegisterNodesRequest(UaType):
 
     def __str__(self):
         return ("UaRegisterNodesRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._nodesToRegisterSize.str_helper(1) +
-                self._nodesToRegister.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._nodes_to_register_size.str_helper(1) +
+                self._nodes_to_register.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRegisterNodesRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._nodesToRegisterSize.str_helper(n+1) +
-                self._nodesToRegister.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._nodes_to_register_size.str_helper(n+1) +
+                self._nodes_to_register.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaStructureDefinition +++++++++++++++++++++++
 class UaStructureDefinition(UaType):
-    def __init__(self, val=ffi.new("UA_StructureDefinition*")):
-        super().__init__(val)
-        self._default_encoding_id = UaNodeId(val.defaultEncodingId)
-        self._base_data_type = UaNodeId(val.baseDataType)
-        self._structure_type = UaStructureType(val.structureType)
-        self._fields_size = UaSizeT(val.fieldsSize)
-        self._fields = UaStructureField(val.fields, True)
+    def __init__(self, val=ffi.new("UA_StructureDefinition*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._default_encoding_id = UaNodeId(val=val.defaultEncodingId)
+        self._base_data_type = UaNodeId(val=val.baseDataType)
+        self._structure_type = UaStructureType(val=val.structureType)
+        self._fields_size = SizeT(val=val.fieldsSize)
+        self._fields = UaStructureField(val=val.fields, is_pointer=True)
     
 
     @property
@@ -7475,32 +9684,32 @@ class UaStructureDefinition(UaType):
 
     def __str__(self):
         return ("UaStructureDefinition:\n" + 
-                self._defaultEncodingId.str_helper(1) +
-                self._baseDataType.str_helper(1) +
-                self._structureType.str_helper(1) +
-                self._fieldsSize.str_helper(1) +
+                self._default_encoding_id.str_helper(1) +
+                self._base_data_type.str_helper(1) +
+                self._structure_type.str_helper(1) +
+                self._fields_size.str_helper(1) +
                 self._fields.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaStructureDefinition:\n" + 
-                self._defaultEncodingId.str_helper(n+1) +
-                self._baseDataType.str_helper(n+1) +
-                self._structureType.str_helper(n+1) +
-                self._fieldsSize.str_helper(n+1) +
+                self._default_encoding_id.str_helper(n+1) +
+                self._base_data_type.str_helper(n+1) +
+                self._structure_type.str_helper(n+1) +
+                self._fields_size.str_helper(n+1) +
                 self._fields.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaMethodAttributes +++++++++++++++++++++++
 class UaMethodAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_MethodAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._executable = UaBoolean(val.executable)
-        self._user_executable = UaBoolean(val.userExecutable)
+    def __init__(self, val=ffi.new("UA_MethodAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._executable = UaBoolean(val=val.executable)
+        self._user_executable = UaBoolean(val=val.userExecutable)
     
 
     @property
@@ -7568,33 +9777,33 @@ class UaMethodAttributes(UaType):
 
     def __str__(self):
         return ("UaMethodAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
                 self._executable.str_helper(1) +
-                self._userExecutable.str_helper(1))
+                self._user_executable.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaMethodAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
                 self._executable.str_helper(n+1) +
-                self._userExecutable.str_helper(n+1))
+                self._user_executable.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaUserNameIdentityToken +++++++++++++++++++++++
 class UaUserNameIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_UserNameIdentityToken*")):
-        super().__init__(val)
-        self._policy_id = UaString(val.policyId)
-        self._user_name = UaString(val.userName)
-        self._password = UaByteString(val.password)
-        self._encryption_algorithm = UaString(val.encryptionAlgorithm)
+    def __init__(self, val=ffi.new("UA_UserNameIdentityToken*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._policy_id = UaString(val=val.policyId)
+        self._user_name = UaString(val=val.userName)
+        self._password = UaByteString(val=val.password)
+        self._encryption_algorithm = UaString(val=val.encryptionAlgorithm)
     
 
     @property
@@ -7635,26 +9844,26 @@ class UaUserNameIdentityToken(UaType):
 
     def __str__(self):
         return ("UaUserNameIdentityToken:\n" + 
-                self._policyId.str_helper(1) +
-                self._userName.str_helper(1) +
+                self._policy_id.str_helper(1) +
+                self._user_name.str_helper(1) +
                 self._password.str_helper(1) +
-                self._encryptionAlgorithm.str_helper(1))
+                self._encryption_algorithm.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaUserNameIdentityToken:\n" + 
-                self._policyId.str_helper(n+1) +
-                self._userName.str_helper(n+1) +
+                self._policy_id.str_helper(n+1) +
+                self._user_name.str_helper(n+1) +
                 self._password.str_helper(n+1) +
-                self._encryptionAlgorithm.str_helper(n+1))
+                self._encryption_algorithm.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaUnregisterNodesRequest +++++++++++++++++++++++
 class UaUnregisterNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_UnregisterNodesRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._nodes_to_unregister_size = UaSizeT(val.nodesToUnregisterSize)
-        self._nodes_to_unregister = UaNodeId(val.nodesToUnregister, True)
+    def __init__(self, val=ffi.new("UA_UnregisterNodesRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._nodes_to_unregister_size = SizeT(val=val.nodesToUnregisterSize)
+        self._nodes_to_unregister = UaNodeId(val=val.nodesToUnregister, is_pointer=True)
     
 
     @property
@@ -7686,25 +9895,25 @@ class UaUnregisterNodesRequest(UaType):
 
     def __str__(self):
         return ("UaUnregisterNodesRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._nodesToUnregisterSize.str_helper(1) +
-                self._nodesToUnregister.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._nodes_to_unregister_size.str_helper(1) +
+                self._nodes_to_unregister.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaUnregisterNodesRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._nodesToUnregisterSize.str_helper(n+1) +
-                self._nodesToUnregister.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._nodes_to_unregister_size.str_helper(n+1) +
+                self._nodes_to_unregister.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaOpenSecureChannelResponse +++++++++++++++++++++++
 class UaOpenSecureChannelResponse(UaType):
-    def __init__(self, val=ffi.new("UA_OpenSecureChannelResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._server_protocol_version = UaUInt32(val.serverProtocolVersion)
-        self._security_token = UaChannelSecurityToken(val.securityToken)
-        self._server_nonce = UaByteString(val.serverNonce)
+    def __init__(self, val=ffi.new("UA_OpenSecureChannelResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._server_protocol_version = UaUInt32(val=val.serverProtocolVersion)
+        self._security_token = UaChannelSecurityToken(val=val.securityToken)
+        self._server_nonce = UaByteString(val=val.serverNonce)
     
 
     @property
@@ -7745,32 +9954,32 @@ class UaOpenSecureChannelResponse(UaType):
 
     def __str__(self):
         return ("UaOpenSecureChannelResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._serverProtocolVersion.str_helper(1) +
-                self._securityToken.str_helper(1) +
-                self._serverNonce.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._server_protocol_version.str_helper(1) +
+                self._security_token.str_helper(1) +
+                self._server_nonce.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaOpenSecureChannelResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._serverProtocolVersion.str_helper(n+1) +
-                self._securityToken.str_helper(n+1) +
-                self._serverNonce.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._server_protocol_version.str_helper(n+1) +
+                self._security_token.str_helper(n+1) +
+                self._server_nonce.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSetTriggeringResponse +++++++++++++++++++++++
 class UaSetTriggeringResponse(UaType):
-    def __init__(self, val=ffi.new("UA_SetTriggeringResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._add_results_size = UaSizeT(val.addResultsSize)
-        self._add_results = UaStatusCode(val.addResults, True)
-        self._add_diagnostic_infos_size = UaSizeT(val.addDiagnosticInfosSize)
-        self._add_diagnostic_infos = UaDiagnosticInfo(val.addDiagnosticInfos, True)
-        self._remove_results_size = UaSizeT(val.removeResultsSize)
-        self._remove_results = UaStatusCode(val.removeResults, True)
-        self._remove_diagnostic_infos_size = UaSizeT(val.removeDiagnosticInfosSize)
-        self._remove_diagnostic_infos = UaDiagnosticInfo(val.removeDiagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_SetTriggeringResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._add_results_size = SizeT(val=val.addResultsSize)
+        self._add_results = UaStatusCode(val=val.addResults, is_pointer=True)
+        self._add_diagnostic_infos_size = SizeT(val=val.addDiagnosticInfosSize)
+        self._add_diagnostic_infos = UaDiagnosticInfo(val=val.addDiagnosticInfos, is_pointer=True)
+        self._remove_results_size = SizeT(val=val.removeResultsSize)
+        self._remove_results = UaStatusCode(val=val.removeResults, is_pointer=True)
+        self._remove_diagnostic_infos_size = SizeT(val=val.removeDiagnosticInfosSize)
+        self._remove_diagnostic_infos = UaDiagnosticInfo(val=val.removeDiagnosticInfos, is_pointer=True)
     
 
     @property
@@ -7856,38 +10065,38 @@ class UaSetTriggeringResponse(UaType):
 
     def __str__(self):
         return ("UaSetTriggeringResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._addResultsSize.str_helper(1) +
-                self._addResults.str_helper(1) +
-                self._addDiagnosticInfosSize.str_helper(1) +
-                self._addDiagnosticInfos.str_helper(1) +
-                self._removeResultsSize.str_helper(1) +
-                self._removeResults.str_helper(1) +
-                self._removeDiagnosticInfosSize.str_helper(1) +
-                self._removeDiagnosticInfos.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._add_results_size.str_helper(1) +
+                self._add_results.str_helper(1) +
+                self._add_diagnostic_infos_size.str_helper(1) +
+                self._add_diagnostic_infos.str_helper(1) +
+                self._remove_results_size.str_helper(1) +
+                self._remove_results.str_helper(1) +
+                self._remove_diagnostic_infos_size.str_helper(1) +
+                self._remove_diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSetTriggeringResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._addResultsSize.str_helper(n+1) +
-                self._addResults.str_helper(n+1) +
-                self._addDiagnosticInfosSize.str_helper(n+1) +
-                self._addDiagnosticInfos.str_helper(n+1) +
-                self._removeResultsSize.str_helper(n+1) +
-                self._removeResults.str_helper(n+1) +
-                self._removeDiagnosticInfosSize.str_helper(n+1) +
-                self._removeDiagnosticInfos.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._add_results_size.str_helper(n+1) +
+                self._add_results.str_helper(n+1) +
+                self._add_diagnostic_infos_size.str_helper(n+1) +
+                self._add_diagnostic_infos.str_helper(n+1) +
+                self._remove_results_size.str_helper(n+1) +
+                self._remove_results.str_helper(n+1) +
+                self._remove_diagnostic_infos_size.str_helper(n+1) +
+                self._remove_diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSimpleAttributeOperand +++++++++++++++++++++++
 class UaSimpleAttributeOperand(UaType):
-    def __init__(self, val=ffi.new("UA_SimpleAttributeOperand*")):
-        super().__init__(val)
-        self._type_definition_id = UaNodeId(val.typeDefinitionId)
-        self._browse_path_size = UaSizeT(val.browsePathSize)
-        self._browse_path = UaQualifiedName(val.browsePath, True)
-        self._attribute_id = UaUInt32(val.attributeId)
-        self._index_range = UaString(val.indexRange)
+    def __init__(self, val=ffi.new("UA_SimpleAttributeOperand*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._type_definition_id = UaNodeId(val=val.typeDefinitionId)
+        self._browse_path_size = SizeT(val=val.browsePathSize)
+        self._browse_path = UaQualifiedName(val=val.browsePath, is_pointer=True)
+        self._attribute_id = UaUInt32(val=val.attributeId)
+        self._index_range = UaString(val=val.indexRange)
     
 
     @property
@@ -7937,28 +10146,28 @@ class UaSimpleAttributeOperand(UaType):
 
     def __str__(self):
         return ("UaSimpleAttributeOperand:\n" + 
-                self._typeDefinitionId.str_helper(1) +
-                self._browsePathSize.str_helper(1) +
-                self._browsePath.str_helper(1) +
-                self._attributeId.str_helper(1) +
-                self._indexRange.str_helper(1))
+                self._type_definition_id.str_helper(1) +
+                self._browse_path_size.str_helper(1) +
+                self._browse_path.str_helper(1) +
+                self._attribute_id.str_helper(1) +
+                self._index_range.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSimpleAttributeOperand:\n" + 
-                self._typeDefinitionId.str_helper(n+1) +
-                self._browsePathSize.str_helper(n+1) +
-                self._browsePath.str_helper(n+1) +
-                self._attributeId.str_helper(n+1) +
-                self._indexRange.str_helper(n+1))
+                self._type_definition_id.str_helper(n+1) +
+                self._browse_path_size.str_helper(n+1) +
+                self._browse_path.str_helper(n+1) +
+                self._attribute_id.str_helper(n+1) +
+                self._index_range.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRepublishRequest +++++++++++++++++++++++
 class UaRepublishRequest(UaType):
-    def __init__(self, val=ffi.new("UA_RepublishRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._retransmit_sequence_number = UaUInt32(val.retransmitSequenceNumber)
+    def __init__(self, val=ffi.new("UA_RepublishRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._retransmit_sequence_number = UaUInt32(val=val.retransmitSequenceNumber)
     
 
     @property
@@ -7990,24 +10199,24 @@ class UaRepublishRequest(UaType):
 
     def __str__(self):
         return ("UaRepublishRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._retransmitSequenceNumber.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._retransmit_sequence_number.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRepublishRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._retransmitSequenceNumber.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._retransmit_sequence_number.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaRegisterNodesResponse +++++++++++++++++++++++
 class UaRegisterNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_RegisterNodesResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._registered_node_ids_size = UaSizeT(val.registeredNodeIdsSize)
-        self._registered_node_ids = UaNodeId(val.registeredNodeIds, True)
+    def __init__(self, val=ffi.new("UA_RegisterNodesResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._registered_node_ids_size = SizeT(val=val.registeredNodeIdsSize)
+        self._registered_node_ids = UaNodeId(val=val.registeredNodeIds, is_pointer=True)
     
 
     @property
@@ -8039,26 +10248,26 @@ class UaRegisterNodesResponse(UaType):
 
     def __str__(self):
         return ("UaRegisterNodesResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._registeredNodeIdsSize.str_helper(1) +
-                self._registeredNodeIds.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._registered_node_ids_size.str_helper(1) +
+                self._registered_node_ids.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaRegisterNodesResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._registeredNodeIdsSize.str_helper(n+1) +
-                self._registeredNodeIds.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._registered_node_ids_size.str_helper(n+1) +
+                self._registered_node_ids.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaModifyMonitoredItemsResponse +++++++++++++++++++++++
 class UaModifyMonitoredItemsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaMonitoredItemModifyResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaMonitoredItemModifyResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -8108,28 +10317,28 @@ class UaModifyMonitoredItemsResponse(UaType):
 
     def __str__(self):
         return ("UaModifyMonitoredItemsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaModifyMonitoredItemsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteSubscriptionsRequest +++++++++++++++++++++++
 class UaDeleteSubscriptionsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteSubscriptionsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_ids_size = UaSizeT(val.subscriptionIdsSize)
-        self._subscription_ids = UaUInt32(val.subscriptionIds, True)
+    def __init__(self, val=ffi.new("UA_DeleteSubscriptionsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize)
+        self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
     
 
     @property
@@ -8161,23 +10370,23 @@ class UaDeleteSubscriptionsRequest(UaType):
 
     def __str__(self):
         return ("UaDeleteSubscriptionsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionIdsSize.str_helper(1) +
-                self._subscriptionIds.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_ids_size.str_helper(1) +
+                self._subscription_ids.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteSubscriptionsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionIdsSize.str_helper(n+1) +
-                self._subscriptionIds.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_ids_size.str_helper(n+1) +
+                self._subscription_ids.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowsePath +++++++++++++++++++++++
 class UaBrowsePath(UaType):
-    def __init__(self, val=ffi.new("UA_BrowsePath*")):
-        super().__init__(val)
-        self._starting_node = UaNodeId(val.startingNode)
-        self._relative_path = UaRelativePath(val.relativePath)
+    def __init__(self, val=ffi.new("UA_BrowsePath*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._starting_node = UaNodeId(val=val.startingNode)
+        self._relative_path = UaRelativePath(val=val.relativePath)
     
 
     @property
@@ -8200,25 +10409,25 @@ class UaBrowsePath(UaType):
 
     def __str__(self):
         return ("UaBrowsePath:\n" + 
-                self._startingNode.str_helper(1) +
-                self._relativePath.str_helper(1))
+                self._starting_node.str_helper(1) +
+                self._relative_path.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowsePath:\n" + 
-                self._startingNode.str_helper(n+1) +
-                self._relativePath.str_helper(n+1))
+                self._starting_node.str_helper(n+1) +
+                self._relative_path.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaObjectAttributes +++++++++++++++++++++++
 class UaObjectAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ObjectAttributes*")):
-        super().__init__(val)
-        self._specified_attributes = UaUInt32(val.specifiedAttributes)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._description = UaLocalizedText(val.description)
-        self._write_mask = UaUInt32(val.writeMask)
-        self._user_write_mask = UaUInt32(val.userWriteMask)
-        self._event_notifier = UaByte(val.eventNotifier)
+    def __init__(self, val=ffi.new("UA_ObjectAttributes*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._specified_attributes = UaUInt32(val=val.specifiedAttributes)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._description = UaLocalizedText(val=val.description)
+        self._write_mask = UaUInt32(val=val.writeMask)
+        self._user_write_mask = UaUInt32(val=val.userWriteMask)
+        self._event_notifier = UaByte(val=val.eventNotifier)
     
 
     @property
@@ -8277,30 +10486,30 @@ class UaObjectAttributes(UaType):
 
     def __str__(self):
         return ("UaObjectAttributes:\n" + 
-                self._specifiedAttributes.str_helper(1) +
-                self._displayName.str_helper(1) +
+                self._specified_attributes.str_helper(1) +
+                self._display_name.str_helper(1) +
                 self._description.str_helper(1) +
-                self._writeMask.str_helper(1) +
-                self._userWriteMask.str_helper(1) +
-                self._eventNotifier.str_helper(1))
+                self._write_mask.str_helper(1) +
+                self._user_write_mask.str_helper(1) +
+                self._event_notifier.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaObjectAttributes:\n" + 
-                self._specifiedAttributes.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
+                self._specified_attributes.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
                 self._description.str_helper(n+1) +
-                self._writeMask.str_helper(n+1) +
-                self._userWriteMask.str_helper(n+1) +
-                self._eventNotifier.str_helper(n+1))
+                self._write_mask.str_helper(n+1) +
+                self._user_write_mask.str_helper(n+1) +
+                self._event_notifier.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaPublishRequest +++++++++++++++++++++++
 class UaPublishRequest(UaType):
-    def __init__(self, val=ffi.new("UA_PublishRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_acknowledgements_size = UaSizeT(val.subscriptionAcknowledgementsSize)
-        self._subscription_acknowledgements = UaSubscriptionAcknowledgement(val.subscriptionAcknowledgements, True)
+    def __init__(self, val=ffi.new("UA_PublishRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_acknowledgements_size = SizeT(val=val.subscriptionAcknowledgementsSize)
+        self._subscription_acknowledgements = UaSubscriptionAcknowledgement(val=val.subscriptionAcknowledgements, is_pointer=True)
     
 
     @property
@@ -8332,27 +10541,27 @@ class UaPublishRequest(UaType):
 
     def __str__(self):
         return ("UaPublishRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionAcknowledgementsSize.str_helper(1) +
-                self._subscriptionAcknowledgements.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_acknowledgements_size.str_helper(1) +
+                self._subscription_acknowledgements.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaPublishRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionAcknowledgementsSize.str_helper(n+1) +
-                self._subscriptionAcknowledgements.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_acknowledgements_size.str_helper(n+1) +
+                self._subscription_acknowledgements.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaFindServersRequest +++++++++++++++++++++++
 class UaFindServersRequest(UaType):
-    def __init__(self, val=ffi.new("UA_FindServersRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._endpoint_url = UaString(val.endpointUrl)
-        self._locale_ids_size = UaSizeT(val.localeIdsSize)
-        self._locale_ids = UaString(val.localeIds, True)
-        self._server_uris_size = UaSizeT(val.serverUrisSize)
-        self._server_uris = UaString(val.serverUris, True)
+    def __init__(self, val=ffi.new("UA_FindServersRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._endpoint_url = UaString(val=val.endpointUrl)
+        self._locale_ids_size = SizeT(val=val.localeIdsSize)
+        self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
+        self._server_uris_size = SizeT(val=val.serverUrisSize)
+        self._server_uris = UaString(val=val.serverUris, is_pointer=True)
     
 
     @property
@@ -8411,34 +10620,34 @@ class UaFindServersRequest(UaType):
 
     def __str__(self):
         return ("UaFindServersRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._endpointUrl.str_helper(1) +
-                self._localeIdsSize.str_helper(1) +
-                self._localeIds.str_helper(1) +
-                self._serverUrisSize.str_helper(1) +
-                self._serverUris.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._endpoint_url.str_helper(1) +
+                self._locale_ids_size.str_helper(1) +
+                self._locale_ids.str_helper(1) +
+                self._server_uris_size.str_helper(1) +
+                self._server_uris.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaFindServersRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._endpointUrl.str_helper(n+1) +
-                self._localeIdsSize.str_helper(n+1) +
-                self._localeIds.str_helper(n+1) +
-                self._serverUrisSize.str_helper(n+1) +
-                self._serverUris.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._endpoint_url.str_helper(n+1) +
+                self._locale_ids_size.str_helper(n+1) +
+                self._locale_ids.str_helper(n+1) +
+                self._server_uris_size.str_helper(n+1) +
+                self._server_uris.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaReferenceDescription +++++++++++++++++++++++
 class UaReferenceDescription(UaType):
-    def __init__(self, val=ffi.new("UA_ReferenceDescription*")):
-        super().__init__(val)
-        self._reference_type_id = UaNodeId(val.referenceTypeId)
-        self._is_forward = UaBoolean(val.isForward)
-        self._node_id = UaExpandedNodeId(val.nodeId)
-        self._browse_name = UaQualifiedName(val.browseName)
-        self._display_name = UaLocalizedText(val.displayName)
-        self._node_class = UaNodeClass(val.nodeClass)
-        self._type_definition = UaExpandedNodeId(val.typeDefinition)
+    def __init__(self, val=ffi.new("UA_ReferenceDescription*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._reference_type_id = UaNodeId(val=val.referenceTypeId)
+        self._is_forward = UaBoolean(val=val.isForward)
+        self._node_id = UaExpandedNodeId(val=val.nodeId)
+        self._browse_name = UaQualifiedName(val=val.browseName)
+        self._display_name = UaLocalizedText(val=val.displayName)
+        self._node_class = UaNodeClass(val=val.nodeClass)
+        self._type_definition = UaExpandedNodeId(val=val.typeDefinition)
     
 
     @property
@@ -8506,36 +10715,36 @@ class UaReferenceDescription(UaType):
 
     def __str__(self):
         return ("UaReferenceDescription:\n" + 
-                self._referenceTypeId.str_helper(1) +
-                self._isForward.str_helper(1) +
-                self._nodeId.str_helper(1) +
-                self._browseName.str_helper(1) +
-                self._displayName.str_helper(1) +
-                self._nodeClass.str_helper(1) +
-                self._typeDefinition.str_helper(1))
+                self._reference_type_id.str_helper(1) +
+                self._is_forward.str_helper(1) +
+                self._node_id.str_helper(1) +
+                self._browse_name.str_helper(1) +
+                self._display_name.str_helper(1) +
+                self._node_class.str_helper(1) +
+                self._type_definition.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaReferenceDescription:\n" + 
-                self._referenceTypeId.str_helper(n+1) +
-                self._isForward.str_helper(n+1) +
-                self._nodeId.str_helper(n+1) +
-                self._browseName.str_helper(n+1) +
-                self._displayName.str_helper(n+1) +
-                self._nodeClass.str_helper(n+1) +
-                self._typeDefinition.str_helper(n+1))
+                self._reference_type_id.str_helper(n+1) +
+                self._is_forward.str_helper(n+1) +
+                self._node_id.str_helper(n+1) +
+                self._browse_name.str_helper(n+1) +
+                self._display_name.str_helper(n+1) +
+                self._node_class.str_helper(n+1) +
+                self._type_definition.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCreateSubscriptionRequest +++++++++++++++++++++++
 class UaCreateSubscriptionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSubscriptionRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._requested_publishing_interval = UaDouble(val.requestedPublishingInterval)
-        self._requested_lifetime_count = UaUInt32(val.requestedLifetimeCount)
-        self._requested_max_keep_alive_count = UaUInt32(val.requestedMaxKeepAliveCount)
-        self._max_notifications_per_publish = UaUInt32(val.maxNotificationsPerPublish)
-        self._publishing_enabled = UaBoolean(val.publishingEnabled)
-        self._priority = UaByte(val.priority)
+    def __init__(self, val=ffi.new("UA_CreateSubscriptionRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._requested_publishing_interval = UaDouble(val=val.requestedPublishingInterval)
+        self._requested_lifetime_count = UaUInt32(val=val.requestedLifetimeCount)
+        self._requested_max_keep_alive_count = UaUInt32(val=val.requestedMaxKeepAliveCount)
+        self._max_notifications_per_publish = UaUInt32(val=val.maxNotificationsPerPublish)
+        self._publishing_enabled = UaBoolean(val=val.publishingEnabled)
+        self._priority = UaByte(val=val.priority)
     
 
     @property
@@ -8603,34 +10812,34 @@ class UaCreateSubscriptionRequest(UaType):
 
     def __str__(self):
         return ("UaCreateSubscriptionRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._requestedPublishingInterval.str_helper(1) +
-                self._requestedLifetimeCount.str_helper(1) +
-                self._requestedMaxKeepAliveCount.str_helper(1) +
-                self._maxNotificationsPerPublish.str_helper(1) +
-                self._publishingEnabled.str_helper(1) +
+                self._request_header.str_helper(1) +
+                self._requested_publishing_interval.str_helper(1) +
+                self._requested_lifetime_count.str_helper(1) +
+                self._requested_max_keep_alive_count.str_helper(1) +
+                self._max_notifications_per_publish.str_helper(1) +
+                self._publishing_enabled.str_helper(1) +
                 self._priority.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCreateSubscriptionRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._requestedPublishingInterval.str_helper(n+1) +
-                self._requestedLifetimeCount.str_helper(n+1) +
-                self._requestedMaxKeepAliveCount.str_helper(n+1) +
-                self._maxNotificationsPerPublish.str_helper(n+1) +
-                self._publishingEnabled.str_helper(n+1) +
+                self._request_header.str_helper(n+1) +
+                self._requested_publishing_interval.str_helper(n+1) +
+                self._requested_lifetime_count.str_helper(n+1) +
+                self._requested_max_keep_alive_count.str_helper(n+1) +
+                self._max_notifications_per_publish.str_helper(n+1) +
+                self._publishing_enabled.str_helper(n+1) +
                 self._priority.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCallResponse +++++++++++++++++++++++
 class UaCallResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CallResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaCallMethodResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_CallResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaCallMethodResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -8680,30 +10889,30 @@ class UaCallResponse(UaType):
 
     def __str__(self):
         return ("UaCallResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCallResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteNodesResponse +++++++++++++++++++++++
 class UaDeleteNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteNodesResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_DeleteNodesResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -8753,30 +10962,30 @@ class UaDeleteNodesResponse(UaType):
 
     def __str__(self):
         return ("UaDeleteNodesResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteNodesResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaModifyMonitoredItemsRequest +++++++++++++++++++++++
 class UaModifyMonitoredItemsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._timestamps_to_return = UaTimestampsToReturn(val.timestampsToReturn)
-        self._items_to_modify_size = UaSizeT(val.itemsToModifySize)
-        self._items_to_modify = UaMonitoredItemModifyRequest(val.itemsToModify, True)
+    def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn)
+        self._items_to_modify_size = SizeT(val=val.itemsToModifySize)
+        self._items_to_modify = UaMonitoredItemModifyRequest(val=val.itemsToModify, is_pointer=True)
     
 
     @property
@@ -8826,26 +11035,26 @@ class UaModifyMonitoredItemsRequest(UaType):
 
     def __str__(self):
         return ("UaModifyMonitoredItemsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._timestampsToReturn.str_helper(1) +
-                self._itemsToModifySize.str_helper(1) +
-                self._itemsToModify.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._timestamps_to_return.str_helper(1) +
+                self._items_to_modify_size.str_helper(1) +
+                self._items_to_modify.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaModifyMonitoredItemsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._timestampsToReturn.str_helper(n+1) +
-                self._itemsToModifySize.str_helper(n+1) +
-                self._itemsToModify.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._timestamps_to_return.str_helper(n+1) +
+                self._items_to_modify_size.str_helper(n+1) +
+                self._items_to_modify.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaServiceFault +++++++++++++++++++++++
 class UaServiceFault(UaType):
-    def __init__(self, val=ffi.new("UA_ServiceFault*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
+    def __init__(self, val=ffi.new("UA_ServiceFault*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
     
 
     @property
@@ -8859,27 +11068,27 @@ class UaServiceFault(UaType):
 
     def __str__(self):
         return ("UaServiceFault:\n" + 
-                self._responseHeader.str_helper(1))
+                self._response_header.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaServiceFault:\n" + 
-                self._responseHeader.str_helper(n+1))
+                self._response_header.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaPublishResponse +++++++++++++++++++++++
 class UaPublishResponse(UaType):
-    def __init__(self, val=ffi.new("UA_PublishResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._available_sequence_numbers_size = UaSizeT(val.availableSequenceNumbersSize)
-        self._available_sequence_numbers = UaUInt32(val.availableSequenceNumbers, True)
-        self._more_notifications = UaBoolean(val.moreNotifications)
-        self._notification_message = UaNotificationMessage(val.notificationMessage)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaStatusCode(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_PublishResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._available_sequence_numbers_size = SizeT(val=val.availableSequenceNumbersSize)
+        self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
+        self._more_notifications = UaBoolean(val=val.moreNotifications)
+        self._notification_message = UaNotificationMessage(val=val.notificationMessage)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaStatusCode(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -8974,40 +11183,40 @@ class UaPublishResponse(UaType):
 
     def __str__(self):
         return ("UaPublishResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._availableSequenceNumbersSize.str_helper(1) +
-                self._availableSequenceNumbers.str_helper(1) +
-                self._moreNotifications.str_helper(1) +
-                self._notificationMessage.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._available_sequence_numbers_size.str_helper(1) +
+                self._available_sequence_numbers.str_helper(1) +
+                self._more_notifications.str_helper(1) +
+                self._notification_message.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaPublishResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._availableSequenceNumbersSize.str_helper(n+1) +
-                self._availableSequenceNumbers.str_helper(n+1) +
-                self._moreNotifications.str_helper(n+1) +
-                self._notificationMessage.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._available_sequence_numbers_size.str_helper(n+1) +
+                self._available_sequence_numbers.str_helper(n+1) +
+                self._more_notifications.str_helper(n+1) +
+                self._notification_message.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCreateMonitoredItemsRequest +++++++++++++++++++++++
 class UaCreateMonitoredItemsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CreateMonitoredItemsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._timestamps_to_return = UaTimestampsToReturn(val.timestampsToReturn)
-        self._items_to_create_size = UaSizeT(val.itemsToCreateSize)
-        self._items_to_create = UaMonitoredItemCreateRequest(val.itemsToCreate, True)
+    def __init__(self, val=ffi.new("UA_CreateMonitoredItemsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn)
+        self._items_to_create_size = SizeT(val=val.itemsToCreateSize)
+        self._items_to_create = UaMonitoredItemCreateRequest(val=val.itemsToCreate, is_pointer=True)
     
 
     @property
@@ -9057,31 +11266,31 @@ class UaCreateMonitoredItemsRequest(UaType):
 
     def __str__(self):
         return ("UaCreateMonitoredItemsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._timestampsToReturn.str_helper(1) +
-                self._itemsToCreateSize.str_helper(1) +
-                self._itemsToCreate.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._timestamps_to_return.str_helper(1) +
+                self._items_to_create_size.str_helper(1) +
+                self._items_to_create.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCreateMonitoredItemsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._timestampsToReturn.str_helper(n+1) +
-                self._itemsToCreateSize.str_helper(n+1) +
-                self._itemsToCreate.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._timestamps_to_return.str_helper(n+1) +
+                self._items_to_create_size.str_helper(n+1) +
+                self._items_to_create.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaOpenSecureChannelRequest +++++++++++++++++++++++
 class UaOpenSecureChannelRequest(UaType):
-    def __init__(self, val=ffi.new("UA_OpenSecureChannelRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._client_protocol_version = UaUInt32(val.clientProtocolVersion)
-        self._request_type = UaSecurityTokenRequestType(val.requestType)
-        self._security_mode = UaMessageSecurityMode(val.securityMode)
-        self._client_nonce = UaByteString(val.clientNonce)
-        self._requested_lifetime = UaUInt32(val.requestedLifetime)
+    def __init__(self, val=ffi.new("UA_OpenSecureChannelRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._client_protocol_version = UaUInt32(val=val.clientProtocolVersion)
+        self._request_type = UaSecurityTokenRequestType(val=val.requestType)
+        self._security_mode = UaMessageSecurityMode(val=val.securityMode)
+        self._client_nonce = UaByteString(val=val.clientNonce)
+        self._requested_lifetime = UaUInt32(val=val.requestedLifetime)
     
 
     @property
@@ -9140,29 +11349,29 @@ class UaOpenSecureChannelRequest(UaType):
 
     def __str__(self):
         return ("UaOpenSecureChannelRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._clientProtocolVersion.str_helper(1) +
-                self._requestType.str_helper(1) +
-                self._securityMode.str_helper(1) +
-                self._clientNonce.str_helper(1) +
-                self._requestedLifetime.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._client_protocol_version.str_helper(1) +
+                self._request_type.str_helper(1) +
+                self._security_mode.str_helper(1) +
+                self._client_nonce.str_helper(1) +
+                self._requested_lifetime.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaOpenSecureChannelRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._clientProtocolVersion.str_helper(n+1) +
-                self._requestType.str_helper(n+1) +
-                self._securityMode.str_helper(n+1) +
-                self._clientNonce.str_helper(n+1) +
-                self._requestedLifetime.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._client_protocol_version.str_helper(n+1) +
+                self._request_type.str_helper(n+1) +
+                self._security_mode.str_helper(n+1) +
+                self._client_nonce.str_helper(n+1) +
+                self._requested_lifetime.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCloseSessionRequest +++++++++++++++++++++++
 class UaCloseSessionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSessionRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._delete_subscriptions = UaBoolean(val.deleteSubscriptions)
+    def __init__(self, val=ffi.new("UA_CloseSessionRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._delete_subscriptions = UaBoolean(val=val.deleteSubscriptions)
     
 
     @property
@@ -9185,26 +11394,26 @@ class UaCloseSessionRequest(UaType):
 
     def __str__(self):
         return ("UaCloseSessionRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._deleteSubscriptions.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._delete_subscriptions.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCloseSessionRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._deleteSubscriptions.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._delete_subscriptions.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaSetTriggeringRequest +++++++++++++++++++++++
 class UaSetTriggeringRequest(UaType):
-    def __init__(self, val=ffi.new("UA_SetTriggeringRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._subscription_id = UaUInt32(val.subscriptionId)
-        self._triggering_item_id = UaUInt32(val.triggeringItemId)
-        self._links_to_add_size = UaSizeT(val.linksToAddSize)
-        self._links_to_add = UaUInt32(val.linksToAdd, True)
-        self._links_to_remove_size = UaSizeT(val.linksToRemoveSize)
-        self._links_to_remove = UaUInt32(val.linksToRemove, True)
+    def __init__(self, val=ffi.new("UA_SetTriggeringRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._subscription_id = UaUInt32(val=val.subscriptionId)
+        self._triggering_item_id = UaUInt32(val=val.triggeringItemId)
+        self._links_to_add_size = SizeT(val=val.linksToAddSize)
+        self._links_to_add = UaUInt32(val=val.linksToAdd, is_pointer=True)
+        self._links_to_remove_size = SizeT(val=val.linksToRemoveSize)
+        self._links_to_remove = UaUInt32(val=val.linksToRemove, is_pointer=True)
     
 
     @property
@@ -9272,33 +11481,33 @@ class UaSetTriggeringRequest(UaType):
 
     def __str__(self):
         return ("UaSetTriggeringRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._subscriptionId.str_helper(1) +
-                self._triggeringItemId.str_helper(1) +
-                self._linksToAddSize.str_helper(1) +
-                self._linksToAdd.str_helper(1) +
-                self._linksToRemoveSize.str_helper(1) +
-                self._linksToRemove.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._subscription_id.str_helper(1) +
+                self._triggering_item_id.str_helper(1) +
+                self._links_to_add_size.str_helper(1) +
+                self._links_to_add.str_helper(1) +
+                self._links_to_remove_size.str_helper(1) +
+                self._links_to_remove.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaSetTriggeringRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._subscriptionId.str_helper(n+1) +
-                self._triggeringItemId.str_helper(n+1) +
-                self._linksToAddSize.str_helper(n+1) +
-                self._linksToAdd.str_helper(n+1) +
-                self._linksToRemoveSize.str_helper(n+1) +
-                self._linksToRemove.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._subscription_id.str_helper(n+1) +
+                self._triggering_item_id.str_helper(n+1) +
+                self._links_to_add_size.str_helper(n+1) +
+                self._links_to_add.str_helper(n+1) +
+                self._links_to_remove_size.str_helper(n+1) +
+                self._links_to_remove.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowseResult +++++++++++++++++++++++
 class UaBrowseResult(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._continuation_point = UaByteString(val.continuationPoint)
-        self._references_size = UaSizeT(val.referencesSize)
-        self._references = UaReferenceDescription(val.references, True)
+    def __init__(self, val=ffi.new("UA_BrowseResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._continuation_point = UaByteString(val=val.continuationPoint)
+        self._references_size = SizeT(val=val.referencesSize)
+        self._references = UaReferenceDescription(val=val.references, is_pointer=True)
     
 
     @property
@@ -9339,26 +11548,26 @@ class UaBrowseResult(UaType):
 
     def __str__(self):
         return ("UaBrowseResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._continuationPoint.str_helper(1) +
-                self._referencesSize.str_helper(1) +
+                self._status_code.str_helper(1) +
+                self._continuation_point.str_helper(1) +
+                self._references_size.str_helper(1) +
                 self._references.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowseResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._continuationPoint.str_helper(n+1) +
-                self._referencesSize.str_helper(n+1) +
+                self._status_code.str_helper(n+1) +
+                self._continuation_point.str_helper(n+1) +
+                self._references_size.str_helper(n+1) +
                 self._references.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddReferencesRequest +++++++++++++++++++++++
 class UaAddReferencesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_AddReferencesRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._references_to_add_size = UaSizeT(val.referencesToAddSize)
-        self._references_to_add = UaAddReferencesItem(val.referencesToAdd, True)
+    def __init__(self, val=ffi.new("UA_AddReferencesRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._references_to_add_size = SizeT(val=val.referencesToAddSize)
+        self._references_to_add = UaAddReferencesItem(val=val.referencesToAdd, is_pointer=True)
     
 
     @property
@@ -9390,28 +11599,28 @@ class UaAddReferencesRequest(UaType):
 
     def __str__(self):
         return ("UaAddReferencesRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._referencesToAddSize.str_helper(1) +
-                self._referencesToAdd.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._references_to_add_size.str_helper(1) +
+                self._references_to_add.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddReferencesRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._referencesToAddSize.str_helper(n+1) +
-                self._referencesToAdd.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._references_to_add_size.str_helper(n+1) +
+                self._references_to_add.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddNodesItem +++++++++++++++++++++++
 class UaAddNodesItem(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesItem*")):
-        super().__init__(val)
-        self._parent_node_id = UaExpandedNodeId(val.parentNodeId)
-        self._reference_type_id = UaNodeId(val.referenceTypeId)
-        self._requested_new_node_id = UaExpandedNodeId(val.requestedNewNodeId)
-        self._browse_name = UaQualifiedName(val.browseName)
-        self._node_class = UaNodeClass(val.nodeClass)
-        self._node_attributes = UaExtensionObject(val.nodeAttributes)
-        self._type_definition = UaExpandedNodeId(val.typeDefinition)
+    def __init__(self, val=ffi.new("UA_AddNodesItem*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._parent_node_id = UaExpandedNodeId(val=val.parentNodeId)
+        self._reference_type_id = UaNodeId(val=val.referenceTypeId)
+        self._requested_new_node_id = UaExpandedNodeId(val=val.requestedNewNodeId)
+        self._browse_name = UaQualifiedName(val=val.browseName)
+        self._node_class = UaNodeClass(val=val.nodeClass)
+        self._node_attributes = UaExtensionObject(val=val.nodeAttributes)
+        self._type_definition = UaExpandedNodeId(val=val.typeDefinition)
     
 
     @property
@@ -9479,35 +11688,35 @@ class UaAddNodesItem(UaType):
 
     def __str__(self):
         return ("UaAddNodesItem:\n" + 
-                self._parentNodeId.str_helper(1) +
-                self._referenceTypeId.str_helper(1) +
-                self._requestedNewNodeId.str_helper(1) +
-                self._browseName.str_helper(1) +
-                self._nodeClass.str_helper(1) +
-                self._nodeAttributes.str_helper(1) +
-                self._typeDefinition.str_helper(1))
+                self._parent_node_id.str_helper(1) +
+                self._reference_type_id.str_helper(1) +
+                self._requested_new_node_id.str_helper(1) +
+                self._browse_name.str_helper(1) +
+                self._node_class.str_helper(1) +
+                self._node_attributes.str_helper(1) +
+                self._type_definition.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddNodesItem:\n" + 
-                self._parentNodeId.str_helper(n+1) +
-                self._referenceTypeId.str_helper(n+1) +
-                self._requestedNewNodeId.str_helper(n+1) +
-                self._browseName.str_helper(n+1) +
-                self._nodeClass.str_helper(n+1) +
-                self._nodeAttributes.str_helper(n+1) +
-                self._typeDefinition.str_helper(n+1))
+                self._parent_node_id.str_helper(n+1) +
+                self._reference_type_id.str_helper(n+1) +
+                self._requested_new_node_id.str_helper(n+1) +
+                self._browse_name.str_helper(n+1) +
+                self._node_class.str_helper(n+1) +
+                self._node_attributes.str_helper(n+1) +
+                self._type_definition.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaServerStatusDataType +++++++++++++++++++++++
 class UaServerStatusDataType(UaType):
-    def __init__(self, val=ffi.new("UA_ServerStatusDataType*")):
-        super().__init__(val)
-        self._start_time = UaDateTime(val.startTime)
-        self._current_time = UaDateTime(val.currentTime)
-        self._state = UaServerState(val.state)
-        self._build_info = UaBuildInfo(val.buildInfo)
-        self._seconds_till_shutdown = UaUInt32(val.secondsTillShutdown)
-        self._shutdown_reason = UaLocalizedText(val.shutdownReason)
+    def __init__(self, val=ffi.new("UA_ServerStatusDataType*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._start_time = UaDateTime(val=val.startTime)
+        self._current_time = UaDateTime(val=val.currentTime)
+        self._state = UaServerState(val=val.state)
+        self._build_info = UaBuildInfo(val=val.buildInfo)
+        self._seconds_till_shutdown = UaUInt32(val=val.secondsTillShutdown)
+        self._shutdown_reason = UaLocalizedText(val=val.shutdownReason)
     
 
     @property
@@ -9566,32 +11775,32 @@ class UaServerStatusDataType(UaType):
 
     def __str__(self):
         return ("UaServerStatusDataType:\n" + 
-                self._startTime.str_helper(1) +
-                self._currentTime.str_helper(1) +
+                self._start_time.str_helper(1) +
+                self._current_time.str_helper(1) +
                 self._state.str_helper(1) +
-                self._buildInfo.str_helper(1) +
-                self._secondsTillShutdown.str_helper(1) +
-                self._shutdownReason.str_helper(1))
+                self._build_info.str_helper(1) +
+                self._seconds_till_shutdown.str_helper(1) +
+                self._shutdown_reason.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaServerStatusDataType:\n" + 
-                self._startTime.str_helper(n+1) +
-                self._currentTime.str_helper(n+1) +
+                self._start_time.str_helper(n+1) +
+                self._current_time.str_helper(n+1) +
                 self._state.str_helper(n+1) +
-                self._buildInfo.str_helper(n+1) +
-                self._secondsTillShutdown.str_helper(n+1) +
-                self._shutdownReason.str_helper(n+1))
+                self._build_info.str_helper(n+1) +
+                self._seconds_till_shutdown.str_helper(n+1) +
+                self._shutdown_reason.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowseNextResponse +++++++++++++++++++++++
 class UaBrowseNextResponse(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseNextResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaBrowseResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_BrowseNextResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaBrowseResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -9641,31 +11850,31 @@ class UaBrowseNextResponse(UaType):
 
     def __str__(self):
         return ("UaBrowseNextResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowseNextResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAxisInformation +++++++++++++++++++++++
 class UaAxisInformation(UaType):
-    def __init__(self, val=ffi.new("UA_AxisInformation*")):
-        super().__init__(val)
-        self._engineering_units = UaEUInformation(val.engineeringUnits)
-        self._e_u_range = UaRange(val.eURange)
-        self._title = UaLocalizedText(val.title)
-        self._axis_scale_type = UaAxisScaleEnumeration(val.axisScaleType)
-        self._axis_steps_size = UaSizeT(val.axisStepsSize)
-        self._axis_steps = UaDouble(val.axisSteps, True)
+    def __init__(self, val=ffi.new("UA_AxisInformation*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._engineering_units = UaEUInformation(val=val.engineeringUnits)
+        self._e_u_range = UaRange(val=val.eURange)
+        self._title = UaLocalizedText(val=val.title)
+        self._axis_scale_type = UaAxisScaleEnumeration(val=val.axisScaleType)
+        self._axis_steps_size = SizeT(val=val.axisStepsSize)
+        self._axis_steps = UaDouble(val=val.axisSteps, is_pointer=True)
     
 
     @property
@@ -9724,35 +11933,35 @@ class UaAxisInformation(UaType):
 
     def __str__(self):
         return ("UaAxisInformation:\n" + 
-                self._engineeringUnits.str_helper(1) +
-                self._eURange.str_helper(1) +
+                self._engineering_units.str_helper(1) +
+                self._e_u_range.str_helper(1) +
                 self._title.str_helper(1) +
-                self._axisScaleType.str_helper(1) +
-                self._axisStepsSize.str_helper(1) +
-                self._axisSteps.str_helper(1))
+                self._axis_scale_type.str_helper(1) +
+                self._axis_steps_size.str_helper(1) +
+                self._axis_steps.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAxisInformation:\n" + 
-                self._engineeringUnits.str_helper(n+1) +
-                self._eURange.str_helper(n+1) +
+                self._engineering_units.str_helper(n+1) +
+                self._e_u_range.str_helper(n+1) +
                 self._title.str_helper(n+1) +
-                self._axisScaleType.str_helper(n+1) +
-                self._axisStepsSize.str_helper(n+1) +
-                self._axisSteps.str_helper(n+1))
+                self._axis_scale_type.str_helper(n+1) +
+                self._axis_steps_size.str_helper(n+1) +
+                self._axis_steps.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaApplicationDescription +++++++++++++++++++++++
 class UaApplicationDescription(UaType):
-    def __init__(self, val=ffi.new("UA_ApplicationDescription*")):
-        super().__init__(val)
-        self._application_uri = UaString(val.applicationUri)
-        self._product_uri = UaString(val.productUri)
-        self._application_name = UaLocalizedText(val.applicationName)
-        self._application_type = UaApplicationType(val.applicationType)
-        self._gateway_server_uri = UaString(val.gatewayServerUri)
-        self._discovery_profile_uri = UaString(val.discoveryProfileUri)
-        self._discovery_urls_size = UaSizeT(val.discoveryUrlsSize)
-        self._discovery_urls = UaString(val.discoveryUrls, True)
+    def __init__(self, val=ffi.new("UA_ApplicationDescription*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._application_uri = UaString(val=val.applicationUri)
+        self._product_uri = UaString(val=val.productUri)
+        self._application_name = UaLocalizedText(val=val.applicationName)
+        self._application_type = UaApplicationType(val=val.applicationType)
+        self._gateway_server_uri = UaString(val=val.gatewayServerUri)
+        self._discovery_profile_uri = UaString(val=val.discoveryProfileUri)
+        self._discovery_urls_size = SizeT(val=val.discoveryUrlsSize)
+        self._discovery_urls = UaString(val=val.discoveryUrls, is_pointer=True)
     
 
     @property
@@ -9829,36 +12038,36 @@ class UaApplicationDescription(UaType):
 
     def __str__(self):
         return ("UaApplicationDescription:\n" + 
-                self._applicationUri.str_helper(1) +
-                self._productUri.str_helper(1) +
-                self._applicationName.str_helper(1) +
-                self._applicationType.str_helper(1) +
-                self._gatewayServerUri.str_helper(1) +
-                self._discoveryProfileUri.str_helper(1) +
-                self._discoveryUrlsSize.str_helper(1) +
-                self._discoveryUrls.str_helper(1))
+                self._application_uri.str_helper(1) +
+                self._product_uri.str_helper(1) +
+                self._application_name.str_helper(1) +
+                self._application_type.str_helper(1) +
+                self._gateway_server_uri.str_helper(1) +
+                self._discovery_profile_uri.str_helper(1) +
+                self._discovery_urls_size.str_helper(1) +
+                self._discovery_urls.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaApplicationDescription:\n" + 
-                self._applicationUri.str_helper(n+1) +
-                self._productUri.str_helper(n+1) +
-                self._applicationName.str_helper(n+1) +
-                self._applicationType.str_helper(n+1) +
-                self._gatewayServerUri.str_helper(n+1) +
-                self._discoveryProfileUri.str_helper(n+1) +
-                self._discoveryUrlsSize.str_helper(n+1) +
-                self._discoveryUrls.str_helper(n+1))
+                self._application_uri.str_helper(n+1) +
+                self._product_uri.str_helper(n+1) +
+                self._application_name.str_helper(n+1) +
+                self._application_type.str_helper(n+1) +
+                self._gateway_server_uri.str_helper(n+1) +
+                self._discovery_profile_uri.str_helper(n+1) +
+                self._discovery_urls_size.str_helper(n+1) +
+                self._discovery_urls.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaReadRequest +++++++++++++++++++++++
 class UaReadRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ReadRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._max_age = UaDouble(val.maxAge)
-        self._timestamps_to_return = UaTimestampsToReturn(val.timestampsToReturn)
-        self._nodes_to_read_size = UaSizeT(val.nodesToReadSize)
-        self._nodes_to_read = UaReadValueId(val.nodesToRead, True)
+    def __init__(self, val=ffi.new("UA_ReadRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._max_age = UaDouble(val=val.maxAge)
+        self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn)
+        self._nodes_to_read_size = SizeT(val=val.nodesToReadSize)
+        self._nodes_to_read = UaReadValueId(val=val.nodesToRead, is_pointer=True)
     
 
     @property
@@ -9908,33 +12117,33 @@ class UaReadRequest(UaType):
 
     def __str__(self):
         return ("UaReadRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._maxAge.str_helper(1) +
-                self._timestampsToReturn.str_helper(1) +
-                self._nodesToReadSize.str_helper(1) +
-                self._nodesToRead.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._max_age.str_helper(1) +
+                self._timestamps_to_return.str_helper(1) +
+                self._nodes_to_read_size.str_helper(1) +
+                self._nodes_to_read.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaReadRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._maxAge.str_helper(n+1) +
-                self._timestampsToReturn.str_helper(n+1) +
-                self._nodesToReadSize.str_helper(n+1) +
-                self._nodesToRead.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._max_age.str_helper(n+1) +
+                self._timestamps_to_return.str_helper(n+1) +
+                self._nodes_to_read_size.str_helper(n+1) +
+                self._nodes_to_read.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaActivateSessionRequest +++++++++++++++++++++++
 class UaActivateSessionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ActivateSessionRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._client_signature = UaSignatureData(val.clientSignature)
-        self._client_software_certificates_size = UaSizeT(val.clientSoftwareCertificatesSize)
-        self._client_software_certificates = UaSignedSoftwareCertificate(val.clientSoftwareCertificates, True)
-        self._locale_ids_size = UaSizeT(val.localeIdsSize)
-        self._locale_ids = UaString(val.localeIds, True)
-        self._user_identity_token = UaExtensionObject(val.userIdentityToken)
-        self._user_token_signature = UaSignatureData(val.userTokenSignature)
+    def __init__(self, val=ffi.new("UA_ActivateSessionRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._client_signature = UaSignatureData(val=val.clientSignature)
+        self._client_software_certificates_size = SizeT(val=val.clientSoftwareCertificatesSize)
+        self._client_software_certificates = UaSignedSoftwareCertificate(val=val.clientSoftwareCertificates, is_pointer=True)
+        self._locale_ids_size = SizeT(val=val.localeIdsSize)
+        self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
+        self._user_identity_token = UaExtensionObject(val=val.userIdentityToken)
+        self._user_token_signature = UaSignatureData(val=val.userTokenSignature)
     
 
     @property
@@ -10011,34 +12220,34 @@ class UaActivateSessionRequest(UaType):
 
     def __str__(self):
         return ("UaActivateSessionRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._clientSignature.str_helper(1) +
-                self._clientSoftwareCertificatesSize.str_helper(1) +
-                self._clientSoftwareCertificates.str_helper(1) +
-                self._localeIdsSize.str_helper(1) +
-                self._localeIds.str_helper(1) +
-                self._userIdentityToken.str_helper(1) +
-                self._userTokenSignature.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._client_signature.str_helper(1) +
+                self._client_software_certificates_size.str_helper(1) +
+                self._client_software_certificates.str_helper(1) +
+                self._locale_ids_size.str_helper(1) +
+                self._locale_ids.str_helper(1) +
+                self._user_identity_token.str_helper(1) +
+                self._user_token_signature.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaActivateSessionRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._clientSignature.str_helper(n+1) +
-                self._clientSoftwareCertificatesSize.str_helper(n+1) +
-                self._clientSoftwareCertificates.str_helper(n+1) +
-                self._localeIdsSize.str_helper(n+1) +
-                self._localeIds.str_helper(n+1) +
-                self._userIdentityToken.str_helper(n+1) +
-                self._userTokenSignature.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._client_signature.str_helper(n+1) +
+                self._client_software_certificates_size.str_helper(n+1) +
+                self._client_software_certificates.str_helper(n+1) +
+                self._locale_ids_size.str_helper(n+1) +
+                self._locale_ids.str_helper(n+1) +
+                self._user_identity_token.str_helper(n+1) +
+                self._user_token_signature.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowsePathResult +++++++++++++++++++++++
 class UaBrowsePathResult(UaType):
-    def __init__(self, val=ffi.new("UA_BrowsePathResult*")):
-        super().__init__(val)
-        self._status_code = UaStatusCode(val.statusCode)
-        self._targets_size = UaSizeT(val.targetsSize)
-        self._targets = UaBrowsePathTarget(val.targets, True)
+    def __init__(self, val=ffi.new("UA_BrowsePathResult*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._status_code = UaStatusCode(val=val.statusCode)
+        self._targets_size = SizeT(val=val.targetsSize)
+        self._targets = UaBrowsePathTarget(val=val.targets, is_pointer=True)
     
 
     @property
@@ -10070,24 +12279,24 @@ class UaBrowsePathResult(UaType):
 
     def __str__(self):
         return ("UaBrowsePathResult:\n" + 
-                self._statusCode.str_helper(1) +
-                self._targetsSize.str_helper(1) +
+                self._status_code.str_helper(1) +
+                self._targets_size.str_helper(1) +
                 self._targets.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowsePathResult:\n" + 
-                self._statusCode.str_helper(n+1) +
-                self._targetsSize.str_helper(n+1) +
+                self._status_code.str_helper(n+1) +
+                self._targets_size.str_helper(n+1) +
                 self._targets.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddNodesRequest +++++++++++++++++++++++
 class UaAddNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._nodes_to_add_size = UaSizeT(val.nodesToAddSize)
-        self._nodes_to_add = UaAddNodesItem(val.nodesToAdd, True)
+    def __init__(self, val=ffi.new("UA_AddNodesRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._nodes_to_add_size = SizeT(val=val.nodesToAddSize)
+        self._nodes_to_add = UaAddNodesItem(val=val.nodesToAdd, is_pointer=True)
     
 
     @property
@@ -10119,26 +12328,26 @@ class UaAddNodesRequest(UaType):
 
     def __str__(self):
         return ("UaAddNodesRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._nodesToAddSize.str_helper(1) +
-                self._nodesToAdd.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._nodes_to_add_size.str_helper(1) +
+                self._nodes_to_add.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddNodesRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._nodesToAddSize.str_helper(n+1) +
-                self._nodesToAdd.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._nodes_to_add_size.str_helper(n+1) +
+                self._nodes_to_add.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowseRequest +++++++++++++++++++++++
 class UaBrowseRequest(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._view = UaViewDescription(val.view)
-        self._requested_max_references_per_node = UaUInt32(val.requestedMaxReferencesPerNode)
-        self._nodes_to_browse_size = UaSizeT(val.nodesToBrowseSize)
-        self._nodes_to_browse = UaBrowseDescription(val.nodesToBrowse, True)
+    def __init__(self, val=ffi.new("UA_BrowseRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._view = UaViewDescription(val=val.view)
+        self._requested_max_references_per_node = UaUInt32(val=val.requestedMaxReferencesPerNode)
+        self._nodes_to_browse_size = SizeT(val=val.nodesToBrowseSize)
+        self._nodes_to_browse = UaBrowseDescription(val=val.nodesToBrowse, is_pointer=True)
     
 
     @property
@@ -10188,28 +12397,28 @@ class UaBrowseRequest(UaType):
 
     def __str__(self):
         return ("UaBrowseRequest:\n" + 
-                self._requestHeader.str_helper(1) +
+                self._request_header.str_helper(1) +
                 self._view.str_helper(1) +
-                self._requestedMaxReferencesPerNode.str_helper(1) +
-                self._nodesToBrowseSize.str_helper(1) +
-                self._nodesToBrowse.str_helper(1))
+                self._requested_max_references_per_node.str_helper(1) +
+                self._nodes_to_browse_size.str_helper(1) +
+                self._nodes_to_browse.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowseRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
+                self._request_header.str_helper(n+1) +
                 self._view.str_helper(n+1) +
-                self._requestedMaxReferencesPerNode.str_helper(n+1) +
-                self._nodesToBrowseSize.str_helper(n+1) +
-                self._nodesToBrowse.str_helper(n+1))
+                self._requested_max_references_per_node.str_helper(n+1) +
+                self._nodes_to_browse_size.str_helper(n+1) +
+                self._nodes_to_browse.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaWriteRequest +++++++++++++++++++++++
 class UaWriteRequest(UaType):
-    def __init__(self, val=ffi.new("UA_WriteRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._nodes_to_write_size = UaSizeT(val.nodesToWriteSize)
-        self._nodes_to_write = UaWriteValue(val.nodesToWrite, True)
+    def __init__(self, val=ffi.new("UA_WriteRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._nodes_to_write_size = SizeT(val=val.nodesToWriteSize)
+        self._nodes_to_write = UaWriteValue(val=val.nodesToWrite, is_pointer=True)
     
 
     @property
@@ -10241,26 +12450,26 @@ class UaWriteRequest(UaType):
 
     def __str__(self):
         return ("UaWriteRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._nodesToWriteSize.str_helper(1) +
-                self._nodesToWrite.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._nodes_to_write_size.str_helper(1) +
+                self._nodes_to_write.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaWriteRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._nodesToWriteSize.str_helper(n+1) +
-                self._nodesToWrite.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._nodes_to_write_size.str_helper(n+1) +
+                self._nodes_to_write.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAddNodesResponse +++++++++++++++++++++++
 class UaAddNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaAddNodesResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_AddNodesResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaAddNodesResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -10310,30 +12519,30 @@ class UaAddNodesResponse(UaType):
 
     def __str__(self):
         return ("UaAddNodesResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAddNodesResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaAttributeOperand +++++++++++++++++++++++
 class UaAttributeOperand(UaType):
-    def __init__(self, val=ffi.new("UA_AttributeOperand*")):
-        super().__init__(val)
-        self._node_id = UaNodeId(val.nodeId)
-        self._alias = UaString(val.alias)
-        self._browse_path = UaRelativePath(val.browsePath)
-        self._attribute_id = UaUInt32(val.attributeId)
-        self._index_range = UaString(val.indexRange)
+    def __init__(self, val=ffi.new("UA_AttributeOperand*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._node_id = UaNodeId(val=val.nodeId)
+        self._alias = UaString(val=val.alias)
+        self._browse_path = UaRelativePath(val=val.browsePath)
+        self._attribute_id = UaUInt32(val=val.attributeId)
+        self._index_range = UaString(val=val.indexRange)
     
 
     @property
@@ -10383,28 +12592,28 @@ class UaAttributeOperand(UaType):
 
     def __str__(self):
         return ("UaAttributeOperand:\n" + 
-                self._nodeId.str_helper(1) +
+                self._node_id.str_helper(1) +
                 self._alias.str_helper(1) +
-                self._browsePath.str_helper(1) +
-                self._attributeId.str_helper(1) +
-                self._indexRange.str_helper(1))
+                self._browse_path.str_helper(1) +
+                self._attribute_id.str_helper(1) +
+                self._index_range.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaAttributeOperand:\n" + 
-                self._nodeId.str_helper(n+1) +
+                self._node_id.str_helper(n+1) +
                 self._alias.str_helper(n+1) +
-                self._browsePath.str_helper(n+1) +
-                self._attributeId.str_helper(n+1) +
-                self._indexRange.str_helper(n+1))
+                self._browse_path.str_helper(n+1) +
+                self._attribute_id.str_helper(n+1) +
+                self._index_range.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDataChangeFilter +++++++++++++++++++++++
 class UaDataChangeFilter(UaType):
-    def __init__(self, val=ffi.new("UA_DataChangeFilter*")):
-        super().__init__(val)
-        self._trigger = UaDataChangeTrigger(val.trigger)
-        self._deadband_type = UaUInt32(val.deadbandType)
-        self._deadband_value = UaDouble(val.deadbandValue)
+    def __init__(self, val=ffi.new("UA_DataChangeFilter*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._trigger = UaDataChangeTrigger(val=val.trigger)
+        self._deadband_type = UaUInt32(val=val.deadbandType)
+        self._deadband_value = UaDouble(val=val.deadbandValue)
     
 
     @property
@@ -10437,29 +12646,29 @@ class UaDataChangeFilter(UaType):
     def __str__(self):
         return ("UaDataChangeFilter:\n" + 
                 self._trigger.str_helper(1) +
-                self._deadbandType.str_helper(1) +
-                self._deadbandValue.str_helper(1))
+                self._deadband_type.str_helper(1) +
+                self._deadband_value.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDataChangeFilter:\n" + 
                 self._trigger.str_helper(n+1) +
-                self._deadbandType.str_helper(n+1) +
-                self._deadbandValue.str_helper(n+1))
+                self._deadband_type.str_helper(n+1) +
+                self._deadband_value.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEndpointDescription +++++++++++++++++++++++
 class UaEndpointDescription(UaType):
-    def __init__(self, val=ffi.new("UA_EndpointDescription*")):
-        super().__init__(val)
-        self._endpoint_url = UaString(val.endpointUrl)
-        self._server = UaApplicationDescription(val.server)
-        self._server_certificate = UaByteString(val.serverCertificate)
-        self._security_mode = UaMessageSecurityMode(val.securityMode)
-        self._security_policy_uri = UaString(val.securityPolicyUri)
-        self._user_identity_tokens_size = UaSizeT(val.userIdentityTokensSize)
-        self._user_identity_tokens = UaUserTokenPolicy(val.userIdentityTokens, True)
-        self._transport_profile_uri = UaString(val.transportProfileUri)
-        self._security_level = UaByte(val.securityLevel)
+    def __init__(self, val=ffi.new("UA_EndpointDescription*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._endpoint_url = UaString(val=val.endpointUrl)
+        self._server = UaApplicationDescription(val=val.server)
+        self._server_certificate = UaByteString(val=val.serverCertificate)
+        self._security_mode = UaMessageSecurityMode(val=val.securityMode)
+        self._security_policy_uri = UaString(val=val.securityPolicyUri)
+        self._user_identity_tokens_size = SizeT(val=val.userIdentityTokensSize)
+        self._user_identity_tokens = UaUserTokenPolicy(val=val.userIdentityTokens, is_pointer=True)
+        self._transport_profile_uri = UaString(val=val.transportProfileUri)
+        self._security_level = UaByte(val=val.securityLevel)
     
 
     @property
@@ -10545,36 +12754,36 @@ class UaEndpointDescription(UaType):
 
     def __str__(self):
         return ("UaEndpointDescription:\n" + 
-                self._endpointUrl.str_helper(1) +
+                self._endpoint_url.str_helper(1) +
                 self._server.str_helper(1) +
-                self._serverCertificate.str_helper(1) +
-                self._securityMode.str_helper(1) +
-                self._securityPolicyUri.str_helper(1) +
-                self._userIdentityTokensSize.str_helper(1) +
-                self._userIdentityTokens.str_helper(1) +
-                self._transportProfileUri.str_helper(1) +
-                self._securityLevel.str_helper(1))
+                self._server_certificate.str_helper(1) +
+                self._security_mode.str_helper(1) +
+                self._security_policy_uri.str_helper(1) +
+                self._user_identity_tokens_size.str_helper(1) +
+                self._user_identity_tokens.str_helper(1) +
+                self._transport_profile_uri.str_helper(1) +
+                self._security_level.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEndpointDescription:\n" + 
-                self._endpointUrl.str_helper(n+1) +
+                self._endpoint_url.str_helper(n+1) +
                 self._server.str_helper(n+1) +
-                self._serverCertificate.str_helper(n+1) +
-                self._securityMode.str_helper(n+1) +
-                self._securityPolicyUri.str_helper(n+1) +
-                self._userIdentityTokensSize.str_helper(n+1) +
-                self._userIdentityTokens.str_helper(n+1) +
-                self._transportProfileUri.str_helper(n+1) +
-                self._securityLevel.str_helper(n+1))
+                self._server_certificate.str_helper(n+1) +
+                self._security_mode.str_helper(n+1) +
+                self._security_policy_uri.str_helper(n+1) +
+                self._user_identity_tokens_size.str_helper(n+1) +
+                self._user_identity_tokens.str_helper(n+1) +
+                self._transport_profile_uri.str_helper(n+1) +
+                self._security_level.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesRequest +++++++++++++++++++++++
 class UaDeleteReferencesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteReferencesRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._references_to_delete_size = UaSizeT(val.referencesToDeleteSize)
-        self._references_to_delete = UaDeleteReferencesItem(val.referencesToDelete, True)
+    def __init__(self, val=ffi.new("UA_DeleteReferencesRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._references_to_delete_size = SizeT(val=val.referencesToDeleteSize)
+        self._references_to_delete = UaDeleteReferencesItem(val=val.referencesToDelete, is_pointer=True)
     
 
     @property
@@ -10606,24 +12815,24 @@ class UaDeleteReferencesRequest(UaType):
 
     def __str__(self):
         return ("UaDeleteReferencesRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._referencesToDeleteSize.str_helper(1) +
-                self._referencesToDelete.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._references_to_delete_size.str_helper(1) +
+                self._references_to_delete.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDeleteReferencesRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._referencesToDeleteSize.str_helper(n+1) +
-                self._referencesToDelete.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._references_to_delete_size.str_helper(n+1) +
+                self._references_to_delete.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsRequest +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._browse_paths_size = UaSizeT(val.browsePathsSize)
-        self._browse_paths = UaBrowsePath(val.browsePaths, True)
+    def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._browse_paths_size = SizeT(val=val.browsePathsSize)
+        self._browse_paths = UaBrowsePath(val=val.browsePaths, is_pointer=True)
     
 
     @property
@@ -10655,24 +12864,24 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
 
     def __str__(self):
         return ("UaTranslateBrowsePathsToNodeIdsRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._browsePathsSize.str_helper(1) +
-                self._browsePaths.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._browse_paths_size.str_helper(1) +
+                self._browse_paths.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaTranslateBrowsePathsToNodeIdsRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._browsePathsSize.str_helper(n+1) +
-                self._browsePaths.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._browse_paths_size.str_helper(n+1) +
+                self._browse_paths.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaFindServersResponse +++++++++++++++++++++++
 class UaFindServersResponse(UaType):
-    def __init__(self, val=ffi.new("UA_FindServersResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._servers_size = UaSizeT(val.serversSize)
-        self._servers = UaApplicationDescription(val.servers, True)
+    def __init__(self, val=ffi.new("UA_FindServersResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._servers_size = SizeT(val=val.serversSize)
+        self._servers = UaApplicationDescription(val=val.servers, is_pointer=True)
     
 
     @property
@@ -10704,30 +12913,30 @@ class UaFindServersResponse(UaType):
 
     def __str__(self):
         return ("UaFindServersResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._serversSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._servers_size.str_helper(1) +
                 self._servers.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaFindServersResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._serversSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._servers_size.str_helper(n+1) +
                 self._servers.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCreateSessionRequest +++++++++++++++++++++++
 class UaCreateSessionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSessionRequest*")):
-        super().__init__(val)
-        self._request_header = UaRequestHeader(val.requestHeader)
-        self._client_description = UaApplicationDescription(val.clientDescription)
-        self._server_uri = UaString(val.serverUri)
-        self._endpoint_url = UaString(val.endpointUrl)
-        self._session_name = UaString(val.sessionName)
-        self._client_nonce = UaByteString(val.clientNonce)
-        self._client_certificate = UaByteString(val.clientCertificate)
-        self._requested_session_timeout = UaDouble(val.requestedSessionTimeout)
-        self._max_response_message_size = UaUInt32(val.maxResponseMessageSize)
+    def __init__(self, val=ffi.new("UA_CreateSessionRequest*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._request_header = UaRequestHeader(val=val.requestHeader)
+        self._client_description = UaApplicationDescription(val=val.clientDescription)
+        self._server_uri = UaString(val=val.serverUri)
+        self._endpoint_url = UaString(val=val.endpointUrl)
+        self._session_name = UaString(val=val.sessionName)
+        self._client_nonce = UaByteString(val=val.clientNonce)
+        self._client_certificate = UaByteString(val=val.clientCertificate)
+        self._requested_session_timeout = UaDouble(val=val.requestedSessionTimeout)
+        self._max_response_message_size = UaUInt32(val=val.maxResponseMessageSize)
     
 
     @property
@@ -10813,36 +13022,36 @@ class UaCreateSessionRequest(UaType):
 
     def __str__(self):
         return ("UaCreateSessionRequest:\n" + 
-                self._requestHeader.str_helper(1) +
-                self._clientDescription.str_helper(1) +
-                self._serverUri.str_helper(1) +
-                self._endpointUrl.str_helper(1) +
-                self._sessionName.str_helper(1) +
-                self._clientNonce.str_helper(1) +
-                self._clientCertificate.str_helper(1) +
-                self._requestedSessionTimeout.str_helper(1) +
-                self._maxResponseMessageSize.str_helper(1))
+                self._request_header.str_helper(1) +
+                self._client_description.str_helper(1) +
+                self._server_uri.str_helper(1) +
+                self._endpoint_url.str_helper(1) +
+                self._session_name.str_helper(1) +
+                self._client_nonce.str_helper(1) +
+                self._client_certificate.str_helper(1) +
+                self._requested_session_timeout.str_helper(1) +
+                self._max_response_message_size.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCreateSessionRequest:\n" + 
-                self._requestHeader.str_helper(n+1) +
-                self._clientDescription.str_helper(n+1) +
-                self._serverUri.str_helper(n+1) +
-                self._endpointUrl.str_helper(n+1) +
-                self._sessionName.str_helper(n+1) +
-                self._clientNonce.str_helper(n+1) +
-                self._clientCertificate.str_helper(n+1) +
-                self._requestedSessionTimeout.str_helper(n+1) +
-                self._maxResponseMessageSize.str_helper(n+1))
+                self._request_header.str_helper(n+1) +
+                self._client_description.str_helper(n+1) +
+                self._server_uri.str_helper(n+1) +
+                self._endpoint_url.str_helper(n+1) +
+                self._session_name.str_helper(n+1) +
+                self._client_nonce.str_helper(n+1) +
+                self._client_certificate.str_helper(n+1) +
+                self._requested_session_timeout.str_helper(n+1) +
+                self._max_response_message_size.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaContentFilterElement +++++++++++++++++++++++
 class UaContentFilterElement(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterElement*")):
-        super().__init__(val)
-        self._filter_operator = UaFilterOperator(val.filterOperator)
-        self._filter_operands_size = UaSizeT(val.filterOperandsSize)
-        self._filter_operands = UaExtensionObject(val.filterOperands, True)
+    def __init__(self, val=ffi.new("UA_ContentFilterElement*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._filter_operator = UaFilterOperator(val=val.filterOperator)
+        self._filter_operands_size = SizeT(val=val.filterOperandsSize)
+        self._filter_operands = UaExtensionObject(val=val.filterOperands, is_pointer=True)
     
 
     @property
@@ -10874,26 +13083,26 @@ class UaContentFilterElement(UaType):
 
     def __str__(self):
         return ("UaContentFilterElement:\n" + 
-                self._filterOperator.str_helper(1) +
-                self._filterOperandsSize.str_helper(1) +
-                self._filterOperands.str_helper(1))
+                self._filter_operator.str_helper(1) +
+                self._filter_operands_size.str_helper(1) +
+                self._filter_operands.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaContentFilterElement:\n" + 
-                self._filterOperator.str_helper(n+1) +
-                self._filterOperandsSize.str_helper(n+1) +
-                self._filterOperands.str_helper(n+1))
+                self._filter_operator.str_helper(n+1) +
+                self._filter_operands_size.str_helper(n+1) +
+                self._filter_operands.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsResponse +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaBrowsePathResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaBrowsePathResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -10943,30 +13152,30 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
 
     def __str__(self):
         return ("UaTranslateBrowsePathsToNodeIdsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaTranslateBrowsePathsToNodeIdsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaBrowseResponse +++++++++++++++++++++++
 class UaBrowseResponse(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._results_size = UaSizeT(val.resultsSize)
-        self._results = UaBrowseResult(val.results, True)
-        self._diagnostic_infos_size = UaSizeT(val.diagnosticInfosSize)
-        self._diagnostic_infos = UaDiagnosticInfo(val.diagnosticInfos, True)
+    def __init__(self, val=ffi.new("UA_BrowseResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._results_size = SizeT(val=val.resultsSize)
+        self._results = UaBrowseResult(val=val.results, is_pointer=True)
+        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize)
+        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
     
 
     @property
@@ -11016,37 +13225,37 @@ class UaBrowseResponse(UaType):
 
     def __str__(self):
         return ("UaBrowseResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._resultsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._results_size.str_helper(1) +
                 self._results.str_helper(1) +
-                self._diagnosticInfosSize.str_helper(1) +
-                self._diagnosticInfos.str_helper(1))
+                self._diagnostic_infos_size.str_helper(1) +
+                self._diagnostic_infos.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaBrowseResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._resultsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._results_size.str_helper(n+1) +
                 self._results.str_helper(n+1) +
-                self._diagnosticInfosSize.str_helper(n+1) +
-                self._diagnosticInfos.str_helper(n+1))
+                self._diagnostic_infos_size.str_helper(n+1) +
+                self._diagnostic_infos.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaCreateSessionResponse +++++++++++++++++++++++
 class UaCreateSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSessionResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._session_id = UaNodeId(val.sessionId)
-        self._authentication_token = UaNodeId(val.authenticationToken)
-        self._revised_session_timeout = UaDouble(val.revisedSessionTimeout)
-        self._server_nonce = UaByteString(val.serverNonce)
-        self._server_certificate = UaByteString(val.serverCertificate)
-        self._server_endpoints_size = UaSizeT(val.serverEndpointsSize)
-        self._server_endpoints = UaEndpointDescription(val.serverEndpoints, True)
-        self._server_software_certificates_size = UaSizeT(val.serverSoftwareCertificatesSize)
-        self._server_software_certificates = UaSignedSoftwareCertificate(val.serverSoftwareCertificates, True)
-        self._server_signature = UaSignatureData(val.serverSignature)
-        self._max_request_message_size = UaUInt32(val.maxRequestMessageSize)
+    def __init__(self, val=ffi.new("UA_CreateSessionResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._session_id = UaNodeId(val=val.sessionId)
+        self._authentication_token = UaNodeId(val=val.authenticationToken)
+        self._revised_session_timeout = UaDouble(val=val.revisedSessionTimeout)
+        self._server_nonce = UaByteString(val=val.serverNonce)
+        self._server_certificate = UaByteString(val=val.serverCertificate)
+        self._server_endpoints_size = SizeT(val=val.serverEndpointsSize)
+        self._server_endpoints = UaEndpointDescription(val=val.serverEndpoints, is_pointer=True)
+        self._server_software_certificates_size = SizeT(val=val.serverSoftwareCertificatesSize)
+        self._server_software_certificates = UaSignedSoftwareCertificate(val=val.serverSoftwareCertificates, is_pointer=True)
+        self._server_signature = UaSignatureData(val=val.serverSignature)
+        self._max_request_message_size = UaUInt32(val=val.maxRequestMessageSize)
     
 
     @property
@@ -11159,41 +13368,41 @@ class UaCreateSessionResponse(UaType):
 
     def __str__(self):
         return ("UaCreateSessionResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._sessionId.str_helper(1) +
-                self._authenticationToken.str_helper(1) +
-                self._revisedSessionTimeout.str_helper(1) +
-                self._serverNonce.str_helper(1) +
-                self._serverCertificate.str_helper(1) +
-                self._serverEndpointsSize.str_helper(1) +
-                self._serverEndpoints.str_helper(1) +
-                self._serverSoftwareCertificatesSize.str_helper(1) +
-                self._serverSoftwareCertificates.str_helper(1) +
-                self._serverSignature.str_helper(1) +
-                self._maxRequestMessageSize.str_helper(1))
+                self._response_header.str_helper(1) +
+                self._session_id.str_helper(1) +
+                self._authentication_token.str_helper(1) +
+                self._revised_session_timeout.str_helper(1) +
+                self._server_nonce.str_helper(1) +
+                self._server_certificate.str_helper(1) +
+                self._server_endpoints_size.str_helper(1) +
+                self._server_endpoints.str_helper(1) +
+                self._server_software_certificates_size.str_helper(1) +
+                self._server_software_certificates.str_helper(1) +
+                self._server_signature.str_helper(1) +
+                self._max_request_message_size.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaCreateSessionResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._sessionId.str_helper(n+1) +
-                self._authenticationToken.str_helper(n+1) +
-                self._revisedSessionTimeout.str_helper(n+1) +
-                self._serverNonce.str_helper(n+1) +
-                self._serverCertificate.str_helper(n+1) +
-                self._serverEndpointsSize.str_helper(n+1) +
-                self._serverEndpoints.str_helper(n+1) +
-                self._serverSoftwareCertificatesSize.str_helper(n+1) +
-                self._serverSoftwareCertificates.str_helper(n+1) +
-                self._serverSignature.str_helper(n+1) +
-                self._maxRequestMessageSize.str_helper(n+1))
+                self._response_header.str_helper(n+1) +
+                self._session_id.str_helper(n+1) +
+                self._authentication_token.str_helper(n+1) +
+                self._revised_session_timeout.str_helper(n+1) +
+                self._server_nonce.str_helper(n+1) +
+                self._server_certificate.str_helper(n+1) +
+                self._server_endpoints_size.str_helper(n+1) +
+                self._server_endpoints.str_helper(n+1) +
+                self._server_software_certificates_size.str_helper(n+1) +
+                self._server_software_certificates.str_helper(n+1) +
+                self._server_signature.str_helper(n+1) +
+                self._max_request_message_size.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaContentFilter +++++++++++++++++++++++
 class UaContentFilter(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilter*")):
-        super().__init__(val)
-        self._elements_size = UaSizeT(val.elementsSize)
-        self._elements = UaContentFilterElement(val.elements, True)
+    def __init__(self, val=ffi.new("UA_ContentFilter*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._elements_size = SizeT(val=val.elementsSize)
+        self._elements = UaContentFilterElement(val=val.elements, is_pointer=True)
     
 
     @property
@@ -11216,22 +13425,22 @@ class UaContentFilter(UaType):
 
     def __str__(self):
         return ("UaContentFilter:\n" + 
-                self._elementsSize.str_helper(1) +
+                self._elements_size.str_helper(1) +
                 self._elements.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaContentFilter:\n" + 
-                self._elementsSize.str_helper(n+1) +
+                self._elements_size.str_helper(n+1) +
                 self._elements.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaGetEndpointsResponse +++++++++++++++++++++++
 class UaGetEndpointsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_GetEndpointsResponse*")):
-        super().__init__(val)
-        self._response_header = UaResponseHeader(val.responseHeader)
-        self._endpoints_size = UaSizeT(val.endpointsSize)
-        self._endpoints = UaEndpointDescription(val.endpoints, True)
+    def __init__(self, val=ffi.new("UA_GetEndpointsResponse*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._response_header = UaResponseHeader(val=val.responseHeader)
+        self._endpoints_size = SizeT(val=val.endpointsSize)
+        self._endpoints = UaEndpointDescription(val=val.endpoints, is_pointer=True)
     
 
     @property
@@ -11263,24 +13472,24 @@ class UaGetEndpointsResponse(UaType):
 
     def __str__(self):
         return ("UaGetEndpointsResponse:\n" + 
-                self._responseHeader.str_helper(1) +
-                self._endpointsSize.str_helper(1) +
+                self._response_header.str_helper(1) +
+                self._endpoints_size.str_helper(1) +
                 self._endpoints.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaGetEndpointsResponse:\n" + 
-                self._responseHeader.str_helper(n+1) +
-                self._endpointsSize.str_helper(n+1) +
+                self._response_header.str_helper(n+1) +
+                self._endpoints_size.str_helper(n+1) +
                 self._endpoints.str_helper(n+1))
 
 
 # +++++++++++++++++++ UaEventFilter +++++++++++++++++++++++
 class UaEventFilter(UaType):
-    def __init__(self, val=ffi.new("UA_EventFilter*")):
-        super().__init__(val)
-        self._select_clauses_size = UaSizeT(val.selectClausesSize)
-        self._select_clauses = UaSimpleAttributeOperand(val.selectClauses, True)
-        self._where_clause = UaContentFilter(val.whereClause)
+    def __init__(self, val=ffi.new("UA_EventFilter*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._select_clauses_size = SizeT(val=val.selectClausesSize)
+        self._select_clauses = UaSimpleAttributeOperand(val=val.selectClauses, is_pointer=True)
+        self._where_clause = UaContentFilter(val=val.whereClause)
     
 
     @property
@@ -11312,12 +13521,12 @@ class UaEventFilter(UaType):
 
     def __str__(self):
         return ("UaEventFilter:\n" + 
-                self._selectClausesSize.str_helper(1) +
-                self._selectClauses.str_helper(1) +
-                self._whereClause.str_helper(1))
+                self._select_clauses_size.str_helper(1) +
+                self._select_clauses.str_helper(1) +
+                self._where_clause.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaEventFilter:\n" + 
-                self._selectClausesSize.str_helper(n+1) +
-                self._selectClauses.str_helper(n+1) +
-                self._whereClause.str_helper(n+1))
+                self._select_clauses_size.str_helper(n+1) +
+                self._select_clauses.str_helper(n+1) +
+                self._where_clause.str_helper(n+1))

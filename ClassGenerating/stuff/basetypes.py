@@ -958,28 +958,119 @@ class UaVariant(UaType):
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
+
 # +++++++++++++++++++ UaExtensionObject +++++++++++++++++++++++
+class UaExtensionObject(UaType):
+    def __init__(self, val=ffi.new("UA_ExtensionObject*"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._encoding = UaExtensionObjectEncoding(val=val.encoding)
+        if self._encoding in [0, 1, 2]:
+            self._type = UaNodeId(val=val.content.encoded.typeId)
+            self._data = UaByteString(val=val.content.encoded.body)
+        elif self._encoding in [3, 4]
+            self._type = UaDataType(val=val.content.decoded.type, is_pointer=True)
+            # data not void *
+            self._data = ffi.from_handle(val.content.encoded.body)
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, val):
+        if self._encoding in [0, 1, 2] and val not in UaNodeId:
+            raise AttributeError(f"encoding is {str(self._encoding)} so value must be in UaNodeId")
+        if self._encoding in [3, 4] and val not in UaDataType:
+            raise AttributeError(f"encoding is {str(self._encoding)} so value must be in UaDataType")
+        self._type = val
+        self._value.type = val.value
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        if self._encoding in [0, 1, 2] and val not in UaByteString:
+            raise AttributeError(f"encoding is {str(self._encoding)} so value must be in UaNodeId")
+        if self._encoding in [3, 4] and val is not type(ffi.new_handle()):
+            self._data = val
+            val = ffi.new_handle(val)
+
+        self._value.data = val
+
+    def __str__(self):
+        return ("UaExtensionObject:\n" +
+                self._type.str_helper(1) +
+                self._data.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaExtensionObject:\n" +
+                self._type.str_helper(n + 1) +
+                self._data.str_helper(n + 1))
+
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
 class UaDataValue(UaType):
     def __init__(self, val=ffi.new("UA_DataValue*"), is_pointer=False):
         super().__init__(val, is_pointer)
-        self._ = UaBoolean(val=val.)
+        self._variant = UaVariant(val=val.value)
+        self._source_timestamp = UaDateTime(val=val.sourceTimestamp)
+        self._server_timestamp = UaDateTime(val=val.serverTimestamp)
+        self._source_picoseconds = UaUInt16(val=val.sourcePicoseconds)
+        self._server_picoseconds = UaUInt16(val=val.serverPicoseconds)
         self._status = UaStatusCode(val=val.status)
-        self._has_value = UaBoolean(val=val.has_value)
-        self._has_status = UaBoolean(val=val.has_status)
-        self._has_source_timestamp = UaBoolean(val=val.has_source_timestamp)
-        self._has_server_timestamp = UaBoolean(val=val.has_server_timestamp)
-    
+        self._has_value = UaBoolean(val=val.hasValue)
+        self._has_status = UaBoolean(val=val.hasStatus)
+        self._has_source_timestamp = UaBoolean(val=val.hasSourceTimestamp)
+        self._has_server_timestamp = UaBoolean(val=val.hasServerTimestamp)
+        self._has_source_picoseconds = UaBoolean(val=val.hasSourcePicoseconds)
+        self._has_server_picoseconds = UaBoolean(val=val.hasServerPicoseconds)
 
     @property
-    def (self):
-        return self._
+    def variant(self):
+        return self._varian
 
-    @.setter
-    def (self, val):
-        self._ = val
-        self._value. = val.value
+    @variant.setter
+    def variant(self, val):
+        self._variant = val
+        self._value.value = val.value
+
+    @property
+    def source_timestamp(self):
+        return self._source_timestamp
+
+    @source_timestamp.setter
+    def source_timestamp(self, val):
+        self._source_timestamp = val
+        self._value.sourceTimestamp = val.value
+
+    @property
+    def server_timestamp(self):
+        return self._server_timestamp
+
+    @server_timestamp.setter
+    def server_timestamp(self, val):
+        self._server_timestamp = val
+        self._value.serverTimestamp = val.value
+
+    @property
+    def source_picoseconds(self):
+        return self._source_picoseconds
+
+    @source_picoseconds.setter
+    def source_picoseconds(self, val):
+        self._source_picoseconds = val
+        self._value.sourcePicoseconds = val.value
+
+    @property
+    def server_picoseconds(self):
+        return self._server_picoseconds
+
+    @server_picoseconds.setter
+    def server_picoseconds(self, val):
+        self._server_picoseconds = val
+        self._value.serverPicoseconds = val.value
 
     @property
     def status(self):
@@ -997,7 +1088,7 @@ class UaDataValue(UaType):
     @has_value.setter
     def has_value(self, val):
         self._has_value = val
-        self._value.has_value = val.value
+        self._value.hasValue = val.value
 
     @property
     def has_status(self):
@@ -1006,7 +1097,7 @@ class UaDataValue(UaType):
     @has_status.setter
     def has_status(self, val):
         self._has_status = val
-        self._value.has_status = val.value
+        self._value.hasStatus = val.value
 
     @property
     def has_source_timestamp(self):
@@ -1015,7 +1106,7 @@ class UaDataValue(UaType):
     @has_source_timestamp.setter
     def has_source_timestamp(self, val):
         self._has_source_timestamp = val
-        self._value.has_source_timestamp = val.value
+        self._value.hasSourceTimestamp = val.value
 
     @property
     def has_server_timestamp(self):
@@ -1024,27 +1115,382 @@ class UaDataValue(UaType):
     @has_server_timestamp.setter
     def has_server_timestamp(self, val):
         self._has_server_timestamp = val
-        self._value.has_server_timestamp = val.value
+        self._value.hasServerTimestamp = val.value
+
+    @property
+    def has_source_picoseconds(self):
+        return self._has_source_timestamp
+
+    @has_source_picoseconds.setter
+    def has_source_picoseconds(self, val):
+        self._has_source_picoseconds = val
+        self._value.hasSourcePicoseconds = val.value
+
+    @property
+    def has_server_picoseconds(self):
+        return self._has_server_picoseconds
+
+    @has_server_picoseconds.setter
+    def has_server_picoseconds(self, val):
+        self._has_server_picoseconds = val
+        self._value.hasServerPicoseconds = val.value
 
     def __str__(self):
         return ("UaDataValue:\n" + 
-                self._.str_helper(1) +
+                self._variant.str_helper(1) +
+                self._source_timestamp.str_helper(1) +
+                self._server_timestamp.str_helper(1) +
+                self._source_picoseconds.str_helper(1) +
+                self._server_picoseconds.str_helper(1) +
                 self._status.str_helper(1) +
                 self._has_value.str_helper(1) +
                 self._has_status.str_helper(1) +
                 self._has_source_timestamp.str_helper(1) +
-                self._has_server_timestamp.str_helper(1))
+                self._has_server_timestamp.str_helper(1) +
+                self._has_source_picoseconds.str_helper(1) +
+                self._has_server_picoseconds.str_helper(1))
     
     def str_helper(self, n: int):
         return ("\t"*n + "UaDataValue:\n" + 
-                self._.str_helper(n+1) +
+                self._variant.str_helper(n+1) +
+                self._source_timestamp.str_helper(n + 1) +
+                self._server_timestamp.str_helper(n + 1) +
+                self._source_picoseconds.str_helper(n + 1) +
+                self._server_picoseconds.str_helper(n + 1) +
                 self._status.str_helper(n+1) +
                 self._has_value.str_helper(n+1) +
                 self._has_status.str_helper(n+1) +
                 self._has_source_timestamp.str_helper(n+1) +
-                self._has_server_timestamp.str_helper(n+1))
+                self._has_server_timestamp.str_helper(n+1) +
+                self._has_source_picoseconds.str_helper(n+1) +
+                self._has_server_picoseconds.str_helper(n+1))
+
+
+# +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
+class UaDiagnosticInfo(UaType):
+    def __init__(self, val=ffi.new("UA_DiagnosticInfo*, is_pointer=False"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._has_symbolic_id = UaBoolean(val=val.hasSymbolicId)
+        self._has_namespace_uri = UaBoolean(val=val.hasNamespaceUri)
+        self._has_localized_text = UaBoolean(val=val.hasLocalizedText)
+        self._has_locale = UaBoolean(val=val.hasLocale)
+        self._has_additional_info = UaBoolean(val=val.hasAdditionalInfo)
+        self._has_inner_status_code = UaBoolean(val=val.hasInnerStatusCode)
+        self._has_inner_diagnostic_info = UaBoolean(val=val.hasInnerDiagnosticInfo)
+        self._symbolic_id = UaInt32(val=val.symbolicId)
+        self._namespace_uri = UaInt32(val=val.namespaceUri)
+        self._localized_text = UaInt32(val=val.localizedText)
+        self._locale = UaInt32(val=val.locale)
+        self._additional_info = UaString(val=val.additionalInfo)
+        self._inner_status_code = UaStatusCode(val=val.innerStatusCode)
+        self._inner_diagnostic_info = UaDiagnosticInfo(val=val.innerDiagnosticInfo, is_pointer=True)
+
+    @property
+    def has_symbolic_id(self):
+        return self._has_symbolic_id
+
+    @has_symbolic_id.setter
+    def has_symbolic_id(self, val):
+        self._has_symbolic_id = val
+        self._value.hasSymbolicId = val.value
+
+    @property
+    def has_namespace_uri(self):
+        return self._has_namespace_uri
+
+    @has_namespace_uri.setter
+    def has_namespace_uri(self, val):
+        self._has_namespace_uri = val
+        self._value.hasNamespaceUri = val.value
+
+    @property
+    def has_localized_text(self):
+        return self._has_localized_text
+
+    @has_localized_text.setter
+    def has_localized_text(self, val):
+        self._has_localized_text = val
+        self._value.hasLocalizedText = val.value
+
+    @property
+    def has_locale(self):
+        return self._has_locale
+
+    @has_locale.setter
+    def has_locale(self, val):
+        self._has_locale = val
+        self._value.hasLocale = val.value
+
+    @property
+    def has_additional_info(self):
+        return self._has_additional_info
+
+    @has_additional_info.setter
+    def has_additional_info(self, val):
+        self._has_additional_info = val
+        self._value.hasAdditionalInfo = val.value
+
+    @property
+    def has_inner_status_code(self):
+        return self._has_inner_status_code
+
+    @has_inner_status_code.setter
+    def has_inner_status_code(self, val):
+        self._has_inner_status_code = val
+        self._value.hasInnerStatusCode = val.value
+
+    @property
+    def has_inner_diagnostic_info(self):
+        return self._has_inner_diagnostic_info
+
+    @has_inner_diagnostic_info.setter
+    def has_inner_diagnostic_info(self, val):
+        self._has_inner_diagnostic_info = val
+        self._value.hasInnerDiagnosticInfo = val.value
+
+    @property
+    def symbolic_id(self):
+        return self._symbolic_id
+
+    @symbolic_id.setter
+    def symbolic_id(self, val):
+        self._symbolic_id = val
+        self._value.symbolicId = val.value
+
+    @property
+    def namespace_uri(self):
+        return self._namespace_uri
+
+    @namespace_uri.setter
+    def namespace_uri(self, val):
+        self._namespace_uri = val
+        self._value.namespaceUri = val.value
+
+    @property
+    def localized_text(self):
+        return self._localized_text
+
+    @localized_text.setter
+    def localized_text(self, val):
+        self._localized_text = val
+        self._value.localizedText = val.value
+
+    @property
+    def locale(self):
+        return self._locale
+
+    @locale.setter
+    def locale(self, val):
+        self._locale = val
+        self._value.locale = val.value
+
+    @property
+    def additional_info(self):
+        return self._additional_info
+
+    @additional_info.setter
+    def additional_info(self, val):
+        self._additional_info = val
+        self._value.additionalInfo = val.value
+
+    @property
+    def inner_status_code(self):
+        return self._inner_status_code
+
+    @inner_status_code.setter
+    def inner_status_code(self, val):
+        self._inner_status_code = val
+        self._value.innerStatusCode = val.value
+
+    @property
+    def inner_diagnostic_info(self):
+        return self._inner_diagnostic_info
+
+    @inner_diagnostic_info.setter
+    def inner_diagnostic_info(self, val):
+        self._inner_diagnostic_info = val
+        self._value.innerDiagnosticInfo = val.value
+
+    def __str__(self):
+        return ("UaDiagnosticInfo:\n" +
+                self._has_symbolic_id.str_helper(1) +
+                self._has_namespace_uri.str_helper(1) +
+                self._has_localized_text.str_helper(1) +
+                self._has_locale.str_helper(1) +
+                self._has_additional_info.str_helper(1) +
+                self._has_inner_status_code.str_helper(1) +
+                self._has_inner_diagnostic_info.str_helper(1) +
+                self._symbolic_id.str_helper(1) +
+                self._namespace_uri.str_helper(1) +
+                self._localized_text.str_helper(1) +
+                self._locale.str_helper(1) +
+                self._additional_info.str_helper(1) +
+                self._inner_status_code.str_helper(1) +
+                self._inner_diagnostic_info.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaDiagnosticInfo:\n" +
+                self._has_symbolic_id.str_helper(n + 1) +
+                self._has_namespace_uri.str_helper(n + 1) +
+                self._has_localized_text.str_helper(n + 1) +
+                self._has_locale.str_helper(n + 1) +
+                self._has_additional_info.str_helper(n + 1) +
+                self._has_inner_status_code.str_helper(n + 1) +
+                self._has_inner_diagnostic_info.str_helper(n + 1) +
+                self._symbolic_id.str_helper(n + 1) +
+                self._namespace_uri.str_helper(n + 1) +
+                self._localized_text.str_helper(n + 1) +
+                self._locale.str_helper(n + 1) +
+                self._additional_info.str_helper(n + 1) +
+                self._inner_status_code.str_helper(n + 1) +
+                self._inner_diagnostic_info.str_helper(n + 1))
+
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
+class UaDataType(UaType):
+    def __init__(self, val=ffi.new("UA_DataType*, is_pointer=False"), is_pointer=False):
+        super().__init__(val, is_pointer)
+        self._type_id = UaNodeId(val=val.typeId)
+        self._binary_encoding_id = UaNodeId(val=val.binaryEncodingId)
+        self._mem_size = UaUInt16(val=val.memSize)
+        self._type_index = UaUInt16(val=val.typeIndex)
+        self._type_kind = UaUInt32(val=val.typeKind)
+        self._pointer_free = UaUInt32(val=val.pointerFree)
+        self._overlayable = UaUInt32(val=val.overlayable)
+        self._members_size = UaUInt32(val=val.membersSize)
+        self._members = UaDataTypeMember(val=val.members, is_pointer=True)
+        # self._type_name = char(val=val.typeName, is_pointer=True)
+
+    @property
+    def type_id(self):
+        return self._type_id
+
+    @type_id.setter
+    def type_id(self, val):
+        self._type_id = val
+        self._value.typeId = val.value
+
+    @property
+    def binary_encoding_id(self):
+        return self._binary_encoding_id
+
+    @binary_encoding_id.setter
+    def binary_encoding_id(self, val):
+        self._binary_encoding_id = val
+        self._value.binaryEncodingId = val.value
+
+    @property
+    def mem_size(self):
+        return self._mem_size
+
+    @mem_size.setter
+    def mem_size(self, val):
+        self._mem_size = val
+        self._value.memSize = val.value
+
+    @property
+    def type_index(self):
+        return self._type_index
+
+    @type_index.setter
+    def type_index(self, val):
+        self._type_index = val
+        self._value.typeIndex = val.value
+
+    @property
+    def type_kind(self):
+        return self._type_kind
+
+    @type_kind.setter
+    def type_kind(self, val):
+        self._type_kind = val
+        self._value.typeKind = val.value
+
+    @property
+    def pointer_free(self):
+        return self._pointer_free
+
+    @pointer_free.setter
+    def pointer_free(self, val):
+        self._pointer_free = val
+        self._value.pointerFree = val.value
+
+    @property
+    def overlayable(self):
+        return self._overlayable
+
+    @overlayable.setter
+    def overlayable(self, val):
+        self._overlayable = val
+        self._value.overlayable = val.value
+
+    @property
+    def members_size(self):
+        return self._members_size
+
+    @members_size.setter
+    def members_size(self, val):
+        self._members_size = val
+        self._value.membersSize = val.value
+
+    @property
+    def members(self):
+        return self._members
+
+    @members.setter
+    def members(self, val):
+        self._members = val
+        self._value.members = val.value
+
+    @property
+    def type_name(self):
+        return self._type_name
+
+    @type_name.setter
+    def type_name(self, val):
+        self._type_name = val
+        self._value.typeName = val.value
+
+    def __str__(self):
+        return ("UaDataType:\n" +
+                self._type_id.str_helper(1) +
+                self._binary_encoding_id.str_helper(1) +
+                self._mem_size.str_helper(1) +
+                self._type_index.str_helper(1) +
+                self._type_kind.str_helper(1) +
+                self._pointer_free.str_helper(1) +
+                self._overlayable.str_helper(1) +
+                self._members_size.str_helper(1) +
+                self._members.str_helper(1) +
+                self._type_name.str_helper(1))
+
+    def str_helper(self, n: int):
+        return ("\t" * n + "UaDataType:\n" +
+                self._type_id.str_helper(n + 1) +
+                self._binary_encoding_id.str_helper(n + 1) +
+                self._mem_size.str_helper(n + 1) +
+                self._type_index.str_helper(n + 1) +
+                self._type_kind.str_helper(n + 1) +
+                self._pointer_free.str_helper(n + 1) +
+                self._overlayable.str_helper(n + 1) +
+                self._members_size.str_helper(n + 1) +
+                self._members.str_helper(n + 1) +
+                self._type_name.str_helper(n + 1))
+
+    def is_numeric(self):
+        return lib.UA_DataType_isNumeric(self._value)
+
+    @staticmethod
+    def find_by_node_id(type_id: UaNodeId):
+        return UaDataType(val=lib.UA_findDataType(type_id.ref()), is_pointer=True)
+
+# TODO: generic type handling!!!
+# ----> init, copy, new, array_new, array_copy should be methods of a class, which represent members of an in an
+# attribute provided UaDataType
+    # returns void ptr
+    def new_instance(self):
+        return lib.UA_new(self._value)
+
 
 
 # +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
@@ -1094,3 +1540,12 @@ class UaDataTypeArray(UaType):
                 self._next.str_helper(n+1) +
                 self._types_size.str_helper(n+1) +
                 self._types.str_helper(n+1))
+
+class Randomize:
+    @staticmethod
+    def random_uint_32():
+        return lib.UA_UInt32_random()
+
+    @staticmethod
+    def ua_random_seed(seed: int):
+        lib.UA_random_seed(ffi.cast("UA_UInt64*", seed))
