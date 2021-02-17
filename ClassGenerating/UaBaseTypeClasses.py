@@ -13,8 +13,43 @@ class UaType:
         else:
             return self._value[0]
 
+    def _ref(self):
+        return self._value
+
+    def _deref(self):
+        return self._value[0]
+
     def __str__(self):
         return str(self._value)
+
+
+# +++++++++++++++++++ SizeT +++++++++++++++++++++++
+class SizeT(UaType):
+    def __init__(self, p_val=0, is_pointer=False, val=None):
+        if val is None:
+            super().__init__(ffi.new("SizeT*", p_val), is_pointer)
+            self._p_value = None
+        else:
+            super().__init__(val, is_pointer)
+            self._p_value = val[0]
+
+    @property
+    def p_value(self):
+        return self._p_value
+
+    @p_value.setter
+    def p_value(self, val):
+        try:
+            self._p_value = val
+            self._value = ffi.new("SizeT*", val)
+        except OverflowError as e:
+            raise OverflowError(f"{val} is not in range") from e
+
+    def __str__(self):
+        return "SizeT: " + str(self._p_value)
+
+    def str_helper(self, n: int):
+        return "\t" * n + "SizeT: " + str(self._p_value)
 
 
 # -----------------------------------------------------------------
@@ -281,11 +316,11 @@ class UaSessionState(UaType):
 class UaNetworkStatistics(UaType):
     def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
         super().__init__(val, is_pointer)
-        self._current_connection_count = UaSizeT(val.currentConnectionCount)
-        self._cumulated_connection_count = UaSizeT(val.cumulatedConnectionCount)
-        self._rejected_connection_count = UaSizeT(val.rejectedConnectionCount)
-        self._connection_timeout_count = UaSizeT(val.connectionTimeoutCount)
-        self._connection_abort_count = UaSizeT(val.connectionAbortCount)
+        self._current_connection_count = SizeT(val=val.currentConnectionCount, is_pointer=is_pointer)
+        self._cumulated_connection_count = SizeT(val=val.cumulatedConnectionCount, is_pointer=is_pointer)
+        self._rejected_connection_count = SizeT(val=val.rejectedConnectionCount, is_pointer=is_pointer)
+        self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=is_pointer)
+        self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=is_pointer)
 
     @property
     def current_connection_count(self):
@@ -353,12 +388,12 @@ class UaNetworkStatistics(UaType):
 class UaSecureChannelStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
         super().__init__(val, is_pointer)
-        self._current_channel_count = UaSizeT(val.currentChannelCount)
-        self._cumulated_channel_count = UaSizeT(val.cumulatedChannelCount)
-        self._rejected_channel_count = UaSizeT(val.rejectedChannelCount)
-        self._channel_timeout_count = UaSizeT(val.channelTimeoutCount)
-        self._channel_abort_count = UaSizeT(val.channelAbortCount)
-        self._channel_purge_count = UaSizeT(val.channelPurgeCount)
+        self._current_channel_count = SizeT(val=val.currentChannelCount, is_pointer=is_pointer)
+        self._cumulated_channel_count = SizeT(val=val.cumulatedChannelCount, is_pointer=is_pointer)
+        self._rejected_channel_count = SizeT(val=val.rejectedChannelCount, is_pointer=is_pointer)
+        self._channel_timeout_count = SizeT(val=val.channelTimeoutCount, is_pointer=is_pointer)
+        self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=is_pointer)
+        self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=is_pointer)
 
     @property
     def current_channel_count(self):
@@ -437,12 +472,12 @@ class UaSecureChannelStatistics(UaType):
 class UaSessionStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SessionStatistics*"), is_pointer=False):
         super().__init__(val, is_pointer)
-        self._current_session_count = UaSizeT(val.currentSessionCount)
-        self._cumulated_session_count = UaSizeT(val.cumulatedSessionCount)
-        self._security_rejected_session_count = UaSizeT(val.securityRejectedSessionCount)
-        self._rejected_session_count = UaSizeT(val.rejectedSessionCount)
-        self._session_timeout_count = UaSizeT(val.sessionTimeoutCount)
-        self._session_abort_count = UaSizeT(val.sessionAbortCount)
+        self._current_session_count = SizeT(val=val.currentSessionCount, is_pointer=is_pointer)
+        self._cumulated_session_count = SizeT(val=val.cumulatedSessionCount, is_pointer=is_pointer)
+        self._security_rejected_session_count = SizeT(val=val.securityRejectedSessionCount, is_pointer=is_pointer)
+        self._rejected_session_count = SizeT(val=val.rejectedSessionCount, is_pointer=is_pointer)
+        self._session_timeout_count = SizeT(val=val.sessionTimeoutCount, is_pointer=is_pointer)
+        self._session_abort_count = SizeT(val=val.sessionAbortCount, is_pointer=is_pointer)
 
     @property
     def current_session_count(self):
@@ -525,7 +560,7 @@ class UaSessionStatistics(UaType):
 class UaBoolean(UaType):
     def __init__(self, p_val=False, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("UA_Boolean*", p_val),is_pointer)
+            super().__init__(ffi.new("UA_Boolean*", p_val), is_pointer)
             self._p_value = None
         else:
             super().__init__(val, is_pointer)

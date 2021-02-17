@@ -125,8 +125,12 @@ static UA_ExpandedNodeId UA_EXPANDEDNODEID_STRING(UA_UInt16 nsIndex, char *chars
 static UA_ExpandedNodeId UA_EXPANDEDNODEID_STRING_ALLOC(UA_UInt16 nsIndex, const char *chars);
 static UA_ExpandedNodeId UA_EXPANDEDNODEID_STRING_GUID(UA_UInt16 nsIndex, UA_Guid guid);
 static UA_ExpandedNodeId UA_EXPANDEDNODEID_BYTESTRING(UA_UInt16 nsIndex, char *chars);
+static UA_ExpandedNodeId UA_EXPANDEDNODEID_BYTESTRING_ALLOC(UA_UInt16 nsIndex, const char *chars);
 
 UA_Boolean UA_ExpandedNodeId_isLocal(const UA_ExpandedNodeId *n);
+UA_Order UA_ExpandedNodeId_order(const UA_ExpandedNodeId *n1, const UA_ExpandedNodeId *n2);
+static UA_Boolean UA_ExpandedNodeId_equal(const UA_ExpandedNodeId *n1, const UA_ExpandedNodeId *n2);
+UA_UInt32 UA_ExpandedNodeId_hash(const UA_ExpandedNodeId *n);
 
 //----------------------- UA_QUALIFIEDNAME --------------------------
 typedef struct {
@@ -341,10 +345,12 @@ struct UA_DataType {
 UA_Boolean UA_DataType_isNumeric(const UA_DataType *type);
 
 const UA_DataType *UA_findDataType(const UA_NodeId *typeId);
-
 void *UA_new(const UA_DataType *type);
-static  void UA_init(void *p, const UA_DataType *type) ;
+static void UA_init(void *p, const UA_DataType *type) ;
 UA_StatusCode UA_copy(const void *src, void *dst, const UA_DataType *type);
+
+//void UA_clear(void *p, const UA_DataType *type);
+//void UA_delete(void *p, const UA_DataType *type);
 
 
 //--------------- Array Handling ------------------

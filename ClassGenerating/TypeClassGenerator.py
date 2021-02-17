@@ -2,8 +2,6 @@ import xml.etree.ElementTree as ET
 import re
 import inflection
 
-# TODO: val=... in contructor calls
-
 # attribute_to_type is a dict {"<attributename>": ("<attributename>", <is pointer>)...}
 # The use of this class generator is base on two assumptions:
 #   1. syntax: the struct name starts with UA_
@@ -14,7 +12,7 @@ import inflection
 def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
     tab = "    "
     empty = ""
-    pointer_str = ", True"
+    pointer_str = ", is_pointer=True"
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
 """
     class_str += """class """ + to_python_class_name(struct_name) + f"""(UaType):
@@ -23,7 +21,7 @@ def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
 
     for attribute, typename in attribute_to_type.items():
         class_str += f"{tab * 2}self._{inflection.underscore(attribute)} = " \
-                     f"{to_python_class_name(typename[0])}(val.{attribute}{pointer_str if typename[1] else empty})\n"
+                     f"{to_python_class_name(typename[0])}(val=val.{attribute}{pointer_str if typename[1] else empty})\n"
     class_str += f"{tab}\n"
 
     for attribute, typename in attribute_to_type.items():
@@ -101,9 +99,11 @@ def ua_enum_class_generator(enum_name: str, ident_to_val: dict):
 def to_python_class_name(open62541_name: str):
     if open62541_name[0:3] == "UA_":
         return open62541_name.replace("UA_", "Ua")
-    else:
+    elif "size_t" in open62541_name:
         print(open62541_name)
-        return "UaSizeT"
+        return "SizeT"
+    else:
+        return inflection.underscore(open62541_name)
 
 
 def defs_from_xml():

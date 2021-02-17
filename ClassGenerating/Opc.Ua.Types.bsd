@@ -1,5 +1,4 @@
 
-UaSizeT
 
 typedef struct {
     UA_ExtensionObjectEncoding encoding;
@@ -14,10 +13,6 @@ typedef struct {
         } decoded;
     } content;
 } UA_ExtensionObject;
-
-typedef UA_String UA_ByteString;
-
-typedef UA_String UA_XmlElement;
 
 struct UA_DataType {
     UA_NodeId typeId;                /* The nodeid of the type */
