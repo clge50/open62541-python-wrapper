@@ -66,6 +66,9 @@ UA_UnregisterNodesResponse UA_Client_Service_unregisterNodes(UA_Client *client, 
 typedef void (*UA_ClientAsyncServiceCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, void *response);
 typedef void (*UA_ClientCallback)(UA_Client *client, void *data);
 
+// callback function pointer implementations
+extern "Python" void python_wrapper_UA_ClientAsyncServiceCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, void *response);
+
 // utils
 UA_ClientConfig * UA_Client_getConfig(UA_Client *client);
 const UA_DataType * UA_Client_findDataType(UA_Client *client, const UA_NodeId *typeId);

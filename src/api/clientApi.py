@@ -14,7 +14,7 @@ class DefaultAttributes:
     VIEW_ATTRIBUTES_DEFAULT = lib.UA_ViewAttributes_default
 
 
-class UaCallback:
+class _UaCallback:
 
     @staticmethod
     @ffi.def_extern()
@@ -150,6 +150,11 @@ class UaCallback:
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
         ffi.from_handle(fun)(client, request_id, ar)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncServiceCallback(client, fun, request_id, response):
+        ffi.from_handle(fun)(client, request_id, response)
 
 
 class UaClient:
@@ -499,10 +504,11 @@ class UaClient:
     #                                                  server_on_network)
 
     # async read service
-    # todo: improve handling (callback selection for read_callback)
-    def send_async_read_request(self, request, read_callback, callback):
+    def send_async_read_request(self, request, callback):
         req_id = ffi.new("UA_UInt32*")
-        status_code = lib.UA_Client_sendAsyncReadRequest(self.ua_client, request, read_callback, callback, req_id)
+        status_code = lib.UA_Client_sendAsyncReadRequest(self.ua_client, request,
+                                                         lib.python_wrapper_UA_ClientAsyncReadCallback, callback,
+                                                         req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     def read_data_type_attribute_async(self, node_id, callback):
@@ -652,11 +658,13 @@ class UaClient:
                                                             callback, req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
-    # async write service # todo: result classes --> wrap results (req-id, statuscode)
-    # todo: improve handling (callback selection for read_callback)
-    def send_async_write_request(self, request, write_callback, callback):
+    # async write service
+    def send_async_write_request(self, request, callback):
         req_id = ffi.new("UA_UInt32*")
-        return lib.UA_Client_sendAsyncWriteRequest(self.ua_client, request, write_callback, callback, req_id)
+        status_code = lib.UA_Client_sendAsyncWriteRequest(self.ua_client, request,
+                                                          lib.python_wrapper_UA_ClientAsyncWriteCallback, callback,
+                                                          req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     def write_value_attribute_async(self, node_id, new_value, callback):
         req_id = ffi.new("UA_UInt32*")
