@@ -835,12 +835,15 @@ class UaClient:
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     # call service
-    # todo: these two methods have to be reworked. currently not sure how they are supposed to be used
-    # def _call_async(self, object_id, method_id, input_size, _input, callback_default, callback, req_id):
-    #    return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input, callback_default, callback, req_id)
+    # todo: can we get rid of input_size, calculate it ourselves and hide it from users?
+    def _call_async(self, object_id, method_id, input_size, _input, callback, req_id):
+        return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input,
+                                          lib.python_wrapper_UA_ClientAsyncServiceCallback, callback, req_id)
 
-    # def call_async(self, object_id, method_id, input_size, _input, callback_default, callback, req_id):
-    #    return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input, callback_default, callback, req_id)
+    # todo: can we get rid of input_size, calculate it ourselves and hide it from users?
+    def call_async(self, object_id, method_id, input_size, _input, callback, req_id):
+        return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input,
+                                          lib.python_wrapper_UA_ClientAsyncCallCallback, callback, req_id)
 
     # add node service
 
