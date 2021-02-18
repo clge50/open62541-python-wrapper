@@ -2,7 +2,10 @@
 # TODO: insert content of basetypes.py in this file
 
 class UaType:
-    def __init__(self, val, is_pointer=False):
+    # _value should always be a pointer, so if it has to be dereferenced call ._value[0]
+    def __init__(self, val, c_name=None, is_pointer=False):
+        if c_name is not None:
+            val = UaType.to_pointer(val, c_name)
         self._value = val
         self._is_pointer = is_pointer
 
@@ -13,25 +16,26 @@ class UaType:
         else:
             return self._value[0]
 
-    def _ref(self):
-        return self._value
-
-    def _deref(self):
-        return self._value[0]
-
-    def __str__(self):
+    def __str__(self, n=0):
         return str(self._value)
+
+    @staticmethod
+    def to_pointer(val, c_name):
+        if type(val) is type(ffi.new(f"{c_name}*")[0])
+            val = ffi.new(f"{c_name}*", val)
+
+        return val
 
 
 # +++++++++++++++++++ SizeT +++++++++++++++++++++++
 class SizeT(UaType):
     def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is None:
-            super().__init__(ffi.new("SizeT*", p_val), is_pointer)
+            super().__init__(ffi.new("size_t*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "size_t", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -39,29 +43,22 @@ class SizeT(UaType):
 
     @p_value.setter
     def p_value(self, val):
-        try:
-            self._p_value = val
-            self._value = ffi.new("SizeT*", val)
-        except OverflowError as e:
-            raise OverflowError(f"{val} is not in range") from e
+        self._p_value = val
+        self._value = ffi.new("size_t*", val)
 
-    def __str__(self):
-        return "SizeT: " + str(self._p_value)
-
-    def str_helper(self, n: int):
-        return "\t" * n + "SizeT: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "SizeT: " + str(self._p_value) + "\n"
 
 
 # +++++++++++++++++++ Char +++++++++++++++++++++++
-class Char(UaType):
-    def __init__(self, p_val: bytes = bytes(), is_pointer=True, val=None):
-        if p_val is None:
-            p_val = []
+class CString(UaType):
+    def __init__(self, p_val: bytes = bytes(), val=None):
+        CString.null_terminate(p_val)
         if val is None:
             super().__init__(ffi.new("char[]", p_val), is_pointer)
             self._p_value = p_val
         else:
-            super().__init__(val, is_pointer)
+            super().__init__(val, "char", True)
             self._p_value = ffi.string(val)
 
     @property
@@ -73,11 +70,13 @@ class Char(UaType):
         self._p_value = val
         self._value = ffi.new("char[]", self._p_value)
 
-    def __str__(self):
-        return "Char*: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "CString*: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "Char*: " + str(self._p_value)
+    @staticmethod
+    def null_terminate(b_string: bytes):
+        if not b_string.endswith(b'\0'):
+            b_string = b_string+b'\0'
 
 
 # -----------------------------------------------------------------
@@ -149,7 +148,7 @@ class UaAttributeId(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -163,13 +162,10 @@ class UaAttributeId(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
+    def __str__(self, n=0):
         return f"UaAttributeId: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
 class UaRuleHandling(UaType):
     UA_RULEHANDLING_DEFAULT = 0
@@ -189,7 +185,7 @@ class UaRuleHandling(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -203,13 +199,10 @@ class UaRuleHandling(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
+    def __str__(self, n=0):
         return f"UaRuleHandling: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaOrder +++++++++++++++++++++++
 class UaOrder(UaType):
     UA_ORDER_LESS = -1
@@ -227,7 +220,7 @@ class UaOrder(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -241,13 +234,10 @@ class UaOrder(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
+    def __str__(self, n=0):
         return f"UaOrder: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
 class UaSecureChannelState(UaType):
     UA_SECURECHANNELSTATE_CLOSED = 0
@@ -275,7 +265,7 @@ class UaSecureChannelState(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -289,13 +279,10 @@ class UaSecureChannelState(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
+    def __str__(self, n=0):
         return f"UaSecureChannelState: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
 class UaSessionState(UaType):
     UA_SESSIONSTATE_CLOSED = 0
@@ -319,7 +306,7 @@ class UaSessionState(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -333,13 +320,10 @@ class UaSessionState(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
+    def __str__(self, n=0):
         return f"UaSessionState: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
     def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
@@ -395,23 +379,15 @@ class UaNetworkStatistics(UaType):
         self._connection_abort_count = val
         self._value.connectionAbortCount = val.value
 
-    def __str__(self):
+    def __str__(self, n=0):
         return ("UaNetworkStatistics:\n" +
-                self._current_connection_count.str_helper(1) +
-                self._cumulated_connection_count.str_helper(1) +
-                self._rejected_connection_count.str_helper(1) +
-                self._connection_timeout_count.str_helper(1) +
-                self._connection_abort_count.str_helper(1))
+                self._current_connection_count.__str__(1) +
+                self._cumulated_connection_count.__str__(1) +
+                self._rejected_connection_count.__str__(1) +
+                self._connection_timeout_count.__str__(1) +
+                self._connection_abort_count.__str__(1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaNetworkStatistics:\n" +
-                self._current_connection_count.str_helper(n + 1) +
-                self._cumulated_connection_count.str_helper(n + 1) +
-                self._rejected_connection_count.str_helper(n + 1) +
-                self._connection_timeout_count.str_helper(n + 1) +
-                self._connection_abort_count.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
 class UaSecureChannelStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
@@ -477,25 +453,16 @@ class UaSecureChannelStatistics(UaType):
         self._channel_purge_count = val
         self._value.channelPurgeCount = val.value
 
-    def __str__(self):
+    def __str__(self, n=0):
         return ("UaSecureChannelStatistics:\n" +
-                self._current_channel_count.str_helper(1) +
-                self._cumulated_channel_count.str_helper(1) +
-                self._rejected_channel_count.str_helper(1) +
-                self._channel_timeout_count.str_helper(1) +
-                self._channel_abort_count.str_helper(1) +
-                self._channel_purge_count.str_helper(1))
+                self._current_channel_count.__str__(1) +
+                self._cumulated_channel_count.__str__(1) +
+                self._rejected_channel_count.__str__(1) +
+                self._channel_timeout_count.__str__(1) +
+                self._channel_abort_count.__str__(1) +
+                self._channel_purge_count.__str__(1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaSecureChannelStatistics:\n" +
-                self._current_channel_count.str_helper(n + 1) +
-                self._cumulated_channel_count.str_helper(n + 1) +
-                self._rejected_channel_count.str_helper(n + 1) +
-                self._channel_timeout_count.str_helper(n + 1) +
-                self._channel_abort_count.str_helper(n + 1) +
-                self._channel_purge_count.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaSessionStatistics +++++++++++++++++++++++
 class UaSessionStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SessionStatistics*"), is_pointer=False):
@@ -561,25 +528,16 @@ class UaSessionStatistics(UaType):
         self._session_abort_count = val
         self._value.sessionAbortCount = val.value
 
-    def __str__(self):
+    def __str__(self, n=0):
         return ("UaSessionStatistics:\n" +
-                self._current_session_count.str_helper(1) +
-                self._cumulated_session_count.str_helper(1) +
-                self._security_rejected_session_count.str_helper(1) +
-                self._rejected_session_count.str_helper(1) +
-                self._session_timeout_count.str_helper(1) +
-                self._session_abort_count.str_helper(1))
+                self._current_session_count.__str__(1) +
+                self._cumulated_session_count.__str__(1) +
+                self._security_rejected_session_count.__str__(1) +
+                self._rejected_session_count.__str__(1) +
+                self._session_timeout_count.__str__(1) +
+                self._session_abort_count.__str__(1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaSessionStatistics:\n" +
-                self._current_session_count.str_helper(n + 1) +
-                self._cumulated_session_count.str_helper(n + 1) +
-                self._security_rejected_session_count.str_helper(n + 1) +
-                self._rejected_session_count.str_helper(n + 1) +
-                self._session_timeout_count.str_helper(n + 1) +
-                self._session_abort_count.str_helper(n + 1))
-
-
+    
 # -----------------------------------------------------------------
 # ----------------------------- types.h --------------------------
 # -----------------------------------------------------------------
@@ -592,7 +550,7 @@ class UaBoolean(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -603,19 +561,16 @@ class UaBoolean(UaType):
         self._p_value = val
         self._value = ffi.new("UA_Boolean*", val)
 
-    def __str__(self):
+    def __str__(self, n=0):
         return "UaBoolean: " + str(self._p_value)
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaBoolean: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
     def __init__(self, p_val=0, is_pointer=False, val=None):
         if val is not None:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_SByte", is_pointer)
+            self._p_value = self._value[0]
         else:
             super().__init__(ffi.new("UA_SByte*", p_val), is_pointer)
             self._p_value = None
@@ -632,12 +587,8 @@ class UaSByte(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -128 .. 127") from e
 
-    def __str__(self):
-        return "UaSByte: " + str(self._p_value)
-
-    def str_helper(self, n: int):
-        return "\t" * n + "UaSByte: " + str(self._p_value)
-
+    def __str__(self, n=0):
+        return "\t" * n + "UaSByte: " + str(self._p_value) + "\n"
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
@@ -646,8 +597,8 @@ class UaByte(UaType):
             super().__init__(ffi.new("UA_Byte*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_Byte", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -661,11 +612,8 @@ class UaByte(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range 0 .. 255") from e
 
-    def __str__(self):
-        return "UaByte: " + str(self._p_value)
-
-    def str_helper(self, n: int):
-        return "\t" * n + "UaByte: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaByte: " + str(self._p_value) + "\n"     
 
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
@@ -675,8 +623,8 @@ class UaInt16(UaType):
             super().__init__(ffi.new("UA_Int16*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val,is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_Int16", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -690,11 +638,8 @@ class UaInt16(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -32,768 .. 32,767") from e
 
-    def __str__(self):
-        return "UaInt16: " + str(self._p_value)
-
-    def str_helper(self, n: int):
-        return "\t" * n + "UaInt16: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaInt16: " + str(self._p_value) + "\n"
 
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
@@ -704,8 +649,8 @@ class UaUInt16(UaType):
             super().__init__(ffi.new("UA_UInt16*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_UInt16", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -719,11 +664,9 @@ class UaUInt16(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range 0 .. 65,535") from e
 
-    def __str__(self):
-        return "UaUInt16: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaUInt16: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaUInt16: " + str(self._p_value)
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
@@ -732,8 +675,8 @@ class UaInt32(UaType):
             super().__init__(ffi.new("UA_Int32*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_Int32", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -747,13 +690,10 @@ class UaInt32(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -2,147,483,648 .. 2,147,483,647") from e
 
-    def __str__(self):
-        return "UaInt32: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaInt32: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaInt32: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
     def __init__(self, p_val=0, is_pointer=False, val=None):
@@ -761,8 +701,8 @@ class UaUInt32(UaType):
             super().__init__(ffi.new("UA_UInt32*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_UInt32", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -776,13 +716,10 @@ class UaUInt32(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range 0 .. 4,294,967,295") from e
 
-    def __str__(self):
-        return "UaUInt32: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaUInt32: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaUInt32: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
     def __init__(self, p_val=0, is_pointer=False, val=None):
@@ -790,8 +727,8 @@ class UaInt64(UaType):
             super().__init__(ffi.new("UA_Int64*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_Int64", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -805,13 +742,10 @@ class UaInt64(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -9,223,372,036,854,775,808 .. 9,223,372,036,854,775,807") from e
 
-    def __str__(self):
-        return "UaInt64: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaInt64: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaInt64: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
     def __init__(self, p_val=0, is_pointer=False, val=None):
@@ -819,8 +753,8 @@ class UaUInt64(UaType):
             super().__init__(ffi.new("UA_UInt64*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_UInt64", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -834,13 +768,10 @@ class UaUInt64(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range 0 .. 18,446,744,073,709,551,615") from e
 
-    def __str__(self):
-        return "UaUInt64: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaUInt64: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaUInt64: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
     def __init__(self, p_val=0.0, is_pointer=False, val=None):
@@ -848,8 +779,8 @@ class UaFloat(UaType):
             super().__init__(ffi.new("UA_Float*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_Float", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -863,13 +794,10 @@ class UaFloat(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -3.4E38 .. 3.4E38") from e
 
-    def __str__(self):
-        return "UaFloat: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaFloat: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaFloat: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
     def __init__(self, p_val=0.0, is_pointer=False, val=None):
@@ -877,8 +805,8 @@ class UaDouble(UaType):
             super().__init__(ffi.new("UA_Double*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_Double", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -892,13 +820,10 @@ class UaDouble(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -1.7E308 .. 1.7E308") from e
 
-    def __str__(self):
-        return "UaDouble: " + str(self._p_value)
+    def __str__(self, n=0):
+        return "\t" * n + "UaDouble: " + str(self._p_value) + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + "UaDouble: " + str(self._p_value)
-
-
+    
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
     @staticmethod
@@ -1417,8 +1342,8 @@ class UaStatusCode(UaType):
             super().__init__(ffi.new("UA_StatusCode*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_StatusCode", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -1432,14 +1357,11 @@ class UaStatusCode(UaType):
         else:
             raise ValueError(f"{val} is no legal status code")
 
-    def __str__(self):
+    def __str__(self, n=0):
         return f"UaStatusCode: {UaStatusCode.val_to_string[self._p_value]} ({self._p_value})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + self.__str__()
-
     def is_bad(self):
-        return lib.UA_StatusCode_isBad(self.value)
+        return lib.UA_StatusCode_isBad(self._value[0])
 
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
@@ -1449,8 +1371,8 @@ class UaDateTime(UaType):
             super().__init__(ffi.new("UA_DateTime*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, "UA_DateTime", is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -1464,11 +1386,8 @@ class UaDateTime(UaType):
         except OverflowError as e:
             raise OverflowError(f"{val} is not in range -4,294,967,295 .. 4,294,967,295") from e
 
-    def __str__(self):
-        return f"UA_DateTime: {self._p_value}"
-
-    def str_helper(self, n: int):
-        return "\t" * n + self.__str__()
+    def __str__(self, n=0):
+        return "\t"*n + f"UA_DateTime: {self._p_value}\n"
 
     @staticmethod
     def now():
@@ -1498,7 +1417,7 @@ class UaNodeIdType(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -1512,13 +1431,10 @@ class UaNodeIdType(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
-        return f"UaNodeIdType: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+    def __str__(self, n=0):
+        return "\t"*n + f"UaNodeIdType: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaVariantStorageType +++++++++++++++++++++++
 class UaVariantStorageType(UaType):
     UA_VARIANT_DATA = 0
@@ -1534,7 +1450,7 @@ class UaVariantStorageType(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -1548,13 +1464,10 @@ class UaVariantStorageType(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
-        return f"UaVariantStorageType: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+    def __str__(self, n=0):
+        return "\t"*n + f"UaVariantStorageType: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
 class UaExtensionObjectEncoding(UaType):
     UA_EXTENSIONOBJECT_ENCODED_NOBODY = 0
@@ -1576,7 +1489,7 @@ class UaExtensionObjectEncoding(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -1590,13 +1503,10 @@ class UaExtensionObjectEncoding(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
-        return f"UaExtensionObjectEncoding: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+    def __str__(self, n=0):
+        return "\t"*n + f"UaExtensionObjectEncoding: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
 class UaDataTypeKind(UaType):
     UA_DATATYPEKIND_BOOLEAN = 0
@@ -1670,7 +1580,7 @@ class UaDataTypeKind(UaType):
             self._p_value = None
         else:
             super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
@@ -1684,13 +1594,10 @@ class UaDataTypeKind(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    def __str__(self):
-        return f"UaDataTypeKind: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
+    def __str__(self, n=0):
+        return "\t"*n + f"UaDataTypeKind: {self.val_to_string[self._p_value]} ({str(self._p_value)})"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 ################################################################
 
 # +++++++++++++++++++ UaString +++++++++++++++++++++++
@@ -1722,13 +1629,10 @@ class UaString(UaType):
     def to_string(self):
         return ffi.string(ffi.cast(f"char[{self.length}]", self.data), self.length).decode("utf-8")
 
-    def __str__(self):
-        return "UaString: " + self.to_string()
+    def __str__(self, n=0):
+        return "\t" * n + "UaString: " + self.to_string() + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
 class UaByteString(UaType):
     def __init__(self, string="", is_pointer=False, val=ffi.new("UA_ByteString*")):
@@ -1758,13 +1662,10 @@ class UaByteString(UaType):
     def to_string(self):
         return ffi.string(ffi.cast(f"char[{self.length}]", self.data), self.length).decode("utf-8")
 
-    def __str__(self):
-        return "UaByteString: " + self.to_string()
+    def __str__(self, n=0):
+        return "\t" * n + "UaByteString: " + self.to_string() + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaXmlElement +++++++++++++++++++++++
 class UaXmlElement(UaType):
     def __init__(self, string="", is_pointer=False, val=ffi.new("UA_XmlElement*")):
@@ -1794,13 +1695,10 @@ class UaXmlElement(UaType):
     def to_string(self):
         return ffi.string(ffi.cast(f"char[{self.length}]", self.data), self.length).decode("utf-8")
 
-    def __str__(self):
-        return "UaXmlElement: " + self.to_string()
+    def __str__(self, n=0):
+        return "\t" * n + "UaXmlElement: " + self.to_string() + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++
 class UaGuid(UaType):
     NULL = lib.UA_GUID_NULL
@@ -1867,7 +1765,7 @@ class UaGuid(UaType):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def __str__(self):
+    def __str__(self, n=0):
         d1 = '{0:0{1}X}'.format(self._data1.value, 8)
         d2 = '{0:0{1}X}'.format(self._data2.value, 4)
         d3 = '{0:0{1}X}'.format(self._data3.value, 4)
@@ -1878,12 +1776,9 @@ class UaGuid(UaType):
         for i in range(2, 8):
             d5 += '{0:0{1}X}'.format(self._data4.value[i], 2)
 
-        return "UaGuid: " + f"{d1}-{d2}-{d3}-{d4}-{d5}"
+        return "\t" * n + "UaGuid: " + f"{d1}-{d2}-{d3}-{d4}-{d5}" + "\n"
 
-    def str_helper(self, n: int):
-        return "\t" * n + str(self)
-
-
+    
 # +++++++++++++++++++ UaNodeId +++++++++++++++++++++++
 class UaNodeId(UaType):
     NULL = lib.UA_NODEID_NULL
@@ -1968,17 +1863,11 @@ class UaNodeId(UaType):
         self._identifier = val
         self._value.identifier = val.value
 
-    def __str__(self):
-        return ("UaNodeId:\n" +
-                self._namespace_index.str_helper(1) +
-                self._identifier_type.str_helper(1) +
-                self._identifier.str_helper(1))
-
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaNodeId:\n" +
-                self._namespace_index.str_helper(n + 1) +
-                self._identifier_type.str_helper(n + 1) +
-                self._identifier.str_helper(n + 1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaNodeId:\n" +
+                self._namespace_index.__str__(n+1) +
+                self._identifier_type.__str__(n+1) +
+                self._identifier.__str__(n+1))
 
     def __eq__(self, other):
         return lib.UA_NodeId_equal(self._value, other._value)
@@ -2066,17 +1955,11 @@ class UaExpandedNodeId(UaType):
         self._server_index = val
         self._value.serverIndex = val.value
 
-    def __str__(self):
-        return ("UaExpandedNodeId:\n" +
-                self._node_id.str_helper(1) +
-                self._namespace_uri.str_helper(1) +
-                self._server_index.str_helper(1))
-
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaExpandedNodeId:\n" +
-                self._node_id.str_helper(n + 1) +
-                self._namespace_uri.str_helper(n + 1) +
-                self._server_index.str_helper(n + 1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaExpandedNodeId:\n" +
+                self._node_id.__str__(n+1) +
+                self._namespace_uri.__str__(n+1) +
+                self._server_index.__str__(n+1))
 
     def is_local(self):
         return lib.UA_ExpandedNodeId_isLocal(self._value)
@@ -2146,15 +2029,10 @@ class UaQualifiedName(UaType):
         self._name = val
         self._value.name = val.value
 
-    def __str__(self):
-        return ("UaQualifiedName:\n" +
-                self._namespace_index.str_helper(1) +
-                self._name.str_helper(1))
-
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaQualifiedName:\n" +
-                self._namespace_index.str_helper(n + 1) +
-                self._name.str_helper(n + 1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaQualifiedName:\n" +
+                self._namespace_index.__str__(n+1) +
+                self._name.__str__(n+1))
 
     def is_null(self):
         return lib.UA_QualifiedName_isNull(self._value)
@@ -2208,17 +2086,12 @@ class UaLocalizedText(UaType):
         self._text = val
         self._value.text = val.value
 
-    def __str__(self):
-        return ("UaLocalizedText:\n" +
-                self._locale.str_helper(1) +
-                self._text.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaLocalizedText:\n" +
+                self._locale.__str__(n+1) +
+                self._text.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaLocalizedText:\n" +
-                self._locale.str_helper(n + 1) +
-                self._text.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
 class UaNumericRangeDimension(UaType):
     def __init__(self, val=ffi.new("UA_NumericRangeDimension*"), is_pointer=False):
@@ -2244,17 +2117,12 @@ class UaNumericRangeDimension(UaType):
         self._max = val
         self._value.max = val.value
 
-    def __str__(self):
-        return ("UaNumericRangeDimension:\n" +
-                self._min.str_helper(1) +
-                self._max.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaNumericRangeDimension:\n" +
+                self._min.__str__(n+1) +
+                self._max.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaNumericRangeDimension:\n" +
-                self._min.str_helper(n + 1) +
-                self._max.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
 class UaNumericRange(UaType):
     def __init__(self, val=ffi.new("UA_NumericRange*"), is_pointer=False):
@@ -2278,19 +2146,14 @@ class UaNumericRange(UaType):
     @dimension.setter
     def dimension(self, val):
         self._dimension = val
-        self._value.dimension = val.value
+        self._value.dimensions = val.value
 
-    def __str__(self):
-        return ("UaNumericRangeDimension:\n" +
-                self._dimension_size.str_helper(1) +
-                self._dimension.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaNumericRangeDimension:\n" +
+                self._dimension_size.__str__(n+1) +
+                self._dimension.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaNumericRangeDimension:\n" +
-                self._dimension_size.str_helper(n + 1) +
-                self._dimension.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
     def __init__(self, val=ffi.new("UA_Variant*"), is_pointer=False):
@@ -2356,23 +2219,14 @@ class UaVariant(UaType):
         self._array_dimensions = val
         self._value.arrayDimensions = val.value
 
-    def __str__(self):
-        return ("UaVariant:\n" +
-                self._type.str_helper(1) +
-                self._storage_type.str_helper(1) +
-                self._array_length.str_helper(1) +
-                self._data.str_helper(1) +
-                self._array_dimensions_size.str_helper(1) +
-                self._array_dimensions.str_helper(1))
-
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaVariant:\n" +
-                self._type.str_helper(n + 1) +
-                self._storage_type.str_helper(n + 1) +
-                self._array_length.str_helper(n + 1) +
-                self._data.str_helper(n + 1) +
-                self._array_dimensions_size.str_helper(n + 1) +
-                self._array_dimensions.str_helper(n + 1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaVariant:\n" +
+                self._type.__str__(n+1) +
+                self._storage_type.__str__(n+1) +
+                self._array_length.__str__(n+1) +
+                self._data.__str__(n+1) +
+                self._array_dimensions_size.__str__(n+1) +
+                self._array_dimensions.__str__(n+1))
 
     def is_empty(self):
         lib.UA_Variant_isEmpty(self._value)
@@ -2471,17 +2325,12 @@ class UaExtensionObject(UaType):
 
         self._value.data = val
 
-    def __str__(self):
-        return ("UaExtensionObject:\n" +
-                self._type.str_helper(1) +
-                self._data.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaExtensionObject:\n" +
+                self._type.__str__(n+1) +
+                self._data.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaExtensionObject:\n" +
-                self._type.str_helper(n + 1) +
-                self._data.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
 class UaDataValue(UaType):
     def __init__(self, val=ffi.new("UA_DataValue*"), is_pointer=False):
@@ -2607,37 +2456,22 @@ class UaDataValue(UaType):
         self._has_server_picoseconds = val
         self._value.hasServerPicoseconds = val.value
 
-    def __str__(self):
-        return ("UaDataValue:\n" +
-                self._variant.str_helper(1) +
-                self._source_timestamp.str_helper(1) +
-                self._server_timestamp.str_helper(1) +
-                self._source_picoseconds.str_helper(1) +
-                self._server_picoseconds.str_helper(1) +
-                self._status.str_helper(1) +
-                self._has_value.str_helper(1) +
-                self._has_status.str_helper(1) +
-                self._has_source_timestamp.str_helper(1) +
-                self._has_server_timestamp.str_helper(1) +
-                self._has_source_picoseconds.str_helper(1) +
-                self._has_server_picoseconds.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaDataValue:\n" +
+                self._variant.__str__(n+1) +
+                self._source_timestamp.__str__(n+1) +
+                self._server_timestamp.__str__(n+1) +
+                self._source_picoseconds.__str__(n+1) +
+                self._server_picoseconds.__str__(n+1) +
+                self._status.__str__(n+1) +
+                self._has_value.__str__(n+1) +
+                self._has_status.__str__(n+1) +
+                self._has_source_timestamp.__str__(n+1) +
+                self._has_server_timestamp.__str__(n+1) +
+                self._has_source_picoseconds.__str__(n+1) +
+                self._has_server_picoseconds.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaDataValue:\n" +
-                self._variant.str_helper(n + 1) +
-                self._source_timestamp.str_helper(n + 1) +
-                self._server_timestamp.str_helper(n + 1) +
-                self._source_picoseconds.str_helper(n + 1) +
-                self._server_picoseconds.str_helper(n + 1) +
-                self._status.str_helper(n + 1) +
-                self._has_value.str_helper(n + 1) +
-                self._has_status.str_helper(n + 1) +
-                self._has_source_timestamp.str_helper(n + 1) +
-                self._has_server_timestamp.str_helper(n + 1) +
-                self._has_source_picoseconds.str_helper(n + 1) +
-                self._has_server_picoseconds.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
 class UaDiagnosticInfo(UaType):
     def __init__(self, val=ffi.new("UA_DiagnosticInfo*"), is_pointer=False):
@@ -2783,41 +2617,24 @@ class UaDiagnosticInfo(UaType):
         self._inner_diagnostic_info = val
         self._value.innerDiagnosticInfo = val.value
 
-    def __str__(self):
-        return ("UaDiagnosticInfo:\n" +
-                self._has_symbolic_id.str_helper(1) +
-                self._has_namespace_uri.str_helper(1) +
-                self._has_localized_text.str_helper(1) +
-                self._has_locale.str_helper(1) +
-                self._has_additional_info.str_helper(1) +
-                self._has_inner_status_code.str_helper(1) +
-                self._has_inner_diagnostic_info.str_helper(1) +
-                self._symbolic_id.str_helper(1) +
-                self._namespace_uri.str_helper(1) +
-                self._localized_text.str_helper(1) +
-                self._locale.str_helper(1) +
-                self._additional_info.str_helper(1) +
-                self._inner_status_code.str_helper(1) +
-                self._inner_diagnostic_info.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaDiagnosticInfo:\n" +
+                self._has_symbolic_id.__str__(n+1) +
+                self._has_namespace_uri.__str__(n+1) +
+                self._has_localized_text.__str__(n+1) +
+                self._has_locale.__str__(n+1) +
+                self._has_additional_info.__str__(n+1) +
+                self._has_inner_status_code.__str__(n+1) +
+                self._has_inner_diagnostic_info.__str__(n+1) +
+                self._symbolic_id.__str__(n+1) +
+                self._namespace_uri.__str__(n+1) +
+                self._localized_text.__str__(n+1) +
+                self._locale.__str__(n+1) +
+                self._additional_info.__str__(n+1) +
+                self._inner_status_code.__str__(n+1) +
+                self._inner_diagnostic_info.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaDiagnosticInfo:\n" +
-                self._has_symbolic_id.str_helper(n + 1) +
-                self._has_namespace_uri.str_helper(n + 1) +
-                self._has_localized_text.str_helper(n + 1) +
-                self._has_locale.str_helper(n + 1) +
-                self._has_additional_info.str_helper(n + 1) +
-                self._has_inner_status_code.str_helper(n + 1) +
-                self._has_inner_diagnostic_info.str_helper(n + 1) +
-                self._symbolic_id.str_helper(n + 1) +
-                self._namespace_uri.str_helper(n + 1) +
-                self._localized_text.str_helper(n + 1) +
-                self._locale.str_helper(n + 1) +
-                self._additional_info.str_helper(n + 1) +
-                self._inner_status_code.str_helper(n + 1) +
-                self._inner_diagnostic_info.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
 class UaDataTypeMember(UaType):
     def __init__(self, val=ffi.new("UA_DataTypeMember*"), is_pointer=False):
@@ -2827,7 +2644,7 @@ class UaDataTypeMember(UaType):
         self._namespace_zero = UaBoolean(val=val.namespaceZero)
         self._is_array = UaBoolean(val=val.isArray)
         self._is_optional = UaBoolean(val=val.isOptional)
-        self._member_name = Char(val=val.memberName)
+        self._member_name = CString(val=val.memberName)
 
     @property
     def member_type_index(self):
@@ -2883,25 +2700,16 @@ class UaDataTypeMember(UaType):
         self._member_name = val
         self._value.memberName = val.value
 
-    def __str__(self):
-        return ("UaDataTypeMember:\n" +
-                self._member_type_index.str_helper(1) +
-                self._padding.str_helper(1) +
-                self._namespace_zero.str_helper(1) +
-                self._is_array.str_helper(1) +
-                self._is_optional.str_helper(1) +
-                self._member_name.str_helper(1))
+    def __str__(self, n=0):
+        return ("\t"*n + "UaDataTypeMember:\n" +
+                self._member_type_index.__str__(n+1) +
+                self._padding.__str__(n+1) +
+                self._namespace_zero.__str__(n+1) +
+                self._is_array.__str__(n+1) +
+                self._is_optional.__str__(n+1) +
+                self._member_name.__str__(n+1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaDataTypeMember:\n" +
-                self._member_type_index.str_helper(n + 1) +
-                self._padding.str_helper(n + 1) +
-                self._namespace_zero.str_helper(n + 1) +
-                self._is_array.str_helper(n + 1) +
-                self._is_optional.str_helper(n + 1) +
-                self._member_name.str_helper(n + 1))
-
-
+    
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
 class UaDataType(UaType):
     def __init__(self, val=ffi.new("UA_DataType*"), is_pointer=False):
@@ -2915,7 +2723,7 @@ class UaDataType(UaType):
         self._overlayable = UaUInt32(val=val.overlayable)
         self._members_size = UaUInt32(val=val.membersSize)
         self._members = UaDataTypeMember(val=val.members, is_pointer=True)
-        self._type_name = Char(val=val.typeName, is_pointer=True)
+        self._type_name = CString(val=val.typeName, is_pointer=True)
 
     @property
     def type_id(self):
@@ -3007,33 +2815,20 @@ class UaDataType(UaType):
         self._type_name = val
         self._value.typeName = val.value
 
-    def __str__(self):
+    def __str__(self, n=0):
         return ("UaDataType:\n" +
-                self._type_id.str_helper(1) +
-                self._binary_encoding_id.str_helper(1) +
-                self._mem_size.str_helper(1) +
-                self._type_index.str_helper(1) +
-                self._type_kind.str_helper(1) +
-                self._pointer_free.str_helper(1) +
-                self._overlayable.str_helper(1) +
-                self._members_size.str_helper(1) +
-                self._members.str_helper(1) +
-                self._type_name.str_helper(1))
+                self._type_id.__str__(1) +
+                self._binary_encoding_id.__str__(1) +
+                self._mem_size.__str__(1) +
+                self._type_index.__str__(1) +
+                self._type_kind.__str__(1) +
+                self._pointer_free.__str__(1) +
+                self._overlayable.__str__(1) +
+                self._members_size.__str__(1) +
+                self._members.__str__(1) +
+                self._type_name.__str__(1))
 
-    def str_helper(self, n: int):
-        return ("\t" * n + "UaDataType:\n" +
-                self._type_id.str_helper(n + 1) +
-                self._binary_encoding_id.str_helper(n + 1) +
-                self._mem_size.str_helper(n + 1) +
-                self._type_index.str_helper(n + 1) +
-                self._type_kind.str_helper(n + 1) +
-                self._pointer_free.str_helper(n + 1) +
-                self._overlayable.str_helper(n + 1) +
-                self._members_size.str_helper(n + 1) +
-                self._members.str_helper(n + 1) +
-                self._type_name.str_helper(n + 1))
-
-    def is_numeric(self):
+        def is_numeric(self):
         return lib.UA_DataType_isNumeric(self._value)
 
     @staticmethod
@@ -3083,19 +2878,13 @@ class UaDataTypeArray(UaType):
         self._types = val
         self._value.types = val.value
 
-    def __str__(self):
+    def __str__(self, n=0):
         return ("UaDataValue:\n" +
-                self._next.str_helper(1) +
-                self._types_size.str_helper(1) +
-                self._types.str_helper(1))
+                self._next.__str__(1) +
+                self._types_size.__str__(1) +
+                self._types.__str__(1))
 
-    def str_helper(self, n: int):
-        return ("UaDataValue:\n" +
-                self._next.str_helper(n + 1) +
-                self._types_size.str_helper(n + 1) +
-                self._types.str_helper(n + 1))
-
-
+    
 class Randomize:
     @staticmethod
     def random_uint_32():

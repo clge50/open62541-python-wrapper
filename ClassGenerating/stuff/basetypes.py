@@ -805,7 +805,7 @@ class UaNumericRange(UaType):
     @dimension.setter
     def dimension(self, val):
         self._dimension = val
-        self._value.dimension = val.value
+        self._value.dimensions = val.value
 
     def __str__(self):
         return ("UaNumericRangeDimension:\n" +

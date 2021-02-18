@@ -18,7 +18,7 @@ def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
 """
     class_str += """class """ + to_python_class_name(struct_name) + f"""(UaType):
     def __init__(self, val=ffi.new("{struct_name}*"), is_pointer=False):
-        super().__init__(val, is_pointer)\n"""
+        super().__init__(val, {struct_name}, is_pointer)\n"""
 
     for attribute, typename in attribute_to_type.items():
         class_str += f"{tab * 2}self._{inflection.underscore(attribute)} = " \
@@ -38,16 +38,9 @@ def ua_struct_class_generator(struct_name: str, attribute_to_type: dict):
 """
 
     class_str += (f"""
-    def __str__(self):
-        return ("{to_python_class_name(struct_name)}:\\n" + """ +
-                  " +".join(map(lambda s: f"\n{tab*4}self._{s}.str_helper(1)",
-                                map(lambda s: inflection.underscore(s), attribute_to_type.keys()))) +
-                  f")\n{tab}")
-
-    class_str += (f"""
-    def str_helper(self, n: int):
+    def __str__(self, n=0):
         return ("\\t"*n + "{to_python_class_name(struct_name)}:\\n" + """ +
-                  " +".join(map(lambda s: f"\n{tab * 4}self._{s}.str_helper(n+1)",
+                  " +".join(map(lambda s: f"\n{tab*4}self._{s}.str_helper(n+1)",
                                 map(lambda s: inflection.underscore(s), attribute_to_type.keys()))) +
                   f")\n")
 
@@ -66,33 +59,28 @@ def ua_enum_class_generator(enum_name: str, ident_to_val: dict):
     val_to_string = dict([
 {f",{newline}".join(map(lambda ident: f"{tab}{tab}({ident_to_val[ident]}, {quotes + ident + quotes})", ident_to_val.keys()))}])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, p_val=0, val=None, is_pointer=False):
         if val is None:
-            super().__init__(ffi.new("{enum_name}*"), is_pointer)
+            super().__init__(ffi.new("{enum_name}*", p_val), is_pointer)
             self._p_value = None
         else:
-            super().__init__(val, is_pointer)
-            self._p_value = val[0]
+            super().__init__(val, {enum_name}, is_pointer)
+            self._p_value = self._value[0]
 
     @property
     def p_value(self):
         return self._p_value
 
     @p_value.setter
-    def p_value(self, val):
-        if val in self.val_to_string.keys():
-            self._p_value = val
-            super().__init__(ffi.new("{enum_name}*", val), self._is_pointer)
+    def p_value(self, p_val):
+        if p_val in self.val_to_string.keys():
+            self._p_value = p_val
+            super().__init__(ffi.new("{enum_name}*", p_val), self._is_pointer)
         else:
             raise OverflowError(f"{{val}} is not a valid member of this class")
 
-    def __str__(self):
-        return f"{to_python_class_name(enum_name)}: {{self.val_to_string[self._p_value]}} ({{str(self._p_value)}})"
-
-    def str_helper(self, n: int):
-        return "\\t" * n + str(self)
-
-
+    def __str__(self, n=0):
+        return "\\t"*n + "f"{to_python_class_name(enum_name)}: {{self.val_to_string[self._p_value]}} ({{str(self._p_value)}})\\n"
 """
     return class_str
 
@@ -103,6 +91,9 @@ def to_python_class_name(open62541_name: str):
     elif "size_t" in open62541_name:
         print(open62541_name)
         return "SizeT"
+    elif "char" in open62541_name:
+        print(open62541_name)
+        return "CString"
     else:
         return inflection.underscore(open62541_name)
 
@@ -212,7 +203,7 @@ type_classes = """from intermediateApi import ffi, lib"""
 
 type_classes += """
 # -------------------------------------------------------------
-# ------------- Classes from open62541 types.h ----------------
+# -------- Classes from open62541 types.h(common.h ------------
 # -------------------------------------------------------------
 """
 type_classes += base_type_classes

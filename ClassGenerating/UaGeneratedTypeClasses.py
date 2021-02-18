@@ -2282,7 +2282,7 @@ class UaNumericRange(UaType):
     @dimension.setter
     def dimension(self, val):
         self._dimension = val
-        self._value.dimension = val.value
+        self._value.dimensions = val.value
 
     def __str__(self):
         return ("UaNumericRangeDimension:\n" +
@@ -4057,7 +4057,7 @@ class UaViewAttributes(UaType):
 class UaXVType(UaType):
     def __init__(self, val=ffi.new("UA_XVType*"), is_pointer=False):
         super().__init__(val, is_pointer)
-        self._x = UaDouble(val=val.x)
+        self._x = UaDouble(val=val.nrd1)
         self._value = UaFloat(val=val.value)
     
 
