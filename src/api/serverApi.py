@@ -1,5 +1,5 @@
 from intermediateApi import lib, ffi
-
+import server_service_results as ServerServiceResults
 
 
 class UaServer:
@@ -89,9 +89,17 @@ class UaServer:
     def call(self, request):
         return lib.UA_Server_call(self.ua_server, request)
 
-    def add_data_source_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, data_source, node_context, outNewnode_id):
-        outnode = ffi.new("UA_node_id *")
-        return lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, data_source, node_context, outnode)
+    def add_data_source_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, data_source, outNewnode_id, node_context = None):
+        out_node = ffi.new("UA_node_id *")
+
+        # TODO: test
+        if node_context != None: 
+           node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, data_source, node_context, outnode)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, node_context)
 
     def delete_node(self, node_id, delete_references):
         return lib.UA_Server_deleteNode(self.ua_server, node_id, delete_references)
@@ -102,10 +110,17 @@ class UaServer:
     def delete_reference(self, source_node_id, reference_type_id,  is_forward, target_node_id, delete_bidirectional):
         return lib.UA_Server_deleteReference(self.ua_server, sourcenode_id, reference_type_id,  isForward, targetnode_id, deleteBidirectional)   
 
-    def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_new_node_id):
+    def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, out_new_node_id, node_context = None):
         out_node_id = ffi.new("UA_NodeId *")
-        context = ffi.new("void *")
-        return lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, context, out_node_id)
+                
+        # TODO: test
+        if node_context != None: 
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+        
+        status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, node_context)
 
 
     #######

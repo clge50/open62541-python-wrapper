@@ -26,7 +26,7 @@ parent_node_ref = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_ORGANIZES)
 # Create new server object
 server = serverApi.UaServer()
 
-status = server.add_variable_node(node_id, parent_node_id, parent_node_ref, qualified_name, UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE), attr, #TODO: void * (nodeContext) needed here! , UaNodeId.new_string(1, "") )
+status = server.add_variable_node(node_id, parent_node_id, parent_node_ref, qualified_name, UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE), attr, None , UaNodeId.new_string(1, "") )
 
 retval = server.run([True])
 
