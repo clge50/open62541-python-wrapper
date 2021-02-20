@@ -11,4 +11,4 @@ run `python3 make.py`
 
 ## usage
 
-please refer to our [documentation](/doc/open62541/index.html)
+please refer to our [documentation](https://htmlpreview.github.io/?https://github.com/clge50/open62541-python-wrapper/blob/master/doc/open62541/index.html)
