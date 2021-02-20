@@ -15,6 +15,7 @@ class DefaultAttributes:
 
 
 class _UaCallback:
+    """These static c type callback implementations are used to call the actual callback functions which have been submitted by the open62541 user"""
 
     @staticmethod
     @ffi.def_extern()
