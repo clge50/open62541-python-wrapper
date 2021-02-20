@@ -138,6 +138,8 @@ typedef struct {
     UA_String name;
 } UA_QualifiedName;
 
+static UA_String UA_STRING(char *chars);
+
 static UA_Boolean UA_QualifiedName_isNull(const UA_QualifiedName *q);
 UA_UInt32 UA_QualifiedName_hash(const UA_QualifiedName *q);
 static UA_QualifiedName UA_QUALIFIEDNAME(UA_UInt16 nsIndex, char *chars);

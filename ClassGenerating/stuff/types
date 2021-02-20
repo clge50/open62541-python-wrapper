@@ -95,7 +95,7 @@ typedef struct {
 } UA_SessionStatistics;
 
 
-typedef struct UA_DateTimeStruct {
+typedef struct {
  UA_UInt16 nanoSec;
  UA_UInt16 microSec;
  UA_UInt16 milliSec;

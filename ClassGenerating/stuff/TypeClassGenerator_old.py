@@ -195,7 +195,7 @@ def defs_from_h():
 
 struct_list, enum_list = defs_from_h()
 
-handle = open("stuff/UaBaseTypeClasses.py", "r")
+handle = open("UaBaseTypeClasses.py", "r")
 base_type_classes = handle.read()
 handle.close()
 

@@ -5,7 +5,7 @@ class UaType:
     # _value should always be a pointer, so if it has to be dereferenced call ._value[0]
     def __init__(self, val, c_name=None, is_pointer=False):
         if c_name is not None:
-            val = UaType.to_pointer(val, c_name)
+            val = ptr(val)
         self._value = val
         self._is_pointer = is_pointer
 
@@ -18,13 +18,6 @@ class UaType:
 
     def __str__(self, n=0):
         return str(self._value)
-
-    @staticmethod
-    def to_pointer(val, c_name):
-        if type(val) is type(ffi.new(f"{c_name}*")[0])
-            val = ffi.new(f"{c_name}*", val)
-
-        return val
 
 
 # +++++++++++++++++++ SizeT +++++++++++++++++++++++
