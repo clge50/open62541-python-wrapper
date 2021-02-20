@@ -43,6 +43,10 @@ UA_StatusCode UA_Client_connect(UA_Client *client, const char *endpointUrl);
 UA_StatusCode UA_Client_disconnect(UA_Client *client);
 UA_StatusCode UA_Client_connectSecureChannel(UA_Client *client, const char *endpointUrl);
 UA_StatusCode UA_Client_disconnectSecureChannel(UA_Client *client);
+UA_StatusCode UA_Client_connectAsync(UA_Client *client, const char *endpointUrl);
+UA_StatusCode UA_Client_connectSecureChannelAsync(UA_Client *client, const char *endpointUrl);
+UA_StatusCode UA_Client_connectUsername(UA_Client *client, const char *endpointUrl, const char *username, const char *password);
+UA_StatusCode UA_Client_disconnectAsync(UA_Client *client);
 
 // services
 UA_ReadResponse UA_Client_Service_read(UA_Client *client, const UA_ReadRequest request);
@@ -58,9 +62,22 @@ UA_TranslateBrowsePathsToNodeIdsResponse UA_Client_Service_translateBrowsePathsT
 UA_RegisterNodesResponse UA_Client_Service_registerNodes(UA_Client *client, const UA_RegisterNodesRequest request);
 UA_UnregisterNodesResponse UA_Client_Service_unregisterNodes(UA_Client *client, const UA_UnregisterNodesRequest request);
 
+// misc
+typedef void (*UA_ClientAsyncServiceCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, void *response);
+typedef void (*UA_ClientCallback)(UA_Client *client, void *data);
+
+// callback function pointer implementations
+extern "Python" void python_wrapper_UA_ClientAsyncServiceCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, void *response);
+
 // utils
 UA_ClientConfig * UA_Client_getConfig(UA_Client *client);
 const UA_DataType * UA_Client_findDataType(UA_Client *client, const UA_NodeId *typeId);
 UA_StatusCode UA_Client_getEndpoints(UA_Client *client, const char *serverUrl, size_t* endpointDescriptionsSize, UA_EndpointDescription** endpointDescriptions);
 UA_StatusCode UA_Client_findServers(UA_Client *client, const char *serverUrl, size_t serverUrisSize, UA_String *serverUris, size_t localeIdsSize, UA_String *localeIds, size_t *registeredServersSize, UA_ApplicationDescription **registeredServers);
-/*UA_StatusCode UA_Client_findServersOnNetwork(UA_Client *client, const char *serverUrl, UA_UInt32 startingRecordId, UA_UInt32 maxRecordsToReturn, size_t serverCapabilityFilterSize, UA_String *serverCapabilityFilter, size_t *serverOnNetworkSize, UA_ServerOnNetwork **serverOnNetwork); */
+/*UA_StatusCode UA_Client_findServersOnNetwork(UA_Client *client, const char *serverUrl, UA_UInt32 startingRecordId, UA_UInt32 maxRecordsToReturn, size_t serverCapabilityFilterSize, UA_String *serverCapabilityFilter, size_t *serverOnNetworkSize, UA_ServerOnNetwork **serverOnNetwork);*/
+UA_StatusCode UA_Client_addTimedCallback(UA_Client *client, UA_ClientCallback callback, void *data, UA_DateTime date, UA_UInt64 *callbackId);
+UA_StatusCode UA_Client_addRepeatedCallback(UA_Client *client, UA_ClientCallback callback, void *data, UA_Double interval_ms, UA_UInt64 *callbackId);
+UA_StatusCode UA_Client_changeRepeatedCallbackInterval(UA_Client *client, UA_UInt64 callbackId, UA_Double interval_ms);
+void UA_Client_removeCallback(UA_Client *client, UA_UInt64 callbackId);
+UA_Client * UA_Client_newWithConfig(const UA_ClientConfig *config);
+UA_StatusCode UA_Client_run_iterate(UA_Client *client, UA_UInt32 timeout);

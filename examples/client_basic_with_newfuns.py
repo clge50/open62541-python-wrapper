@@ -8,11 +8,11 @@ from node_ids import NodeIds
 from status_code import StatusCode
 
 client = clientApi.UaClient()
-retval = client.connect(b"opc.tcp://127.0.0.1:4840/")
+retval = client.connect("opc.tcp://127.0.0.1:4840/")
 
 # adding node
-myIntegerNodeId = UaNodeId.new_string(1, "Xa")
-myIntegerName = UaQualifiedName.new(1, "na")
+myIntegerNodeId = UaNodeId.new_string(1, "a")
+myIntegerName = UaQualifiedName.new(1, "b")
 parentNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_OBJECTSFOLDER)
 parentReferenceNodeId = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_ORGANIZES)
 variableType = UaNodeId.new_numeric(0, NodeIds.UA_NS0ID_BASEDATAVARIABLETYPE)
@@ -22,7 +22,7 @@ print("parent node read status code is bad: " + str(StatusCode.isBad(parent_node
 
 add_variable_node_result = client.add_variable_node(myIntegerNodeId, parentNodeId, parentReferenceNodeId, myIntegerName, variableType)
 print("Status code is bad: " + str(lib.UA_StatusCode_isBad(add_variable_node_result.status_code)))
-#print("Node id: " + UaString.to_string(add_variable_node_result.out_new_node_id.identifier.string))
+print("Node id: " + UaString.to_string(add_variable_node_result.out_new_node_id.identifier.string))
 
 # reading node
 myIntNodeIdResult = client.read_node_id_attribute(add_variable_node_result.out_new_node_id[0])
