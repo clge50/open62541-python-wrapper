@@ -1,6 +1,7 @@
 import os
+import os.path
 from functools import reduce
-from shutil import copytree
+from shutil import copytree, rmtree
 
 from cffi import FFI
 
@@ -8,15 +9,17 @@ dirname = os.path.dirname(os.path.abspath(__file__))
 
 
 def setup_open62541():
-    open62541_repo = r"https://github.com/open62541/open62541.git"
+    if not os.path.isdir(dirname + r"/open62541"):
+        open62541_repo = r"https://github.com/open62541/open62541.git"
+        os.chdir(dirname)
+        os.system("git clone " + open62541_repo)
 
-    os.chdir(dirname)
-    os.system("git clone " + open62541_repo)
-    os.mkdir(dirname + r"/open62541/build")
-    os.chdir(dirname + r"/open62541/build")
-    os.system("cmake .. -DUA_ENABLE_AMALGAMATION=TRUE")
-    os.system("make")
-    os.chdir(dirname)
+    if not os.path.isdir(dirname + r"/open62541/build"):
+        os.mkdir(dirname + r"/open62541/build")
+        os.chdir(dirname + r"/open62541/build")
+        os.system("cmake .. -DUA_ENABLE_AMALGAMATION=TRUE")
+        os.system("make")
+        os.chdir(dirname)
 
 
 # todo: create a generic generate function instead of multiple functions that do basically the same
@@ -62,7 +65,8 @@ def generate_type_ids():
 
 def generate_api():
     os.chdir(dirname)
-    # rmtree("build")
+    if os.path.isdir(dirname + "/build"):
+        rmtree("build")
     decl_files_list = ["types",
                        "types_generated",
                        "util",
@@ -94,12 +98,21 @@ def generate_api():
     copytree(dirname + r"/src/api", dirname + r"/build/open62541")
     os.chdir(dirname + r"/build/open62541/")
     ffi_builder.compile(verbose=True)
+    os.remove("intermediateApi.c")
+    os.remove("intermediateApi.o")
     print("finished building intermediateApi")
 
 
-setup_open62541()
-os.chdir(dirname)
-generate_api()
-generate_status_codes()
-generate_node_ids()
-generate_type_ids()
+def generate_pdoc():
+    os.chdir(dirname + r"/build/open62541")
+    os.system("pdoc3 --html --output-dir ../../doc " + dirname + r"/build/open62541 --force")
+
+
+if __name__ == "__main__":
+    setup_open62541()
+    os.chdir(dirname)
+    generate_api()
+    generate_status_codes()
+    generate_node_ids()
+    generate_type_ids()
+    generate_pdoc()
