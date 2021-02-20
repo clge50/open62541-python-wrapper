@@ -22,7 +22,7 @@ class TestClientApi:
         time.sleep(2)
 
         self.client = clientApi.UaClient()
-        self.client.connect(b"opc.tcp://127.0.0.1:4840/")
+        self.client.connect("opc.tcp://127.0.0.1:4840/")
         print("end of setUp")
 
     def teardown_method(self):
