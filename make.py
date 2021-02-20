@@ -1,8 +1,8 @@
+import os
 from functools import reduce
+from shutil import copytree
 
 from cffi import FFI
-import os
-from shutil import copytree, rmtree
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 
@@ -18,6 +18,7 @@ def setup_open62541():
     os.system("make")
     os.chdir(dirname)
 
+
 # todo: create a generic generate function instead of multiple functions that do basically the same
 def generate_status_codes():
     with open(dirname + r"/open62541/build/src_generated/open62541/statuscodes.h") as file_handler:
@@ -26,7 +27,8 @@ def generate_status_codes():
         lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
         lines.insert(0, "from intermediateApi import lib\n\n\n")
         lines.insert(1, "class StatusCode:\n")
-        lines.insert(2, "\t@staticmethod\n\tdef isBad(status_code):\n\t\treturn lib.UA_StatusCode_isBad(status_code)\n\n")
+        lines.insert(2,
+                     "\t@staticmethod\n\tdef isBad(status_code):\n\t\treturn lib.UA_StatusCode_isBad(status_code)\n\n")
 
     os.chdir(dirname + r"/build/open62541/")
     with open('status_code.py', 'w+') as file:
@@ -57,6 +59,7 @@ def generate_type_ids():
     with open('type_ids.py', 'w+') as file:
         file.writelines(lines)
 
+
 def generate_api():
     os.chdir(dirname)
     # rmtree("build")
@@ -72,11 +75,11 @@ def generate_api():
 
     ffi_builder = FFI()
     ffi_builder.set_source("intermediateApi",
-                          r"""#include "open62541.h"
-                          """,
-                          include_dirs=[dirname + r"/open62541/build"],
-                          library_dirs=[dirname + r"/open62541/build/bin"],
-                          libraries=['open62541'])
+                           r"""#include "open62541.h"
+                           """,
+                           include_dirs=[dirname + r"/open62541/build"],
+                           library_dirs=[dirname + r"/open62541/build/bin"],
+                           libraries=['open62541'])
 
     ffi_builder.cdef(cffi_input)
     os.mkdir("build")
@@ -86,7 +89,7 @@ def generate_api():
     print("finished building intermediateApi")
 
 
-# setupOpen62541()
+setup_open62541()
 os.chdir(dirname)
 generate_api()
 generate_status_codes()

@@ -1,13 +1,13 @@
-import unittest
 import sys
 import time
+import pytest
 
 sys.path.append("../build/open62541")
 import serverApi
 from intermediateApi import ffi, lib
 
 
-class TestServerApi(unittest.TestCase):
+class TestServerApi:
     server = None
 
     def setUp(self):
@@ -19,3 +19,5 @@ class TestServerApi(unittest.TestCase):
         pass
 
     # tests
+    def test_test(self):
+    	assert True

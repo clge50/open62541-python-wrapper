@@ -1,20 +1,20 @@
-import unittest
 import sys
-import time
 import threading
+import time
+
 sys.path.append("../build/open62541")
 import serverApi
 import clientApi
 from intermediateApi import ffi, lib
 
 
-class TestClientApi(unittest.TestCase):
+class TestClientApi:
     server = None
     client = None
     running = [True]
     thread = None
 
-    def setUp(self):
+    def setup_method(self):
         print("start of setUp")
         self.server = serverApi.UaServer()
         self.thread = threading.Thread(target=self.server.run, args=[self.running], daemon=True)
@@ -25,7 +25,7 @@ class TestClientApi(unittest.TestCase):
         self.client.connect(b"opc.tcp://127.0.0.1:4840/")
         print("end of setUp")
 
-    def tearDown(self):
+    def teardown_method(self):
         print("start of tearDown")
         self.server.run_shutdown()
         self.thread.join(1)
@@ -74,9 +74,9 @@ class TestClientApi(unittest.TestCase):
         print("Start of test_read_node_id_attribute")
         parent_node_id = lib.UA_NODEID_NUMERIC(ffi.cast("UA_UInt16", 0), ffi.cast("UA_UInt32", 85))
         res = self.client.read_node_id_attribute(parent_node_id)
-        self.assertFalse(lib.UA_StatusCode_isBad(res.status_code))
-        self.assertEqual(str(res.status_code), "0")
-        self.assertEqual(str(res.out_node_id.identifier.numeric), "85")
+        assert not lib.UA_StatusCode_isBad(res.status_code)
+        assert str(res.status_code) == "0"
+        assert str(res.out_node_id.identifier.numeric) == "85"
         print("End of test_read_node_id_attribute")
 
     # def test_read_node_class_attribute(self):
@@ -200,7 +200,3 @@ class TestClientApi(unittest.TestCase):
     # def test_get_endpoints(self):
 
     # def test_find_servers(self):
-
-
-if __name__ == '__main__':
-    unittest.main()
