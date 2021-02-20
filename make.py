@@ -86,7 +86,7 @@ def generate_api():
     print("finished building intermediateApi")
 
 
-# setupOpen62541()
+setupOpen62541()
 os.chdir(dirname)
 generate_api()
 generate_status_codes()
