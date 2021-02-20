@@ -200,7 +200,3 @@ class TestClientApi:
     # def test_get_endpoints(self):
 
     # def test_find_servers(self):
-
-
-if __name__ == '__main__':
-    unittest.main()
