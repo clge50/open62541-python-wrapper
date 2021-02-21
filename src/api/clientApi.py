@@ -939,3 +939,30 @@ class UaClient:
                                                            lib.python_wrapper_UA_ClientAsyncBrowseCallback, callback,
                                                            req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_timed_callback(self, callback, date, callback_id):
+        return lib.UA_Client_addTimedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback, date,
+                                              callback_id)
+
+    def add_repeated_callback(self, callback, interval_ms, callback_id):
+        return lib.UA_Client_addRepeatedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback,
+                                                 interval_ms, callback_id)
+
+    def change_repeated_callback_interval(self, callback_id, interval_ms):
+        lib.UA_Client_removeCallback(self.ua_client, callback_id, interval_ms)
+
+    def renew_secure_channel(self):
+        return lib.UA_Client_renewSecureChannel(self.ua_client)
+
+    def __async_service_ex(self, request, request_type, response_type, callback, timeout):
+        req_id = ffi.new("UA_UInt32*")
+        return lib.__UA_Client_AsyncServiceEx(self.ua_client, request, request_type,
+                                              lib.python_wrapper_UA_ClientAsyncServiceCallback, response_type, callback,
+                                              req_id, timeout)
+
+    # remove params
+    def get_state(self, channel_state, session_state, connect_status):
+        return lib.UA_Client_getState(self.ua_client, channel_state, session_state, connect_status)
+
+    def get_context(self):
+        return lib.UA_Client_getContext(self.ua_client)
