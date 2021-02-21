@@ -74,6 +74,7 @@ def generate_api():
                        "util",
                        "log",
                        "network",
+                       "common",
                        "client",
                        "client_highlevel",
                        "client_highlevel_async",
