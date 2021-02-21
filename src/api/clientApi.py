@@ -15,7 +15,8 @@ class DefaultAttributes:
 
 
 class _UaCallback:
-    """These static c type callback implementations are used to call the actual callback functions which have been submitted by the open62541 user"""
+    """These static c type callback implementations are used to call the actual callback functions which have been
+    submitted by the open62541 user """
 
     @staticmethod
     @ffi.def_extern()
@@ -418,6 +419,14 @@ class UaClient:
 
     # high level add node services
 
+    def __add_node(self, node_class, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                   type_definition, attr, attribute_type):
+        out_new_node_id = ffi.new("UA_NodeId*")
+        status_code = lib.__UA_Client_addNode(self, node_class, requested_new_node_id, parent_node_id,
+                                              reference_type_id,
+                                              browse_name, type_definition, attr, attribute_type, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+
     def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
                           attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new("UA_NodeId*")
@@ -510,6 +519,14 @@ class UaClient:
         status_code = lib.UA_Client_sendAsyncReadRequest(self.ua_client, request,
                                                          lib.python_wrapper_UA_ClientAsyncReadCallback, callback,
                                                          req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def __read_attribute_async(self, node_id, attribute_id, callback):
+        out_data_type = ffi.new("UA_DataType*")
+        req_id = ffi.new("UA_UInt32*")
+        status_code = lib.__UA_Client_readAttribute_async(self.ua_client, node_id, attribute_id, out_data_type,
+                                                          lib.python_wrapper_UA_ClientAsyncServiceCallback, callback,
+                                                          req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     def read_data_type_attribute_async(self, node_id, callback):
@@ -966,3 +983,17 @@ class UaClient:
 
     def get_context(self):
         return lib.UA_Client_getContext(self.ua_client)
+
+    def UA_Client_modifyAsyncCallback(self, callback):
+        req_id = ffi.new("UA_UInt32*")
+        return lib.UA_Client_modifyAsyncCallback(self.ua_client, req_id, callback,
+                                                 lib.python_wrapper_UA_ClientAsyncServiceCallback)
+
+    def __service(self, request, request_type, response, response_type):
+        return lib.__UA_Client_Service(self.ua_client, request, request_type, response, response_type)
+
+    def __UA_Client_AsyncService(self, request, request_type, response_type, callback):
+        req_id = ffi.new("UA_UInt32*")
+        return lib.__UA_Client_AsyncService(self.ua_client, request, request_type,
+                                            lib.python_wrapper_UA_ClientAsyncServiceCallback, response_type, callback,
+                                            req_id)

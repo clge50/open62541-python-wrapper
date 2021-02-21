@@ -43,7 +43,8 @@ class DefaultAttributes:
 
 
 class _UaCallback:
-    &#34;&#34;&#34;These static c type callback implementations are used to call the actual callback functions which have been submitted by the open62541 user&#34;&#34;&#34;
+    &#34;&#34;&#34;These static c type callback implementations are used to call the actual callback functions which have been
+    submitted by the open62541 user &#34;&#34;&#34;
 
     @staticmethod
     @ffi.def_extern()
@@ -446,6 +447,14 @@ class UaClient:
 
     # high level add node services
 
+    def __add_node(self, node_class, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                   type_definition, attr, attribute_type):
+        out_new_node_id = ffi.new(&#34;UA_NodeId*&#34;)
+        status_code = lib.__UA_Client_addNode(self, node_class, requested_new_node_id, parent_node_id,
+                                              reference_type_id,
+                                              browse_name, type_definition, attr, attribute_type, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+
     def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
                           attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new(&#34;UA_NodeId*&#34;)
@@ -538,6 +547,14 @@ class UaClient:
         status_code = lib.UA_Client_sendAsyncReadRequest(self.ua_client, request,
                                                          lib.python_wrapper_UA_ClientAsyncReadCallback, callback,
                                                          req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def __read_attribute_async(self, node_id, attribute_id, out_data_type, callback):
+        out_data_type = ffi.new(&#34;UA_DataType*&#34;)
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        status_code = lib.__UA_Client_readAttribute_async(self.ua_client, node_id, attribute_id, out_data_type,
+                                                          lib.python_wrapper_UA_ClientAsyncServiceCallback, callback,
+                                                          req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     def read_data_type_attribute_async(self, node_id, callback):
@@ -966,7 +983,48 @@ class UaClient:
         status_code = lib.UA_Client_sendAsyncBrowseRequest(self.ua_client, request,
                                                            lib.python_wrapper_UA_ClientAsyncBrowseCallback, callback,
                                                            req_id)
-        return ClientServiceResult.AsyncResponse(status_code, req_id[0])</code></pre>
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_timed_callback(self, callback, date, callback_id):
+        return lib.UA_Client_addTimedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback, date,
+                                              callback_id)
+
+    def add_repeated_callback(self, callback, interval_ms, callback_id):
+        return lib.UA_Client_addRepeatedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback,
+                                                 interval_ms, callback_id)
+
+    def change_repeated_callback_interval(self, callback_id, interval_ms):
+        lib.UA_Client_removeCallback(self.ua_client, callback_id, interval_ms)
+
+    def renew_secure_channel(self):
+        return lib.UA_Client_renewSecureChannel(self.ua_client)
+
+    def __async_service_ex(self, request, request_type, response_type, callback, timeout):
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        return lib.__UA_Client_AsyncServiceEx(self.ua_client, request, request_type,
+                                              lib.python_wrapper_UA_ClientAsyncServiceCallback, response_type, callback,
+                                              req_id, timeout)
+
+    # remove params
+    def get_state(self, channel_state, session_state, connect_status):
+        return lib.UA_Client_getState(self.ua_client, channel_state, session_state, connect_status)
+
+    def get_context(self):
+        return lib.UA_Client_getContext(self.ua_client)
+
+    def UA_Client_modifyAsyncCallback(self, callback):
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        return lib.UA_Client_modifyAsyncCallback(self.ua_client, req_id, callback,
+                                                 lib.python_wrapper_UA_ClientAsyncServiceCallback)
+
+    def __service(self, request, request_type, response, response_type):
+        return lib.__UA_Client_Service(self.ua_client, request, request_type, response, response_type)
+
+    def __UA_Client_AsyncService(self, request, request_type, response_type, callback):
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        return lib.__UA_Client_AsyncService(self.ua_client, request, request_type,
+                                            lib.python_wrapper_UA_ClientAsyncServiceCallback, response_type, callback,
+                                            req_id)</code></pre>
 </details>
 </section>
 <section>
@@ -1303,6 +1361,14 @@ class UaClient:
 
     # high level add node services
 
+    def __add_node(self, node_class, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+                   type_definition, attr, attribute_type):
+        out_new_node_id = ffi.new(&#34;UA_NodeId*&#34;)
+        status_code = lib.__UA_Client_addNode(self, node_class, requested_new_node_id, parent_node_id,
+                                              reference_type_id,
+                                              browse_name, type_definition, attr, attribute_type, out_new_node_id)
+        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+
     def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
                           attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ffi.new(&#34;UA_NodeId*&#34;)
@@ -1395,6 +1461,14 @@ class UaClient:
         status_code = lib.UA_Client_sendAsyncReadRequest(self.ua_client, request,
                                                          lib.python_wrapper_UA_ClientAsyncReadCallback, callback,
                                                          req_id)
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def __read_attribute_async(self, node_id, attribute_id, out_data_type, callback):
+        out_data_type = ffi.new(&#34;UA_DataType*&#34;)
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        status_code = lib.__UA_Client_readAttribute_async(self.ua_client, node_id, attribute_id, out_data_type,
+                                                          lib.python_wrapper_UA_ClientAsyncServiceCallback, callback,
+                                                          req_id)
         return ClientServiceResult.AsyncResponse(status_code, req_id[0])
 
     def read_data_type_attribute_async(self, node_id, callback):
@@ -1823,10 +1897,66 @@ class UaClient:
         status_code = lib.UA_Client_sendAsyncBrowseRequest(self.ua_client, request,
                                                            lib.python_wrapper_UA_ClientAsyncBrowseCallback, callback,
                                                            req_id)
-        return ClientServiceResult.AsyncResponse(status_code, req_id[0])</code></pre>
+        return ClientServiceResult.AsyncResponse(status_code, req_id[0])
+
+    def add_timed_callback(self, callback, date, callback_id):
+        return lib.UA_Client_addTimedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback, date,
+                                              callback_id)
+
+    def add_repeated_callback(self, callback, interval_ms, callback_id):
+        return lib.UA_Client_addRepeatedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback,
+                                                 interval_ms, callback_id)
+
+    def change_repeated_callback_interval(self, callback_id, interval_ms):
+        lib.UA_Client_removeCallback(self.ua_client, callback_id, interval_ms)
+
+    def renew_secure_channel(self):
+        return lib.UA_Client_renewSecureChannel(self.ua_client)
+
+    def __async_service_ex(self, request, request_type, response_type, callback, timeout):
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        return lib.__UA_Client_AsyncServiceEx(self.ua_client, request, request_type,
+                                              lib.python_wrapper_UA_ClientAsyncServiceCallback, response_type, callback,
+                                              req_id, timeout)
+
+    # remove params
+    def get_state(self, channel_state, session_state, connect_status):
+        return lib.UA_Client_getState(self.ua_client, channel_state, session_state, connect_status)
+
+    def get_context(self):
+        return lib.UA_Client_getContext(self.ua_client)
+
+    def UA_Client_modifyAsyncCallback(self, callback):
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        return lib.UA_Client_modifyAsyncCallback(self.ua_client, req_id, callback,
+                                                 lib.python_wrapper_UA_ClientAsyncServiceCallback)
+
+    def __service(self, request, request_type, response, response_type):
+        return lib.__UA_Client_Service(self.ua_client, request, request_type, response, response_type)
+
+    def __UA_Client_AsyncService(self, request, request_type, response_type, callback):
+        req_id = ffi.new(&#34;UA_UInt32*&#34;)
+        return lib.__UA_Client_AsyncService(self.ua_client, request, request_type,
+                                            lib.python_wrapper_UA_ClientAsyncServiceCallback, response_type, callback,
+                                            req_id)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
+<dt id="open62541.clientApi.UaClient.UA_Client_modifyAsyncCallback"><code class="name flex">
+<span>def <span class="ident">UA_Client_modifyAsyncCallback</span></span>(<span>self, callback)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UA_Client_modifyAsyncCallback(self, callback):
+    req_id = ffi.new(&#34;UA_UInt32*&#34;)
+    return lib.UA_Client_modifyAsyncCallback(self.ua_client, req_id, callback,
+                                             lib.python_wrapper_UA_ClientAsyncServiceCallback)</code></pre>
+</details>
+</dd>
 <dt id="open62541.clientApi.UaClient.UA_Client_sendAsyncBrowseRequest"><code class="name flex">
 <span>def <span class="ident">UA_Client_sendAsyncBrowseRequest</span></span>(<span>self, request, callback)</span>
 </code></dt>
@@ -1845,7 +1975,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_data_type_node"><code class="name flex">
-<span>def <span class="ident">add_data_type_node</span></span>(<span>self, requested_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_DataTypeAttributes &amp;&#x27; 0x7f90fbc6ced0&gt;)</span>
+<span>def <span class="ident">add_data_type_node</span></span>(<span>self, requested_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_DataTypeAttributes &amp;&#x27; 0x7f74c85a5cf0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1862,7 +1992,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_data_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_data_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_DataTypeAttributes &amp;&#x27; 0x7f90fbc6ced0&gt;)</span>
+<span>def <span class="ident">add_data_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_DataTypeAttributes &amp;&#x27; 0x7f74c85a5cf0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1882,7 +2012,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_method_node"><code class="name flex">
-<span>def <span class="ident">add_method_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_MethodAttributes &amp;&#x27; 0x7f90fbc6cdb0&gt;)</span>
+<span>def <span class="ident">add_method_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_MethodAttributes &amp;&#x27; 0x7f74c85a5bd0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1899,7 +2029,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_method_node_async"><code class="name flex">
-<span>def <span class="ident">add_method_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_MethodAttributes &amp;&#x27; 0x7f90fbc6cdb0&gt;)</span>
+<span>def <span class="ident">add_method_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_MethodAttributes &amp;&#x27; 0x7f74c85a5bd0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1919,7 +2049,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_node"><code class="name flex">
-<span>def <span class="ident">add_object_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr=&lt;cdata &#x27;UA_ObjectAttributes &amp;&#x27; 0x7f90fbc6ce10&gt;)</span>
+<span>def <span class="ident">add_object_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr=&lt;cdata &#x27;UA_ObjectAttributes &amp;&#x27; 0x7f74c85a5c30&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1937,7 +2067,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_node_async"><code class="name flex">
-<span>def <span class="ident">add_object_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, callback, attr=&lt;cdata &#x27;UA_ObjectAttributes &amp;&#x27; 0x7f90fbc6ce10&gt;)</span>
+<span>def <span class="ident">add_object_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, callback, attr=&lt;cdata &#x27;UA_ObjectAttributes &amp;&#x27; 0x7f74c85a5c30&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1958,7 +2088,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_type_node"><code class="name flex">
-<span>def <span class="ident">add_object_type_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_ObjectTypeAttributes &amp;&#x27; 0x7f90fbc6ce70&gt;)</span>
+<span>def <span class="ident">add_object_type_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_ObjectTypeAttributes &amp;&#x27; 0x7f74c85a5c90&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1975,7 +2105,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_object_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_ObjectTypeAttributes &amp;&#x27; 0x7f90fbc6ce70&gt;)</span>
+<span>def <span class="ident">add_object_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_ObjectTypeAttributes &amp;&#x27; 0x7f74c85a5c90&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2010,7 +2140,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_reference_type_node"><code class="name flex">
-<span>def <span class="ident">add_reference_type_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_ReferenceTypeAttributes &amp;&#x27; 0x7f90fbc54330&gt;)</span>
+<span>def <span class="ident">add_reference_type_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_ReferenceTypeAttributes &amp;&#x27; 0x7f74c87ff5b0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2027,7 +2157,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_reference_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_reference_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_ReferenceTypeAttributes &amp;&#x27; 0x7f90fbc54330&gt;)</span>
+<span>def <span class="ident">add_reference_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_ReferenceTypeAttributes &amp;&#x27; 0x7f74c87ff5b0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2046,8 +2176,36 @@ class UaClient:
     return ClientServiceResult.AsyncResponse(status_code, req_id[0])</code></pre>
 </details>
 </dd>
+<dt id="open62541.clientApi.UaClient.add_repeated_callback"><code class="name flex">
+<span>def <span class="ident">add_repeated_callback</span></span>(<span>self, callback, interval_ms, callback_id)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_repeated_callback(self, callback, interval_ms, callback_id):
+    return lib.UA_Client_addRepeatedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback,
+                                             interval_ms, callback_id)</code></pre>
+</details>
+</dd>
+<dt id="open62541.clientApi.UaClient.add_timed_callback"><code class="name flex">
+<span>def <span class="ident">add_timed_callback</span></span>(<span>self, callback, date, callback_id)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_timed_callback(self, callback, date, callback_id):
+    return lib.UA_Client_addTimedCallback(self.ua_client, lib.python_wrapper_UA_ClientCallback, callback, date,
+                                          callback_id)</code></pre>
+</details>
+</dd>
 <dt id="open62541.clientApi.UaClient.add_variable_node"><code class="name flex">
-<span>def <span class="ident">add_variable_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr=&lt;cdata &#x27;UA_VariableAttributes &amp;&#x27; 0x7f90fc0cf510&gt;)</span>
+<span>def <span class="ident">add_variable_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr=&lt;cdata &#x27;UA_VariableAttributes &amp;&#x27; 0x7f74c8c56510&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2065,7 +2223,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_node_async"><code class="name flex">
-<span>def <span class="ident">add_variable_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, callback, attr=&lt;cdata &#x27;UA_VariableAttributes &amp;&#x27; 0x7f90fc0cf510&gt;)</span>
+<span>def <span class="ident">add_variable_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, callback, attr=&lt;cdata &#x27;UA_VariableAttributes &amp;&#x27; 0x7f74c8c56510&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2086,7 +2244,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_type_node"><code class="name flex">
-<span>def <span class="ident">add_variable_type_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_VariableTypeAttributes &amp;&#x27; 0x7f90fc0f9270&gt;)</span>
+<span>def <span class="ident">add_variable_type_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_VariableTypeAttributes &amp;&#x27; 0x7f74c8c80cf0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2103,7 +2261,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_variable_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_VariableTypeAttributes &amp;&#x27; 0x7f90fc0f9270&gt;)</span>
+<span>def <span class="ident">add_variable_type_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_VariableTypeAttributes &amp;&#x27; 0x7f74c8c80cf0&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2124,7 +2282,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_view_node"><code class="name flex">
-<span>def <span class="ident">add_view_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_ViewAttributes &amp;&#x27; 0x7f90fbc6cf30&gt;)</span>
+<span>def <span class="ident">add_view_node</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr=&lt;cdata &#x27;UA_ViewAttributes &amp;&#x27; 0x7f74c85a5d50&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2141,7 +2299,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_view_node_async"><code class="name flex">
-<span>def <span class="ident">add_view_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_ViewAttributes &amp;&#x27; 0x7f90fbc6cf30&gt;)</span>
+<span>def <span class="ident">add_view_node_async</span></span>(<span>self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, callback, attr=&lt;cdata &#x27;UA_ViewAttributes &amp;&#x27; 0x7f74c85a5d50&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2189,6 +2347,19 @@ class UaClient:
 <pre><code class="python">def call_async(self, object_id, method_id, input_size, _input, callback, req_id):
     return lib.__UA_Client_call_async(self.ua_client, object_id, method_id, input_size, _input,
                                       lib.python_wrapper_UA_ClientAsyncCallCallback, callback, req_id)</code></pre>
+</details>
+</dd>
+<dt id="open62541.clientApi.UaClient.change_repeated_callback_interval"><code class="name flex">
+<span>def <span class="ident">change_repeated_callback_interval</span></span>(<span>self, callback_id, interval_ms)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def change_repeated_callback_interval(self, callback_id, interval_ms):
+    lib.UA_Client_removeCallback(self.ua_client, callback_id, interval_ms)</code></pre>
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.connect"><code class="name flex">
@@ -2311,6 +2482,19 @@ class UaClient:
     return lib.UA_Client_getConfig(self.ua_client)</code></pre>
 </details>
 </dd>
+<dt id="open62541.clientApi.UaClient.get_context"><code class="name flex">
+<span>def <span class="ident">get_context</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_context(self):
+    return lib.UA_Client_getContext(self.ua_client)</code></pre>
+</details>
+</dd>
 <dt id="open62541.clientApi.UaClient.get_endpoints"><code class="name flex">
 <span>def <span class="ident">get_endpoints</span></span>(<span>self, server_url, endpoint_descriptions_size, endpoint_descriptions)</span>
 </code></dt>
@@ -2322,6 +2506,19 @@ class UaClient:
 </summary>
 <pre><code class="python">def get_endpoints(self, server_url, endpoint_descriptions_size, endpoint_descriptions):
     return lib.UA_Client_getEndpoints(self.ua_client, server_url, endpoint_descriptions_size, endpoint_descriptions)</code></pre>
+</details>
+</dd>
+<dt id="open62541.clientApi.UaClient.get_state"><code class="name flex">
+<span>def <span class="ident">get_state</span></span>(<span>self, channel_state, session_state, connect_status)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_state(self, channel_state, session_state, connect_status):
+    return lib.UA_Client_getState(self.ua_client, channel_state, session_state, connect_status)</code></pre>
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.readUser_write_mask_attribute_async"><code class="name flex">
@@ -2998,6 +3195,19 @@ class UaClient:
                                                              lib.python_wrapper_UA_ClientAsyncReadWriteMaskAttributeCallback,
                                                              callback, req_id)
     return ClientServiceResult.AsyncResponse(status_code, req_id[0])</code></pre>
+</details>
+</dd>
+<dt id="open62541.clientApi.UaClient.renew_secure_channel"><code class="name flex">
+<span>def <span class="ident">renew_secure_channel</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def renew_secure_channel(self):
+    return lib.UA_Client_renewSecureChannel(self.ua_client)</code></pre>
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.run_iterate"><code class="name flex">
@@ -3900,6 +4110,7 @@ class UaClient:
 <li>
 <h4><code><a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a></code></h4>
 <ul class="">
+<li><code><a title="open62541.clientApi.UaClient.UA_Client_modifyAsyncCallback" href="#open62541.clientApi.UaClient.UA_Client_modifyAsyncCallback">UA_Client_modifyAsyncCallback</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.UA_Client_sendAsyncBrowseRequest" href="#open62541.clientApi.UaClient.UA_Client_sendAsyncBrowseRequest">UA_Client_sendAsyncBrowseRequest</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_data_type_node" href="#open62541.clientApi.UaClient.add_data_type_node">add_data_type_node</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_data_type_node_async" href="#open62541.clientApi.UaClient.add_data_type_node_async">add_data_type_node_async</a></code></li>
@@ -3912,6 +4123,8 @@ class UaClient:
 <li><code><a title="open62541.clientApi.UaClient.add_reference" href="#open62541.clientApi.UaClient.add_reference">add_reference</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_reference_type_node" href="#open62541.clientApi.UaClient.add_reference_type_node">add_reference_type_node</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_reference_type_node_async" href="#open62541.clientApi.UaClient.add_reference_type_node_async">add_reference_type_node_async</a></code></li>
+<li><code><a title="open62541.clientApi.UaClient.add_repeated_callback" href="#open62541.clientApi.UaClient.add_repeated_callback">add_repeated_callback</a></code></li>
+<li><code><a title="open62541.clientApi.UaClient.add_timed_callback" href="#open62541.clientApi.UaClient.add_timed_callback">add_timed_callback</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_variable_node" href="#open62541.clientApi.UaClient.add_variable_node">add_variable_node</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_variable_node_async" href="#open62541.clientApi.UaClient.add_variable_node_async">add_variable_node_async</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.add_variable_type_node" href="#open62541.clientApi.UaClient.add_variable_type_node">add_variable_type_node</a></code></li>
@@ -3920,6 +4133,7 @@ class UaClient:
 <li><code><a title="open62541.clientApi.UaClient.add_view_node_async" href="#open62541.clientApi.UaClient.add_view_node_async">add_view_node_async</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.call" href="#open62541.clientApi.UaClient.call">call</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.call_async" href="#open62541.clientApi.UaClient.call_async">call_async</a></code></li>
+<li><code><a title="open62541.clientApi.UaClient.change_repeated_callback_interval" href="#open62541.clientApi.UaClient.change_repeated_callback_interval">change_repeated_callback_interval</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.connect" href="#open62541.clientApi.UaClient.connect">connect</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.connect_secure_channel" href="#open62541.clientApi.UaClient.connect_secure_channel">connect_secure_channel</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.delete_node" href="#open62541.clientApi.UaClient.delete_node">delete_node</a></code></li>
@@ -3929,7 +4143,9 @@ class UaClient:
 <li><code><a title="open62541.clientApi.UaClient.find_data_type" href="#open62541.clientApi.UaClient.find_data_type">find_data_type</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.find_servers" href="#open62541.clientApi.UaClient.find_servers">find_servers</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.get_config" href="#open62541.clientApi.UaClient.get_config">get_config</a></code></li>
+<li><code><a title="open62541.clientApi.UaClient.get_context" href="#open62541.clientApi.UaClient.get_context">get_context</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.get_endpoints" href="#open62541.clientApi.UaClient.get_endpoints">get_endpoints</a></code></li>
+<li><code><a title="open62541.clientApi.UaClient.get_state" href="#open62541.clientApi.UaClient.get_state">get_state</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.readUser_write_mask_attribute_async" href="#open62541.clientApi.UaClient.readUser_write_mask_attribute_async">readUser_write_mask_attribute_async</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.read_access_level_attribute" href="#open62541.clientApi.UaClient.read_access_level_attribute">read_access_level_attribute</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.read_access_level_attribute_async" href="#open62541.clientApi.UaClient.read_access_level_attribute_async">read_access_level_attribute_async</a></code></li>
@@ -3972,6 +4188,7 @@ class UaClient:
 <li><code><a title="open62541.clientApi.UaClient.read_value_rank_attribute_async" href="#open62541.clientApi.UaClient.read_value_rank_attribute_async">read_value_rank_attribute_async</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.read_write_mask_attribute" href="#open62541.clientApi.UaClient.read_write_mask_attribute">read_write_mask_attribute</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.read_write_mask_attribute_async" href="#open62541.clientApi.UaClient.read_write_mask_attribute_async">read_write_mask_attribute_async</a></code></li>
+<li><code><a title="open62541.clientApi.UaClient.renew_secure_channel" href="#open62541.clientApi.UaClient.renew_secure_channel">renew_secure_channel</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.run_iterate" href="#open62541.clientApi.UaClient.run_iterate">run_iterate</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.send_async_read_request" href="#open62541.clientApi.UaClient.send_async_read_request">send_async_read_request</a></code></li>
 <li><code><a title="open62541.clientApi.UaClient.send_async_write_request" href="#open62541.clientApi.UaClient.send_async_write_request">send_async_write_request</a></code></li>

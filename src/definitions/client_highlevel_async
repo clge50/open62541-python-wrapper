@@ -58,7 +58,7 @@ extern "Python" void python_wrapper_UA_ClientAsyncAddNodesCallback(UA_Client *cl
 
 // read service
 UA_StatusCode UA_Client_sendAsyncReadRequest(UA_Client *client, UA_ReadRequest *request, UA_ClientAsyncReadCallback readCallback, void *userdata, UA_UInt32 *reqId);
-/*UA_StatusCode __UA_Client_readAttribute_async(UA_Client *client, const UA_NodeId *nodeId, UA_AttributeId attributeId, const UA_DataType *outDataType, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);*/
+UA_StatusCode __UA_Client_readAttribute_async(UA_Client *client, const UA_NodeId *nodeId, UA_AttributeId attributeId, const UA_DataType *outDataType, UA_ClientAsyncServiceCallback callback, void *userdata, UA_UInt32 *reqId);
 UA_StatusCode UA_Client_readDataTypeAttribute_async( UA_Client *client, const UA_NodeId nodeId, UA_ClientAsyncReadDataTypeAttributeCallback callback, void *userdata, UA_UInt32 *reqId);
 UA_StatusCode UA_Client_readValueAttribute_async(UA_Client *client, const UA_NodeId nodeId, UA_ClientAsyncReadValueAttributeCallback callback, void *userdata, UA_UInt32 *reqId);
 UA_StatusCode UA_Client_readNodeIdAttribute_async(UA_Client *client, const UA_NodeId nodeId, UA_ClientAsyncReadNodeIdAttributeCallback callback, void *userdata, UA_UInt32 *reqId);

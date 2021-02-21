@@ -62,6 +62,7 @@ const UA_DataTypeAttributes UA_DataTypeAttributes_default;
 const UA_ViewAttributes UA_ViewAttributes_default;
 
 // add nodes service
+UA_StatusCode __UA_Client_addNode(UA_Client *client, const UA_NodeClass nodeClass, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_NodeAttributes *attr, const UA_DataType *attributeType, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addVariableNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_VariableAttributes attr, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addVariableTypeNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_VariableTypeAttributes attr, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addObjectNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_ObjectAttributes attr, UA_NodeId *outNewNodeId);
