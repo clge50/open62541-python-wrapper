@@ -15,6 +15,7 @@ typedef struct {
     UA_UInt32 connectivityCheckInterval;
     const UA_DataTypeArray *customDataTypes;
     size_t securityPoliciesSize;
+    /* TODO */
     /* UA_SecurityPolicy *securityPolicies;
     UA_CertificateVerification certificateVerification;
     UA_ConnectClientConnection initConnectionFunc;
