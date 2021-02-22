@@ -38,7 +38,7 @@ class UaServer:
             self.ua_server = lib.UA_Server_newWithConfig(config)
 
     def run(self, running):
-        return lib.UA_Server_run(self.ua_server, running)
+        return lib.UA_Server_run(self.ua_server, [running])
 
     def run_shutdown(self):
         return lib.UA_Server_run_shutdown(self.ua_server)
@@ -90,7 +90,7 @@ class UaServer:
             self.ua_server = lib.UA_Server_newWithConfig(config)
 
     def run(self, running):
-        return lib.UA_Server_run(self.ua_server, running)
+        return lib.UA_Server_run(self.ua_server, [running])
 
     def run_shutdown(self):
         return lib.UA_Server_run_shutdown(self.ua_server)
@@ -138,7 +138,7 @@ class UaServer:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, running):
-    return lib.UA_Server_run(self.ua_server, running)</code></pre>
+    return lib.UA_Server_run(self.ua_server, [running])</code></pre>
 </details>
 </dd>
 <dt id="open62541.serverApi.UaServer.run_iterate"><code class="name flex">

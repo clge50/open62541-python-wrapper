@@ -1,4 +1,5 @@
 // read service
+UA_StatusCode __UA_Client_readAttribute(UA_Client *client, const UA_NodeId *nodeId, UA_AttributeId attributeId, void *out, const UA_DataType *outDataType);
 UA_StatusCode UA_Client_readNodeIdAttribute(UA_Client *client, const UA_NodeId nodeId, UA_NodeId *outNodeId);
 UA_StatusCode UA_Client_readNodeClassAttribute(UA_Client *client, const UA_NodeId nodeId, UA_NodeClass *outNodeClass);
 UA_StatusCode UA_Client_readBrowseNameAttribute(UA_Client *client, const UA_NodeId nodeId, UA_QualifiedName *outBrowseName);
@@ -62,6 +63,7 @@ const UA_DataTypeAttributes UA_DataTypeAttributes_default;
 const UA_ViewAttributes UA_ViewAttributes_default;
 
 // add nodes service
+UA_StatusCode __UA_Client_addNode(UA_Client *client, const UA_NodeClass nodeClass, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_NodeAttributes *attr, const UA_DataType *attributeType, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addVariableNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_VariableAttributes attr, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addVariableTypeNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_VariableTypeAttributes attr, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addObjectNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_ObjectAttributes attr, UA_NodeId *outNewNodeId);
@@ -70,3 +72,14 @@ UA_StatusCode UA_Client_addViewNode(UA_Client *client, const UA_NodeId requested
 UA_StatusCode UA_Client_addReferenceTypeNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ReferenceTypeAttributes attr, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addDataTypeNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_DataTypeAttributes attr, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_Client_addMethodNode(UA_Client *client, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_MethodAttributes attr, UA_NodeId *outNewNodeId);
+
+// typedef
+typedef UA_StatusCode (*UA_NodeIteratorCallback)(UA_NodeId childId, UA_Boolean isInverse, UA_NodeId referenceTypeId, void *handle);
+
+// callback impl
+extern "Python" void python_wrapper_UA_NodeIteratorCallback(UA_NodeId childId, UA_Boolean isInverse, UA_NodeId referenceTypeId, void *handle);
+
+// Utils
+UA_StatusCode UA_Client_NamespaceGetIndex(UA_Client *client, UA_String *namespaceUri, UA_UInt16 *namespaceIndex);
+UA_StatusCode UA_Client_forEachChildNodeCall(UA_Client *client, UA_NodeId parentNodeId, UA_NodeIteratorCallback callback, void *handle);
+

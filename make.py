@@ -107,7 +107,7 @@ def generate_api():
 
 def generate_pdoc():
     os.chdir(dirname + r"/build/open62541")
-    os.system("pdoc3 --html --output-dir ../../doc " + dirname + r"/build/open62541 --force")
+    os.system("pdoc3 --html --output-dir " + dirname + "/doc " + dirname + r"/build/open62541 --force")
 
 
 if __name__ == "__main__":

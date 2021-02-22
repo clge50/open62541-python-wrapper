@@ -15,6 +15,7 @@ typedef struct {
     UA_UInt32 connectivityCheckInterval;
     const UA_DataTypeArray *customDataTypes;
     size_t securityPoliciesSize;
+    /* TODO */
     /* UA_SecurityPolicy *securityPolicies;
     UA_CertificateVerification certificateVerification;
     UA_ConnectClientConnection initConnectionFunc;
@@ -81,3 +82,10 @@ UA_StatusCode UA_Client_changeRepeatedCallbackInterval(UA_Client *client, UA_UIn
 void UA_Client_removeCallback(UA_Client *client, UA_UInt64 callbackId);
 UA_Client * UA_Client_newWithConfig(const UA_ClientConfig *config);
 UA_StatusCode UA_Client_run_iterate(UA_Client *client, UA_UInt32 timeout);
+UA_StatusCode UA_Client_renewSecureChannel(UA_Client *client);
+UA_StatusCode __UA_Client_AsyncServiceEx(UA_Client *client, const void *request, const UA_DataType *requestType, UA_ClientAsyncServiceCallback callback, const UA_DataType *responseType, void *userdata, UA_UInt32 *requestId, UA_UInt32 timeout);
+void UA_Client_getState(UA_Client *client, UA_SecureChannelState *channelState, UA_SessionState *sessionState, UA_StatusCode *connectStatus);
+void * UA_Client_getContext(UA_Client *client);
+UA_StatusCode UA_Client_modifyAsyncCallback(UA_Client *client, UA_UInt32 requestId, void *userdata, UA_ClientAsyncServiceCallback callback);
+void __UA_Client_Service(UA_Client *client, const void *request,  const UA_DataType *requestType, void *response, const UA_DataType *responseType);
+UA_StatusCode __UA_Client_AsyncService(UA_Client *client, const void *request, const UA_DataType *requestType, UA_ClientAsyncServiceCallback callback, const UA_DataType *responseType, void *userdata, UA_UInt32 *requestId);
