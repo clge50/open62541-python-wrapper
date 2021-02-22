@@ -984,7 +984,7 @@ class UaClient:
     def get_context(self):
         return lib.UA_Client_getContext(self.ua_client)
 
-    def UA_Client_modifyAsyncCallback(self, callback):
+    def modify_async_callback(self, callback):
         req_id = ffi.new("UA_UInt32*")
         return lib.UA_Client_modifyAsyncCallback(self.ua_client, req_id, callback,
                                                  lib.python_wrapper_UA_ClientAsyncServiceCallback)
