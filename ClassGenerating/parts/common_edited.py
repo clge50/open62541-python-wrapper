@@ -68,15 +68,17 @@ class UaAttributeId(UaType):
         else:
             super().__init__(ffi.cast("UA_AttributeId", _val(val)), is_pointer)
 
-    @UaType._value.setter
-    def _value(self, val):
+    def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
-            self.__value[0] = _val(val)
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_AttributeId")
+            else:
+                self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
     def __str__(self, n=0):
-        return f"(UaAttributeId): {self.val_to_string[self._value]} ({str(self._value)})\n"
+        return f"(UaAttributeId): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
@@ -98,15 +100,17 @@ class UaRuleHandling(UaType):
         else:
             super().__init__(ffi.cast("UA_RuleHandling", _val(val)), is_pointer)
 
-    @UaType._value.setter
-    def _value(self, val):
+    def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
-            self.__value[0] = _val(val)
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_RuleHandling")
+            else:
+                self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
     def __str__(self, n=0):
-        return f"(UaRuleHandling): {self.val_to_string[self._value]} ({str(self._value)})\n"
+        return f"(UaRuleHandling): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaOrder +++++++++++++++++++++++
@@ -126,15 +130,17 @@ class UaOrder(UaType):
         else:
             super().__init__(ffi.cast("UA_Order", _val(val)), is_pointer)
 
-    @UaType._value.setter
-    def _value(self, val):
+    def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
-            self.__value[0] = _val(val)
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_Order")
+            else:
+                self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
     def __str__(self, n=0):
-        return f"(UaOrder): {self.val_to_string[self._value]} ({str(self._value)})\n"
+        return f"(UaOrder): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
@@ -164,15 +170,17 @@ class UaSecureChannelState(UaType):
         else:
             super().__init__(ffi.cast("UA_SecureChannelState", _val(val)), is_pointer)
 
-    @UaType._value.setter
-    def _value(self, val):
+    def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
-            self.__value[0] = _val(val)
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_SecureChannelState")
+            else:
+                self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
     def __str__(self, n=0):
-        return f"(UaSecureChannelState): {self.val_to_string[self._value]} ({str(self._value)})\n"
+        return f"(UaSecureChannelState): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
@@ -198,42 +206,47 @@ class UaSessionState(UaType):
         else:
             super().__init__(ffi.cast("UA_SessionState", _val(val)), is_pointer)
 
-    @UaType._value.setter
-    def _value(self, val):
+    def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
-            self.__value[0] = _val(val)
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_SessionState")
+            else:
+                self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
     def __str__(self, n=0):
-        return f"(UaSessionState): {self.val_to_string[self._value]} ({str(self._value)})\n"
+        return f"(UaSessionState): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 
 # -------------------------------------------------------------
 # -------------------------- Structs --------------------------
 # -------------------------------------------------------------
-    
+
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
     def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-        
+
         self._current_connection_count = SizeT(val=val.currentConnectionCount, is_pointer=False)
         self._cumulated_connection_count = SizeT(val=val.cumulatedConnectionCount, is_pointer=False)
         self._rejected_connection_count = SizeT(val=val.rejectedConnectionCount, is_pointer=False)
         self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=False)
         self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
 
-    @UaType._value.setter
-    def _value(self, val):
-        self.__value[0] = _val(val)
-        self._current_connection_count.__value[0] = _val(val.currentConnectionCount)
-        self._cumulated_connection_count.__value[0] = _val(val.cumulatedConnectionCount)
-        self._rejected_connection_count.__value[0] = _val(val.rejectedConnectionCount)
-        self._connection_timeout_count.__value[0] = _val(val.connectionTimeoutCount)
-        self._connection_abort_count.__value[0] = _val(val.connectionAbortCount)
-    
+    def _set_value(self, val):
+        if self._is_pointer:
+            self._value = _ptr(val, "UA_NetworkStatistics")
+        else:
+            self._value[0] = _val(val)
+
+        self._current_connection_count._value[0] = _val(val.currentConnectionCount)
+        self._cumulated_connection_count._value[0] = _val(val.cumulatedConnectionCount)
+        self._rejected_connection_count._value[0] = _val(val.rejectedConnectionCount)
+        self._connection_timeout_count._value[0] = _val(val.connectionTimeoutCount)
+        self._connection_abort_count._value[0] = _val(val.connectionAbortCount)
+
     @property
     def current_connection_count(self):
         return self._current_connection_count
@@ -253,31 +266,31 @@ class UaNetworkStatistics(UaType):
     @property
     def connection_abort_count(self):
         return self._connection_abort_count
-    
+
     @current_connection_count.setter
     def current_connection_count(self, val):
         self._current_connection_count = val
-        self._value.currentConnectionCount = val._value
+        self._value.currentConnectionCount = val._val
 
     @cumulated_connection_count.setter
     def cumulated_connection_count(self, val):
         self._cumulated_connection_count = val
-        self._value.cumulatedConnectionCount = val._value
+        self._value.cumulatedConnectionCount = val._val
 
     @rejected_connection_count.setter
     def rejected_connection_count(self, val):
         self._rejected_connection_count = val
-        self._value.rejectedConnectionCount = val._value
+        self._value.rejectedConnectionCount = val._val
 
     @connection_timeout_count.setter
     def connection_timeout_count(self, val):
         self._connection_timeout_count = val
-        self._value.connectionTimeoutCount = val._value
+        self._value.connectionTimeoutCount = val._val
 
     @connection_abort_count.setter
     def connection_abort_count(self, val):
         self._connection_abort_count = val
-        self._value.connectionAbortCount = val._value
+        self._value.connectionAbortCount = val._val
 
     def __str__(self, n=0):
         return ("(UaNetworkStatistics) :\n" +
@@ -292,7 +305,7 @@ class UaNetworkStatistics(UaType):
 class UaSecureChannelStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-        
+
         self._current_channel_count = SizeT(val=val.currentChannelCount, is_pointer=False)
         self._cumulated_channel_count = SizeT(val=val.cumulatedChannelCount, is_pointer=False)
         self._rejected_channel_count = SizeT(val=val.rejectedChannelCount, is_pointer=False)
@@ -300,16 +313,19 @@ class UaSecureChannelStatistics(UaType):
         self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=False)
         self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
 
-    @UaType._value.setter
-    def _value(self, val):
-        self.__value[0] = _val(val)
-        self._current_channel_count.__value[0] = _val(val.currentChannelCount)
-        self._cumulated_channel_count.__value[0] = _val(val.cumulatedChannelCount)
-        self._rejected_channel_count.__value[0] = _val(val.rejectedChannelCount)
-        self._channel_timeout_count.__value[0] = _val(val.channelTimeoutCount)
-        self._channel_abort_count.__value[0] = _val(val.channelAbortCount)
-        self._channel_purge_count.__value[0] = _val(val.channelPurgeCount)
-    
+    def _set_value(self, val):
+        if self._is_pointer:
+            self._value = _ptr(val, "UA_SecureChannelStatistics")
+        else:
+            self._value[0] = _val(val)
+
+        self._current_channel_count._value[0] = _val(val.currentChannelCount)
+        self._cumulated_channel_count._value[0] = _val(val.cumulatedChannelCount)
+        self._rejected_channel_count._value[0] = _val(val.rejectedChannelCount)
+        self._channel_timeout_count._value[0] = _val(val.channelTimeoutCount)
+        self._channel_abort_count._value[0] = _val(val.channelAbortCount)
+        self._channel_purge_count._value[0] = _val(val.channelPurgeCount)
+
     @property
     def current_channel_count(self):
         return self._current_channel_count
@@ -333,36 +349,36 @@ class UaSecureChannelStatistics(UaType):
     @property
     def channel_purge_count(self):
         return self._channel_purge_count
-    
+
     @current_channel_count.setter
     def current_channel_count(self, val):
         self._current_channel_count = val
-        self._value.currentChannelCount = val._value
+        self._value.currentChannelCount = val._val
 
     @cumulated_channel_count.setter
     def cumulated_channel_count(self, val):
         self._cumulated_channel_count = val
-        self._value.cumulatedChannelCount = val._value
+        self._value.cumulatedChannelCount = val._val
 
     @rejected_channel_count.setter
     def rejected_channel_count(self, val):
         self._rejected_channel_count = val
-        self._value.rejectedChannelCount = val._value
+        self._value.rejectedChannelCount = val._val
 
     @channel_timeout_count.setter
     def channel_timeout_count(self, val):
         self._channel_timeout_count = val
-        self._value.channelTimeoutCount = val._value
+        self._value.channelTimeoutCount = val._val
 
     @channel_abort_count.setter
     def channel_abort_count(self, val):
         self._channel_abort_count = val
-        self._value.channelAbortCount = val._value
+        self._value.channelAbortCount = val._val
 
     @channel_purge_count.setter
     def channel_purge_count(self, val):
         self._channel_purge_count = val
-        self._value.channelPurgeCount = val._value
+        self._value.channelPurgeCount = val._val
 
     def __str__(self, n=0):
         return ("(UaSecureChannelStatistics) :\n" +

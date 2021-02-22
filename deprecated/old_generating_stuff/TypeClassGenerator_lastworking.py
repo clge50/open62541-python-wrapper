@@ -26,19 +26,14 @@ class {to_python_class_name(prim_name)}(UaType):
         if val is None:
             super().__init__(ffi.new("{prim_name}*"), is_pointer)
         else:
-            if is_pointer:
-                super().__init__(val, is_pointer)
-            else:
-                super().__init__(ffi.cast("{prim_name}", _val(val)), is_pointer)
+            super().__init__(ffi.cast("{prim_name}", _val(val)), is_pointer)
 
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "{prim_name}")
-        else:
-            self._value[0] = ffi.cast("{prim_name}", _val(val))
+    @UaType._value.setter
+    def _value(self, val):
+        self.__value[0] = ffi.cast("{prim_name}", _val(val))
 
     def __str__(self, n=0):
-        return "({to_python_class_name(prim_name)}): " + str(self._val) + "\\n"
+        return "({to_python_class_name(prim_name)}): " + str(self._value) + "\\n"
 
 
 """
@@ -55,47 +50,40 @@ def generator_struct(struct_name: str, attribute_to_type: dict):
 class {to_python_class_name(struct_name)}(UaType):
     def __init__(self, val=ffi.new("{struct_name}*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
+        
 {new_line.join(map(
         lambda attr:
         tab * 2 + f"self._{inflection.underscore(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
         attribute_to_type.keys()))}
 
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "{struct_name}")
-        else:
-            self._value[0] = _val(val)
-
+    @UaType._value.setter
+    def _value(self, val):
+        self.__value[0] = _val(val)
 {new_line.join(map(
         lambda attr:
-        tab * 2 + f"self._{inflection.underscore(attr)}._value = val.{attr}"
-        if attribute_to_type[attr][1] else
-        tab * 2 + f"self._{inflection.underscore(attr)}._value[0] = _val(val.{attr})",
+        tab * 2 + f"self._{inflection.underscore(attr)}.__value[0] = _val(val.{attr})",
         attribute_to_type.keys()))}
-
+    
 {(new_line * 2).join(map(
         lambda attr:
         tab + f"@property" + new_line +
         tab + f"def {inflection.underscore(attr)}(self):" + new_line +
         tab * 2 + f"return self._{inflection.underscore(attr)}",
         attribute_to_type.keys()))}
-
+    
 {(new_line * 2).join(map(
         lambda attr:
         tab + f"@{inflection.underscore(attr)}.setter" + new_line +
         tab + f"def {inflection.underscore(attr)}(self, val):" + new_line +
         tab * 2 + f"self._{inflection.underscore(attr)} = val" + new_line +
-        (tab * 2 + f"self._value.{attr} = val._ptr"
-         if attribute_to_type[attr][1] else
-         tab * 2 + f"self._value.{attr} = val._val"),
+        tab * 2 + f"self._value.{attr} = val._value",
         attribute_to_type.keys()))}
 
     def __str__(self, n=0):
         return ("({to_python_class_name(struct_name)}) :\\n" +
 {new_line.join(map(
         lambda attr:
-        tab * 4 + f"{quote}{backslash}t{quote}*(n+1) + {quote}{inflection.underscore(attr)}{quote} + self._{inflection.underscore(attr)}.__str__(n+1) +",
+        tab*4 + f"{quote}{backslash}t{quote}*(n+1) + {quote}{inflection.underscore(attr)}{quote} + self._{inflection.underscore(attr)}.__str__(n+1) +",
         attribute_to_type.keys()))} "\\n")
 
 
@@ -129,18 +117,16 @@ class {to_python_class_name(enum_name)}(UaType):
         else:
             super().__init__(ffi.cast("{enum_name}", _val(val)), is_pointer)
 
-    def _set_value(self, val):
+    @UaType._value.setter
+    def _value(self, val):
         if _val(val) in self.val_to_string.keys():
-            if self._is_pointer:
-                self._value = _ptr(val, "{enum_name}")
-            else:
-                self._value[0] = _val(val)
+            self.__value[0] = _val(val)
         else:
             raise OverflowError(f"{l_brace}val{r_brace} is not a valid member of this class")
 
     def __str__(self, n=0):
         return f"({to_python_class_name(enum_name)
-    }): {l_brace}self.val_to_string[self._val]{r_brace} ({l_brace}str(self._val){r_brace})\\n"
+    }): {l_brace}self.val_to_string[self._value]{r_brace} ({l_brace}str(self._value){r_brace})\\n"
 
 
 """
@@ -231,7 +217,7 @@ def generate_defs(file_name: str):
 # -------------------------------------------------------------
 # -------------------------- Structs --------------------------
 # -------------------------------------------------------------
-
+    
 """
     type_classes += "".join(map(lambda pair: generator_struct(pair[0], pair[1]), struct_list))
 
@@ -265,4 +251,5 @@ generate_defs_primitive(["UA_Boolean",
                          "UA_StatusCode",
                          "UA_DateTime"])
 
+# remember: UA_ExtensionObject
 

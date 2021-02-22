@@ -111,7 +111,7 @@ typedef struct {
 
 
 
-typedef struct UA_DiagnosticInfo {
+typedef struct {
  UA_Boolean hasSymbolicId;
  UA_Boolean hasNamespaceUri;
  UA_Boolean hasLocalizedText;
@@ -137,7 +137,6 @@ typedef struct {
  UA_Boolean isArray;
  UA_Boolean isOptional;
  char *memberName;
-
 } UA_DataTypeMember;
 
 
@@ -194,7 +193,7 @@ typedef struct {
 
 
 typedef struct {
- struct UA_DataTypeArray *next;
+ UA_DataTypeArray *next;
  size_t typesSize;
  UA_DataType *types;
 } UA_DataTypeArray;
