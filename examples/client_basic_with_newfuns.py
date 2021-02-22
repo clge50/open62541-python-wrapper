@@ -7,6 +7,12 @@ from intermediateApi import ffi, lib
 from node_ids import NodeIds
 from status_code import StatusCode
 
+
+x = ffi.new("UA_StatusCode*", 0x80000000)
+
+
+print(StatusCode.isBad(x[0]))
+
 client = clientApi.UaClient()
 retval = client.connect("opc.tcp://127.0.0.1:4840/")
 

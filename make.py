@@ -67,7 +67,9 @@ def generate_api():
     os.chdir(dirname)
     if os.path.isdir(dirname + "/build"):
         rmtree("build")
-    decl_files_list = ["types",
+    decl_files_list = ["c_basics",
+                       "common",
+                       "types",
                        "types_generated",
                        "util",
                        "log",
