@@ -5,14 +5,14 @@ import ua_types
 
 
 class DefaultAttributes:
-    VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
-    VARIABLE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_VariableTypeAttributes_default
-    METHOD_ATTRIBUTES_DEFAULT = lib.UA_MethodAttributes_default
-    OBJECT_ATTRIBUTES_DEFAULT = lib.UA_ObjectAttributes_default
-    OBJECT_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ObjectTypeAttributes_default
-    REFERENCE_TYPE_ATTRIBUTES_DEFAULT = lib.UA_ReferenceTypeAttributes_default
-    DATA_TYPE_ATTRIBUTES_DEFAULT = lib.UA_DataTypeAttributes_default
-    VIEW_ATTRIBUTES_DEFAULT = lib.UA_ViewAttributes_default
+    VARIABLE_ATTRIBUTES_DEFAULT = ua_types.UaNodeAttributes(val=lib.UA_VariableAttributes_default)
+    VARIABLE_TYPE_ATTRIBUTES_DEFAULT = ua_types.UaVariableTypeAttributes(val=lib.UA_VariableTypeAttributes_default)
+    METHOD_ATTRIBUTES_DEFAULT = ua_types.UaMethodAttributes(val=lib.UA_MethodAttributes_default)
+    OBJECT_ATTRIBUTES_DEFAULT = ua_types.UaObjectAttributes(val=lib.UA_ObjectAttributes_default)
+    OBJECT_TYPE_ATTRIBUTES_DEFAULT = ua_types.UaObjectTypeAttributes(val=lib.UA_ObjectTypeAttributes_default)
+    REFERENCE_TYPE_ATTRIBUTES_DEFAULT = ua_types.UaReferenceTypeAttributes(val=lib.UA_ReferenceTypeAttributes_default)
+    DATA_TYPE_ATTRIBUTES_DEFAULT = ua_types.UaDataTypeAttributes(val=lib.UA_DataTypeAttributes_default)
+    VIEW_ATTRIBUTES_DEFAULT = ua_types.UaViewAttributes(val=lib.UA_ViewAttributes_default)
 
 
 class _UaCallback:
@@ -477,71 +477,73 @@ class UaClient:
 
     # high level add node services
 
-    # Todo: the defaultAttributes have to be wrapped
     def add_variable_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
                           reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                           type_definition: ua_types.UaNodeId,
-                          attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
+                          attr: ua_types.UaVariableAttributes = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, type_definition._val,
-                                                    attr,
+                                                    attr._val,
                                                     out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
-                               attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+                               attr: ua_types.UaVariableTypeAttributes = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
-                                                        reference_type_id._val, browse_name._val, attr,
+                                                        reference_type_id._val, browse_name._val, attr._val,
                                                         out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_object_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
-                        attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+                        attr: ua_types.UaObjectAttributes = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
-                                                  reference_type_id._val, browse_name._val, type_definition._val, attr,
+                                                  reference_type_id._val, browse_name._val, type_definition._val,
+                                                  attr._val,
                                                   out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_object_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
-                             attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+                             attr: ua_types.UaObjectTypeAttributes = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
-                                                      reference_type_id._val, browse_name._val, attr,
+                                                      reference_type_id._val, browse_name._val, attr._val,
                                                       out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_view_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
-                      attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+                      attr: ua_types.UaViewAttributes = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
-                                                reference_type_id._val, browse_name._val, attr, out_new_node_id._ptr)
+                                                reference_type_id._val, browse_name._val, attr._val,
+                                                out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_reference_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
-                                attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+                                attr: ua_types.UaReferenceTypeAttributes = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id._val,
                                                          parent_node_id._val,
-                                                         reference_type_id._val, browse_name._val, attr,
+                                                         reference_type_id._val, browse_name._val, attr._val,
                                                          out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_data_type_node(self, requested_node_id, parent_node_id, reference_type_id, browse_name,
-                           attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+                           attr: ua_types.UaDataTypeAttributes = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_node_id._val, parent_node_id._val,
-                                                    reference_type_id._val, browse_name._val, attr,
+                                                    reference_type_id._val, browse_name._val, attr._val,
                                                     out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
-                        attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+                        attr: ua_types.UaMethodAttributes = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
-                                                  reference_type_id._val, browse_name._val, attr, out_new_node_id._ptr)
+                                                  reference_type_id._val, browse_name._val, attr._val,
+                                                  out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     # utils
