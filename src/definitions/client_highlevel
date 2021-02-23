@@ -41,7 +41,7 @@ UA_StatusCode UA_Client_writeArrayDimensionsAttribute(UA_Client *client, const U
 UA_StatusCode UA_Client_writeAccessLevelAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Byte *newAccessLevel);
 UA_StatusCode UA_Client_writeUserAccessLevelAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Byte *newUserAccessLevel);
 UA_StatusCode UA_Client_writeMinimumSamplingIntervalAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Double *newMinInterval);
-UA_StatusCode UA_Client_writeHistorizingAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newHistorizing);
+/*UA_StatusCode UA_Client_writeHistorizingAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newHistorizing);*/
 UA_StatusCode UA_Client_writeExecutableAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newExecutable);
 UA_StatusCode UA_Client_writeUserExecutableAttribute(UA_Client *client, const UA_NodeId nodeId, const UA_Boolean *newUserExecutable);
 

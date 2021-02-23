@@ -1,6 +1,7 @@
 from intermediateApi import ffi, lib
 
 import client_service_results as ClientServiceResult
+import ua_types
 
 
 class DefaultAttributes:
@@ -168,316 +169,383 @@ class UaClient:
 
     # connection
 
-    def connect(self, endpoint_url):
-        return lib.UA_Client_connect(self.ua_client, bytes(endpoint_url, 'utf-8'))
+    def connect(self, endpoint_url: str):
+        raw_result = lib.UA_Client_connect(self.ua_client, bytes(endpoint_url, 'utf-8'))
+        return ua_types.UaStatusCode(val=raw_result)
 
     def disconnect(self):
-        return lib.UA_Client_disconnect(self.ua_client)
+        raw_result = lib.UA_Client_disconnect(self.ua_client)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def connect_secure_channel(self, endpoint_url):
-        return lib.UA_Client_connectSecureChannel(self.ua_client, endpoint_url)
+    def connect_secure_channel(self, endpoint_url: str):
+        raw_result = lib.UA_Client_connectSecureChannel(self.ua_client, bytes(endpoint_url, 'utf-8'))
+        return ua_types.UaStatusCode(val=raw_result)
 
     def disconnect_secure_channel(self):
-        return lib.UA_Client_disconnectSecureChannel(self.ua_client)
+        return ua_types.UaStatusCode(val=lib.UA_Client_disconnectSecureChannel(self.ua_client))
 
     # low level service
 
-    def service_read(self, request):
-        return lib.UA_Client_Service_read(self.ua_client, request)
+    def service_read(self, request: ua_types.UaReadRequest):
+        raw_result = lib.UA_Client_Service_read(self.ua_client, request._val)
+        return ua_types.UaReadResponse(val=raw_result)
 
-    def service_write(self, request):
-        return lib.UA_Client_Service_write(self.ua_client, request)
+    def service_write(self, request: ua_types.UaWriteRequest):
+        raw_result = lib.UA_Client_Service_write(self.ua_client, request._val)
+        return ua_types.UaWriteResponse(val=raw_result)
 
-    def service_call(self, request):
-        return lib.UA_Client_Service_call(self.ua_client, request)
+    def service_call(self, request: ua_types.UaCallRequest):
+        raw_result = lib.UA_Client_Service_call(self.ua_client, request._val)
+        return ua_types.UaCallResponse(val=raw_result)
 
-    def service_add_nodes(self, request):
-        return lib.UA_Client_Service_addNodes(self.ua_client, request)
+    def service_add_nodes(self, request: ua_types.UaAddNodesRequest):
+        raw_result = lib.UA_Client_Service_addNodes(self.ua_client, request._val)
+        return ua_types.UaAddNodesResponse(val=raw_result)
 
-    def service_add_reference(self, request):
-        return lib.UA_Client_Service_addReference(self.ua_client, request)
+    def service_add_reference(self, request: ua_types.UaAddReferencesRequest):
+        raw_result = lib.UA_Client_Service_addReference(self.ua_client, request._val)
+        return ua_types.UaAddReferencesResponse(val=raw_result)
 
-    def service_delete_nodes(self, request):
-        return lib.UA_Client_Service_deleteNodes(self.ua_client, request)
+    def service_delete_nodes(self, request: ua_types.UaDeleteNodesRequest):
+        raw_result = lib.UA_Client_Service_deleteNodes(self.ua_client, request._val)
+        return ua_types.UaDeleteNodesResponse(val=raw_result)
 
-    def service_delete_references(self, request):
-        return lib.UA_Client_Service_deleteReferences(self.ua_client, request)
+    def service_delete_references(self, request: ua_types.UaDeleteReferencesRequest):
+        raw_result = lib.UA_Client_Service_deleteReferences(self.ua_client, request._val)
+        return ua_types.UaDeleteReferencesResponse(val=raw_result)
 
-    def service_browse(self, request):
-        return lib.UA_Client_Service_browse(self.ua_client, request)
+    def service_browse(self, request: ua_types.UaBrowseRequest):
+        raw_result = lib.UA_Client_Service_browse(self.ua_client, request._val)
+        return ua_types.UaBrowseResponse(val=raw_result)
 
-    def service_browse_next(self, request):
-        return lib.UA_Client_Service_browseNext(self.ua_client, request)
+    def service_browse_next(self, request: ua_types.UaBrowseNextRequest):
+        raw_result = lib.UA_Client_Service_browseNext(self.ua_client, request._val)
+        return ua_types.UaBrowseNextResponse(val=raw_result)
 
-    def service_translate_browse_paths_to_node_ids(self, request):
-        return lib.UA_Client_Service_translateBrowsePathsToNodeIds(self.ua_client, request)
+    def service_translate_browse_paths_to_node_ids(self, request: ua_types.UaTranslateBrowsePathsToNodeIdsRequest):
+        raw_result = lib.UA_Client_Service_translateBrowsePathsToNodeIds(self.ua_client, request._val)
+        return ua_types.UaTranslateBrowsePathsToNodeIdsResponse(val=raw_result)
 
-    def service_register_node(self, request):
-        return lib.UA_Client_Service_registerNodes(self.ua_client, request)
+    def service_register_node(self, request: ua_types.UaRegisterNodesRequest):
+        raw_result = lib.UA_Client_Service_registerNodes(self.ua_client, request._val)
+        return ua_types.UaRegisterNodesResponse(val=raw_result)
 
-    def service_unregister_node(self, request):
-        return lib.UA_Client_Service_unregisterNodes(self.ua_client, request)
+    def service_unregister_node(self, request: ua_types.UaUnregisterNodesRequest):
+        raw_result = lib.UA_Client_Service_unregisterNodes(self.ua_client, request._val)
+        return ua_types.UaUnregisterNodesResponse(val=raw_result)
 
     # high level read service
 
-    def read_node_id_attribute(self, node_id):
-        out_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_readNodeIdAttribute(self.ua_client, node_id, out_node_id)
+    def read_node_id_attribute(self, node_id: ua_types.UaNodeId):
+        out_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_readNodeIdAttribute(self.ua_client, node_id._val, out_node_id._ptr)
         return ClientServiceResult.ReadNodeIdAttributeResult(status_code, out_node_id)
 
-    def read_node_class_attribute(self, node_id):
-        out_node_class = ffi.new("UA_NodeClass*")
-        status_code = lib.UA_Client_readNodeClassAttribute(self.ua_client, node_id, out_node_class)
+    def read_node_class_attribute(self, node_id: ua_types.UaNodeId):
+        out_node_class = ua_types.UaNodeClass()
+        status_code = lib.UA_Client_readNodeClassAttribute(self.ua_client, node_id._val, out_node_class._ptr)
         return ClientServiceResult.ReadNodeClassAttributeResult(status_code, out_node_class)
 
-    def read_browse_name_attribute(self, node_id):
-        out_browse_name = ffi.new("UA_QualifiedName*")
-        status_code = lib.UA_Client_readBrowseNameAttribute(self.ua_client, node_id, out_browse_name)
+    def read_browse_name_attribute(self, node_id: ua_types.UaNodeId):
+        out_browse_name = ua_types.UaQualifiedName()
+        status_code = lib.UA_Client_readBrowseNameAttribute(self.ua_client, node_id._val, out_browse_name._ptr)
         return ClientServiceResult.ReadBrowseNameAttributeResult(status_code, out_browse_name)
 
-    def read_display_name_attribute(self, node_id):
-        out_display_name = ffi.new("UA_LocalizedText*")
-        status_code = lib.UA_Client_readDisplayNameAttribute(self.ua_client, node_id, out_display_name)
+    def read_display_name_attribute(self, node_id: ua_types.UaNodeId):
+        out_display_name = ua_types.UaLocalizedText()
+        status_code = lib.UA_Client_readDisplayNameAttribute(self.ua_client, node_id._val, out_display_name._ptr)
         return ClientServiceResult.ReadDisplayNameAttributeResult(status_code, out_display_name)
 
-    def read_description_attribute(self, node_id):
-        out_description = ffi.new("UA_LocalizedText*")
-        status_code = lib.UA_Client_readDescriptionAttribute(self.ua_client, node_id, out_description)
+    def read_description_attribute(self, node_id: ua_types.UaNodeId):
+        out_description = ua_types.UaLocalizedText()
+        status_code = lib.UA_Client_readDescriptionAttribute(self.ua_client, node_id._val, out_description._ptr)
         return ClientServiceResult.ReadDescriptionAttributeResult(status_code, out_description)
 
-    def read_write_mask_attribute(self, node_id):
-        out_write_mask = ffi.new("UA_UInt32*")
-        status_code = lib.UA_Client_readWriteMaskAttribute(self.ua_client, node_id, out_write_mask)
+    def read_write_mask_attribute(self, node_id: ua_types.UaNodeId):
+        out_write_mask = ua_types.UaUInt32()
+        status_code = lib.UA_Client_readWriteMaskAttribute(self.ua_client, node_id._val, out_write_mask._ptr)
         return ClientServiceResult.ReadWriteMaskAttributeResult(status_code, out_write_mask)
 
-    def read_user_write_mask_attribute(self, node_id):
-        out_user_write_mask = ffi.new("UA_UInt32*")
-        status_code = lib.UA_Client_readUserWriteMaskAttribute(self.ua_client, node_id, out_user_write_mask)
+    def read_user_write_mask_attribute(self, node_id: ua_types.UaNodeId):
+        out_user_write_mask = ua_types.UaUInt32()
+        status_code = lib.UA_Client_readUserWriteMaskAttribute(self.ua_client, node_id._val, out_user_write_mask._ptr)
         return ClientServiceResult.ReadUserWriteMaskAttributeResult(status_code, out_user_write_mask)
 
-    def read_is_abstract_attribute(self, node_id):
-        out_is_abstract = ffi.new("UA_Boolean*")
-        status_code = lib.UA_Client_readIsAbstractAttribute(self.ua_client, node_id, out_is_abstract)
+    def read_is_abstract_attribute(self, node_id: ua_types.UaNodeId):
+        out_is_abstract = ua_types.UaBoolean()
+        status_code = lib.UA_Client_readIsAbstractAttribute(self.ua_client, node_id._val, out_is_abstract._ptr)
         return ClientServiceResult.ReadIsAbstractAttributeResult(status_code, out_is_abstract)
 
-    def read_symmetric_attribute(self, node_id):
-        out_symmetric = ffi.new("UA_Boolean*")
-        status_code = lib.UA_Client_readSymmetricAttribute(self.ua_client, node_id, out_symmetric)
+    def read_symmetric_attribute(self, node_id: ua_types.UaNodeId):
+        out_symmetric = ua_types.UaBoolean()
+        status_code = lib.UA_Client_readSymmetricAttribute(self.ua_client, node_id._val, out_symmetric._ptr)
         return ClientServiceResult.ReadSymmetricAttributeResult(status_code, out_symmetric)
 
-    def read_inverse_name_attribute(self, node_id):
-        out_inverse_name = ffi.new("UA_LocalizedText*")
-        status_code = lib.UA_Client_readInverseNameAttribute(self.ua_client, node_id, out_inverse_name)
+    def read_inverse_name_attribute(self, node_id: ua_types.UaNodeId):
+        out_inverse_name = ua_types.UaLocalizedText()
+        status_code = lib.UA_Client_readInverseNameAttribute(self.ua_client, node_id._val, out_inverse_name._ptr)
         return ClientServiceResult.ReadInverseNameAttributeResult(status_code, out_inverse_name)
 
-    def read_contains_no_loops_attribute(self, node_id):
-        out_contains_no_loops = ffi.new("UA_Boolean*")
-        status_code = lib.UA_Client_readContainsNoLoopsAttribute(self.ua_client, node_id, out_contains_no_loops)
+    def read_contains_no_loops_attribute(self, node_id: ua_types.UaNodeId):
+        out_contains_no_loops = ua_types.UaBoolean()
+        status_code = lib.UA_Client_readContainsNoLoopsAttribute(self.ua_client, node_id._val,
+                                                                 out_contains_no_loops._ptr)
         return ClientServiceResult.ReadContainsNoLoopsAttributeResult(status_code, out_contains_no_loops)
 
-    def read_event_notifier_attribute(self, node_id):
-        out_event_notifier = ffi.new("UA_Byte*")
-        status_code = lib.UA_Client_readEventNotifierAttribute(self.ua_client, node_id, out_event_notifier)
+    def read_event_notifier_attribute(self, node_id: ua_types.UaNodeId):
+        out_event_notifier = ua_types.UaByte()
+        status_code = lib.UA_Client_readEventNotifierAttribute(self.ua_client, node_id._val, out_event_notifier._ptr)
         return ClientServiceResult.ReadEventNotifierAttributeResult(status_code, out_event_notifier)
 
-    def read_value_attribute(self, node_id):
-        value = ffi.new("UA_Variant*")
-        status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id, value.value)
+    def read_value_attribute(self, node_id: ua_types.UaNodeId):
+        value = ua_types.UaVariant()
+        status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id._val, value._ptr)
         return ClientServiceResult.ReadValueAttributeResult(status_code, value)
 
-    def read_data_type_attribute(self, node_id):
-        out_data_type = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_readDataTypeAttribute(self.ua_client, node_id, out_data_type)
+    def read_data_type_attribute(self, node_id: ua_types.UaNodeId):
+        out_data_type = ua_types.UaNodeId()
+        status_code = lib.UA_Client_readDataTypeAttribute(self.ua_client, node_id._val, out_data_type._ptr)
         return ClientServiceResult.ReadDataTypeAttribute(status_code, out_data_type)
 
-    def read_value_rank_attribute(self, node_id):
-        out_value_rank = ffi.new("UA_Int32*")
-        status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id, out_value_rank)
+    def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
+        out_value_rank = ua_types.UaUInt32()
+        status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(status_code, out_value_rank)
 
-    def read_array_dimensions_attribute(self, node_id):
-        out_array_dimensions_size = ffi.new("size_t*")
-        out_array_dimensions = ffi.new("UA_UInt32**")
-        status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id, out_array_dimensions_size,
-                                                                 out_array_dimensions)
+    def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
+        out_array_dimensions_size = ua_types.SizeT()
+        out_array_dimensions = ua_types.UaUInt32()
+        status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
+                                                                 out_array_dimensions_size._ptr,
+                                                                 out_array_dimensions._ptr)
         return ClientServiceResult.ReadArrayDimensionsAttributeResult(status_code, out_array_dimensions_size,
                                                                       out_array_dimensions)
 
-    def read_access_level_attribute(self, node_id):
-        out_access_level = ffi.new("UA_Byte*")
-        status_code = lib.UA_Client_readAccessLevelAttribute(self.ua_client, node_id, out_access_level)
+    def read_access_level_attribute(self, node_id: ua_types.UaNodeId):
+        out_access_level = ua_types.UaByte()
+        status_code = lib.UA_Client_readAccessLevelAttribute(self.ua_client, node_id._val, out_access_level._ptr)
         return ClientServiceResult.ReadAccessLevelAttributeResult(status_code, out_access_level)
 
-    def read_user_access_level_attribute(self, node_id):
-        out_user_access_level = ffi.new("UA_Byte*")
-        status_code = lib.UA_Client_readUserAccessLevelAttribute(self.ua_client, node_id, out_user_access_level)
+    def read_user_access_level_attribute(self, node_id: ua_types.UaNodeId):
+        out_user_access_level = ua_types.UaByte()
+        status_code = lib.UA_Client_readUserAccessLevelAttribute(self.ua_client, node_id._val,
+                                                                 out_user_access_level._ptr)
         return ClientServiceResult.ReadUserAccessLevelAttributeResult(status_code, out_user_access_level)
 
-    def read_minimum_sampling_interval_attribute(self, node_id):
-        out_min_sampling_interval = ffi.new("UA_Double*")
-        status_code = lib.UA_Client_readMinimumSamplingIntervalAttribute(self.ua_client, node_id,
-                                                                         out_min_sampling_interval)
+    def read_minimum_sampling_interval_attribute(self, node_id: ua_types.UaNodeId):
+        out_min_sampling_interval = ua_types.UaDouble()
+        status_code = lib.UA_Client_readMinimumSamplingIntervalAttribute(self.ua_client, node_id._val,
+                                                                         out_min_sampling_interval._ptr)
         return ClientServiceResult.ReadMinimumSamplingIntervalAttributeResult(status_code, out_min_sampling_interval)
 
-    def read_executable_attribute(self, node_id):
-        out_executable = ffi.new("UA_Boolean*")
-        status_code = lib.UA_Client_readExecutableAttribute(self.ua_client, node_id, out_executable)
+    def read_executable_attribute(self, node_id: ua_types.UaNodeId):
+        out_executable = ua_types.UaBoolean()
+        status_code = lib.UA_Client_readExecutableAttribute(self.ua_client, node_id._val, out_executable._ptr)
         return ClientServiceResult.ReadExecutableAttributeResult(status_code, out_executable)
 
-    def read_user_executable_attribute(self, node_id):
-        out_user_executable = ffi.new("UA_Boolean*")
-        status_code = lib.UA_Client_readUserExecutableAttribute(self.ua_client, node_id, out_user_executable)
+    def read_user_executable_attribute(self, node_id: ua_types.UaNodeId):
+        out_user_executable = ua_types.UaBoolean()
+        status_code = lib.UA_Client_readUserExecutableAttribute(self.ua_client, node_id._val, out_user_executable._ptr)
         return ClientServiceResult.ReadUserExecutableAttributeResult(status_code, out_user_executable)
 
     # high level write service
 
-    def write_node_id_attribute(self, node_id, new_node_id):
-        return lib.UA_Client_writeNodeIdAttribute(self.ua_client, node_id, new_node_id)
+    def write_node_id_attribute(self, node_id: ua_types.UaNodeId, new_node_id: ua_types.UaNodeId):
+        raw_result = lib.UA_Client_writeNodeIdAttribute(self.ua_client, node_id._val, new_node_id._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_node_class_attribute(self, node_id, new_node_class):
-        return lib.UA_Client_writeNodeClassAttribute(self.ua_client, node_id, new_node_class)
+    def write_node_class_attribute(self, node_id: ua_types.UaNodeId, new_node_class: ua_types.UaNodeClass):
+        raw_result = lib.UA_Client_writeNodeClassAttribute(self.ua_client, node_id._val, new_node_class._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_browse_name_attribute(self, node_id, new_browse_name):
-        return lib.UA_Client_writeBrowseNameAttribute(self.ua_client, node_id, new_browse_name)
+    def write_browse_name_attribute(self, node_id: ua_types.UaNodeId, new_browse_name: ua_types.UaQualifiedName):
+        raw_result = lib.UA_Client_writeBrowseNameAttribute(self.ua_client, node_id._val, new_browse_name._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_display_name_attribute(self, node_id, new_display_name):
-        return lib.UA_Client_writeDisplayNameAttribute(self.ua_client, node_id, new_display_name)
+    def write_display_name_attribute(self, node_id: ua_types.UaNodeId, new_display_name: ua_types.UaLocalizedText):
+        raw_result = lib.UA_Client_writeDisplayNameAttribute(self.ua_client, node_id._val, new_display_name._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_description_attribute(self, node_id, new_description):
-        return lib.UA_Client_writeDescriptionAttribute(self.ua_client, node_id, new_description)
+    def write_description_attribute(self, node_id: ua_types.UaNodeId, new_description: ua_types.UaLocalizedText):
+        raw_result = lib.UA_Client_writeDescriptionAttribute(self.ua_client, node_id._val, new_description._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_write_mask_attribute(self, node_id, new_write_mask):
-        return lib.UA_Client_writeWriteMaskAttribute(self.ua_client, node_id, new_write_mask)
+    def write_write_mask_attribute(self, node_id: ua_types.UaNodeId, new_write_mask: ua_types.UaUInt32):
+        raw_result = lib.UA_Client_writeWriteMaskAttribute(self.ua_client, node_id._val, new_write_mask._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_user_write_mask_attribute(self, node_id, new_user_write_mask):
-        return lib.UA_Client_writeUserWriteMaskAttribute(self.ua_client, node_id, new_user_write_mask)
+    def write_user_write_mask_attribute(self, node_id: ua_types.UaNodeId, new_user_write_mask: ua_types.UaUInt32):
+        raw_result = lib.UA_Client_writeUserWriteMaskAttribute(self.ua_client, node_id._val, new_user_write_mask._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_is_abstract_attribute(self, node_id, new_is_abstract):
-        return lib.UA_Client_writeIsAbstractAttribute(self.ua_client, node_id, new_is_abstract)
+    def write_is_abstract_attribute(self, node_id: ua_types.UaNodeId, new_is_abstract: ua_types.UaBoolean):
+        raw_result = lib.UA_Client_writeIsAbstractAttribute(self.ua_client, node_id._val, new_is_abstract._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_symmetric_attribute(self, node_id, new_symmetric):
-        return lib.UA_Client_writeSymmetricAttribute(self.ua_client, node_id, new_symmetric)
+    def write_symmetric_attribute(self, node_id: ua_types.UaNodeId, new_symmetric: ua_types.UaBoolean):
+        raw_result = lib.UA_Client_writeSymmetricAttribute(self.ua_client, node_id._val, new_symmetric._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_inverse_name_attribute(self, node_id, new_inverse_name):
-        return lib.UA_Client_writeInverseNameAttribute(self.ua_client, node_id, new_inverse_name)
+    def write_inverse_name_attribute(self, node_id: ua_types.UaNodeId, new_inverse_name: ua_types.UaLocalizedText):
+        raw_result = lib.UA_Client_writeInverseNameAttribute(self.ua_client, node_id._val, new_inverse_name._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_contains_no_loops_attribute(self, node_id, new_contains_no_loops):
-        return lib.UA_Client_writeContainsNoLoopsAttribute(self.ua_client, node_id, new_contains_no_loops)
+    def write_contains_no_loops_attribute(self, node_id: ua_types.UaNodeId, new_contains_no_loops: ua_types.UaBoolean):
+        raw_result = lib.UA_Client_writeContainsNoLoopsAttribute(self.ua_client, node_id._val,
+                                                                 new_contains_no_loops._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_event_notifier_attribute(self, node_id, new_event_notifier):
-        return lib.UA_Client_writeEventNotifierAttribute(self.ua_client, node_id, new_event_notifier)
+    def write_event_notifier_attribute(self, node_id: ua_types.UaNodeId, new_event_notifier: ua_types.UaByte):
+        raw_result = lib.UA_Client_writeEventNotifierAttribute(self.ua_client, node_id._val, new_event_notifier._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_value_attribute(self, node_id, new_value):
-        return lib.UA_Client_writeValueAttribute(self.ua_client, node_id, new_value)
+    def write_value_attribute(self, node_id: ua_types.UaNodeId, new_value: ua_types.UaVariant):
+        raw_result = lib.UA_Client_writeValueAttribute(self.ua_client, node_id._val, new_value._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_data_type_attribute(self, node_id, new_data_type):
-        return lib.UA_Client_writeDataTypeAttribute(self.ua_client, node_id, new_data_type)
+    def write_data_type_attribute(self, node_id: ua_types.UaNodeId, new_data_type: ua_types.UaNodeId):
+        raw_result = lib.UA_Client_writeDataTypeAttribute(self.ua_client, node_id._val, new_data_type._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_value_rank_attribute(self, node_id, new_value_rank):
-        return lib.UA_Client_writeValueRankAttribute(self.ua_client, node_id, new_value_rank)
+    def write_value_rank_attribute(self, node_id: ua_types.UaNodeId, new_value_rank: ua_types.UaInt32):
+        raw_result = lib.UA_Client_writeValueRankAttribute(self.ua_client, node_id._val, new_value_rank._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_array_dimensions_attribute(self, node_id, new_array_dimensions_size, new_array_dimensions):
-        return lib.UA_Client_writeArrayDimensionsAttribute(self.ua_client, node_id, new_array_dimensions_size,
-                                                           new_array_dimensions)
+    def write_array_dimensions_attribute(self, node_id: ua_types.UaNodeId, new_array_dimensions_size: ua_types.SizeT,
+                                         new_array_dimensions: ua_types.UaUInt32):
+        raw_result = lib.UA_Client_writeArrayDimensionsAttribute(self.ua_client, node_id._val,
+                                                                 new_array_dimensions_size._val,
+                                                                 new_array_dimensions._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_access_level_attribute(self, node_id, new_access_level):
-        return lib.UA_Client_writeAccessLevelAttribute(self.ua_client, node_id, new_access_level)
+    def write_access_level_attribute(self, node_id: ua_types.UaNodeId, new_access_level: ua_types.UaByte):
+        raw_result = lib.UA_Client_writeAccessLevelAttribute(self.ua_client, node_id._val, new_access_level._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_user_access_level_attribute(self, node_id, new_user_access_level):
-        return lib.UA_Client_writeUserAccessLevelAttribute(self.ua_client, node_id, new_user_access_level)
+    def write_user_access_level_attribute(self, node_id: ua_types.UaNodeId, new_user_access_level: ua_types.UaByte):
+        raw_result = lib.UA_Client_writeUserAccessLevelAttribute(self.ua_client, node_id._val,
+                                                                 new_user_access_level._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_minimum_sampling_interval_attribute(self, node_id, new_min_interval):
-        return lib.UA_Client_writeMinimumSamplingIntervalAttribute(self.ua_client, node_id, new_min_interval)
+    def write_minimum_sampling_interval_attribute(self, node_id: ua_types.UaNodeId,
+                                                  new_min_interval: ua_types.UaDouble):
+        raw_result = lib.UA_Client_writeMinimumSamplingIntervalAttribute(self.ua_client, node_id._val,
+                                                                         new_min_interval._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_executable_attribute(self, node_id, new_executable):
-        return lib.UA_Client_writeExecutableAttribute(self.ua_client, node_id, new_executable)
+    def write_executable_attribute(self, node_id: ua_types.UaNodeId, new_executable: ua_types.UaBoolean):
+        raw_result = lib.UA_Client_writeExecutableAttribute(self.ua_client, node_id._val, new_executable._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_user_executable_attribute(self, node_id, new_user_executable):
-        return lib.UA_Client_writeUserExecutableAttribute(self.ua_client, node_id, new_user_executable)
+    def write_user_executable_attribute(self, node_id: ua_types.UaNodeId, new_user_executable: ua_types.UaBoolean):
+        raw_result = lib.UA_Client_writeUserExecutableAttribute(self.ua_client, node_id._val, new_user_executable._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
     # misc high level service
 
-    def call(self, object_id, method_id, input_size, call_input):
-        output_size = ffi.new("size_t*")
+    def call(self, object_id: ua_types.UaNodeId, method_id: ua_types.UaNodeId, input_size: ua_types.SizeT,
+             call_input: ua_types.UaVariant):
+        output_size = ua_types.SizeT()
+        # Todo: output has to be ** --> this is a problem for our type system atm
         output = ffi.new("UA_Variant **")
-        status_code = lib.UA_Client_call(self.ua_client, object_id, method_id, input_size, call_input, output_size,
+        status_code = lib.UA_Client_call(self.ua_client, object_id._val, method_id._val, input_size._val,
+                                         call_input._ptr, output_size._ptr,
                                          output)
-        return ClientServiceResult.CallResult(status_code, output_size, output)
+        return ClientServiceResult.CallResult(ua_types.UaStatusCode(val=status_code), output_size,
+                                              ua_types.UaVariant(val=output[0][0]))
 
-    def add_reference(self, source_node_id, reference_type_id, is_forward, target_server_uri, target_node_id,
-                      target_node_class):
-        return lib.UA_Client_addReference(self.ua_client, source_node_id, reference_type_id, is_forward,
-                                          target_server_uri, target_node_id, target_node_class)
+    def add_reference(self, source_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId,
+                      is_forward: ua_types.UaBoolean,
+                      target_server_uri: ua_types.UaString, target_node_id: ua_types.UaExpandedNodeId,
+                      target_node_class: ua_types.UaNodeClass):
+        status_code = lib.UA_Client_addReference(self.ua_client, source_node_id._val, reference_type_id._val,
+                                                 is_forward._val,
+                                                 target_server_uri._val, target_node_id._val, target_node_class._val)
+        return ua_types.UaStatusCode(val=status_code)
 
-    def delete_reference(self, source_node_id, reference_type_id, is_forward, target_node_id, delete_bidirectional):
-        return lib.UA_Client_deleteReference(self.ua_client, source_node_id, reference_type_id, is_forward,
-                                             target_node_id, delete_bidirectional)
+    def delete_reference(self, source_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId,
+                         is_forward: ua_types.UaBoolean,
+                         target_node_id: ua_types.UaExpandedNodeId, delete_bidirectional: ua_types.UaBoolean):
+        status_code = lib.UA_Client_deleteReference(self.ua_client, source_node_id._val, reference_type_id._val,
+                                                    is_forward._val,
+                                                    target_node_id._val, delete_bidirectional._val)
+        return ua_types.UaStatusCode(val=status_code)
 
-    def delete_node(self, node_id, delete_target_references):
-        return lib.UA_Client_deleteNode(self.ua_client, node_id, delete_target_references)
+    def delete_node(self, node_id: ua_types.UaNodeId, delete_target_references: ua_types.UaBoolean):
+        status_code = lib.UA_Client_deleteNode(self.ua_client, node_id._val, delete_target_references._val)
+        return ua_types.UaStatusCode(val=status_code)
 
     # high level add node services
 
-    def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
+    # Todo: the defaultAttributes have to be wrapped
+    def add_variable_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                          reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
+                          type_definition: ua_types.UaNodeId,
                           attr=DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                    reference_type_id, browse_name, type_definition, attr,
-                                                    out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
+                                                    reference_type_id._val, browse_name._val, type_definition._val,
+                                                    attr,
+                                                    out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                                attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                        reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
+                                                        reference_type_id._val, browse_name._val, attr,
+                                                        out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_object_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
                         attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                  reference_type_id, browse_name, type_definition, attr,
-                                                  out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
+                                                  reference_type_id._val, browse_name._val, type_definition._val, attr,
+                                                  out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_object_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                              attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                      reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
+                                                      reference_type_id._val, browse_name._val, attr,
+                                                      out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_view_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                       attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
+                                                reference_type_id._val, browse_name._val, attr, out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_reference_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                                 attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                         reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id._val,
+                                                         parent_node_id._val,
+                                                         reference_type_id._val, browse_name._val, attr,
+                                                         out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_data_type_node(self, requested_node_id, parent_node_id, reference_type_id, browse_name,
                            attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_node_id, parent_node_id,
-                                                    reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_node_id._val, parent_node_id._val,
+                                                    reference_type_id._val, browse_name._val, attr,
+                                                    out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
                         attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
-        out_new_node_id = ffi.new("UA_NodeId*")
-        status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id, parent_node_id,
-                                                  reference_type_id, browse_name, attr, out_new_node_id)
-        return ClientServiceResult.AddNodeResult(status_code, out_new_node_id)
+        out_new_node_id = ua_types.UaNodeId()
+        status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
+                                                  reference_type_id._val, browse_name._val, attr, out_new_node_id._ptr)
+        return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     # utils
-
+    # todo: integrate config in type system
     def get_config(self):
         return lib.UA_Client_getConfig(self.ua_client)
 
@@ -485,18 +553,23 @@ class UaClient:
         lib.UA_ClientConfig_setDefault(self.get_config())
 
     def find_data_type(self, type_id):
-        return lib.UA_Client_findDataType(self.ua_client, type_id)
+        return ua_types.UaDataType(lib.UA_Client_findDataType(self.ua_client, type_id), is_pointer=True)
 
     def get_endpoints(self, server_url, endpoint_descriptions_size, endpoint_descriptions):
-        return lib.UA_Client_getEndpoints(self.ua_client, server_url, endpoint_descriptions_size, endpoint_descriptions)
+        raw_result = lib.UA_Client_getEndpoints(self.ua_client, server_url, endpoint_descriptions_size,
+                                                endpoint_descriptions)
+        return ua_types.UaStatusCode(val=raw_result)
 
     def find_servers(self, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size,
                      registered_servers):
-        return lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size, locale_ids,
-                                         registered_servers_size, registered_servers)
+        raw_result = lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size,
+                                               locale_ids,
+                                               registered_servers_size, registered_servers)
+        return ua_types.UaStatusCode(val=raw_result)
 
     def run_iterate(self, timeout):
-        return lib.UA_Client_run_iterate(self.ua_client, timeout)
+        raw_result = lib.UA_Client_run_iterate(self.ua_client, timeout)
+        return ua_types.UaStatusCode(val=raw_result)
 
     #    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return,
     #                                server_capability_filter_size, server_on_network_size, server_on_network):
