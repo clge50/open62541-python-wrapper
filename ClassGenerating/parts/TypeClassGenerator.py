@@ -29,7 +29,7 @@ class {to_python_class_name(prim_name)}(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("{prim_name}", _val(val)), is_pointer)
+                super().__init__(ffi.new("{prim_name}*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -55,10 +55,11 @@ def generator_struct(struct_name: str, attribute_to_type: dict):
 class {to_python_class_name(struct_name)}(UaType):
     def __init__(self, val=ffi.new("{struct_name}*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
+        
+        if not self._null:
 {new_line.join(map(
         lambda attr:
-        tab * 2 + f"self._{inflection.underscore(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
+        tab * 3 + f"self._{inflection.underscore(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
         attribute_to_type.keys()))}
 
     def _set_value(self, val):
@@ -67,18 +68,22 @@ class {to_python_class_name(struct_name)}(UaType):
         else:
             self._value[0] = _val(val)
 
+        if not _is_null(val):
 {new_line.join(map(
         lambda attr:
-        tab * 2 + f"self._{inflection.underscore(attr)}._value = val.{attr}"
+        tab * 3 + f"self._{inflection.underscore(attr)}._value = val.{attr}"
         if attribute_to_type[attr][1] else
-        tab * 2 + f"self._{inflection.underscore(attr)}._value[0] = _val(val.{attr})",
+        tab * 3 + f"self._{inflection.underscore(attr)}._value[0] = _val(val.{attr})",
         attribute_to_type.keys()))}
 
 {(new_line * 2).join(map(
         lambda attr:
         tab + f"@property" + new_line +
         tab + f"def {inflection.underscore(attr)}(self):" + new_line +
-        tab * 2 + f"return self._{inflection.underscore(attr)}",
+        tab * 2 + f"if self._null:" + new_line +
+        tab * 3 + f"return None" + new_line +
+        tab * 2 + f"else:" + new_line +
+        tab * 3 + f"return self._{inflection.underscore(attr)}",
         attribute_to_type.keys()))}
 
 {(new_line * 2).join(map(
@@ -92,6 +97,9 @@ class {to_python_class_name(struct_name)}(UaType):
         attribute_to_type.keys()))}
 
     def __str__(self, n=0):
+        if self._null:
+            return "({to_python_class_name(struct_name)}) : NULL\\n"
+        
         return ("({to_python_class_name(struct_name)}) :\\n" +
 {new_line.join(map(
         lambda attr:
@@ -102,7 +110,7 @@ class {to_python_class_name(struct_name)}(UaType):
 """
     return class_str
 
-
+# TODO: default 0 -> rigth behavior?
 def generator_enum(enum_name: str, ident_to_val: dict):
     tab = "    "
     new_line = "\n"

@@ -7,7 +7,7 @@ class UaBoolean(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Boolean", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Boolean*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -28,7 +28,7 @@ class UaSByte(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_SByte", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_SByte*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -49,7 +49,7 @@ class UaByte(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Byte", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Byte*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -70,7 +70,7 @@ class UaInt16(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Int16", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Int16*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -91,7 +91,7 @@ class UaUInt16(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_UInt16", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_UInt16*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -112,7 +112,7 @@ class UaInt32(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Int32", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Int32*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -133,7 +133,7 @@ class UaUInt32(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_UInt32", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_UInt32*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -154,7 +154,7 @@ class UaInt64(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Int64", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Int64*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -175,7 +175,7 @@ class UaUInt64(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_UInt64", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_UInt64*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -196,7 +196,7 @@ class UaFloat(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Float", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Float*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -217,7 +217,7 @@ class UaDouble(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_Double", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_Double*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -238,7 +238,7 @@ class UaStatusCode(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_StatusCode", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_StatusCode*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -259,7 +259,7 @@ class UaDateTime(UaType):
             if is_pointer:
                 super().__init__(val, is_pointer)
             else:
-                super().__init__(ffi.cast("UA_DateTime", _val(val)), is_pointer)
+                super().__init__(ffi.new("UA_DateTime*", _val(val)), is_pointer)
 
     def _set_value(self, val):
         if self._is_pointer:

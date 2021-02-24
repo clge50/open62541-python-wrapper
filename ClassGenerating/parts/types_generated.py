@@ -702,14 +702,15 @@ class UaRedundancySupport(UaType):
 class UaViewAttributes(UaType):
     def __init__(self, val=ffi.new("UA_ViewAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._contains_no_loops = UaBoolean(val=val.containsNoLoops, is_pointer=False)
-        self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._contains_no_loops = UaBoolean(val=val.containsNoLoops, is_pointer=False)
+            self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -717,41 +718,63 @@ class UaViewAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._contains_no_loops._value[0] = _val(val.containsNoLoops)
-        self._event_notifier._value[0] = _val(val.eventNotifier)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._contains_no_loops._value[0] = _val(val.containsNoLoops)
+            self._event_notifier._value[0] = _val(val.eventNotifier)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def contains_no_loops(self):
-        return self._contains_no_loops
+        if self._null:
+            return None
+        else:
+            return self._contains_no_loops
 
     @property
     def event_notifier(self):
-        return self._event_notifier
+        if self._null:
+            return None
+        else:
+            return self._event_notifier
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -789,6 +812,9 @@ class UaViewAttributes(UaType):
         self._value.eventNotifier = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaViewAttributes) : NULL\n"
+        
         return ("(UaViewAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -803,9 +829,10 @@ class UaViewAttributes(UaType):
 class UaXVType(UaType):
     def __init__(self, val=ffi.new("UA_XVType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._x = UaDouble(val=val.x, is_pointer=False)
-        self._value = UaFloat(val=val.value, is_pointer=False)
+        
+        if not self._null:
+            self._x = UaDouble(val=val.x, is_pointer=False)
+            self._value = UaFloat(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -813,16 +840,23 @@ class UaXVType(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._x._value[0] = _val(val.x)
-        self._value._value[0] = _val(val.value)
+        if not _is_null(val):
+            self._x._value[0] = _val(val.x)
+            self._value._value[0] = _val(val.value)
 
     @property
     def x(self):
-        return self._x
+        if self._null:
+            return None
+        else:
+            return self._x
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @x.setter
     def x(self, val):
@@ -835,6 +869,9 @@ class UaXVType(UaType):
         self._value.value = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaXVType) : NULL\n"
+        
         return ("(UaXVType) :\n" +
                 "\t"*(n+1) + "x" + self._x.__str__(n+1) +
                 "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
@@ -844,8 +881,9 @@ class UaXVType(UaType):
 class UaElementOperand(UaType):
     def __init__(self, val=ffi.new("UA_ElementOperand*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._index = UaUInt32(val=val.index, is_pointer=False)
+        
+        if not self._null:
+            self._index = UaUInt32(val=val.index, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -853,11 +891,15 @@ class UaElementOperand(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._index._value[0] = _val(val.index)
+        if not _is_null(val):
+            self._index._value[0] = _val(val.index)
 
     @property
     def index(self):
-        return self._index
+        if self._null:
+            return None
+        else:
+            return self._index
 
     @index.setter
     def index(self, val):
@@ -865,6 +907,9 @@ class UaElementOperand(UaType):
         self._value.index = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaElementOperand) : NULL\n"
+        
         return ("(UaElementOperand) :\n" +
                 "\t"*(n+1) + "index" + self._index.__str__(n+1) + "\n")
 
@@ -873,21 +918,22 @@ class UaElementOperand(UaType):
 class UaVariableAttributes(UaType):
     def __init__(self, val=ffi.new("UA_VariableAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._value = UaVariant(val=val.value, is_pointer=False)
-        self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
-        self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
-        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
-        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
-        self._access_level = UaByte(val=val.accessLevel, is_pointer=False)
-        self._user_access_level = UaByte(val=val.userAccessLevel, is_pointer=False)
-        self._minimum_sampling_interval = UaDouble(val=val.minimumSamplingInterval, is_pointer=False)
-        self._historizing = UaBoolean(val=val.historizing, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
+            self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
+            self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
+            self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+            self._access_level = UaByte(val=val.accessLevel, is_pointer=False)
+            self._user_access_level = UaByte(val=val.userAccessLevel, is_pointer=False)
+            self._minimum_sampling_interval = UaDouble(val=val.minimumSamplingInterval, is_pointer=False)
+            self._historizing = UaBoolean(val=val.historizing, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -895,76 +941,119 @@ class UaVariableAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._value._value[0] = _val(val.value)
-        self._data_type._value[0] = _val(val.dataType)
-        self._value_rank._value[0] = _val(val.valueRank)
-        self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
-        self._array_dimensions._value = val.arrayDimensions
-        self._access_level._value[0] = _val(val.accessLevel)
-        self._user_access_level._value[0] = _val(val.userAccessLevel)
-        self._minimum_sampling_interval._value[0] = _val(val.minimumSamplingInterval)
-        self._historizing._value[0] = _val(val.historizing)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._value._value[0] = _val(val.value)
+            self._data_type._value[0] = _val(val.dataType)
+            self._value_rank._value[0] = _val(val.valueRank)
+            self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
+            self._array_dimensions._value = val.arrayDimensions
+            self._access_level._value[0] = _val(val.accessLevel)
+            self._user_access_level._value[0] = _val(val.userAccessLevel)
+            self._minimum_sampling_interval._value[0] = _val(val.minimumSamplingInterval)
+            self._historizing._value[0] = _val(val.historizing)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @property
     def data_type(self):
-        return self._data_type
+        if self._null:
+            return None
+        else:
+            return self._data_type
 
     @property
     def value_rank(self):
-        return self._value_rank
+        if self._null:
+            return None
+        else:
+            return self._value_rank
 
     @property
     def array_dimensions_size(self):
-        return self._array_dimensions_size
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions_size
 
     @property
     def array_dimensions(self):
-        return self._array_dimensions
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions
 
     @property
     def access_level(self):
-        return self._access_level
+        if self._null:
+            return None
+        else:
+            return self._access_level
 
     @property
     def user_access_level(self):
-        return self._user_access_level
+        if self._null:
+            return None
+        else:
+            return self._user_access_level
 
     @property
     def minimum_sampling_interval(self):
-        return self._minimum_sampling_interval
+        if self._null:
+            return None
+        else:
+            return self._minimum_sampling_interval
 
     @property
     def historizing(self):
-        return self._historizing
+        if self._null:
+            return None
+        else:
+            return self._historizing
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -1037,6 +1126,9 @@ class UaVariableAttributes(UaType):
         self._value.historizing = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaVariableAttributes) : NULL\n"
+        
         return ("(UaVariableAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -1058,10 +1150,11 @@ class UaVariableAttributes(UaType):
 class UaEnumValueType(UaType):
     def __init__(self, val=ffi.new("UA_EnumValueType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._value = UaInt64(val=val.value, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
+        
+        if not self._null:
+            self._value = UaInt64(val=val.value, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1069,21 +1162,31 @@ class UaEnumValueType(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._value._value[0] = _val(val.value)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
+        if not _is_null(val):
+            self._value._value[0] = _val(val.value)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @value.setter
     def value(self, val):
@@ -1101,6 +1204,9 @@ class UaEnumValueType(UaType):
         self._value.description = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEnumValueType) : NULL\n"
+        
         return ("(UaEnumValueType) :\n" +
                 "\t"*(n+1) + "value" + self._value.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -1111,10 +1217,11 @@ class UaEnumValueType(UaType):
 class UaEventFieldList(UaType):
     def __init__(self, val=ffi.new("UA_EventFieldList*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
-        self._event_fields_size = SizeT(val=val.eventFieldsSize, is_pointer=False)
-        self._event_fields = UaVariant(val=val.eventFields, is_pointer=True)
+        
+        if not self._null:
+            self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
+            self._event_fields_size = SizeT(val=val.eventFieldsSize, is_pointer=False)
+            self._event_fields = UaVariant(val=val.eventFields, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1122,21 +1229,31 @@ class UaEventFieldList(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._client_handle._value[0] = _val(val.clientHandle)
-        self._event_fields_size._value[0] = _val(val.eventFieldsSize)
-        self._event_fields._value = val.eventFields
+        if not _is_null(val):
+            self._client_handle._value[0] = _val(val.clientHandle)
+            self._event_fields_size._value[0] = _val(val.eventFieldsSize)
+            self._event_fields._value = val.eventFields
 
     @property
     def client_handle(self):
-        return self._client_handle
+        if self._null:
+            return None
+        else:
+            return self._client_handle
 
     @property
     def event_fields_size(self):
-        return self._event_fields_size
+        if self._null:
+            return None
+        else:
+            return self._event_fields_size
 
     @property
     def event_fields(self):
-        return self._event_fields
+        if self._null:
+            return None
+        else:
+            return self._event_fields
 
     @client_handle.setter
     def client_handle(self, val):
@@ -1154,6 +1271,9 @@ class UaEventFieldList(UaType):
         self._value.eventFields = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEventFieldList) : NULL\n"
+        
         return ("(UaEventFieldList) :\n" +
                 "\t"*(n+1) + "client_handle" + self._client_handle.__str__(n+1) +
                 "\t"*(n+1) + "event_fields_size" + self._event_fields_size.__str__(n+1) +
@@ -1164,12 +1284,13 @@ class UaEventFieldList(UaType):
 class UaMonitoredItemCreateResult(UaType):
     def __init__(self, val=ffi.new("UA_MonitoredItemCreateResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._monitored_item_id = UaUInt32(val=val.monitoredItemId, is_pointer=False)
-        self._revised_sampling_interval = UaDouble(val=val.revisedSamplingInterval, is_pointer=False)
-        self._revised_queue_size = UaUInt32(val=val.revisedQueueSize, is_pointer=False)
-        self._filter_result = UaExtensionObject(val=val.filterResult, is_pointer=False)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._monitored_item_id = UaUInt32(val=val.monitoredItemId, is_pointer=False)
+            self._revised_sampling_interval = UaDouble(val=val.revisedSamplingInterval, is_pointer=False)
+            self._revised_queue_size = UaUInt32(val=val.revisedQueueSize, is_pointer=False)
+            self._filter_result = UaExtensionObject(val=val.filterResult, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1177,31 +1298,47 @@ class UaMonitoredItemCreateResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._monitored_item_id._value[0] = _val(val.monitoredItemId)
-        self._revised_sampling_interval._value[0] = _val(val.revisedSamplingInterval)
-        self._revised_queue_size._value[0] = _val(val.revisedQueueSize)
-        self._filter_result._value[0] = _val(val.filterResult)
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._monitored_item_id._value[0] = _val(val.monitoredItemId)
+            self._revised_sampling_interval._value[0] = _val(val.revisedSamplingInterval)
+            self._revised_queue_size._value[0] = _val(val.revisedQueueSize)
+            self._filter_result._value[0] = _val(val.filterResult)
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def monitored_item_id(self):
-        return self._monitored_item_id
+        if self._null:
+            return None
+        else:
+            return self._monitored_item_id
 
     @property
     def revised_sampling_interval(self):
-        return self._revised_sampling_interval
+        if self._null:
+            return None
+        else:
+            return self._revised_sampling_interval
 
     @property
     def revised_queue_size(self):
-        return self._revised_queue_size
+        if self._null:
+            return None
+        else:
+            return self._revised_queue_size
 
     @property
     def filter_result(self):
-        return self._filter_result
+        if self._null:
+            return None
+        else:
+            return self._filter_result
 
     @status_code.setter
     def status_code(self, val):
@@ -1229,6 +1366,9 @@ class UaMonitoredItemCreateResult(UaType):
         self._value.filterResult = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMonitoredItemCreateResult) : NULL\n"
+        
         return ("(UaMonitoredItemCreateResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "monitored_item_id" + self._monitored_item_id.__str__(n+1) +
@@ -1241,11 +1381,12 @@ class UaMonitoredItemCreateResult(UaType):
 class UaEUInformation(UaType):
     def __init__(self, val=ffi.new("UA_EUInformation*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._namespace_uri = UaString(val=val.namespaceUri, is_pointer=False)
-        self._unit_id = UaInt32(val=val.unitId, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
+        
+        if not self._null:
+            self._namespace_uri = UaString(val=val.namespaceUri, is_pointer=False)
+            self._unit_id = UaInt32(val=val.unitId, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1253,26 +1394,39 @@ class UaEUInformation(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._namespace_uri._value[0] = _val(val.namespaceUri)
-        self._unit_id._value[0] = _val(val.unitId)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
+        if not _is_null(val):
+            self._namespace_uri._value[0] = _val(val.namespaceUri)
+            self._unit_id._value[0] = _val(val.unitId)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
 
     @property
     def namespace_uri(self):
-        return self._namespace_uri
+        if self._null:
+            return None
+        else:
+            return self._namespace_uri
 
     @property
     def unit_id(self):
-        return self._unit_id
+        if self._null:
+            return None
+        else:
+            return self._unit_id
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @namespace_uri.setter
     def namespace_uri(self, val):
@@ -1295,6 +1449,9 @@ class UaEUInformation(UaType):
         self._value.description = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEUInformation) : NULL\n"
+        
         return ("(UaEUInformation) :\n" +
                 "\t"*(n+1) + "namespace_uri" + self._namespace_uri.__str__(n+1) +
                 "\t"*(n+1) + "unit_id" + self._unit_id.__str__(n+1) +
@@ -1306,19 +1463,20 @@ class UaEUInformation(UaType):
 class UaServerDiagnosticsSummaryDataType(UaType):
     def __init__(self, val=ffi.new("UA_ServerDiagnosticsSummaryDataType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._server_view_count = UaUInt32(val=val.serverViewCount, is_pointer=False)
-        self._current_session_count = UaUInt32(val=val.currentSessionCount, is_pointer=False)
-        self._cumulated_session_count = UaUInt32(val=val.cumulatedSessionCount, is_pointer=False)
-        self._security_rejected_session_count = UaUInt32(val=val.securityRejectedSessionCount, is_pointer=False)
-        self._rejected_session_count = UaUInt32(val=val.rejectedSessionCount, is_pointer=False)
-        self._session_timeout_count = UaUInt32(val=val.sessionTimeoutCount, is_pointer=False)
-        self._session_abort_count = UaUInt32(val=val.sessionAbortCount, is_pointer=False)
-        self._current_subscription_count = UaUInt32(val=val.currentSubscriptionCount, is_pointer=False)
-        self._cumulated_subscription_count = UaUInt32(val=val.cumulatedSubscriptionCount, is_pointer=False)
-        self._publishing_interval_count = UaUInt32(val=val.publishingIntervalCount, is_pointer=False)
-        self._security_rejected_requests_count = UaUInt32(val=val.securityRejectedRequestsCount, is_pointer=False)
-        self._rejected_requests_count = UaUInt32(val=val.rejectedRequestsCount, is_pointer=False)
+        
+        if not self._null:
+            self._server_view_count = UaUInt32(val=val.serverViewCount, is_pointer=False)
+            self._current_session_count = UaUInt32(val=val.currentSessionCount, is_pointer=False)
+            self._cumulated_session_count = UaUInt32(val=val.cumulatedSessionCount, is_pointer=False)
+            self._security_rejected_session_count = UaUInt32(val=val.securityRejectedSessionCount, is_pointer=False)
+            self._rejected_session_count = UaUInt32(val=val.rejectedSessionCount, is_pointer=False)
+            self._session_timeout_count = UaUInt32(val=val.sessionTimeoutCount, is_pointer=False)
+            self._session_abort_count = UaUInt32(val=val.sessionAbortCount, is_pointer=False)
+            self._current_subscription_count = UaUInt32(val=val.currentSubscriptionCount, is_pointer=False)
+            self._cumulated_subscription_count = UaUInt32(val=val.cumulatedSubscriptionCount, is_pointer=False)
+            self._publishing_interval_count = UaUInt32(val=val.publishingIntervalCount, is_pointer=False)
+            self._security_rejected_requests_count = UaUInt32(val=val.securityRejectedRequestsCount, is_pointer=False)
+            self._rejected_requests_count = UaUInt32(val=val.rejectedRequestsCount, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1326,66 +1484,103 @@ class UaServerDiagnosticsSummaryDataType(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._server_view_count._value[0] = _val(val.serverViewCount)
-        self._current_session_count._value[0] = _val(val.currentSessionCount)
-        self._cumulated_session_count._value[0] = _val(val.cumulatedSessionCount)
-        self._security_rejected_session_count._value[0] = _val(val.securityRejectedSessionCount)
-        self._rejected_session_count._value[0] = _val(val.rejectedSessionCount)
-        self._session_timeout_count._value[0] = _val(val.sessionTimeoutCount)
-        self._session_abort_count._value[0] = _val(val.sessionAbortCount)
-        self._current_subscription_count._value[0] = _val(val.currentSubscriptionCount)
-        self._cumulated_subscription_count._value[0] = _val(val.cumulatedSubscriptionCount)
-        self._publishing_interval_count._value[0] = _val(val.publishingIntervalCount)
-        self._security_rejected_requests_count._value[0] = _val(val.securityRejectedRequestsCount)
-        self._rejected_requests_count._value[0] = _val(val.rejectedRequestsCount)
+        if not _is_null(val):
+            self._server_view_count._value[0] = _val(val.serverViewCount)
+            self._current_session_count._value[0] = _val(val.currentSessionCount)
+            self._cumulated_session_count._value[0] = _val(val.cumulatedSessionCount)
+            self._security_rejected_session_count._value[0] = _val(val.securityRejectedSessionCount)
+            self._rejected_session_count._value[0] = _val(val.rejectedSessionCount)
+            self._session_timeout_count._value[0] = _val(val.sessionTimeoutCount)
+            self._session_abort_count._value[0] = _val(val.sessionAbortCount)
+            self._current_subscription_count._value[0] = _val(val.currentSubscriptionCount)
+            self._cumulated_subscription_count._value[0] = _val(val.cumulatedSubscriptionCount)
+            self._publishing_interval_count._value[0] = _val(val.publishingIntervalCount)
+            self._security_rejected_requests_count._value[0] = _val(val.securityRejectedRequestsCount)
+            self._rejected_requests_count._value[0] = _val(val.rejectedRequestsCount)
 
     @property
     def server_view_count(self):
-        return self._server_view_count
+        if self._null:
+            return None
+        else:
+            return self._server_view_count
 
     @property
     def current_session_count(self):
-        return self._current_session_count
+        if self._null:
+            return None
+        else:
+            return self._current_session_count
 
     @property
     def cumulated_session_count(self):
-        return self._cumulated_session_count
+        if self._null:
+            return None
+        else:
+            return self._cumulated_session_count
 
     @property
     def security_rejected_session_count(self):
-        return self._security_rejected_session_count
+        if self._null:
+            return None
+        else:
+            return self._security_rejected_session_count
 
     @property
     def rejected_session_count(self):
-        return self._rejected_session_count
+        if self._null:
+            return None
+        else:
+            return self._rejected_session_count
 
     @property
     def session_timeout_count(self):
-        return self._session_timeout_count
+        if self._null:
+            return None
+        else:
+            return self._session_timeout_count
 
     @property
     def session_abort_count(self):
-        return self._session_abort_count
+        if self._null:
+            return None
+        else:
+            return self._session_abort_count
 
     @property
     def current_subscription_count(self):
-        return self._current_subscription_count
+        if self._null:
+            return None
+        else:
+            return self._current_subscription_count
 
     @property
     def cumulated_subscription_count(self):
-        return self._cumulated_subscription_count
+        if self._null:
+            return None
+        else:
+            return self._cumulated_subscription_count
 
     @property
     def publishing_interval_count(self):
-        return self._publishing_interval_count
+        if self._null:
+            return None
+        else:
+            return self._publishing_interval_count
 
     @property
     def security_rejected_requests_count(self):
-        return self._security_rejected_requests_count
+        if self._null:
+            return None
+        else:
+            return self._security_rejected_requests_count
 
     @property
     def rejected_requests_count(self):
-        return self._rejected_requests_count
+        if self._null:
+            return None
+        else:
+            return self._rejected_requests_count
 
     @server_view_count.setter
     def server_view_count(self, val):
@@ -1448,6 +1643,9 @@ class UaServerDiagnosticsSummaryDataType(UaType):
         self._value.rejectedRequestsCount = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaServerDiagnosticsSummaryDataType) : NULL\n"
+        
         return ("(UaServerDiagnosticsSummaryDataType) :\n" +
                 "\t"*(n+1) + "server_view_count" + self._server_view_count.__str__(n+1) +
                 "\t"*(n+1) + "current_session_count" + self._current_session_count.__str__(n+1) +
@@ -1467,12 +1665,13 @@ class UaServerDiagnosticsSummaryDataType(UaType):
 class UaContentFilterElementResult(UaType):
     def __init__(self, val=ffi.new("UA_ContentFilterElementResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._operand_status_codes_size = SizeT(val=val.operandStatusCodesSize, is_pointer=False)
-        self._operand_status_codes = UaStatusCode(val=val.operandStatusCodes, is_pointer=True)
-        self._operand_diagnostic_infos_size = SizeT(val=val.operandDiagnosticInfosSize, is_pointer=False)
-        self._operand_diagnostic_infos = UaDiagnosticInfo(val=val.operandDiagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._operand_status_codes_size = SizeT(val=val.operandStatusCodesSize, is_pointer=False)
+            self._operand_status_codes = UaStatusCode(val=val.operandStatusCodes, is_pointer=True)
+            self._operand_diagnostic_infos_size = SizeT(val=val.operandDiagnosticInfosSize, is_pointer=False)
+            self._operand_diagnostic_infos = UaDiagnosticInfo(val=val.operandDiagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1480,31 +1679,47 @@ class UaContentFilterElementResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._operand_status_codes_size._value[0] = _val(val.operandStatusCodesSize)
-        self._operand_status_codes._value = val.operandStatusCodes
-        self._operand_diagnostic_infos_size._value[0] = _val(val.operandDiagnosticInfosSize)
-        self._operand_diagnostic_infos._value = val.operandDiagnosticInfos
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._operand_status_codes_size._value[0] = _val(val.operandStatusCodesSize)
+            self._operand_status_codes._value = val.operandStatusCodes
+            self._operand_diagnostic_infos_size._value[0] = _val(val.operandDiagnosticInfosSize)
+            self._operand_diagnostic_infos._value = val.operandDiagnosticInfos
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def operand_status_codes_size(self):
-        return self._operand_status_codes_size
+        if self._null:
+            return None
+        else:
+            return self._operand_status_codes_size
 
     @property
     def operand_status_codes(self):
-        return self._operand_status_codes
+        if self._null:
+            return None
+        else:
+            return self._operand_status_codes
 
     @property
     def operand_diagnostic_infos_size(self):
-        return self._operand_diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._operand_diagnostic_infos_size
 
     @property
     def operand_diagnostic_infos(self):
-        return self._operand_diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._operand_diagnostic_infos
 
     @status_code.setter
     def status_code(self, val):
@@ -1532,6 +1747,9 @@ class UaContentFilterElementResult(UaType):
         self._value.operandDiagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaContentFilterElementResult) : NULL\n"
+        
         return ("(UaContentFilterElementResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "operand_status_codes_size" + self._operand_status_codes_size.__str__(n+1) +
@@ -1544,8 +1762,9 @@ class UaContentFilterElementResult(UaType):
 class UaLiteralOperand(UaType):
     def __init__(self, val=ffi.new("UA_LiteralOperand*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._value = UaVariant(val=val.value, is_pointer=False)
+        
+        if not self._null:
+            self._value = UaVariant(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1553,11 +1772,15 @@ class UaLiteralOperand(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._value._value[0] = _val(val.value)
+        if not _is_null(val):
+            self._value._value[0] = _val(val.value)
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @value.setter
     def value(self, val):
@@ -1565,6 +1788,9 @@ class UaLiteralOperand(UaType):
         self._value.value = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaLiteralOperand) : NULL\n"
+        
         return ("(UaLiteralOperand) :\n" +
                 "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
 
@@ -1573,8 +1799,9 @@ class UaLiteralOperand(UaType):
 class UaUserIdentityToken(UaType):
     def __init__(self, val=ffi.new("UA_UserIdentityToken*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._policy_id = UaString(val=val.policyId, is_pointer=False)
+        
+        if not self._null:
+            self._policy_id = UaString(val=val.policyId, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1582,11 +1809,15 @@ class UaUserIdentityToken(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._policy_id._value[0] = _val(val.policyId)
+        if not _is_null(val):
+            self._policy_id._value[0] = _val(val.policyId)
 
     @property
     def policy_id(self):
-        return self._policy_id
+        if self._null:
+            return None
+        else:
+            return self._policy_id
 
     @policy_id.setter
     def policy_id(self, val):
@@ -1594,6 +1825,9 @@ class UaUserIdentityToken(UaType):
         self._value.policyId = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaUserIdentityToken) : NULL\n"
+        
         return ("(UaUserIdentityToken) :\n" +
                 "\t"*(n+1) + "policy_id" + self._policy_id.__str__(n+1) + "\n")
 
@@ -1602,9 +1836,10 @@ class UaUserIdentityToken(UaType):
 class UaX509IdentityToken(UaType):
     def __init__(self, val=ffi.new("UA_X509IdentityToken*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._policy_id = UaString(val=val.policyId, is_pointer=False)
-        self._certificate_data = UaByteString(val=val.certificateData, is_pointer=False)
+        
+        if not self._null:
+            self._policy_id = UaString(val=val.policyId, is_pointer=False)
+            self._certificate_data = UaByteString(val=val.certificateData, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1612,16 +1847,23 @@ class UaX509IdentityToken(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._policy_id._value[0] = _val(val.policyId)
-        self._certificate_data._value[0] = _val(val.certificateData)
+        if not _is_null(val):
+            self._policy_id._value[0] = _val(val.policyId)
+            self._certificate_data._value[0] = _val(val.certificateData)
 
     @property
     def policy_id(self):
-        return self._policy_id
+        if self._null:
+            return None
+        else:
+            return self._policy_id
 
     @property
     def certificate_data(self):
-        return self._certificate_data
+        if self._null:
+            return None
+        else:
+            return self._certificate_data
 
     @policy_id.setter
     def policy_id(self, val):
@@ -1634,6 +1876,9 @@ class UaX509IdentityToken(UaType):
         self._value.certificateData = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaX509IdentityToken) : NULL\n"
+        
         return ("(UaX509IdentityToken) :\n" +
                 "\t"*(n+1) + "policy_id" + self._policy_id.__str__(n+1) +
                 "\t"*(n+1) + "certificate_data" + self._certificate_data.__str__(n+1) + "\n")
@@ -1643,9 +1888,10 @@ class UaX509IdentityToken(UaType):
 class UaMonitoredItemNotification(UaType):
     def __init__(self, val=ffi.new("UA_MonitoredItemNotification*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
-        self._value = UaDataValue(val=val.value, is_pointer=False)
+        
+        if not self._null:
+            self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
+            self._value = UaDataValue(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1653,16 +1899,23 @@ class UaMonitoredItemNotification(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._client_handle._value[0] = _val(val.clientHandle)
-        self._value._value[0] = _val(val.value)
+        if not _is_null(val):
+            self._client_handle._value[0] = _val(val.clientHandle)
+            self._value._value[0] = _val(val.value)
 
     @property
     def client_handle(self):
-        return self._client_handle
+        if self._null:
+            return None
+        else:
+            return self._client_handle
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @client_handle.setter
     def client_handle(self, val):
@@ -1675,6 +1928,9 @@ class UaMonitoredItemNotification(UaType):
         self._value.value = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMonitoredItemNotification) : NULL\n"
+        
         return ("(UaMonitoredItemNotification) :\n" +
                 "\t"*(n+1) + "client_handle" + self._client_handle.__str__(n+1) +
                 "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
@@ -1684,14 +1940,15 @@ class UaMonitoredItemNotification(UaType):
 class UaResponseHeader(UaType):
     def __init__(self, val=ffi.new("UA_ResponseHeader*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._timestamp = UaDateTime(val=val.timestamp, is_pointer=False)
-        self._request_handle = UaUInt32(val=val.requestHandle, is_pointer=False)
-        self._service_result = UaStatusCode(val=val.serviceResult, is_pointer=False)
-        self._service_diagnostics = UaDiagnosticInfo(val=val.serviceDiagnostics, is_pointer=False)
-        self._string_table_size = SizeT(val=val.stringTableSize, is_pointer=False)
-        self._string_table = UaString(val=val.stringTable, is_pointer=True)
-        self._additional_header = UaExtensionObject(val=val.additionalHeader, is_pointer=False)
+        
+        if not self._null:
+            self._timestamp = UaDateTime(val=val.timestamp, is_pointer=False)
+            self._request_handle = UaUInt32(val=val.requestHandle, is_pointer=False)
+            self._service_result = UaStatusCode(val=val.serviceResult, is_pointer=False)
+            self._service_diagnostics = UaDiagnosticInfo(val=val.serviceDiagnostics, is_pointer=False)
+            self._string_table_size = SizeT(val=val.stringTableSize, is_pointer=False)
+            self._string_table = UaString(val=val.stringTable, is_pointer=True)
+            self._additional_header = UaExtensionObject(val=val.additionalHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1699,41 +1956,63 @@ class UaResponseHeader(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._timestamp._value[0] = _val(val.timestamp)
-        self._request_handle._value[0] = _val(val.requestHandle)
-        self._service_result._value[0] = _val(val.serviceResult)
-        self._service_diagnostics._value[0] = _val(val.serviceDiagnostics)
-        self._string_table_size._value[0] = _val(val.stringTableSize)
-        self._string_table._value = val.stringTable
-        self._additional_header._value[0] = _val(val.additionalHeader)
+        if not _is_null(val):
+            self._timestamp._value[0] = _val(val.timestamp)
+            self._request_handle._value[0] = _val(val.requestHandle)
+            self._service_result._value[0] = _val(val.serviceResult)
+            self._service_diagnostics._value[0] = _val(val.serviceDiagnostics)
+            self._string_table_size._value[0] = _val(val.stringTableSize)
+            self._string_table._value = val.stringTable
+            self._additional_header._value[0] = _val(val.additionalHeader)
 
     @property
     def timestamp(self):
-        return self._timestamp
+        if self._null:
+            return None
+        else:
+            return self._timestamp
 
     @property
     def request_handle(self):
-        return self._request_handle
+        if self._null:
+            return None
+        else:
+            return self._request_handle
 
     @property
     def service_result(self):
-        return self._service_result
+        if self._null:
+            return None
+        else:
+            return self._service_result
 
     @property
     def service_diagnostics(self):
-        return self._service_diagnostics
+        if self._null:
+            return None
+        else:
+            return self._service_diagnostics
 
     @property
     def string_table_size(self):
-        return self._string_table_size
+        if self._null:
+            return None
+        else:
+            return self._string_table_size
 
     @property
     def string_table(self):
-        return self._string_table
+        if self._null:
+            return None
+        else:
+            return self._string_table
 
     @property
     def additional_header(self):
-        return self._additional_header
+        if self._null:
+            return None
+        else:
+            return self._additional_header
 
     @timestamp.setter
     def timestamp(self, val):
@@ -1771,6 +2050,9 @@ class UaResponseHeader(UaType):
         self._value.additionalHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaResponseHeader) : NULL\n"
+        
         return ("(UaResponseHeader) :\n" +
                 "\t"*(n+1) + "timestamp" + self._timestamp.__str__(n+1) +
                 "\t"*(n+1) + "request_handle" + self._request_handle.__str__(n+1) +
@@ -1785,9 +2067,10 @@ class UaResponseHeader(UaType):
 class UaSignatureData(UaType):
     def __init__(self, val=ffi.new("UA_SignatureData*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._algorithm = UaString(val=val.algorithm, is_pointer=False)
-        self._signature = UaByteString(val=val.signature, is_pointer=False)
+        
+        if not self._null:
+            self._algorithm = UaString(val=val.algorithm, is_pointer=False)
+            self._signature = UaByteString(val=val.signature, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1795,16 +2078,23 @@ class UaSignatureData(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._algorithm._value[0] = _val(val.algorithm)
-        self._signature._value[0] = _val(val.signature)
+        if not _is_null(val):
+            self._algorithm._value[0] = _val(val.algorithm)
+            self._signature._value[0] = _val(val.signature)
 
     @property
     def algorithm(self):
-        return self._algorithm
+        if self._null:
+            return None
+        else:
+            return self._algorithm
 
     @property
     def signature(self):
-        return self._signature
+        if self._null:
+            return None
+        else:
+            return self._signature
 
     @algorithm.setter
     def algorithm(self, val):
@@ -1817,6 +2107,9 @@ class UaSignatureData(UaType):
         self._value.signature = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSignatureData) : NULL\n"
+        
         return ("(UaSignatureData) :\n" +
                 "\t"*(n+1) + "algorithm" + self._algorithm.__str__(n+1) +
                 "\t"*(n+1) + "signature" + self._signature.__str__(n+1) + "\n")
@@ -1826,11 +2119,12 @@ class UaSignatureData(UaType):
 class UaModifySubscriptionResponse(UaType):
     def __init__(self, val=ffi.new("UA_ModifySubscriptionResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._revised_publishing_interval = UaDouble(val=val.revisedPublishingInterval, is_pointer=False)
-        self._revised_lifetime_count = UaUInt32(val=val.revisedLifetimeCount, is_pointer=False)
-        self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._revised_publishing_interval = UaDouble(val=val.revisedPublishingInterval, is_pointer=False)
+            self._revised_lifetime_count = UaUInt32(val=val.revisedLifetimeCount, is_pointer=False)
+            self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1838,26 +2132,39 @@ class UaModifySubscriptionResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._revised_publishing_interval._value[0] = _val(val.revisedPublishingInterval)
-        self._revised_lifetime_count._value[0] = _val(val.revisedLifetimeCount)
-        self._revised_max_keep_alive_count._value[0] = _val(val.revisedMaxKeepAliveCount)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._revised_publishing_interval._value[0] = _val(val.revisedPublishingInterval)
+            self._revised_lifetime_count._value[0] = _val(val.revisedLifetimeCount)
+            self._revised_max_keep_alive_count._value[0] = _val(val.revisedMaxKeepAliveCount)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def revised_publishing_interval(self):
-        return self._revised_publishing_interval
+        if self._null:
+            return None
+        else:
+            return self._revised_publishing_interval
 
     @property
     def revised_lifetime_count(self):
-        return self._revised_lifetime_count
+        if self._null:
+            return None
+        else:
+            return self._revised_lifetime_count
 
     @property
     def revised_max_keep_alive_count(self):
-        return self._revised_max_keep_alive_count
+        if self._null:
+            return None
+        else:
+            return self._revised_max_keep_alive_count
 
     @response_header.setter
     def response_header(self, val):
@@ -1880,6 +2187,9 @@ class UaModifySubscriptionResponse(UaType):
         self._value.revisedMaxKeepAliveCount = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaModifySubscriptionResponse) : NULL\n"
+        
         return ("(UaModifySubscriptionResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n+1) +
@@ -1891,12 +2201,13 @@ class UaModifySubscriptionResponse(UaType):
 class UaNodeAttributes(UaType):
     def __init__(self, val=ffi.new("UA_NodeAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1904,31 +2215,47 @@ class UaNodeAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -1956,6 +2283,9 @@ class UaNodeAttributes(UaType):
         self._value.userWriteMask = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaNodeAttributes) : NULL\n"
+        
         return ("(UaNodeAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -1968,13 +2298,14 @@ class UaNodeAttributes(UaType):
 class UaActivateSessionResponse(UaType):
     def __init__(self, val=ffi.new("UA_ActivateSessionResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1982,36 +2313,55 @@ class UaActivateSessionResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._server_nonce._value[0] = _val(val.serverNonce)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._server_nonce._value[0] = _val(val.serverNonce)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def server_nonce(self):
-        return self._server_nonce
+        if self._null:
+            return None
+        else:
+            return self._server_nonce
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -2044,6 +2394,9 @@ class UaActivateSessionResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaActivateSessionResponse) : NULL\n"
+        
         return ("(UaActivateSessionResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "server_nonce" + self._server_nonce.__str__(n+1) +
@@ -2057,11 +2410,12 @@ class UaActivateSessionResponse(UaType):
 class UaEnumField(UaType):
     def __init__(self, val=ffi.new("UA_EnumField*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._value = UaInt64(val=val.value, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._name = UaString(val=val.name, is_pointer=False)
+        
+        if not self._null:
+            self._value = UaInt64(val=val.value, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._name = UaString(val=val.name, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2069,26 +2423,39 @@ class UaEnumField(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._value._value[0] = _val(val.value)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._name._value[0] = _val(val.name)
+        if not _is_null(val):
+            self._value._value[0] = _val(val.value)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._name._value[0] = _val(val.name)
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def name(self):
-        return self._name
+        if self._null:
+            return None
+        else:
+            return self._name
 
     @value.setter
     def value(self, val):
@@ -2111,6 +2478,9 @@ class UaEnumField(UaType):
         self._value.name = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEnumField) : NULL\n"
+        
         return ("(UaEnumField) :\n" +
                 "\t"*(n+1) + "value" + self._value.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -2122,18 +2492,19 @@ class UaEnumField(UaType):
 class UaVariableTypeAttributes(UaType):
     def __init__(self, val=ffi.new("UA_VariableTypeAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._value = UaVariant(val=val.value, is_pointer=False)
-        self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
-        self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
-        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
-        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
-        self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
+            self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
+            self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
+            self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+            self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2141,61 +2512,95 @@ class UaVariableTypeAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._value._value[0] = _val(val.value)
-        self._data_type._value[0] = _val(val.dataType)
-        self._value_rank._value[0] = _val(val.valueRank)
-        self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
-        self._array_dimensions._value = val.arrayDimensions
-        self._is_abstract._value[0] = _val(val.isAbstract)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._value._value[0] = _val(val.value)
+            self._data_type._value[0] = _val(val.dataType)
+            self._value_rank._value[0] = _val(val.valueRank)
+            self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
+            self._array_dimensions._value = val.arrayDimensions
+            self._is_abstract._value[0] = _val(val.isAbstract)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @property
     def data_type(self):
-        return self._data_type
+        if self._null:
+            return None
+        else:
+            return self._data_type
 
     @property
     def value_rank(self):
-        return self._value_rank
+        if self._null:
+            return None
+        else:
+            return self._value_rank
 
     @property
     def array_dimensions_size(self):
-        return self._array_dimensions_size
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions_size
 
     @property
     def array_dimensions(self):
-        return self._array_dimensions
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions
 
     @property
     def is_abstract(self):
-        return self._is_abstract
+        if self._null:
+            return None
+        else:
+            return self._is_abstract
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -2253,6 +2658,9 @@ class UaVariableTypeAttributes(UaType):
         self._value.isAbstract = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaVariableTypeAttributes) : NULL\n"
+        
         return ("(UaVariableTypeAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -2271,14 +2679,15 @@ class UaVariableTypeAttributes(UaType):
 class UaCallMethodResult(UaType):
     def __init__(self, val=ffi.new("UA_CallMethodResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._input_argument_results_size = SizeT(val=val.inputArgumentResultsSize, is_pointer=False)
-        self._input_argument_results = UaStatusCode(val=val.inputArgumentResults, is_pointer=True)
-        self._input_argument_diagnostic_infos_size = SizeT(val=val.inputArgumentDiagnosticInfosSize, is_pointer=False)
-        self._input_argument_diagnostic_infos = UaDiagnosticInfo(val=val.inputArgumentDiagnosticInfos, is_pointer=True)
-        self._output_arguments_size = SizeT(val=val.outputArgumentsSize, is_pointer=False)
-        self._output_arguments = UaVariant(val=val.outputArguments, is_pointer=True)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._input_argument_results_size = SizeT(val=val.inputArgumentResultsSize, is_pointer=False)
+            self._input_argument_results = UaStatusCode(val=val.inputArgumentResults, is_pointer=True)
+            self._input_argument_diagnostic_infos_size = SizeT(val=val.inputArgumentDiagnosticInfosSize, is_pointer=False)
+            self._input_argument_diagnostic_infos = UaDiagnosticInfo(val=val.inputArgumentDiagnosticInfos, is_pointer=True)
+            self._output_arguments_size = SizeT(val=val.outputArgumentsSize, is_pointer=False)
+            self._output_arguments = UaVariant(val=val.outputArguments, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2286,41 +2695,63 @@ class UaCallMethodResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._input_argument_results_size._value[0] = _val(val.inputArgumentResultsSize)
-        self._input_argument_results._value = val.inputArgumentResults
-        self._input_argument_diagnostic_infos_size._value[0] = _val(val.inputArgumentDiagnosticInfosSize)
-        self._input_argument_diagnostic_infos._value = val.inputArgumentDiagnosticInfos
-        self._output_arguments_size._value[0] = _val(val.outputArgumentsSize)
-        self._output_arguments._value = val.outputArguments
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._input_argument_results_size._value[0] = _val(val.inputArgumentResultsSize)
+            self._input_argument_results._value = val.inputArgumentResults
+            self._input_argument_diagnostic_infos_size._value[0] = _val(val.inputArgumentDiagnosticInfosSize)
+            self._input_argument_diagnostic_infos._value = val.inputArgumentDiagnosticInfos
+            self._output_arguments_size._value[0] = _val(val.outputArgumentsSize)
+            self._output_arguments._value = val.outputArguments
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def input_argument_results_size(self):
-        return self._input_argument_results_size
+        if self._null:
+            return None
+        else:
+            return self._input_argument_results_size
 
     @property
     def input_argument_results(self):
-        return self._input_argument_results
+        if self._null:
+            return None
+        else:
+            return self._input_argument_results
 
     @property
     def input_argument_diagnostic_infos_size(self):
-        return self._input_argument_diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._input_argument_diagnostic_infos_size
 
     @property
     def input_argument_diagnostic_infos(self):
-        return self._input_argument_diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._input_argument_diagnostic_infos
 
     @property
     def output_arguments_size(self):
-        return self._output_arguments_size
+        if self._null:
+            return None
+        else:
+            return self._output_arguments_size
 
     @property
     def output_arguments(self):
-        return self._output_arguments
+        if self._null:
+            return None
+        else:
+            return self._output_arguments
 
     @status_code.setter
     def status_code(self, val):
@@ -2358,6 +2789,9 @@ class UaCallMethodResult(UaType):
         self._value.outputArguments = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCallMethodResult) : NULL\n"
+        
         return ("(UaCallMethodResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "input_argument_results_size" + self._input_argument_results_size.__str__(n+1) +
@@ -2372,12 +2806,13 @@ class UaCallMethodResult(UaType):
 class UaSetMonitoringModeResponse(UaType):
     def __init__(self, val=ffi.new("UA_SetMonitoringModeResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2385,31 +2820,47 @@ class UaSetMonitoringModeResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -2437,6 +2888,9 @@ class UaSetMonitoringModeResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSetMonitoringModeResponse) : NULL\n"
+        
         return ("(UaSetMonitoringModeResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -2449,14 +2903,15 @@ class UaSetMonitoringModeResponse(UaType):
 class UaRequestHeader(UaType):
     def __init__(self, val=ffi.new("UA_RequestHeader*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._authentication_token = UaNodeId(val=val.authenticationToken, is_pointer=False)
-        self._timestamp = UaDateTime(val=val.timestamp, is_pointer=False)
-        self._request_handle = UaUInt32(val=val.requestHandle, is_pointer=False)
-        self._return_diagnostics = UaUInt32(val=val.returnDiagnostics, is_pointer=False)
-        self._audit_entry_id = UaString(val=val.auditEntryId, is_pointer=False)
-        self._timeout_hint = UaUInt32(val=val.timeoutHint, is_pointer=False)
-        self._additional_header = UaExtensionObject(val=val.additionalHeader, is_pointer=False)
+        
+        if not self._null:
+            self._authentication_token = UaNodeId(val=val.authenticationToken, is_pointer=False)
+            self._timestamp = UaDateTime(val=val.timestamp, is_pointer=False)
+            self._request_handle = UaUInt32(val=val.requestHandle, is_pointer=False)
+            self._return_diagnostics = UaUInt32(val=val.returnDiagnostics, is_pointer=False)
+            self._audit_entry_id = UaString(val=val.auditEntryId, is_pointer=False)
+            self._timeout_hint = UaUInt32(val=val.timeoutHint, is_pointer=False)
+            self._additional_header = UaExtensionObject(val=val.additionalHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2464,41 +2919,63 @@ class UaRequestHeader(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._authentication_token._value[0] = _val(val.authenticationToken)
-        self._timestamp._value[0] = _val(val.timestamp)
-        self._request_handle._value[0] = _val(val.requestHandle)
-        self._return_diagnostics._value[0] = _val(val.returnDiagnostics)
-        self._audit_entry_id._value[0] = _val(val.auditEntryId)
-        self._timeout_hint._value[0] = _val(val.timeoutHint)
-        self._additional_header._value[0] = _val(val.additionalHeader)
+        if not _is_null(val):
+            self._authentication_token._value[0] = _val(val.authenticationToken)
+            self._timestamp._value[0] = _val(val.timestamp)
+            self._request_handle._value[0] = _val(val.requestHandle)
+            self._return_diagnostics._value[0] = _val(val.returnDiagnostics)
+            self._audit_entry_id._value[0] = _val(val.auditEntryId)
+            self._timeout_hint._value[0] = _val(val.timeoutHint)
+            self._additional_header._value[0] = _val(val.additionalHeader)
 
     @property
     def authentication_token(self):
-        return self._authentication_token
+        if self._null:
+            return None
+        else:
+            return self._authentication_token
 
     @property
     def timestamp(self):
-        return self._timestamp
+        if self._null:
+            return None
+        else:
+            return self._timestamp
 
     @property
     def request_handle(self):
-        return self._request_handle
+        if self._null:
+            return None
+        else:
+            return self._request_handle
 
     @property
     def return_diagnostics(self):
-        return self._return_diagnostics
+        if self._null:
+            return None
+        else:
+            return self._return_diagnostics
 
     @property
     def audit_entry_id(self):
-        return self._audit_entry_id
+        if self._null:
+            return None
+        else:
+            return self._audit_entry_id
 
     @property
     def timeout_hint(self):
-        return self._timeout_hint
+        if self._null:
+            return None
+        else:
+            return self._timeout_hint
 
     @property
     def additional_header(self):
-        return self._additional_header
+        if self._null:
+            return None
+        else:
+            return self._additional_header
 
     @authentication_token.setter
     def authentication_token(self, val):
@@ -2536,6 +3013,9 @@ class UaRequestHeader(UaType):
         self._value.additionalHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRequestHeader) : NULL\n"
+        
         return ("(UaRequestHeader) :\n" +
                 "\t"*(n+1) + "authentication_token" + self._authentication_token.__str__(n+1) +
                 "\t"*(n+1) + "timestamp" + self._timestamp.__str__(n+1) +
@@ -2550,11 +3030,12 @@ class UaRequestHeader(UaType):
 class UaMonitoredItemModifyResult(UaType):
     def __init__(self, val=ffi.new("UA_MonitoredItemModifyResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._revised_sampling_interval = UaDouble(val=val.revisedSamplingInterval, is_pointer=False)
-        self._revised_queue_size = UaUInt32(val=val.revisedQueueSize, is_pointer=False)
-        self._filter_result = UaExtensionObject(val=val.filterResult, is_pointer=False)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._revised_sampling_interval = UaDouble(val=val.revisedSamplingInterval, is_pointer=False)
+            self._revised_queue_size = UaUInt32(val=val.revisedQueueSize, is_pointer=False)
+            self._filter_result = UaExtensionObject(val=val.filterResult, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2562,26 +3043,39 @@ class UaMonitoredItemModifyResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._revised_sampling_interval._value[0] = _val(val.revisedSamplingInterval)
-        self._revised_queue_size._value[0] = _val(val.revisedQueueSize)
-        self._filter_result._value[0] = _val(val.filterResult)
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._revised_sampling_interval._value[0] = _val(val.revisedSamplingInterval)
+            self._revised_queue_size._value[0] = _val(val.revisedQueueSize)
+            self._filter_result._value[0] = _val(val.filterResult)
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def revised_sampling_interval(self):
-        return self._revised_sampling_interval
+        if self._null:
+            return None
+        else:
+            return self._revised_sampling_interval
 
     @property
     def revised_queue_size(self):
-        return self._revised_queue_size
+        if self._null:
+            return None
+        else:
+            return self._revised_queue_size
 
     @property
     def filter_result(self):
-        return self._filter_result
+        if self._null:
+            return None
+        else:
+            return self._filter_result
 
     @status_code.setter
     def status_code(self, val):
@@ -2604,6 +3098,9 @@ class UaMonitoredItemModifyResult(UaType):
         self._value.filterResult = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMonitoredItemModifyResult) : NULL\n"
+        
         return ("(UaMonitoredItemModifyResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n+1) +
@@ -2615,8 +3112,9 @@ class UaMonitoredItemModifyResult(UaType):
 class UaCloseSecureChannelRequest(UaType):
     def __init__(self, val=ffi.new("UA_CloseSecureChannelRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2624,11 +3122,15 @@ class UaCloseSecureChannelRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @request_header.setter
     def request_header(self, val):
@@ -2636,6 +3138,9 @@ class UaCloseSecureChannelRequest(UaType):
         self._value.requestHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCloseSecureChannelRequest) : NULL\n"
+        
         return ("(UaCloseSecureChannelRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) + "\n")
 
@@ -2644,11 +3149,12 @@ class UaCloseSecureChannelRequest(UaType):
 class UaNotificationMessage(UaType):
     def __init__(self, val=ffi.new("UA_NotificationMessage*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._sequence_number = UaUInt32(val=val.sequenceNumber, is_pointer=False)
-        self._publish_time = UaDateTime(val=val.publishTime, is_pointer=False)
-        self._notification_data_size = SizeT(val=val.notificationDataSize, is_pointer=False)
-        self._notification_data = UaExtensionObject(val=val.notificationData, is_pointer=True)
+        
+        if not self._null:
+            self._sequence_number = UaUInt32(val=val.sequenceNumber, is_pointer=False)
+            self._publish_time = UaDateTime(val=val.publishTime, is_pointer=False)
+            self._notification_data_size = SizeT(val=val.notificationDataSize, is_pointer=False)
+            self._notification_data = UaExtensionObject(val=val.notificationData, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2656,26 +3162,39 @@ class UaNotificationMessage(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._sequence_number._value[0] = _val(val.sequenceNumber)
-        self._publish_time._value[0] = _val(val.publishTime)
-        self._notification_data_size._value[0] = _val(val.notificationDataSize)
-        self._notification_data._value = val.notificationData
+        if not _is_null(val):
+            self._sequence_number._value[0] = _val(val.sequenceNumber)
+            self._publish_time._value[0] = _val(val.publishTime)
+            self._notification_data_size._value[0] = _val(val.notificationDataSize)
+            self._notification_data._value = val.notificationData
 
     @property
     def sequence_number(self):
-        return self._sequence_number
+        if self._null:
+            return None
+        else:
+            return self._sequence_number
 
     @property
     def publish_time(self):
-        return self._publish_time
+        if self._null:
+            return None
+        else:
+            return self._publish_time
 
     @property
     def notification_data_size(self):
-        return self._notification_data_size
+        if self._null:
+            return None
+        else:
+            return self._notification_data_size
 
     @property
     def notification_data(self):
-        return self._notification_data
+        if self._null:
+            return None
+        else:
+            return self._notification_data
 
     @sequence_number.setter
     def sequence_number(self, val):
@@ -2698,6 +3217,9 @@ class UaNotificationMessage(UaType):
         self._value.notificationData = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaNotificationMessage) : NULL\n"
+        
         return ("(UaNotificationMessage) :\n" +
                 "\t"*(n+1) + "sequence_number" + self._sequence_number.__str__(n+1) +
                 "\t"*(n+1) + "publish_time" + self._publish_time.__str__(n+1) +
@@ -2709,12 +3231,13 @@ class UaNotificationMessage(UaType):
 class UaCreateSubscriptionResponse(UaType):
     def __init__(self, val=ffi.new("UA_CreateSubscriptionResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._revised_publishing_interval = UaDouble(val=val.revisedPublishingInterval, is_pointer=False)
-        self._revised_lifetime_count = UaUInt32(val=val.revisedLifetimeCount, is_pointer=False)
-        self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._revised_publishing_interval = UaDouble(val=val.revisedPublishingInterval, is_pointer=False)
+            self._revised_lifetime_count = UaUInt32(val=val.revisedLifetimeCount, is_pointer=False)
+            self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2722,31 +3245,47 @@ class UaCreateSubscriptionResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._revised_publishing_interval._value[0] = _val(val.revisedPublishingInterval)
-        self._revised_lifetime_count._value[0] = _val(val.revisedLifetimeCount)
-        self._revised_max_keep_alive_count._value[0] = _val(val.revisedMaxKeepAliveCount)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._revised_publishing_interval._value[0] = _val(val.revisedPublishingInterval)
+            self._revised_lifetime_count._value[0] = _val(val.revisedLifetimeCount)
+            self._revised_max_keep_alive_count._value[0] = _val(val.revisedMaxKeepAliveCount)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def revised_publishing_interval(self):
-        return self._revised_publishing_interval
+        if self._null:
+            return None
+        else:
+            return self._revised_publishing_interval
 
     @property
     def revised_lifetime_count(self):
-        return self._revised_lifetime_count
+        if self._null:
+            return None
+        else:
+            return self._revised_lifetime_count
 
     @property
     def revised_max_keep_alive_count(self):
-        return self._revised_max_keep_alive_count
+        if self._null:
+            return None
+        else:
+            return self._revised_max_keep_alive_count
 
     @response_header.setter
     def response_header(self, val):
@@ -2774,6 +3313,9 @@ class UaCreateSubscriptionResponse(UaType):
         self._value.revisedMaxKeepAliveCount = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCreateSubscriptionResponse) : NULL\n"
+        
         return ("(UaCreateSubscriptionResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -2786,9 +3328,10 @@ class UaCreateSubscriptionResponse(UaType):
 class UaEnumDefinition(UaType):
     def __init__(self, val=ffi.new("UA_EnumDefinition*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._fields_size = SizeT(val=val.fieldsSize, is_pointer=False)
-        self._fields = UaEnumField(val=val.fields, is_pointer=True)
+        
+        if not self._null:
+            self._fields_size = SizeT(val=val.fieldsSize, is_pointer=False)
+            self._fields = UaEnumField(val=val.fields, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2796,16 +3339,23 @@ class UaEnumDefinition(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._fields_size._value[0] = _val(val.fieldsSize)
-        self._fields._value = val.fields
+        if not _is_null(val):
+            self._fields_size._value[0] = _val(val.fieldsSize)
+            self._fields._value = val.fields
 
     @property
     def fields_size(self):
-        return self._fields_size
+        if self._null:
+            return None
+        else:
+            return self._fields_size
 
     @property
     def fields(self):
-        return self._fields
+        if self._null:
+            return None
+        else:
+            return self._fields
 
     @fields_size.setter
     def fields_size(self, val):
@@ -2818,6 +3368,9 @@ class UaEnumDefinition(UaType):
         self._value.fields = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEnumDefinition) : NULL\n"
+        
         return ("(UaEnumDefinition) :\n" +
                 "\t"*(n+1) + "fields_size" + self._fields_size.__str__(n+1) +
                 "\t"*(n+1) + "fields" + self._fields.__str__(n+1) + "\n")
@@ -2827,11 +3380,12 @@ class UaEnumDefinition(UaType):
 class UaCallMethodRequest(UaType):
     def __init__(self, val=ffi.new("UA_CallMethodRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._object_id = UaNodeId(val=val.objectId, is_pointer=False)
-        self._method_id = UaNodeId(val=val.methodId, is_pointer=False)
-        self._input_arguments_size = SizeT(val=val.inputArgumentsSize, is_pointer=False)
-        self._input_arguments = UaVariant(val=val.inputArguments, is_pointer=True)
+        
+        if not self._null:
+            self._object_id = UaNodeId(val=val.objectId, is_pointer=False)
+            self._method_id = UaNodeId(val=val.methodId, is_pointer=False)
+            self._input_arguments_size = SizeT(val=val.inputArgumentsSize, is_pointer=False)
+            self._input_arguments = UaVariant(val=val.inputArguments, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2839,26 +3393,39 @@ class UaCallMethodRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._object_id._value[0] = _val(val.objectId)
-        self._method_id._value[0] = _val(val.methodId)
-        self._input_arguments_size._value[0] = _val(val.inputArgumentsSize)
-        self._input_arguments._value = val.inputArguments
+        if not _is_null(val):
+            self._object_id._value[0] = _val(val.objectId)
+            self._method_id._value[0] = _val(val.methodId)
+            self._input_arguments_size._value[0] = _val(val.inputArgumentsSize)
+            self._input_arguments._value = val.inputArguments
 
     @property
     def object_id(self):
-        return self._object_id
+        if self._null:
+            return None
+        else:
+            return self._object_id
 
     @property
     def method_id(self):
-        return self._method_id
+        if self._null:
+            return None
+        else:
+            return self._method_id
 
     @property
     def input_arguments_size(self):
-        return self._input_arguments_size
+        if self._null:
+            return None
+        else:
+            return self._input_arguments_size
 
     @property
     def input_arguments(self):
-        return self._input_arguments
+        if self._null:
+            return None
+        else:
+            return self._input_arguments
 
     @object_id.setter
     def object_id(self, val):
@@ -2881,6 +3448,9 @@ class UaCallMethodRequest(UaType):
         self._value.inputArguments = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCallMethodRequest) : NULL\n"
+        
         return ("(UaCallMethodRequest) :\n" +
                 "\t"*(n+1) + "object_id" + self._object_id.__str__(n+1) +
                 "\t"*(n+1) + "method_id" + self._method_id.__str__(n+1) +
@@ -2892,12 +3462,13 @@ class UaCallMethodRequest(UaType):
 class UaReadResponse(UaType):
     def __init__(self, val=ffi.new("UA_ReadResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaDataValue(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaDataValue(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2905,31 +3476,47 @@ class UaReadResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -2957,6 +3544,9 @@ class UaReadResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaReadResponse) : NULL\n"
+        
         return ("(UaReadResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -2969,13 +3559,14 @@ class UaReadResponse(UaType):
 class UaObjectTypeAttributes(UaType):
     def __init__(self, val=ffi.new("UA_ObjectTypeAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -2983,36 +3574,55 @@ class UaObjectTypeAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._is_abstract._value[0] = _val(val.isAbstract)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._is_abstract._value[0] = _val(val.isAbstract)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def is_abstract(self):
-        return self._is_abstract
+        if self._null:
+            return None
+        else:
+            return self._is_abstract
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -3045,6 +3655,9 @@ class UaObjectTypeAttributes(UaType):
         self._value.isAbstract = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaObjectTypeAttributes) : NULL\n"
+        
         return ("(UaObjectTypeAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -3058,8 +3671,9 @@ class UaObjectTypeAttributes(UaType):
 class UaCloseSessionResponse(UaType):
     def __init__(self, val=ffi.new("UA_CloseSessionResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3067,11 +3681,15 @@ class UaCloseSessionResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @response_header.setter
     def response_header(self, val):
@@ -3079,6 +3697,9 @@ class UaCloseSessionResponse(UaType):
         self._value.responseHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCloseSessionResponse) : NULL\n"
+        
         return ("(UaCloseSessionResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) + "\n")
 
@@ -3087,11 +3708,12 @@ class UaCloseSessionResponse(UaType):
 class UaSetPublishingModeRequest(UaType):
     def __init__(self, val=ffi.new("UA_SetPublishingModeRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._publishing_enabled = UaBoolean(val=val.publishingEnabled, is_pointer=False)
-        self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize, is_pointer=False)
-        self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._publishing_enabled = UaBoolean(val=val.publishingEnabled, is_pointer=False)
+            self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize, is_pointer=False)
+            self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3099,26 +3721,39 @@ class UaSetPublishingModeRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._publishing_enabled._value[0] = _val(val.publishingEnabled)
-        self._subscription_ids_size._value[0] = _val(val.subscriptionIdsSize)
-        self._subscription_ids._value = val.subscriptionIds
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._publishing_enabled._value[0] = _val(val.publishingEnabled)
+            self._subscription_ids_size._value[0] = _val(val.subscriptionIdsSize)
+            self._subscription_ids._value = val.subscriptionIds
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def publishing_enabled(self):
-        return self._publishing_enabled
+        if self._null:
+            return None
+        else:
+            return self._publishing_enabled
 
     @property
     def subscription_ids_size(self):
-        return self._subscription_ids_size
+        if self._null:
+            return None
+        else:
+            return self._subscription_ids_size
 
     @property
     def subscription_ids(self):
-        return self._subscription_ids
+        if self._null:
+            return None
+        else:
+            return self._subscription_ids
 
     @request_header.setter
     def request_header(self, val):
@@ -3141,6 +3776,9 @@ class UaSetPublishingModeRequest(UaType):
         self._value.subscriptionIds = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSetPublishingModeRequest) : NULL\n"
+        
         return ("(UaSetPublishingModeRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "publishing_enabled" + self._publishing_enabled.__str__(n+1) +
@@ -3152,10 +3790,11 @@ class UaSetPublishingModeRequest(UaType):
 class UaIssuedIdentityToken(UaType):
     def __init__(self, val=ffi.new("UA_IssuedIdentityToken*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._policy_id = UaString(val=val.policyId, is_pointer=False)
-        self._token_data = UaByteString(val=val.tokenData, is_pointer=False)
-        self._encryption_algorithm = UaString(val=val.encryptionAlgorithm, is_pointer=False)
+        
+        if not self._null:
+            self._policy_id = UaString(val=val.policyId, is_pointer=False)
+            self._token_data = UaByteString(val=val.tokenData, is_pointer=False)
+            self._encryption_algorithm = UaString(val=val.encryptionAlgorithm, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3163,21 +3802,31 @@ class UaIssuedIdentityToken(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._policy_id._value[0] = _val(val.policyId)
-        self._token_data._value[0] = _val(val.tokenData)
-        self._encryption_algorithm._value[0] = _val(val.encryptionAlgorithm)
+        if not _is_null(val):
+            self._policy_id._value[0] = _val(val.policyId)
+            self._token_data._value[0] = _val(val.tokenData)
+            self._encryption_algorithm._value[0] = _val(val.encryptionAlgorithm)
 
     @property
     def policy_id(self):
-        return self._policy_id
+        if self._null:
+            return None
+        else:
+            return self._policy_id
 
     @property
     def token_data(self):
-        return self._token_data
+        if self._null:
+            return None
+        else:
+            return self._token_data
 
     @property
     def encryption_algorithm(self):
-        return self._encryption_algorithm
+        if self._null:
+            return None
+        else:
+            return self._encryption_algorithm
 
     @policy_id.setter
     def policy_id(self, val):
@@ -3195,6 +3844,9 @@ class UaIssuedIdentityToken(UaType):
         self._value.encryptionAlgorithm = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaIssuedIdentityToken) : NULL\n"
+        
         return ("(UaIssuedIdentityToken) :\n" +
                 "\t"*(n+1) + "policy_id" + self._policy_id.__str__(n+1) +
                 "\t"*(n+1) + "token_data" + self._token_data.__str__(n+1) +
@@ -3205,12 +3857,13 @@ class UaIssuedIdentityToken(UaType):
 class UaDeleteMonitoredItemsResponse(UaType):
     def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3218,31 +3871,47 @@ class UaDeleteMonitoredItemsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -3270,6 +3939,9 @@ class UaDeleteMonitoredItemsResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteMonitoredItemsResponse) : NULL\n"
+        
         return ("(UaDeleteMonitoredItemsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -3282,11 +3954,12 @@ class UaDeleteMonitoredItemsResponse(UaType):
 class UaBrowseNextRequest(UaType):
     def __init__(self, val=ffi.new("UA_BrowseNextRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._release_continuation_points = UaBoolean(val=val.releaseContinuationPoints, is_pointer=False)
-        self._continuation_points_size = SizeT(val=val.continuationPointsSize, is_pointer=False)
-        self._continuation_points = UaByteString(val=val.continuationPoints, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._release_continuation_points = UaBoolean(val=val.releaseContinuationPoints, is_pointer=False)
+            self._continuation_points_size = SizeT(val=val.continuationPointsSize, is_pointer=False)
+            self._continuation_points = UaByteString(val=val.continuationPoints, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3294,26 +3967,39 @@ class UaBrowseNextRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._release_continuation_points._value[0] = _val(val.releaseContinuationPoints)
-        self._continuation_points_size._value[0] = _val(val.continuationPointsSize)
-        self._continuation_points._value = val.continuationPoints
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._release_continuation_points._value[0] = _val(val.releaseContinuationPoints)
+            self._continuation_points_size._value[0] = _val(val.continuationPointsSize)
+            self._continuation_points._value = val.continuationPoints
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def release_continuation_points(self):
-        return self._release_continuation_points
+        if self._null:
+            return None
+        else:
+            return self._release_continuation_points
 
     @property
     def continuation_points_size(self):
-        return self._continuation_points_size
+        if self._null:
+            return None
+        else:
+            return self._continuation_points_size
 
     @property
     def continuation_points(self):
-        return self._continuation_points
+        if self._null:
+            return None
+        else:
+            return self._continuation_points
 
     @request_header.setter
     def request_header(self, val):
@@ -3336,6 +4022,9 @@ class UaBrowseNextRequest(UaType):
         self._value.continuationPoints = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowseNextRequest) : NULL\n"
+        
         return ("(UaBrowseNextRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "release_continuation_points" + self._release_continuation_points.__str__(n+1) +
@@ -3347,14 +4036,15 @@ class UaBrowseNextRequest(UaType):
 class UaModifySubscriptionRequest(UaType):
     def __init__(self, val=ffi.new("UA_ModifySubscriptionRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._requested_publishing_interval = UaDouble(val=val.requestedPublishingInterval, is_pointer=False)
-        self._requested_lifetime_count = UaUInt32(val=val.requestedLifetimeCount, is_pointer=False)
-        self._requested_max_keep_alive_count = UaUInt32(val=val.requestedMaxKeepAliveCount, is_pointer=False)
-        self._max_notifications_per_publish = UaUInt32(val=val.maxNotificationsPerPublish, is_pointer=False)
-        self._priority = UaByte(val=val.priority, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._requested_publishing_interval = UaDouble(val=val.requestedPublishingInterval, is_pointer=False)
+            self._requested_lifetime_count = UaUInt32(val=val.requestedLifetimeCount, is_pointer=False)
+            self._requested_max_keep_alive_count = UaUInt32(val=val.requestedMaxKeepAliveCount, is_pointer=False)
+            self._max_notifications_per_publish = UaUInt32(val=val.maxNotificationsPerPublish, is_pointer=False)
+            self._priority = UaByte(val=val.priority, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3362,41 +4052,63 @@ class UaModifySubscriptionRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._requested_publishing_interval._value[0] = _val(val.requestedPublishingInterval)
-        self._requested_lifetime_count._value[0] = _val(val.requestedLifetimeCount)
-        self._requested_max_keep_alive_count._value[0] = _val(val.requestedMaxKeepAliveCount)
-        self._max_notifications_per_publish._value[0] = _val(val.maxNotificationsPerPublish)
-        self._priority._value[0] = _val(val.priority)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._requested_publishing_interval._value[0] = _val(val.requestedPublishingInterval)
+            self._requested_lifetime_count._value[0] = _val(val.requestedLifetimeCount)
+            self._requested_max_keep_alive_count._value[0] = _val(val.requestedMaxKeepAliveCount)
+            self._max_notifications_per_publish._value[0] = _val(val.maxNotificationsPerPublish)
+            self._priority._value[0] = _val(val.priority)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def requested_publishing_interval(self):
-        return self._requested_publishing_interval
+        if self._null:
+            return None
+        else:
+            return self._requested_publishing_interval
 
     @property
     def requested_lifetime_count(self):
-        return self._requested_lifetime_count
+        if self._null:
+            return None
+        else:
+            return self._requested_lifetime_count
 
     @property
     def requested_max_keep_alive_count(self):
-        return self._requested_max_keep_alive_count
+        if self._null:
+            return None
+        else:
+            return self._requested_max_keep_alive_count
 
     @property
     def max_notifications_per_publish(self):
-        return self._max_notifications_per_publish
+        if self._null:
+            return None
+        else:
+            return self._max_notifications_per_publish
 
     @property
     def priority(self):
-        return self._priority
+        if self._null:
+            return None
+        else:
+            return self._priority
 
     @request_header.setter
     def request_header(self, val):
@@ -3434,6 +4146,9 @@ class UaModifySubscriptionRequest(UaType):
         self._value.priority = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaModifySubscriptionRequest) : NULL\n"
+        
         return ("(UaModifySubscriptionRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -3448,13 +4163,14 @@ class UaModifySubscriptionRequest(UaType):
 class UaBrowseDescription(UaType):
     def __init__(self, val=ffi.new("UA_BrowseDescription*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
-        self._browse_direction = UaBrowseDirection(val=val.browseDirection, is_pointer=False)
-        self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
-        self._include_subtypes = UaBoolean(val=val.includeSubtypes, is_pointer=False)
-        self._node_class_mask = UaUInt32(val=val.nodeClassMask, is_pointer=False)
-        self._result_mask = UaUInt32(val=val.resultMask, is_pointer=False)
+        
+        if not self._null:
+            self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
+            self._browse_direction = UaBrowseDirection(val=val.browseDirection, is_pointer=False)
+            self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
+            self._include_subtypes = UaBoolean(val=val.includeSubtypes, is_pointer=False)
+            self._node_class_mask = UaUInt32(val=val.nodeClassMask, is_pointer=False)
+            self._result_mask = UaUInt32(val=val.resultMask, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3462,36 +4178,55 @@ class UaBrowseDescription(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._node_id._value[0] = _val(val.nodeId)
-        self._browse_direction._value[0] = _val(val.browseDirection)
-        self._reference_type_id._value[0] = _val(val.referenceTypeId)
-        self._include_subtypes._value[0] = _val(val.includeSubtypes)
-        self._node_class_mask._value[0] = _val(val.nodeClassMask)
-        self._result_mask._value[0] = _val(val.resultMask)
+        if not _is_null(val):
+            self._node_id._value[0] = _val(val.nodeId)
+            self._browse_direction._value[0] = _val(val.browseDirection)
+            self._reference_type_id._value[0] = _val(val.referenceTypeId)
+            self._include_subtypes._value[0] = _val(val.includeSubtypes)
+            self._node_class_mask._value[0] = _val(val.nodeClassMask)
+            self._result_mask._value[0] = _val(val.resultMask)
 
     @property
     def node_id(self):
-        return self._node_id
+        if self._null:
+            return None
+        else:
+            return self._node_id
 
     @property
     def browse_direction(self):
-        return self._browse_direction
+        if self._null:
+            return None
+        else:
+            return self._browse_direction
 
     @property
     def reference_type_id(self):
-        return self._reference_type_id
+        if self._null:
+            return None
+        else:
+            return self._reference_type_id
 
     @property
     def include_subtypes(self):
-        return self._include_subtypes
+        if self._null:
+            return None
+        else:
+            return self._include_subtypes
 
     @property
     def node_class_mask(self):
-        return self._node_class_mask
+        if self._null:
+            return None
+        else:
+            return self._node_class_mask
 
     @property
     def result_mask(self):
-        return self._result_mask
+        if self._null:
+            return None
+        else:
+            return self._result_mask
 
     @node_id.setter
     def node_id(self, val):
@@ -3524,6 +4259,9 @@ class UaBrowseDescription(UaType):
         self._value.resultMask = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowseDescription) : NULL\n"
+        
         return ("(UaBrowseDescription) :\n" +
                 "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
                 "\t"*(n+1) + "browse_direction" + self._browse_direction.__str__(n+1) +
@@ -3537,9 +4275,10 @@ class UaBrowseDescription(UaType):
 class UaSignedSoftwareCertificate(UaType):
     def __init__(self, val=ffi.new("UA_SignedSoftwareCertificate*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._certificate_data = UaByteString(val=val.certificateData, is_pointer=False)
-        self._signature = UaByteString(val=val.signature, is_pointer=False)
+        
+        if not self._null:
+            self._certificate_data = UaByteString(val=val.certificateData, is_pointer=False)
+            self._signature = UaByteString(val=val.signature, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3547,16 +4286,23 @@ class UaSignedSoftwareCertificate(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._certificate_data._value[0] = _val(val.certificateData)
-        self._signature._value[0] = _val(val.signature)
+        if not _is_null(val):
+            self._certificate_data._value[0] = _val(val.certificateData)
+            self._signature._value[0] = _val(val.signature)
 
     @property
     def certificate_data(self):
-        return self._certificate_data
+        if self._null:
+            return None
+        else:
+            return self._certificate_data
 
     @property
     def signature(self):
-        return self._signature
+        if self._null:
+            return None
+        else:
+            return self._signature
 
     @certificate_data.setter
     def certificate_data(self, val):
@@ -3569,6 +4315,9 @@ class UaSignedSoftwareCertificate(UaType):
         self._value.signature = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSignedSoftwareCertificate) : NULL\n"
+        
         return ("(UaSignedSoftwareCertificate) :\n" +
                 "\t"*(n+1) + "certificate_data" + self._certificate_data.__str__(n+1) +
                 "\t"*(n+1) + "signature" + self._signature.__str__(n+1) + "\n")
@@ -3578,9 +4327,10 @@ class UaSignedSoftwareCertificate(UaType):
 class UaBrowsePathTarget(UaType):
     def __init__(self, val=ffi.new("UA_BrowsePathTarget*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._target_id = UaExpandedNodeId(val=val.targetId, is_pointer=False)
-        self._remaining_path_index = UaUInt32(val=val.remainingPathIndex, is_pointer=False)
+        
+        if not self._null:
+            self._target_id = UaExpandedNodeId(val=val.targetId, is_pointer=False)
+            self._remaining_path_index = UaUInt32(val=val.remainingPathIndex, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3588,16 +4338,23 @@ class UaBrowsePathTarget(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._target_id._value[0] = _val(val.targetId)
-        self._remaining_path_index._value[0] = _val(val.remainingPathIndex)
+        if not _is_null(val):
+            self._target_id._value[0] = _val(val.targetId)
+            self._remaining_path_index._value[0] = _val(val.remainingPathIndex)
 
     @property
     def target_id(self):
-        return self._target_id
+        if self._null:
+            return None
+        else:
+            return self._target_id
 
     @property
     def remaining_path_index(self):
-        return self._remaining_path_index
+        if self._null:
+            return None
+        else:
+            return self._remaining_path_index
 
     @target_id.setter
     def target_id(self, val):
@@ -3610,6 +4367,9 @@ class UaBrowsePathTarget(UaType):
         self._value.remainingPathIndex = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowsePathTarget) : NULL\n"
+        
         return ("(UaBrowsePathTarget) :\n" +
                 "\t"*(n+1) + "target_id" + self._target_id.__str__(n+1) +
                 "\t"*(n+1) + "remaining_path_index" + self._remaining_path_index.__str__(n+1) + "\n")
@@ -3619,12 +4379,13 @@ class UaBrowsePathTarget(UaType):
 class UaWriteResponse(UaType):
     def __init__(self, val=ffi.new("UA_WriteResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3632,31 +4393,47 @@ class UaWriteResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -3684,6 +4461,9 @@ class UaWriteResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaWriteResponse) : NULL\n"
+        
         return ("(UaWriteResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -3696,9 +4476,10 @@ class UaWriteResponse(UaType):
 class UaAddNodesResult(UaType):
     def __init__(self, val=ffi.new("UA_AddNodesResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._added_node_id = UaNodeId(val=val.addedNodeId, is_pointer=False)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._added_node_id = UaNodeId(val=val.addedNodeId, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3706,16 +4487,23 @@ class UaAddNodesResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._added_node_id._value[0] = _val(val.addedNodeId)
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._added_node_id._value[0] = _val(val.addedNodeId)
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def added_node_id(self):
-        return self._added_node_id
+        if self._null:
+            return None
+        else:
+            return self._added_node_id
 
     @status_code.setter
     def status_code(self, val):
@@ -3728,6 +4516,9 @@ class UaAddNodesResult(UaType):
         self._value.addedNodeId = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddNodesResult) : NULL\n"
+        
         return ("(UaAddNodesResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "added_node_id" + self._added_node_id.__str__(n+1) + "\n")
@@ -3737,13 +4528,14 @@ class UaAddNodesResult(UaType):
 class UaAddReferencesItem(UaType):
     def __init__(self, val=ffi.new("UA_AddReferencesItem*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._source_node_id = UaNodeId(val=val.sourceNodeId, is_pointer=False)
-        self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
-        self._is_forward = UaBoolean(val=val.isForward, is_pointer=False)
-        self._target_server_uri = UaString(val=val.targetServerUri, is_pointer=False)
-        self._target_node_id = UaExpandedNodeId(val=val.targetNodeId, is_pointer=False)
-        self._target_node_class = UaNodeClass(val=val.targetNodeClass, is_pointer=False)
+        
+        if not self._null:
+            self._source_node_id = UaNodeId(val=val.sourceNodeId, is_pointer=False)
+            self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
+            self._is_forward = UaBoolean(val=val.isForward, is_pointer=False)
+            self._target_server_uri = UaString(val=val.targetServerUri, is_pointer=False)
+            self._target_node_id = UaExpandedNodeId(val=val.targetNodeId, is_pointer=False)
+            self._target_node_class = UaNodeClass(val=val.targetNodeClass, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3751,36 +4543,55 @@ class UaAddReferencesItem(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._source_node_id._value[0] = _val(val.sourceNodeId)
-        self._reference_type_id._value[0] = _val(val.referenceTypeId)
-        self._is_forward._value[0] = _val(val.isForward)
-        self._target_server_uri._value[0] = _val(val.targetServerUri)
-        self._target_node_id._value[0] = _val(val.targetNodeId)
-        self._target_node_class._value[0] = _val(val.targetNodeClass)
+        if not _is_null(val):
+            self._source_node_id._value[0] = _val(val.sourceNodeId)
+            self._reference_type_id._value[0] = _val(val.referenceTypeId)
+            self._is_forward._value[0] = _val(val.isForward)
+            self._target_server_uri._value[0] = _val(val.targetServerUri)
+            self._target_node_id._value[0] = _val(val.targetNodeId)
+            self._target_node_class._value[0] = _val(val.targetNodeClass)
 
     @property
     def source_node_id(self):
-        return self._source_node_id
+        if self._null:
+            return None
+        else:
+            return self._source_node_id
 
     @property
     def reference_type_id(self):
-        return self._reference_type_id
+        if self._null:
+            return None
+        else:
+            return self._reference_type_id
 
     @property
     def is_forward(self):
-        return self._is_forward
+        if self._null:
+            return None
+        else:
+            return self._is_forward
 
     @property
     def target_server_uri(self):
-        return self._target_server_uri
+        if self._null:
+            return None
+        else:
+            return self._target_server_uri
 
     @property
     def target_node_id(self):
-        return self._target_node_id
+        if self._null:
+            return None
+        else:
+            return self._target_node_id
 
     @property
     def target_node_class(self):
-        return self._target_node_class
+        if self._null:
+            return None
+        else:
+            return self._target_node_class
 
     @source_node_id.setter
     def source_node_id(self, val):
@@ -3813,6 +4624,9 @@ class UaAddReferencesItem(UaType):
         self._value.targetNodeClass = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddReferencesItem) : NULL\n"
+        
         return ("(UaAddReferencesItem) :\n" +
                 "\t"*(n+1) + "source_node_id" + self._source_node_id.__str__(n+1) +
                 "\t"*(n+1) + "reference_type_id" + self._reference_type_id.__str__(n+1) +
@@ -3826,12 +4640,13 @@ class UaAddReferencesItem(UaType):
 class UaDeleteReferencesResponse(UaType):
     def __init__(self, val=ffi.new("UA_DeleteReferencesResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3839,31 +4654,47 @@ class UaDeleteReferencesResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -3891,6 +4722,9 @@ class UaDeleteReferencesResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteReferencesResponse) : NULL\n"
+        
         return ("(UaDeleteReferencesResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -3903,11 +4737,12 @@ class UaDeleteReferencesResponse(UaType):
 class UaRelativePathElement(UaType):
     def __init__(self, val=ffi.new("UA_RelativePathElement*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
-        self._is_inverse = UaBoolean(val=val.isInverse, is_pointer=False)
-        self._include_subtypes = UaBoolean(val=val.includeSubtypes, is_pointer=False)
-        self._target_name = UaQualifiedName(val=val.targetName, is_pointer=False)
+        
+        if not self._null:
+            self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
+            self._is_inverse = UaBoolean(val=val.isInverse, is_pointer=False)
+            self._include_subtypes = UaBoolean(val=val.includeSubtypes, is_pointer=False)
+            self._target_name = UaQualifiedName(val=val.targetName, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3915,26 +4750,39 @@ class UaRelativePathElement(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._reference_type_id._value[0] = _val(val.referenceTypeId)
-        self._is_inverse._value[0] = _val(val.isInverse)
-        self._include_subtypes._value[0] = _val(val.includeSubtypes)
-        self._target_name._value[0] = _val(val.targetName)
+        if not _is_null(val):
+            self._reference_type_id._value[0] = _val(val.referenceTypeId)
+            self._is_inverse._value[0] = _val(val.isInverse)
+            self._include_subtypes._value[0] = _val(val.includeSubtypes)
+            self._target_name._value[0] = _val(val.targetName)
 
     @property
     def reference_type_id(self):
-        return self._reference_type_id
+        if self._null:
+            return None
+        else:
+            return self._reference_type_id
 
     @property
     def is_inverse(self):
-        return self._is_inverse
+        if self._null:
+            return None
+        else:
+            return self._is_inverse
 
     @property
     def include_subtypes(self):
-        return self._include_subtypes
+        if self._null:
+            return None
+        else:
+            return self._include_subtypes
 
     @property
     def target_name(self):
-        return self._target_name
+        if self._null:
+            return None
+        else:
+            return self._target_name
 
     @reference_type_id.setter
     def reference_type_id(self, val):
@@ -3957,6 +4805,9 @@ class UaRelativePathElement(UaType):
         self._value.targetName = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRelativePathElement) : NULL\n"
+        
         return ("(UaRelativePathElement) :\n" +
                 "\t"*(n+1) + "reference_type_id" + self._reference_type_id.__str__(n+1) +
                 "\t"*(n+1) + "is_inverse" + self._is_inverse.__str__(n+1) +
@@ -3968,9 +4819,10 @@ class UaRelativePathElement(UaType):
 class UaSubscriptionAcknowledgement(UaType):
     def __init__(self, val=ffi.new("UA_SubscriptionAcknowledgement*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._sequence_number = UaUInt32(val=val.sequenceNumber, is_pointer=False)
+        
+        if not self._null:
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._sequence_number = UaUInt32(val=val.sequenceNumber, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -3978,16 +4830,23 @@ class UaSubscriptionAcknowledgement(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._sequence_number._value[0] = _val(val.sequenceNumber)
+        if not _is_null(val):
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._sequence_number._value[0] = _val(val.sequenceNumber)
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def sequence_number(self):
-        return self._sequence_number
+        if self._null:
+            return None
+        else:
+            return self._sequence_number
 
     @subscription_id.setter
     def subscription_id(self, val):
@@ -4000,6 +4859,9 @@ class UaSubscriptionAcknowledgement(UaType):
         self._value.sequenceNumber = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSubscriptionAcknowledgement) : NULL\n"
+        
         return ("(UaSubscriptionAcknowledgement) :\n" +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
                 "\t"*(n+1) + "sequence_number" + self._sequence_number.__str__(n+1) + "\n")
@@ -4009,10 +4871,11 @@ class UaSubscriptionAcknowledgement(UaType):
 class UaTransferResult(UaType):
     def __init__(self, val=ffi.new("UA_TransferResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._available_sequence_numbers_size = SizeT(val=val.availableSequenceNumbersSize, is_pointer=False)
-        self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._available_sequence_numbers_size = SizeT(val=val.availableSequenceNumbersSize, is_pointer=False)
+            self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4020,21 +4883,31 @@ class UaTransferResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._available_sequence_numbers_size._value[0] = _val(val.availableSequenceNumbersSize)
-        self._available_sequence_numbers._value = val.availableSequenceNumbers
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._available_sequence_numbers_size._value[0] = _val(val.availableSequenceNumbersSize)
+            self._available_sequence_numbers._value = val.availableSequenceNumbers
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def available_sequence_numbers_size(self):
-        return self._available_sequence_numbers_size
+        if self._null:
+            return None
+        else:
+            return self._available_sequence_numbers_size
 
     @property
     def available_sequence_numbers(self):
-        return self._available_sequence_numbers
+        if self._null:
+            return None
+        else:
+            return self._available_sequence_numbers
 
     @status_code.setter
     def status_code(self, val):
@@ -4052,6 +4925,9 @@ class UaTransferResult(UaType):
         self._value.availableSequenceNumbers = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaTransferResult) : NULL\n"
+        
         return ("(UaTransferResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "available_sequence_numbers_size" + self._available_sequence_numbers_size.__str__(n+1) +
@@ -4062,12 +4938,13 @@ class UaTransferResult(UaType):
 class UaCreateMonitoredItemsResponse(UaType):
     def __init__(self, val=ffi.new("UA_CreateMonitoredItemsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaMonitoredItemCreateResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaMonitoredItemCreateResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4075,31 +4952,47 @@ class UaCreateMonitoredItemsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -4127,6 +5020,9 @@ class UaCreateMonitoredItemsResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCreateMonitoredItemsResponse) : NULL\n"
+        
         return ("(UaCreateMonitoredItemsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -4139,12 +5035,13 @@ class UaCreateMonitoredItemsResponse(UaType):
 class UaDeleteReferencesItem(UaType):
     def __init__(self, val=ffi.new("UA_DeleteReferencesItem*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._source_node_id = UaNodeId(val=val.sourceNodeId, is_pointer=False)
-        self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
-        self._is_forward = UaBoolean(val=val.isForward, is_pointer=False)
-        self._target_node_id = UaExpandedNodeId(val=val.targetNodeId, is_pointer=False)
-        self._delete_bidirectional = UaBoolean(val=val.deleteBidirectional, is_pointer=False)
+        
+        if not self._null:
+            self._source_node_id = UaNodeId(val=val.sourceNodeId, is_pointer=False)
+            self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
+            self._is_forward = UaBoolean(val=val.isForward, is_pointer=False)
+            self._target_node_id = UaExpandedNodeId(val=val.targetNodeId, is_pointer=False)
+            self._delete_bidirectional = UaBoolean(val=val.deleteBidirectional, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4152,31 +5049,47 @@ class UaDeleteReferencesItem(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._source_node_id._value[0] = _val(val.sourceNodeId)
-        self._reference_type_id._value[0] = _val(val.referenceTypeId)
-        self._is_forward._value[0] = _val(val.isForward)
-        self._target_node_id._value[0] = _val(val.targetNodeId)
-        self._delete_bidirectional._value[0] = _val(val.deleteBidirectional)
+        if not _is_null(val):
+            self._source_node_id._value[0] = _val(val.sourceNodeId)
+            self._reference_type_id._value[0] = _val(val.referenceTypeId)
+            self._is_forward._value[0] = _val(val.isForward)
+            self._target_node_id._value[0] = _val(val.targetNodeId)
+            self._delete_bidirectional._value[0] = _val(val.deleteBidirectional)
 
     @property
     def source_node_id(self):
-        return self._source_node_id
+        if self._null:
+            return None
+        else:
+            return self._source_node_id
 
     @property
     def reference_type_id(self):
-        return self._reference_type_id
+        if self._null:
+            return None
+        else:
+            return self._reference_type_id
 
     @property
     def is_forward(self):
-        return self._is_forward
+        if self._null:
+            return None
+        else:
+            return self._is_forward
 
     @property
     def target_node_id(self):
-        return self._target_node_id
+        if self._null:
+            return None
+        else:
+            return self._target_node_id
 
     @property
     def delete_bidirectional(self):
-        return self._delete_bidirectional
+        if self._null:
+            return None
+        else:
+            return self._delete_bidirectional
 
     @source_node_id.setter
     def source_node_id(self, val):
@@ -4204,6 +5117,9 @@ class UaDeleteReferencesItem(UaType):
         self._value.deleteBidirectional = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteReferencesItem) : NULL\n"
+        
         return ("(UaDeleteReferencesItem) :\n" +
                 "\t"*(n+1) + "source_node_id" + self._source_node_id.__str__(n+1) +
                 "\t"*(n+1) + "reference_type_id" + self._reference_type_id.__str__(n+1) +
@@ -4216,11 +5132,12 @@ class UaDeleteReferencesItem(UaType):
 class UaWriteValue(UaType):
     def __init__(self, val=ffi.new("UA_WriteValue*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
-        self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
-        self._index_range = UaString(val=val.indexRange, is_pointer=False)
-        self._value = UaDataValue(val=val.value, is_pointer=False)
+        
+        if not self._null:
+            self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
+            self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
+            self._index_range = UaString(val=val.indexRange, is_pointer=False)
+            self._value = UaDataValue(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4228,26 +5145,39 @@ class UaWriteValue(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._node_id._value[0] = _val(val.nodeId)
-        self._attribute_id._value[0] = _val(val.attributeId)
-        self._index_range._value[0] = _val(val.indexRange)
-        self._value._value[0] = _val(val.value)
+        if not _is_null(val):
+            self._node_id._value[0] = _val(val.nodeId)
+            self._attribute_id._value[0] = _val(val.attributeId)
+            self._index_range._value[0] = _val(val.indexRange)
+            self._value._value[0] = _val(val.value)
 
     @property
     def node_id(self):
-        return self._node_id
+        if self._null:
+            return None
+        else:
+            return self._node_id
 
     @property
     def attribute_id(self):
-        return self._attribute_id
+        if self._null:
+            return None
+        else:
+            return self._attribute_id
 
     @property
     def index_range(self):
-        return self._index_range
+        if self._null:
+            return None
+        else:
+            return self._index_range
 
     @property
     def value(self):
-        return self._value
+        if self._null:
+            return None
+        else:
+            return self._value
 
     @node_id.setter
     def node_id(self, val):
@@ -4270,6 +5200,9 @@ class UaWriteValue(UaType):
         self._value.value = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaWriteValue) : NULL\n"
+        
         return ("(UaWriteValue) :\n" +
                 "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
                 "\t"*(n+1) + "attribute_id" + self._attribute_id.__str__(n+1) +
@@ -4281,13 +5214,14 @@ class UaWriteValue(UaType):
 class UaDataTypeAttributes(UaType):
     def __init__(self, val=ffi.new("UA_DataTypeAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4295,36 +5229,55 @@ class UaDataTypeAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._is_abstract._value[0] = _val(val.isAbstract)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._is_abstract._value[0] = _val(val.isAbstract)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def is_abstract(self):
-        return self._is_abstract
+        if self._null:
+            return None
+        else:
+            return self._is_abstract
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -4357,6 +5310,9 @@ class UaDataTypeAttributes(UaType):
         self._value.isAbstract = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDataTypeAttributes) : NULL\n"
+        
         return ("(UaDataTypeAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -4370,12 +5326,13 @@ class UaDataTypeAttributes(UaType):
 class UaTransferSubscriptionsResponse(UaType):
     def __init__(self, val=ffi.new("UA_TransferSubscriptionsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaTransferResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaTransferResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4383,31 +5340,47 @@ class UaTransferSubscriptionsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -4435,6 +5408,9 @@ class UaTransferSubscriptionsResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaTransferSubscriptionsResponse) : NULL\n"
+        
         return ("(UaTransferSubscriptionsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -4447,12 +5423,13 @@ class UaTransferSubscriptionsResponse(UaType):
 class UaAddReferencesResponse(UaType):
     def __init__(self, val=ffi.new("UA_AddReferencesResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4460,31 +5437,47 @@ class UaAddReferencesResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -4512,6 +5505,9 @@ class UaAddReferencesResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddReferencesResponse) : NULL\n"
+        
         return ("(UaAddReferencesResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -4524,13 +5520,14 @@ class UaAddReferencesResponse(UaType):
 class UaBuildInfo(UaType):
     def __init__(self, val=ffi.new("UA_BuildInfo*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._product_uri = UaString(val=val.productUri, is_pointer=False)
-        self._manufacturer_name = UaString(val=val.manufacturerName, is_pointer=False)
-        self._product_name = UaString(val=val.productName, is_pointer=False)
-        self._software_version = UaString(val=val.softwareVersion, is_pointer=False)
-        self._build_number = UaString(val=val.buildNumber, is_pointer=False)
-        self._build_date = UaDateTime(val=val.buildDate, is_pointer=False)
+        
+        if not self._null:
+            self._product_uri = UaString(val=val.productUri, is_pointer=False)
+            self._manufacturer_name = UaString(val=val.manufacturerName, is_pointer=False)
+            self._product_name = UaString(val=val.productName, is_pointer=False)
+            self._software_version = UaString(val=val.softwareVersion, is_pointer=False)
+            self._build_number = UaString(val=val.buildNumber, is_pointer=False)
+            self._build_date = UaDateTime(val=val.buildDate, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4538,36 +5535,55 @@ class UaBuildInfo(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._product_uri._value[0] = _val(val.productUri)
-        self._manufacturer_name._value[0] = _val(val.manufacturerName)
-        self._product_name._value[0] = _val(val.productName)
-        self._software_version._value[0] = _val(val.softwareVersion)
-        self._build_number._value[0] = _val(val.buildNumber)
-        self._build_date._value[0] = _val(val.buildDate)
+        if not _is_null(val):
+            self._product_uri._value[0] = _val(val.productUri)
+            self._manufacturer_name._value[0] = _val(val.manufacturerName)
+            self._product_name._value[0] = _val(val.productName)
+            self._software_version._value[0] = _val(val.softwareVersion)
+            self._build_number._value[0] = _val(val.buildNumber)
+            self._build_date._value[0] = _val(val.buildDate)
 
     @property
     def product_uri(self):
-        return self._product_uri
+        if self._null:
+            return None
+        else:
+            return self._product_uri
 
     @property
     def manufacturer_name(self):
-        return self._manufacturer_name
+        if self._null:
+            return None
+        else:
+            return self._manufacturer_name
 
     @property
     def product_name(self):
-        return self._product_name
+        if self._null:
+            return None
+        else:
+            return self._product_name
 
     @property
     def software_version(self):
-        return self._software_version
+        if self._null:
+            return None
+        else:
+            return self._software_version
 
     @property
     def build_number(self):
-        return self._build_number
+        if self._null:
+            return None
+        else:
+            return self._build_number
 
     @property
     def build_date(self):
-        return self._build_date
+        if self._null:
+            return None
+        else:
+            return self._build_date
 
     @product_uri.setter
     def product_uri(self, val):
@@ -4600,6 +5616,9 @@ class UaBuildInfo(UaType):
         self._value.buildDate = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBuildInfo) : NULL\n"
+        
         return ("(UaBuildInfo) :\n" +
                 "\t"*(n+1) + "product_uri" + self._product_uri.__str__(n+1) +
                 "\t"*(n+1) + "manufacturer_name" + self._manufacturer_name.__str__(n+1) +
@@ -4613,12 +5632,13 @@ class UaBuildInfo(UaType):
 class UaMonitoringParameters(UaType):
     def __init__(self, val=ffi.new("UA_MonitoringParameters*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
-        self._sampling_interval = UaDouble(val=val.samplingInterval, is_pointer=False)
-        self._filter = UaExtensionObject(val=val.filter, is_pointer=False)
-        self._queue_size = UaUInt32(val=val.queueSize, is_pointer=False)
-        self._discard_oldest = UaBoolean(val=val.discardOldest, is_pointer=False)
+        
+        if not self._null:
+            self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
+            self._sampling_interval = UaDouble(val=val.samplingInterval, is_pointer=False)
+            self._filter = UaExtensionObject(val=val.filter, is_pointer=False)
+            self._queue_size = UaUInt32(val=val.queueSize, is_pointer=False)
+            self._discard_oldest = UaBoolean(val=val.discardOldest, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4626,31 +5646,47 @@ class UaMonitoringParameters(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._client_handle._value[0] = _val(val.clientHandle)
-        self._sampling_interval._value[0] = _val(val.samplingInterval)
-        self._filter._value[0] = _val(val.filter)
-        self._queue_size._value[0] = _val(val.queueSize)
-        self._discard_oldest._value[0] = _val(val.discardOldest)
+        if not _is_null(val):
+            self._client_handle._value[0] = _val(val.clientHandle)
+            self._sampling_interval._value[0] = _val(val.samplingInterval)
+            self._filter._value[0] = _val(val.filter)
+            self._queue_size._value[0] = _val(val.queueSize)
+            self._discard_oldest._value[0] = _val(val.discardOldest)
 
     @property
     def client_handle(self):
-        return self._client_handle
+        if self._null:
+            return None
+        else:
+            return self._client_handle
 
     @property
     def sampling_interval(self):
-        return self._sampling_interval
+        if self._null:
+            return None
+        else:
+            return self._sampling_interval
 
     @property
     def filter(self):
-        return self._filter
+        if self._null:
+            return None
+        else:
+            return self._filter
 
     @property
     def queue_size(self):
-        return self._queue_size
+        if self._null:
+            return None
+        else:
+            return self._queue_size
 
     @property
     def discard_oldest(self):
-        return self._discard_oldest
+        if self._null:
+            return None
+        else:
+            return self._discard_oldest
 
     @client_handle.setter
     def client_handle(self, val):
@@ -4678,6 +5714,9 @@ class UaMonitoringParameters(UaType):
         self._value.discardOldest = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMonitoringParameters) : NULL\n"
+        
         return ("(UaMonitoringParameters) :\n" +
                 "\t"*(n+1) + "client_handle" + self._client_handle.__str__(n+1) +
                 "\t"*(n+1) + "sampling_interval" + self._sampling_interval.__str__(n+1) +
@@ -4690,9 +5729,10 @@ class UaMonitoringParameters(UaType):
 class UaDoubleComplexNumberType(UaType):
     def __init__(self, val=ffi.new("UA_DoubleComplexNumberType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._real = UaDouble(val=val.real, is_pointer=False)
-        self._imaginary = UaDouble(val=val.imaginary, is_pointer=False)
+        
+        if not self._null:
+            self._real = UaDouble(val=val.real, is_pointer=False)
+            self._imaginary = UaDouble(val=val.imaginary, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4700,16 +5740,23 @@ class UaDoubleComplexNumberType(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._real._value[0] = _val(val.real)
-        self._imaginary._value[0] = _val(val.imaginary)
+        if not _is_null(val):
+            self._real._value[0] = _val(val.real)
+            self._imaginary._value[0] = _val(val.imaginary)
 
     @property
     def real(self):
-        return self._real
+        if self._null:
+            return None
+        else:
+            return self._real
 
     @property
     def imaginary(self):
-        return self._imaginary
+        if self._null:
+            return None
+        else:
+            return self._imaginary
 
     @real.setter
     def real(self, val):
@@ -4722,6 +5769,9 @@ class UaDoubleComplexNumberType(UaType):
         self._value.imaginary = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDoubleComplexNumberType) : NULL\n"
+        
         return ("(UaDoubleComplexNumberType) :\n" +
                 "\t"*(n+1) + "real" + self._real.__str__(n+1) +
                 "\t"*(n+1) + "imaginary" + self._imaginary.__str__(n+1) + "\n")
@@ -4731,9 +5781,10 @@ class UaDoubleComplexNumberType(UaType):
 class UaDeleteNodesItem(UaType):
     def __init__(self, val=ffi.new("UA_DeleteNodesItem*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
-        self._delete_target_references = UaBoolean(val=val.deleteTargetReferences, is_pointer=False)
+        
+        if not self._null:
+            self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
+            self._delete_target_references = UaBoolean(val=val.deleteTargetReferences, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4741,16 +5792,23 @@ class UaDeleteNodesItem(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._node_id._value[0] = _val(val.nodeId)
-        self._delete_target_references._value[0] = _val(val.deleteTargetReferences)
+        if not _is_null(val):
+            self._node_id._value[0] = _val(val.nodeId)
+            self._delete_target_references._value[0] = _val(val.deleteTargetReferences)
 
     @property
     def node_id(self):
-        return self._node_id
+        if self._null:
+            return None
+        else:
+            return self._node_id
 
     @property
     def delete_target_references(self):
-        return self._delete_target_references
+        if self._null:
+            return None
+        else:
+            return self._delete_target_references
 
     @node_id.setter
     def node_id(self, val):
@@ -4763,6 +5821,9 @@ class UaDeleteNodesItem(UaType):
         self._value.deleteTargetReferences = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteNodesItem) : NULL\n"
+        
         return ("(UaDeleteNodesItem) :\n" +
                 "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
                 "\t"*(n+1) + "delete_target_references" + self._delete_target_references.__str__(n+1) + "\n")
@@ -4772,11 +5833,12 @@ class UaDeleteNodesItem(UaType):
 class UaReadValueId(UaType):
     def __init__(self, val=ffi.new("UA_ReadValueId*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
-        self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
-        self._index_range = UaString(val=val.indexRange, is_pointer=False)
-        self._data_encoding = UaQualifiedName(val=val.dataEncoding, is_pointer=False)
+        
+        if not self._null:
+            self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
+            self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
+            self._index_range = UaString(val=val.indexRange, is_pointer=False)
+            self._data_encoding = UaQualifiedName(val=val.dataEncoding, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4784,26 +5846,39 @@ class UaReadValueId(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._node_id._value[0] = _val(val.nodeId)
-        self._attribute_id._value[0] = _val(val.attributeId)
-        self._index_range._value[0] = _val(val.indexRange)
-        self._data_encoding._value[0] = _val(val.dataEncoding)
+        if not _is_null(val):
+            self._node_id._value[0] = _val(val.nodeId)
+            self._attribute_id._value[0] = _val(val.attributeId)
+            self._index_range._value[0] = _val(val.indexRange)
+            self._data_encoding._value[0] = _val(val.dataEncoding)
 
     @property
     def node_id(self):
-        return self._node_id
+        if self._null:
+            return None
+        else:
+            return self._node_id
 
     @property
     def attribute_id(self):
-        return self._attribute_id
+        if self._null:
+            return None
+        else:
+            return self._attribute_id
 
     @property
     def index_range(self):
-        return self._index_range
+        if self._null:
+            return None
+        else:
+            return self._index_range
 
     @property
     def data_encoding(self):
-        return self._data_encoding
+        if self._null:
+            return None
+        else:
+            return self._data_encoding
 
     @node_id.setter
     def node_id(self, val):
@@ -4826,6 +5901,9 @@ class UaReadValueId(UaType):
         self._value.dataEncoding = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaReadValueId) : NULL\n"
+        
         return ("(UaReadValueId) :\n" +
                 "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
                 "\t"*(n+1) + "attribute_id" + self._attribute_id.__str__(n+1) +
@@ -4837,10 +5915,11 @@ class UaReadValueId(UaType):
 class UaCallRequest(UaType):
     def __init__(self, val=ffi.new("UA_CallRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._methods_to_call_size = SizeT(val=val.methodsToCallSize, is_pointer=False)
-        self._methods_to_call = UaCallMethodRequest(val=val.methodsToCall, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._methods_to_call_size = SizeT(val=val.methodsToCallSize, is_pointer=False)
+            self._methods_to_call = UaCallMethodRequest(val=val.methodsToCall, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4848,21 +5927,31 @@ class UaCallRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._methods_to_call_size._value[0] = _val(val.methodsToCallSize)
-        self._methods_to_call._value = val.methodsToCall
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._methods_to_call_size._value[0] = _val(val.methodsToCallSize)
+            self._methods_to_call._value = val.methodsToCall
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def methods_to_call_size(self):
-        return self._methods_to_call_size
+        if self._null:
+            return None
+        else:
+            return self._methods_to_call_size
 
     @property
     def methods_to_call(self):
-        return self._methods_to_call
+        if self._null:
+            return None
+        else:
+            return self._methods_to_call
 
     @request_header.setter
     def request_header(self, val):
@@ -4880,6 +5969,9 @@ class UaCallRequest(UaType):
         self._value.methodsToCall = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCallRequest) : NULL\n"
+        
         return ("(UaCallRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "methods_to_call_size" + self._methods_to_call_size.__str__(n+1) +
@@ -4890,9 +5982,10 @@ class UaCallRequest(UaType):
 class UaRelativePath(UaType):
     def __init__(self, val=ffi.new("UA_RelativePath*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._elements_size = SizeT(val=val.elementsSize, is_pointer=False)
-        self._elements = UaRelativePathElement(val=val.elements, is_pointer=True)
+        
+        if not self._null:
+            self._elements_size = SizeT(val=val.elementsSize, is_pointer=False)
+            self._elements = UaRelativePathElement(val=val.elements, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4900,16 +5993,23 @@ class UaRelativePath(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._elements_size._value[0] = _val(val.elementsSize)
-        self._elements._value = val.elements
+        if not _is_null(val):
+            self._elements_size._value[0] = _val(val.elementsSize)
+            self._elements._value = val.elements
 
     @property
     def elements_size(self):
-        return self._elements_size
+        if self._null:
+            return None
+        else:
+            return self._elements_size
 
     @property
     def elements(self):
-        return self._elements
+        if self._null:
+            return None
+        else:
+            return self._elements
 
     @elements_size.setter
     def elements_size(self, val):
@@ -4922,6 +6022,9 @@ class UaRelativePath(UaType):
         self._value.elements = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRelativePath) : NULL\n"
+        
         return ("(UaRelativePath) :\n" +
                 "\t"*(n+1) + "elements_size" + self._elements_size.__str__(n+1) +
                 "\t"*(n+1) + "elements" + self._elements.__str__(n+1) + "\n")
@@ -4931,10 +6034,11 @@ class UaRelativePath(UaType):
 class UaDeleteNodesRequest(UaType):
     def __init__(self, val=ffi.new("UA_DeleteNodesRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._nodes_to_delete_size = SizeT(val=val.nodesToDeleteSize, is_pointer=False)
-        self._nodes_to_delete = UaDeleteNodesItem(val=val.nodesToDelete, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._nodes_to_delete_size = SizeT(val=val.nodesToDeleteSize, is_pointer=False)
+            self._nodes_to_delete = UaDeleteNodesItem(val=val.nodesToDelete, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4942,21 +6046,31 @@ class UaDeleteNodesRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._nodes_to_delete_size._value[0] = _val(val.nodesToDeleteSize)
-        self._nodes_to_delete._value = val.nodesToDelete
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._nodes_to_delete_size._value[0] = _val(val.nodesToDeleteSize)
+            self._nodes_to_delete._value = val.nodesToDelete
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def nodes_to_delete_size(self):
-        return self._nodes_to_delete_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_delete_size
 
     @property
     def nodes_to_delete(self):
-        return self._nodes_to_delete
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_delete
 
     @request_header.setter
     def request_header(self, val):
@@ -4974,6 +6088,9 @@ class UaDeleteNodesRequest(UaType):
         self._value.nodesToDelete = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteNodesRequest) : NULL\n"
+        
         return ("(UaDeleteNodesRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "nodes_to_delete_size" + self._nodes_to_delete_size.__str__(n+1) +
@@ -4984,9 +6101,10 @@ class UaDeleteNodesRequest(UaType):
 class UaMonitoredItemModifyRequest(UaType):
     def __init__(self, val=ffi.new("UA_MonitoredItemModifyRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._monitored_item_id = UaUInt32(val=val.monitoredItemId, is_pointer=False)
-        self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters, is_pointer=False)
+        
+        if not self._null:
+            self._monitored_item_id = UaUInt32(val=val.monitoredItemId, is_pointer=False)
+            self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -4994,16 +6112,23 @@ class UaMonitoredItemModifyRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._monitored_item_id._value[0] = _val(val.monitoredItemId)
-        self._requested_parameters._value[0] = _val(val.requestedParameters)
+        if not _is_null(val):
+            self._monitored_item_id._value[0] = _val(val.monitoredItemId)
+            self._requested_parameters._value[0] = _val(val.requestedParameters)
 
     @property
     def monitored_item_id(self):
-        return self._monitored_item_id
+        if self._null:
+            return None
+        else:
+            return self._monitored_item_id
 
     @property
     def requested_parameters(self):
-        return self._requested_parameters
+        if self._null:
+            return None
+        else:
+            return self._requested_parameters
 
     @monitored_item_id.setter
     def monitored_item_id(self, val):
@@ -5016,6 +6141,9 @@ class UaMonitoredItemModifyRequest(UaType):
         self._value.requestedParameters = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMonitoredItemModifyRequest) : NULL\n"
+        
         return ("(UaMonitoredItemModifyRequest) :\n" +
                 "\t"*(n+1) + "monitored_item_id" + self._monitored_item_id.__str__(n+1) +
                 "\t"*(n+1) + "requested_parameters" + self._requested_parameters.__str__(n+1) + "\n")
@@ -5025,12 +6153,13 @@ class UaMonitoredItemModifyRequest(UaType):
 class UaAggregateConfiguration(UaType):
     def __init__(self, val=ffi.new("UA_AggregateConfiguration*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._use_server_capabilities_defaults = UaBoolean(val=val.useServerCapabilitiesDefaults, is_pointer=False)
-        self._treat_uncertain_as_bad = UaBoolean(val=val.treatUncertainAsBad, is_pointer=False)
-        self._percent_data_bad = UaByte(val=val.percentDataBad, is_pointer=False)
-        self._percent_data_good = UaByte(val=val.percentDataGood, is_pointer=False)
-        self._use_sloped_extrapolation = UaBoolean(val=val.useSlopedExtrapolation, is_pointer=False)
+        
+        if not self._null:
+            self._use_server_capabilities_defaults = UaBoolean(val=val.useServerCapabilitiesDefaults, is_pointer=False)
+            self._treat_uncertain_as_bad = UaBoolean(val=val.treatUncertainAsBad, is_pointer=False)
+            self._percent_data_bad = UaByte(val=val.percentDataBad, is_pointer=False)
+            self._percent_data_good = UaByte(val=val.percentDataGood, is_pointer=False)
+            self._use_sloped_extrapolation = UaBoolean(val=val.useSlopedExtrapolation, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5038,31 +6167,47 @@ class UaAggregateConfiguration(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._use_server_capabilities_defaults._value[0] = _val(val.useServerCapabilitiesDefaults)
-        self._treat_uncertain_as_bad._value[0] = _val(val.treatUncertainAsBad)
-        self._percent_data_bad._value[0] = _val(val.percentDataBad)
-        self._percent_data_good._value[0] = _val(val.percentDataGood)
-        self._use_sloped_extrapolation._value[0] = _val(val.useSlopedExtrapolation)
+        if not _is_null(val):
+            self._use_server_capabilities_defaults._value[0] = _val(val.useServerCapabilitiesDefaults)
+            self._treat_uncertain_as_bad._value[0] = _val(val.treatUncertainAsBad)
+            self._percent_data_bad._value[0] = _val(val.percentDataBad)
+            self._percent_data_good._value[0] = _val(val.percentDataGood)
+            self._use_sloped_extrapolation._value[0] = _val(val.useSlopedExtrapolation)
 
     @property
     def use_server_capabilities_defaults(self):
-        return self._use_server_capabilities_defaults
+        if self._null:
+            return None
+        else:
+            return self._use_server_capabilities_defaults
 
     @property
     def treat_uncertain_as_bad(self):
-        return self._treat_uncertain_as_bad
+        if self._null:
+            return None
+        else:
+            return self._treat_uncertain_as_bad
 
     @property
     def percent_data_bad(self):
-        return self._percent_data_bad
+        if self._null:
+            return None
+        else:
+            return self._percent_data_bad
 
     @property
     def percent_data_good(self):
-        return self._percent_data_good
+        if self._null:
+            return None
+        else:
+            return self._percent_data_good
 
     @property
     def use_sloped_extrapolation(self):
-        return self._use_sloped_extrapolation
+        if self._null:
+            return None
+        else:
+            return self._use_sloped_extrapolation
 
     @use_server_capabilities_defaults.setter
     def use_server_capabilities_defaults(self, val):
@@ -5090,6 +6235,9 @@ class UaAggregateConfiguration(UaType):
         self._value.useSlopedExtrapolation = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAggregateConfiguration) : NULL\n"
+        
         return ("(UaAggregateConfiguration) :\n" +
                 "\t"*(n+1) + "use_server_capabilities_defaults" + self._use_server_capabilities_defaults.__str__(n+1) +
                 "\t"*(n+1) + "treat_uncertain_as_bad" + self._treat_uncertain_as_bad.__str__(n+1) +
@@ -5102,8 +6250,9 @@ class UaAggregateConfiguration(UaType):
 class UaUnregisterNodesResponse(UaType):
     def __init__(self, val=ffi.new("UA_UnregisterNodesResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5111,11 +6260,15 @@ class UaUnregisterNodesResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @response_header.setter
     def response_header(self, val):
@@ -5123,6 +6276,9 @@ class UaUnregisterNodesResponse(UaType):
         self._value.responseHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaUnregisterNodesResponse) : NULL\n"
+        
         return ("(UaUnregisterNodesResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) + "\n")
 
@@ -5131,11 +6287,12 @@ class UaUnregisterNodesResponse(UaType):
 class UaContentFilterResult(UaType):
     def __init__(self, val=ffi.new("UA_ContentFilterResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._element_results_size = SizeT(val=val.elementResultsSize, is_pointer=False)
-        self._element_results = UaContentFilterElementResult(val=val.elementResults, is_pointer=True)
-        self._element_diagnostic_infos_size = SizeT(val=val.elementDiagnosticInfosSize, is_pointer=False)
-        self._element_diagnostic_infos = UaDiagnosticInfo(val=val.elementDiagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._element_results_size = SizeT(val=val.elementResultsSize, is_pointer=False)
+            self._element_results = UaContentFilterElementResult(val=val.elementResults, is_pointer=True)
+            self._element_diagnostic_infos_size = SizeT(val=val.elementDiagnosticInfosSize, is_pointer=False)
+            self._element_diagnostic_infos = UaDiagnosticInfo(val=val.elementDiagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5143,26 +6300,39 @@ class UaContentFilterResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._element_results_size._value[0] = _val(val.elementResultsSize)
-        self._element_results._value = val.elementResults
-        self._element_diagnostic_infos_size._value[0] = _val(val.elementDiagnosticInfosSize)
-        self._element_diagnostic_infos._value = val.elementDiagnosticInfos
+        if not _is_null(val):
+            self._element_results_size._value[0] = _val(val.elementResultsSize)
+            self._element_results._value = val.elementResults
+            self._element_diagnostic_infos_size._value[0] = _val(val.elementDiagnosticInfosSize)
+            self._element_diagnostic_infos._value = val.elementDiagnosticInfos
 
     @property
     def element_results_size(self):
-        return self._element_results_size
+        if self._null:
+            return None
+        else:
+            return self._element_results_size
 
     @property
     def element_results(self):
-        return self._element_results
+        if self._null:
+            return None
+        else:
+            return self._element_results
 
     @property
     def element_diagnostic_infos_size(self):
-        return self._element_diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._element_diagnostic_infos_size
 
     @property
     def element_diagnostic_infos(self):
-        return self._element_diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._element_diagnostic_infos
 
     @element_results_size.setter
     def element_results_size(self, val):
@@ -5185,6 +6355,9 @@ class UaContentFilterResult(UaType):
         self._value.elementDiagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaContentFilterResult) : NULL\n"
+        
         return ("(UaContentFilterResult) :\n" +
                 "\t"*(n+1) + "element_results_size" + self._element_results_size.__str__(n+1) +
                 "\t"*(n+1) + "element_results" + self._element_results.__str__(n+1) +
@@ -5196,12 +6369,13 @@ class UaContentFilterResult(UaType):
 class UaUserTokenPolicy(UaType):
     def __init__(self, val=ffi.new("UA_UserTokenPolicy*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._policy_id = UaString(val=val.policyId, is_pointer=False)
-        self._token_type = UaUserTokenType(val=val.tokenType, is_pointer=False)
-        self._issued_token_type = UaString(val=val.issuedTokenType, is_pointer=False)
-        self._issuer_endpoint_url = UaString(val=val.issuerEndpointUrl, is_pointer=False)
-        self._security_policy_uri = UaString(val=val.securityPolicyUri, is_pointer=False)
+        
+        if not self._null:
+            self._policy_id = UaString(val=val.policyId, is_pointer=False)
+            self._token_type = UaUserTokenType(val=val.tokenType, is_pointer=False)
+            self._issued_token_type = UaString(val=val.issuedTokenType, is_pointer=False)
+            self._issuer_endpoint_url = UaString(val=val.issuerEndpointUrl, is_pointer=False)
+            self._security_policy_uri = UaString(val=val.securityPolicyUri, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5209,31 +6383,47 @@ class UaUserTokenPolicy(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._policy_id._value[0] = _val(val.policyId)
-        self._token_type._value[0] = _val(val.tokenType)
-        self._issued_token_type._value[0] = _val(val.issuedTokenType)
-        self._issuer_endpoint_url._value[0] = _val(val.issuerEndpointUrl)
-        self._security_policy_uri._value[0] = _val(val.securityPolicyUri)
+        if not _is_null(val):
+            self._policy_id._value[0] = _val(val.policyId)
+            self._token_type._value[0] = _val(val.tokenType)
+            self._issued_token_type._value[0] = _val(val.issuedTokenType)
+            self._issuer_endpoint_url._value[0] = _val(val.issuerEndpointUrl)
+            self._security_policy_uri._value[0] = _val(val.securityPolicyUri)
 
     @property
     def policy_id(self):
-        return self._policy_id
+        if self._null:
+            return None
+        else:
+            return self._policy_id
 
     @property
     def token_type(self):
-        return self._token_type
+        if self._null:
+            return None
+        else:
+            return self._token_type
 
     @property
     def issued_token_type(self):
-        return self._issued_token_type
+        if self._null:
+            return None
+        else:
+            return self._issued_token_type
 
     @property
     def issuer_endpoint_url(self):
-        return self._issuer_endpoint_url
+        if self._null:
+            return None
+        else:
+            return self._issuer_endpoint_url
 
     @property
     def security_policy_uri(self):
-        return self._security_policy_uri
+        if self._null:
+            return None
+        else:
+            return self._security_policy_uri
 
     @policy_id.setter
     def policy_id(self, val):
@@ -5261,6 +6451,9 @@ class UaUserTokenPolicy(UaType):
         self._value.securityPolicyUri = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaUserTokenPolicy) : NULL\n"
+        
         return ("(UaUserTokenPolicy) :\n" +
                 "\t"*(n+1) + "policy_id" + self._policy_id.__str__(n+1) +
                 "\t"*(n+1) + "token_type" + self._token_type.__str__(n+1) +
@@ -5273,11 +6466,12 @@ class UaUserTokenPolicy(UaType):
 class UaDeleteMonitoredItemsRequest(UaType):
     def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._monitored_item_ids_size = SizeT(val=val.monitoredItemIdsSize, is_pointer=False)
-        self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._monitored_item_ids_size = SizeT(val=val.monitoredItemIdsSize, is_pointer=False)
+            self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5285,26 +6479,39 @@ class UaDeleteMonitoredItemsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._monitored_item_ids_size._value[0] = _val(val.monitoredItemIdsSize)
-        self._monitored_item_ids._value = val.monitoredItemIds
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._monitored_item_ids_size._value[0] = _val(val.monitoredItemIdsSize)
+            self._monitored_item_ids._value = val.monitoredItemIds
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def monitored_item_ids_size(self):
-        return self._monitored_item_ids_size
+        if self._null:
+            return None
+        else:
+            return self._monitored_item_ids_size
 
     @property
     def monitored_item_ids(self):
-        return self._monitored_item_ids
+        if self._null:
+            return None
+        else:
+            return self._monitored_item_ids
 
     @request_header.setter
     def request_header(self, val):
@@ -5327,6 +6534,9 @@ class UaDeleteMonitoredItemsRequest(UaType):
         self._value.monitoredItemIds = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteMonitoredItemsRequest) : NULL\n"
+        
         return ("(UaDeleteMonitoredItemsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -5338,12 +6548,13 @@ class UaDeleteMonitoredItemsRequest(UaType):
 class UaSetMonitoringModeRequest(UaType):
     def __init__(self, val=ffi.new("UA_SetMonitoringModeRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._monitoring_mode = UaMonitoringMode(val=val.monitoringMode, is_pointer=False)
-        self._monitored_item_ids_size = SizeT(val=val.monitoredItemIdsSize, is_pointer=False)
-        self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._monitoring_mode = UaMonitoringMode(val=val.monitoringMode, is_pointer=False)
+            self._monitored_item_ids_size = SizeT(val=val.monitoredItemIdsSize, is_pointer=False)
+            self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5351,31 +6562,47 @@ class UaSetMonitoringModeRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._monitoring_mode._value[0] = _val(val.monitoringMode)
-        self._monitored_item_ids_size._value[0] = _val(val.monitoredItemIdsSize)
-        self._monitored_item_ids._value = val.monitoredItemIds
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._monitoring_mode._value[0] = _val(val.monitoringMode)
+            self._monitored_item_ids_size._value[0] = _val(val.monitoredItemIdsSize)
+            self._monitored_item_ids._value = val.monitoredItemIds
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def monitoring_mode(self):
-        return self._monitoring_mode
+        if self._null:
+            return None
+        else:
+            return self._monitoring_mode
 
     @property
     def monitored_item_ids_size(self):
-        return self._monitored_item_ids_size
+        if self._null:
+            return None
+        else:
+            return self._monitored_item_ids_size
 
     @property
     def monitored_item_ids(self):
-        return self._monitored_item_ids
+        if self._null:
+            return None
+        else:
+            return self._monitored_item_ids
 
     @request_header.setter
     def request_header(self, val):
@@ -5403,6 +6630,9 @@ class UaSetMonitoringModeRequest(UaType):
         self._value.monitoredItemIds = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSetMonitoringModeRequest) : NULL\n"
+        
         return ("(UaSetMonitoringModeRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -5415,15 +6645,16 @@ class UaSetMonitoringModeRequest(UaType):
 class UaReferenceTypeAttributes(UaType):
     def __init__(self, val=ffi.new("UA_ReferenceTypeAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
-        self._symmetric = UaBoolean(val=val.symmetric, is_pointer=False)
-        self._inverse_name = UaLocalizedText(val=val.inverseName, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
+            self._symmetric = UaBoolean(val=val.symmetric, is_pointer=False)
+            self._inverse_name = UaLocalizedText(val=val.inverseName, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5431,46 +6662,71 @@ class UaReferenceTypeAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._is_abstract._value[0] = _val(val.isAbstract)
-        self._symmetric._value[0] = _val(val.symmetric)
-        self._inverse_name._value[0] = _val(val.inverseName)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._is_abstract._value[0] = _val(val.isAbstract)
+            self._symmetric._value[0] = _val(val.symmetric)
+            self._inverse_name._value[0] = _val(val.inverseName)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def is_abstract(self):
-        return self._is_abstract
+        if self._null:
+            return None
+        else:
+            return self._is_abstract
 
     @property
     def symmetric(self):
-        return self._symmetric
+        if self._null:
+            return None
+        else:
+            return self._symmetric
 
     @property
     def inverse_name(self):
-        return self._inverse_name
+        if self._null:
+            return None
+        else:
+            return self._inverse_name
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -5513,6 +6769,9 @@ class UaReferenceTypeAttributes(UaType):
         self._value.inverseName = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaReferenceTypeAttributes) : NULL\n"
+        
         return ("(UaReferenceTypeAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -5528,13 +6787,14 @@ class UaReferenceTypeAttributes(UaType):
 class UaGetEndpointsRequest(UaType):
     def __init__(self, val=ffi.new("UA_GetEndpointsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
-        self._locale_ids_size = SizeT(val=val.localeIdsSize, is_pointer=False)
-        self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
-        self._profile_uris_size = SizeT(val=val.profileUrisSize, is_pointer=False)
-        self._profile_uris = UaString(val=val.profileUris, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
+            self._locale_ids_size = SizeT(val=val.localeIdsSize, is_pointer=False)
+            self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
+            self._profile_uris_size = SizeT(val=val.profileUrisSize, is_pointer=False)
+            self._profile_uris = UaString(val=val.profileUris, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5542,36 +6802,55 @@ class UaGetEndpointsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._endpoint_url._value[0] = _val(val.endpointUrl)
-        self._locale_ids_size._value[0] = _val(val.localeIdsSize)
-        self._locale_ids._value = val.localeIds
-        self._profile_uris_size._value[0] = _val(val.profileUrisSize)
-        self._profile_uris._value = val.profileUris
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._endpoint_url._value[0] = _val(val.endpointUrl)
+            self._locale_ids_size._value[0] = _val(val.localeIdsSize)
+            self._locale_ids._value = val.localeIds
+            self._profile_uris_size._value[0] = _val(val.profileUrisSize)
+            self._profile_uris._value = val.profileUris
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def endpoint_url(self):
-        return self._endpoint_url
+        if self._null:
+            return None
+        else:
+            return self._endpoint_url
 
     @property
     def locale_ids_size(self):
-        return self._locale_ids_size
+        if self._null:
+            return None
+        else:
+            return self._locale_ids_size
 
     @property
     def locale_ids(self):
-        return self._locale_ids
+        if self._null:
+            return None
+        else:
+            return self._locale_ids
 
     @property
     def profile_uris_size(self):
-        return self._profile_uris_size
+        if self._null:
+            return None
+        else:
+            return self._profile_uris_size
 
     @property
     def profile_uris(self):
-        return self._profile_uris
+        if self._null:
+            return None
+        else:
+            return self._profile_uris
 
     @request_header.setter
     def request_header(self, val):
@@ -5604,6 +6883,9 @@ class UaGetEndpointsRequest(UaType):
         self._value.profileUris = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaGetEndpointsRequest) : NULL\n"
+        
         return ("(UaGetEndpointsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "endpoint_url" + self._endpoint_url.__str__(n+1) +
@@ -5617,8 +6899,9 @@ class UaGetEndpointsRequest(UaType):
 class UaCloseSecureChannelResponse(UaType):
     def __init__(self, val=ffi.new("UA_CloseSecureChannelResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5626,11 +6909,15 @@ class UaCloseSecureChannelResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @response_header.setter
     def response_header(self, val):
@@ -5638,6 +6925,9 @@ class UaCloseSecureChannelResponse(UaType):
         self._value.responseHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCloseSecureChannelResponse) : NULL\n"
+        
         return ("(UaCloseSecureChannelResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) + "\n")
 
@@ -5646,10 +6936,11 @@ class UaCloseSecureChannelResponse(UaType):
 class UaViewDescription(UaType):
     def __init__(self, val=ffi.new("UA_ViewDescription*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._view_id = UaNodeId(val=val.viewId, is_pointer=False)
-        self._timestamp = UaDateTime(val=val.timestamp, is_pointer=False)
-        self._view_version = UaUInt32(val=val.viewVersion, is_pointer=False)
+        
+        if not self._null:
+            self._view_id = UaNodeId(val=val.viewId, is_pointer=False)
+            self._timestamp = UaDateTime(val=val.timestamp, is_pointer=False)
+            self._view_version = UaUInt32(val=val.viewVersion, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5657,21 +6948,31 @@ class UaViewDescription(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._view_id._value[0] = _val(val.viewId)
-        self._timestamp._value[0] = _val(val.timestamp)
-        self._view_version._value[0] = _val(val.viewVersion)
+        if not _is_null(val):
+            self._view_id._value[0] = _val(val.viewId)
+            self._timestamp._value[0] = _val(val.timestamp)
+            self._view_version._value[0] = _val(val.viewVersion)
 
     @property
     def view_id(self):
-        return self._view_id
+        if self._null:
+            return None
+        else:
+            return self._view_id
 
     @property
     def timestamp(self):
-        return self._timestamp
+        if self._null:
+            return None
+        else:
+            return self._timestamp
 
     @property
     def view_version(self):
-        return self._view_version
+        if self._null:
+            return None
+        else:
+            return self._view_version
 
     @view_id.setter
     def view_id(self, val):
@@ -5689,6 +6990,9 @@ class UaViewDescription(UaType):
         self._value.viewVersion = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaViewDescription) : NULL\n"
+        
         return ("(UaViewDescription) :\n" +
                 "\t"*(n+1) + "view_id" + self._view_id.__str__(n+1) +
                 "\t"*(n+1) + "timestamp" + self._timestamp.__str__(n+1) +
@@ -5699,12 +7003,13 @@ class UaViewDescription(UaType):
 class UaSetPublishingModeResponse(UaType):
     def __init__(self, val=ffi.new("UA_SetPublishingModeResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5712,31 +7017,47 @@ class UaSetPublishingModeResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -5764,6 +7085,9 @@ class UaSetPublishingModeResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSetPublishingModeResponse) : NULL\n"
+        
         return ("(UaSetPublishingModeResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -5776,9 +7100,10 @@ class UaSetPublishingModeResponse(UaType):
 class UaStatusChangeNotification(UaType):
     def __init__(self, val=ffi.new("UA_StatusChangeNotification*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status = UaStatusCode(val=val.status, is_pointer=False)
-        self._diagnostic_info = UaDiagnosticInfo(val=val.diagnosticInfo, is_pointer=False)
+        
+        if not self._null:
+            self._status = UaStatusCode(val=val.status, is_pointer=False)
+            self._diagnostic_info = UaDiagnosticInfo(val=val.diagnosticInfo, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5786,16 +7111,23 @@ class UaStatusChangeNotification(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status._value[0] = _val(val.status)
-        self._diagnostic_info._value[0] = _val(val.diagnosticInfo)
+        if not _is_null(val):
+            self._status._value[0] = _val(val.status)
+            self._diagnostic_info._value[0] = _val(val.diagnosticInfo)
 
     @property
     def status(self):
-        return self._status
+        if self._null:
+            return None
+        else:
+            return self._status
 
     @property
     def diagnostic_info(self):
-        return self._diagnostic_info
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_info
 
     @status.setter
     def status(self, val):
@@ -5808,6 +7140,9 @@ class UaStatusChangeNotification(UaType):
         self._value.diagnosticInfo = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaStatusChangeNotification) : NULL\n"
+        
         return ("(UaStatusChangeNotification) :\n" +
                 "\t"*(n+1) + "status" + self._status.__str__(n+1) +
                 "\t"*(n+1) + "diagnostic_info" + self._diagnostic_info.__str__(n+1) + "\n")
@@ -5817,15 +7152,16 @@ class UaStatusChangeNotification(UaType):
 class UaStructureField(UaType):
     def __init__(self, val=ffi.new("UA_StructureField*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._name = UaString(val=val.name, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
-        self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
-        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
-        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
-        self._max_string_length = UaUInt32(val=val.maxStringLength, is_pointer=False)
-        self._is_optional = UaBoolean(val=val.isOptional, is_pointer=False)
+        
+        if not self._null:
+            self._name = UaString(val=val.name, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
+            self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
+            self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
+            self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+            self._max_string_length = UaUInt32(val=val.maxStringLength, is_pointer=False)
+            self._is_optional = UaBoolean(val=val.isOptional, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5833,46 +7169,71 @@ class UaStructureField(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._name._value[0] = _val(val.name)
-        self._description._value[0] = _val(val.description)
-        self._data_type._value[0] = _val(val.dataType)
-        self._value_rank._value[0] = _val(val.valueRank)
-        self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
-        self._array_dimensions._value = val.arrayDimensions
-        self._max_string_length._value[0] = _val(val.maxStringLength)
-        self._is_optional._value[0] = _val(val.isOptional)
+        if not _is_null(val):
+            self._name._value[0] = _val(val.name)
+            self._description._value[0] = _val(val.description)
+            self._data_type._value[0] = _val(val.dataType)
+            self._value_rank._value[0] = _val(val.valueRank)
+            self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
+            self._array_dimensions._value = val.arrayDimensions
+            self._max_string_length._value[0] = _val(val.maxStringLength)
+            self._is_optional._value[0] = _val(val.isOptional)
 
     @property
     def name(self):
-        return self._name
+        if self._null:
+            return None
+        else:
+            return self._name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def data_type(self):
-        return self._data_type
+        if self._null:
+            return None
+        else:
+            return self._data_type
 
     @property
     def value_rank(self):
-        return self._value_rank
+        if self._null:
+            return None
+        else:
+            return self._value_rank
 
     @property
     def array_dimensions_size(self):
-        return self._array_dimensions_size
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions_size
 
     @property
     def array_dimensions(self):
-        return self._array_dimensions
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions
 
     @property
     def max_string_length(self):
-        return self._max_string_length
+        if self._null:
+            return None
+        else:
+            return self._max_string_length
 
     @property
     def is_optional(self):
-        return self._is_optional
+        if self._null:
+            return None
+        else:
+            return self._is_optional
 
     @name.setter
     def name(self, val):
@@ -5915,6 +7276,9 @@ class UaStructureField(UaType):
         self._value.isOptional = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaStructureField) : NULL\n"
+        
         return ("(UaStructureField) :\n" +
                 "\t"*(n+1) + "name" + self._name.__str__(n+1) +
                 "\t"*(n+1) + "description" + self._description.__str__(n+1) +
@@ -5930,12 +7294,13 @@ class UaStructureField(UaType):
 class UaEventFilterResult(UaType):
     def __init__(self, val=ffi.new("UA_EventFilterResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._select_clause_results_size = SizeT(val=val.selectClauseResultsSize, is_pointer=False)
-        self._select_clause_results = UaStatusCode(val=val.selectClauseResults, is_pointer=True)
-        self._select_clause_diagnostic_infos_size = SizeT(val=val.selectClauseDiagnosticInfosSize, is_pointer=False)
-        self._select_clause_diagnostic_infos = UaDiagnosticInfo(val=val.selectClauseDiagnosticInfos, is_pointer=True)
-        self._where_clause_result = UaContentFilterResult(val=val.whereClauseResult, is_pointer=False)
+        
+        if not self._null:
+            self._select_clause_results_size = SizeT(val=val.selectClauseResultsSize, is_pointer=False)
+            self._select_clause_results = UaStatusCode(val=val.selectClauseResults, is_pointer=True)
+            self._select_clause_diagnostic_infos_size = SizeT(val=val.selectClauseDiagnosticInfosSize, is_pointer=False)
+            self._select_clause_diagnostic_infos = UaDiagnosticInfo(val=val.selectClauseDiagnosticInfos, is_pointer=True)
+            self._where_clause_result = UaContentFilterResult(val=val.whereClauseResult, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5943,31 +7308,47 @@ class UaEventFilterResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._select_clause_results_size._value[0] = _val(val.selectClauseResultsSize)
-        self._select_clause_results._value = val.selectClauseResults
-        self._select_clause_diagnostic_infos_size._value[0] = _val(val.selectClauseDiagnosticInfosSize)
-        self._select_clause_diagnostic_infos._value = val.selectClauseDiagnosticInfos
-        self._where_clause_result._value[0] = _val(val.whereClauseResult)
+        if not _is_null(val):
+            self._select_clause_results_size._value[0] = _val(val.selectClauseResultsSize)
+            self._select_clause_results._value = val.selectClauseResults
+            self._select_clause_diagnostic_infos_size._value[0] = _val(val.selectClauseDiagnosticInfosSize)
+            self._select_clause_diagnostic_infos._value = val.selectClauseDiagnosticInfos
+            self._where_clause_result._value[0] = _val(val.whereClauseResult)
 
     @property
     def select_clause_results_size(self):
-        return self._select_clause_results_size
+        if self._null:
+            return None
+        else:
+            return self._select_clause_results_size
 
     @property
     def select_clause_results(self):
-        return self._select_clause_results
+        if self._null:
+            return None
+        else:
+            return self._select_clause_results
 
     @property
     def select_clause_diagnostic_infos_size(self):
-        return self._select_clause_diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._select_clause_diagnostic_infos_size
 
     @property
     def select_clause_diagnostic_infos(self):
-        return self._select_clause_diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._select_clause_diagnostic_infos
 
     @property
     def where_clause_result(self):
-        return self._where_clause_result
+        if self._null:
+            return None
+        else:
+            return self._where_clause_result
 
     @select_clause_results_size.setter
     def select_clause_results_size(self, val):
@@ -5995,6 +7376,9 @@ class UaEventFilterResult(UaType):
         self._value.whereClauseResult = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEventFilterResult) : NULL\n"
+        
         return ("(UaEventFilterResult) :\n" +
                 "\t"*(n+1) + "select_clause_results_size" + self._select_clause_results_size.__str__(n+1) +
                 "\t"*(n+1) + "select_clause_results" + self._select_clause_results.__str__(n+1) +
@@ -6007,10 +7391,11 @@ class UaEventFilterResult(UaType):
 class UaMonitoredItemCreateRequest(UaType):
     def __init__(self, val=ffi.new("UA_MonitoredItemCreateRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._item_to_monitor = UaReadValueId(val=val.itemToMonitor, is_pointer=False)
-        self._monitoring_mode = UaMonitoringMode(val=val.monitoringMode, is_pointer=False)
-        self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters, is_pointer=False)
+        
+        if not self._null:
+            self._item_to_monitor = UaReadValueId(val=val.itemToMonitor, is_pointer=False)
+            self._monitoring_mode = UaMonitoringMode(val=val.monitoringMode, is_pointer=False)
+            self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6018,21 +7403,31 @@ class UaMonitoredItemCreateRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._item_to_monitor._value[0] = _val(val.itemToMonitor)
-        self._monitoring_mode._value[0] = _val(val.monitoringMode)
-        self._requested_parameters._value[0] = _val(val.requestedParameters)
+        if not _is_null(val):
+            self._item_to_monitor._value[0] = _val(val.itemToMonitor)
+            self._monitoring_mode._value[0] = _val(val.monitoringMode)
+            self._requested_parameters._value[0] = _val(val.requestedParameters)
 
     @property
     def item_to_monitor(self):
-        return self._item_to_monitor
+        if self._null:
+            return None
+        else:
+            return self._item_to_monitor
 
     @property
     def monitoring_mode(self):
-        return self._monitoring_mode
+        if self._null:
+            return None
+        else:
+            return self._monitoring_mode
 
     @property
     def requested_parameters(self):
-        return self._requested_parameters
+        if self._null:
+            return None
+        else:
+            return self._requested_parameters
 
     @item_to_monitor.setter
     def item_to_monitor(self, val):
@@ -6050,6 +7445,9 @@ class UaMonitoredItemCreateRequest(UaType):
         self._value.requestedParameters = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMonitoredItemCreateRequest) : NULL\n"
+        
         return ("(UaMonitoredItemCreateRequest) :\n" +
                 "\t"*(n+1) + "item_to_monitor" + self._item_to_monitor.__str__(n+1) +
                 "\t"*(n+1) + "monitoring_mode" + self._monitoring_mode.__str__(n+1) +
@@ -6060,9 +7458,10 @@ class UaMonitoredItemCreateRequest(UaType):
 class UaComplexNumberType(UaType):
     def __init__(self, val=ffi.new("UA_ComplexNumberType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._real = UaFloat(val=val.real, is_pointer=False)
-        self._imaginary = UaFloat(val=val.imaginary, is_pointer=False)
+        
+        if not self._null:
+            self._real = UaFloat(val=val.real, is_pointer=False)
+            self._imaginary = UaFloat(val=val.imaginary, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6070,16 +7469,23 @@ class UaComplexNumberType(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._real._value[0] = _val(val.real)
-        self._imaginary._value[0] = _val(val.imaginary)
+        if not _is_null(val):
+            self._real._value[0] = _val(val.real)
+            self._imaginary._value[0] = _val(val.imaginary)
 
     @property
     def real(self):
-        return self._real
+        if self._null:
+            return None
+        else:
+            return self._real
 
     @property
     def imaginary(self):
-        return self._imaginary
+        if self._null:
+            return None
+        else:
+            return self._imaginary
 
     @real.setter
     def real(self, val):
@@ -6092,6 +7498,9 @@ class UaComplexNumberType(UaType):
         self._value.imaginary = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaComplexNumberType) : NULL\n"
+        
         return ("(UaComplexNumberType) :\n" +
                 "\t"*(n+1) + "real" + self._real.__str__(n+1) +
                 "\t"*(n+1) + "imaginary" + self._imaginary.__str__(n+1) + "\n")
@@ -6101,9 +7510,10 @@ class UaComplexNumberType(UaType):
 class UaRange(UaType):
     def __init__(self, val=ffi.new("UA_Range*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._low = UaDouble(val=val.low, is_pointer=False)
-        self._high = UaDouble(val=val.high, is_pointer=False)
+        
+        if not self._null:
+            self._low = UaDouble(val=val.low, is_pointer=False)
+            self._high = UaDouble(val=val.high, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6111,16 +7521,23 @@ class UaRange(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._low._value[0] = _val(val.low)
-        self._high._value[0] = _val(val.high)
+        if not _is_null(val):
+            self._low._value[0] = _val(val.low)
+            self._high._value[0] = _val(val.high)
 
     @property
     def low(self):
-        return self._low
+        if self._null:
+            return None
+        else:
+            return self._low
 
     @property
     def high(self):
-        return self._high
+        if self._null:
+            return None
+        else:
+            return self._high
 
     @low.setter
     def low(self, val):
@@ -6133,6 +7550,9 @@ class UaRange(UaType):
         self._value.high = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRange) : NULL\n"
+        
         return ("(UaRange) :\n" +
                 "\t"*(n+1) + "low" + self._low.__str__(n+1) +
                 "\t"*(n+1) + "high" + self._high.__str__(n+1) + "\n")
@@ -6142,11 +7562,12 @@ class UaRange(UaType):
 class UaDataChangeNotification(UaType):
     def __init__(self, val=ffi.new("UA_DataChangeNotification*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._monitored_items_size = SizeT(val=val.monitoredItemsSize, is_pointer=False)
-        self._monitored_items = UaMonitoredItemNotification(val=val.monitoredItems, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._monitored_items_size = SizeT(val=val.monitoredItemsSize, is_pointer=False)
+            self._monitored_items = UaMonitoredItemNotification(val=val.monitoredItems, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6154,26 +7575,39 @@ class UaDataChangeNotification(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._monitored_items_size._value[0] = _val(val.monitoredItemsSize)
-        self._monitored_items._value = val.monitoredItems
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._monitored_items_size._value[0] = _val(val.monitoredItemsSize)
+            self._monitored_items._value = val.monitoredItems
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def monitored_items_size(self):
-        return self._monitored_items_size
+        if self._null:
+            return None
+        else:
+            return self._monitored_items_size
 
     @property
     def monitored_items(self):
-        return self._monitored_items
+        if self._null:
+            return None
+        else:
+            return self._monitored_items
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @monitored_items_size.setter
     def monitored_items_size(self, val):
@@ -6196,6 +7630,9 @@ class UaDataChangeNotification(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDataChangeNotification) : NULL\n"
+        
         return ("(UaDataChangeNotification) :\n" +
                 "\t"*(n+1) + "monitored_items_size" + self._monitored_items_size.__str__(n+1) +
                 "\t"*(n+1) + "monitored_items" + self._monitored_items.__str__(n+1) +
@@ -6207,13 +7644,14 @@ class UaDataChangeNotification(UaType):
 class UaArgument(UaType):
     def __init__(self, val=ffi.new("UA_Argument*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._name = UaString(val=val.name, is_pointer=False)
-        self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
-        self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
-        self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
-        self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
+        
+        if not self._null:
+            self._name = UaString(val=val.name, is_pointer=False)
+            self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
+            self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
+            self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
+            self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6221,36 +7659,55 @@ class UaArgument(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._name._value[0] = _val(val.name)
-        self._data_type._value[0] = _val(val.dataType)
-        self._value_rank._value[0] = _val(val.valueRank)
-        self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
-        self._array_dimensions._value = val.arrayDimensions
-        self._description._value[0] = _val(val.description)
+        if not _is_null(val):
+            self._name._value[0] = _val(val.name)
+            self._data_type._value[0] = _val(val.dataType)
+            self._value_rank._value[0] = _val(val.valueRank)
+            self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
+            self._array_dimensions._value = val.arrayDimensions
+            self._description._value[0] = _val(val.description)
 
     @property
     def name(self):
-        return self._name
+        if self._null:
+            return None
+        else:
+            return self._name
 
     @property
     def data_type(self):
-        return self._data_type
+        if self._null:
+            return None
+        else:
+            return self._data_type
 
     @property
     def value_rank(self):
-        return self._value_rank
+        if self._null:
+            return None
+        else:
+            return self._value_rank
 
     @property
     def array_dimensions_size(self):
-        return self._array_dimensions_size
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions_size
 
     @property
     def array_dimensions(self):
-        return self._array_dimensions
+        if self._null:
+            return None
+        else:
+            return self._array_dimensions
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @name.setter
     def name(self, val):
@@ -6283,6 +7740,9 @@ class UaArgument(UaType):
         self._value.description = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaArgument) : NULL\n"
+        
         return ("(UaArgument) :\n" +
                 "\t"*(n+1) + "name" + self._name.__str__(n+1) +
                 "\t"*(n+1) + "data_type" + self._data_type.__str__(n+1) +
@@ -6296,11 +7756,12 @@ class UaArgument(UaType):
 class UaTransferSubscriptionsRequest(UaType):
     def __init__(self, val=ffi.new("UA_TransferSubscriptionsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize, is_pointer=False)
-        self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
-        self._send_initial_values = UaBoolean(val=val.sendInitialValues, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize, is_pointer=False)
+            self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
+            self._send_initial_values = UaBoolean(val=val.sendInitialValues, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6308,26 +7769,39 @@ class UaTransferSubscriptionsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_ids_size._value[0] = _val(val.subscriptionIdsSize)
-        self._subscription_ids._value = val.subscriptionIds
-        self._send_initial_values._value[0] = _val(val.sendInitialValues)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_ids_size._value[0] = _val(val.subscriptionIdsSize)
+            self._subscription_ids._value = val.subscriptionIds
+            self._send_initial_values._value[0] = _val(val.sendInitialValues)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_ids_size(self):
-        return self._subscription_ids_size
+        if self._null:
+            return None
+        else:
+            return self._subscription_ids_size
 
     @property
     def subscription_ids(self):
-        return self._subscription_ids
+        if self._null:
+            return None
+        else:
+            return self._subscription_ids
 
     @property
     def send_initial_values(self):
-        return self._send_initial_values
+        if self._null:
+            return None
+        else:
+            return self._send_initial_values
 
     @request_header.setter
     def request_header(self, val):
@@ -6350,6 +7824,9 @@ class UaTransferSubscriptionsRequest(UaType):
         self._value.sendInitialValues = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaTransferSubscriptionsRequest) : NULL\n"
+        
         return ("(UaTransferSubscriptionsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n+1) +
@@ -6361,11 +7838,12 @@ class UaTransferSubscriptionsRequest(UaType):
 class UaChannelSecurityToken(UaType):
     def __init__(self, val=ffi.new("UA_ChannelSecurityToken*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._channel_id = UaUInt32(val=val.channelId, is_pointer=False)
-        self._token_id = UaUInt32(val=val.tokenId, is_pointer=False)
-        self._created_at = UaDateTime(val=val.createdAt, is_pointer=False)
-        self._revised_lifetime = UaUInt32(val=val.revisedLifetime, is_pointer=False)
+        
+        if not self._null:
+            self._channel_id = UaUInt32(val=val.channelId, is_pointer=False)
+            self._token_id = UaUInt32(val=val.tokenId, is_pointer=False)
+            self._created_at = UaDateTime(val=val.createdAt, is_pointer=False)
+            self._revised_lifetime = UaUInt32(val=val.revisedLifetime, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6373,26 +7851,39 @@ class UaChannelSecurityToken(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._channel_id._value[0] = _val(val.channelId)
-        self._token_id._value[0] = _val(val.tokenId)
-        self._created_at._value[0] = _val(val.createdAt)
-        self._revised_lifetime._value[0] = _val(val.revisedLifetime)
+        if not _is_null(val):
+            self._channel_id._value[0] = _val(val.channelId)
+            self._token_id._value[0] = _val(val.tokenId)
+            self._created_at._value[0] = _val(val.createdAt)
+            self._revised_lifetime._value[0] = _val(val.revisedLifetime)
 
     @property
     def channel_id(self):
-        return self._channel_id
+        if self._null:
+            return None
+        else:
+            return self._channel_id
 
     @property
     def token_id(self):
-        return self._token_id
+        if self._null:
+            return None
+        else:
+            return self._token_id
 
     @property
     def created_at(self):
-        return self._created_at
+        if self._null:
+            return None
+        else:
+            return self._created_at
 
     @property
     def revised_lifetime(self):
-        return self._revised_lifetime
+        if self._null:
+            return None
+        else:
+            return self._revised_lifetime
 
     @channel_id.setter
     def channel_id(self, val):
@@ -6415,6 +7906,9 @@ class UaChannelSecurityToken(UaType):
         self._value.revisedLifetime = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaChannelSecurityToken) : NULL\n"
+        
         return ("(UaChannelSecurityToken) :\n" +
                 "\t"*(n+1) + "channel_id" + self._channel_id.__str__(n+1) +
                 "\t"*(n+1) + "token_id" + self._token_id.__str__(n+1) +
@@ -6426,9 +7920,10 @@ class UaChannelSecurityToken(UaType):
 class UaEventNotificationList(UaType):
     def __init__(self, val=ffi.new("UA_EventNotificationList*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._events_size = SizeT(val=val.eventsSize, is_pointer=False)
-        self._events = UaEventFieldList(val=val.events, is_pointer=True)
+        
+        if not self._null:
+            self._events_size = SizeT(val=val.eventsSize, is_pointer=False)
+            self._events = UaEventFieldList(val=val.events, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6436,16 +7931,23 @@ class UaEventNotificationList(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._events_size._value[0] = _val(val.eventsSize)
-        self._events._value = val.events
+        if not _is_null(val):
+            self._events_size._value[0] = _val(val.eventsSize)
+            self._events._value = val.events
 
     @property
     def events_size(self):
-        return self._events_size
+        if self._null:
+            return None
+        else:
+            return self._events_size
 
     @property
     def events(self):
-        return self._events
+        if self._null:
+            return None
+        else:
+            return self._events
 
     @events_size.setter
     def events_size(self, val):
@@ -6458,6 +7960,9 @@ class UaEventNotificationList(UaType):
         self._value.events = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEventNotificationList) : NULL\n"
+        
         return ("(UaEventNotificationList) :\n" +
                 "\t"*(n+1) + "events_size" + self._events_size.__str__(n+1) +
                 "\t"*(n+1) + "events" + self._events.__str__(n+1) + "\n")
@@ -6467,8 +7972,9 @@ class UaEventNotificationList(UaType):
 class UaAnonymousIdentityToken(UaType):
     def __init__(self, val=ffi.new("UA_AnonymousIdentityToken*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._policy_id = UaString(val=val.policyId, is_pointer=False)
+        
+        if not self._null:
+            self._policy_id = UaString(val=val.policyId, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6476,11 +7982,15 @@ class UaAnonymousIdentityToken(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._policy_id._value[0] = _val(val.policyId)
+        if not _is_null(val):
+            self._policy_id._value[0] = _val(val.policyId)
 
     @property
     def policy_id(self):
-        return self._policy_id
+        if self._null:
+            return None
+        else:
+            return self._policy_id
 
     @policy_id.setter
     def policy_id(self, val):
@@ -6488,6 +7998,9 @@ class UaAnonymousIdentityToken(UaType):
         self._value.policyId = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAnonymousIdentityToken) : NULL\n"
+        
         return ("(UaAnonymousIdentityToken) :\n" +
                 "\t"*(n+1) + "policy_id" + self._policy_id.__str__(n+1) + "\n")
 
@@ -6496,11 +8009,12 @@ class UaAnonymousIdentityToken(UaType):
 class UaAggregateFilter(UaType):
     def __init__(self, val=ffi.new("UA_AggregateFilter*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._start_time = UaDateTime(val=val.startTime, is_pointer=False)
-        self._aggregate_type = UaNodeId(val=val.aggregateType, is_pointer=False)
-        self._processing_interval = UaDouble(val=val.processingInterval, is_pointer=False)
-        self._aggregate_configuration = UaAggregateConfiguration(val=val.aggregateConfiguration, is_pointer=False)
+        
+        if not self._null:
+            self._start_time = UaDateTime(val=val.startTime, is_pointer=False)
+            self._aggregate_type = UaNodeId(val=val.aggregateType, is_pointer=False)
+            self._processing_interval = UaDouble(val=val.processingInterval, is_pointer=False)
+            self._aggregate_configuration = UaAggregateConfiguration(val=val.aggregateConfiguration, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6508,26 +8022,39 @@ class UaAggregateFilter(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._start_time._value[0] = _val(val.startTime)
-        self._aggregate_type._value[0] = _val(val.aggregateType)
-        self._processing_interval._value[0] = _val(val.processingInterval)
-        self._aggregate_configuration._value[0] = _val(val.aggregateConfiguration)
+        if not _is_null(val):
+            self._start_time._value[0] = _val(val.startTime)
+            self._aggregate_type._value[0] = _val(val.aggregateType)
+            self._processing_interval._value[0] = _val(val.processingInterval)
+            self._aggregate_configuration._value[0] = _val(val.aggregateConfiguration)
 
     @property
     def start_time(self):
-        return self._start_time
+        if self._null:
+            return None
+        else:
+            return self._start_time
 
     @property
     def aggregate_type(self):
-        return self._aggregate_type
+        if self._null:
+            return None
+        else:
+            return self._aggregate_type
 
     @property
     def processing_interval(self):
-        return self._processing_interval
+        if self._null:
+            return None
+        else:
+            return self._processing_interval
 
     @property
     def aggregate_configuration(self):
-        return self._aggregate_configuration
+        if self._null:
+            return None
+        else:
+            return self._aggregate_configuration
 
     @start_time.setter
     def start_time(self, val):
@@ -6550,6 +8077,9 @@ class UaAggregateFilter(UaType):
         self._value.aggregateConfiguration = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAggregateFilter) : NULL\n"
+        
         return ("(UaAggregateFilter) :\n" +
                 "\t"*(n+1) + "start_time" + self._start_time.__str__(n+1) +
                 "\t"*(n+1) + "aggregate_type" + self._aggregate_type.__str__(n+1) +
@@ -6561,9 +8091,10 @@ class UaAggregateFilter(UaType):
 class UaRepublishResponse(UaType):
     def __init__(self, val=ffi.new("UA_RepublishResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._notification_message = UaNotificationMessage(val=val.notificationMessage, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._notification_message = UaNotificationMessage(val=val.notificationMessage, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6571,16 +8102,23 @@ class UaRepublishResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._notification_message._value[0] = _val(val.notificationMessage)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._notification_message._value[0] = _val(val.notificationMessage)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def notification_message(self):
-        return self._notification_message
+        if self._null:
+            return None
+        else:
+            return self._notification_message
 
     @response_header.setter
     def response_header(self, val):
@@ -6593,6 +8131,9 @@ class UaRepublishResponse(UaType):
         self._value.notificationMessage = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRepublishResponse) : NULL\n"
+        
         return ("(UaRepublishResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "notification_message" + self._notification_message.__str__(n+1) + "\n")
@@ -6602,12 +8143,13 @@ class UaRepublishResponse(UaType):
 class UaDeleteSubscriptionsResponse(UaType):
     def __init__(self, val=ffi.new("UA_DeleteSubscriptionsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6615,31 +8157,47 @@ class UaDeleteSubscriptionsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -6667,6 +8225,9 @@ class UaDeleteSubscriptionsResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteSubscriptionsResponse) : NULL\n"
+        
         return ("(UaDeleteSubscriptionsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -6679,10 +8240,11 @@ class UaDeleteSubscriptionsResponse(UaType):
 class UaRegisterNodesRequest(UaType):
     def __init__(self, val=ffi.new("UA_RegisterNodesRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._nodes_to_register_size = SizeT(val=val.nodesToRegisterSize, is_pointer=False)
-        self._nodes_to_register = UaNodeId(val=val.nodesToRegister, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._nodes_to_register_size = SizeT(val=val.nodesToRegisterSize, is_pointer=False)
+            self._nodes_to_register = UaNodeId(val=val.nodesToRegister, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6690,21 +8252,31 @@ class UaRegisterNodesRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._nodes_to_register_size._value[0] = _val(val.nodesToRegisterSize)
-        self._nodes_to_register._value = val.nodesToRegister
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._nodes_to_register_size._value[0] = _val(val.nodesToRegisterSize)
+            self._nodes_to_register._value = val.nodesToRegister
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def nodes_to_register_size(self):
-        return self._nodes_to_register_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_register_size
 
     @property
     def nodes_to_register(self):
-        return self._nodes_to_register
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_register
 
     @request_header.setter
     def request_header(self, val):
@@ -6722,6 +8294,9 @@ class UaRegisterNodesRequest(UaType):
         self._value.nodesToRegister = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRegisterNodesRequest) : NULL\n"
+        
         return ("(UaRegisterNodesRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "nodes_to_register_size" + self._nodes_to_register_size.__str__(n+1) +
@@ -6732,12 +8307,13 @@ class UaRegisterNodesRequest(UaType):
 class UaStructureDefinition(UaType):
     def __init__(self, val=ffi.new("UA_StructureDefinition*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._default_encoding_id = UaNodeId(val=val.defaultEncodingId, is_pointer=False)
-        self._base_data_type = UaNodeId(val=val.baseDataType, is_pointer=False)
-        self._structure_type = UaStructureType(val=val.structureType, is_pointer=False)
-        self._fields_size = SizeT(val=val.fieldsSize, is_pointer=False)
-        self._fields = UaStructureField(val=val.fields, is_pointer=True)
+        
+        if not self._null:
+            self._default_encoding_id = UaNodeId(val=val.defaultEncodingId, is_pointer=False)
+            self._base_data_type = UaNodeId(val=val.baseDataType, is_pointer=False)
+            self._structure_type = UaStructureType(val=val.structureType, is_pointer=False)
+            self._fields_size = SizeT(val=val.fieldsSize, is_pointer=False)
+            self._fields = UaStructureField(val=val.fields, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6745,31 +8321,47 @@ class UaStructureDefinition(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._default_encoding_id._value[0] = _val(val.defaultEncodingId)
-        self._base_data_type._value[0] = _val(val.baseDataType)
-        self._structure_type._value[0] = _val(val.structureType)
-        self._fields_size._value[0] = _val(val.fieldsSize)
-        self._fields._value = val.fields
+        if not _is_null(val):
+            self._default_encoding_id._value[0] = _val(val.defaultEncodingId)
+            self._base_data_type._value[0] = _val(val.baseDataType)
+            self._structure_type._value[0] = _val(val.structureType)
+            self._fields_size._value[0] = _val(val.fieldsSize)
+            self._fields._value = val.fields
 
     @property
     def default_encoding_id(self):
-        return self._default_encoding_id
+        if self._null:
+            return None
+        else:
+            return self._default_encoding_id
 
     @property
     def base_data_type(self):
-        return self._base_data_type
+        if self._null:
+            return None
+        else:
+            return self._base_data_type
 
     @property
     def structure_type(self):
-        return self._structure_type
+        if self._null:
+            return None
+        else:
+            return self._structure_type
 
     @property
     def fields_size(self):
-        return self._fields_size
+        if self._null:
+            return None
+        else:
+            return self._fields_size
 
     @property
     def fields(self):
-        return self._fields
+        if self._null:
+            return None
+        else:
+            return self._fields
 
     @default_encoding_id.setter
     def default_encoding_id(self, val):
@@ -6797,6 +8389,9 @@ class UaStructureDefinition(UaType):
         self._value.fields = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaStructureDefinition) : NULL\n"
+        
         return ("(UaStructureDefinition) :\n" +
                 "\t"*(n+1) + "default_encoding_id" + self._default_encoding_id.__str__(n+1) +
                 "\t"*(n+1) + "base_data_type" + self._base_data_type.__str__(n+1) +
@@ -6809,14 +8404,15 @@ class UaStructureDefinition(UaType):
 class UaMethodAttributes(UaType):
     def __init__(self, val=ffi.new("UA_MethodAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._executable = UaBoolean(val=val.executable, is_pointer=False)
-        self._user_executable = UaBoolean(val=val.userExecutable, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._executable = UaBoolean(val=val.executable, is_pointer=False)
+            self._user_executable = UaBoolean(val=val.userExecutable, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6824,41 +8420,63 @@ class UaMethodAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._executable._value[0] = _val(val.executable)
-        self._user_executable._value[0] = _val(val.userExecutable)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._executable._value[0] = _val(val.executable)
+            self._user_executable._value[0] = _val(val.userExecutable)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def executable(self):
-        return self._executable
+        if self._null:
+            return None
+        else:
+            return self._executable
 
     @property
     def user_executable(self):
-        return self._user_executable
+        if self._null:
+            return None
+        else:
+            return self._user_executable
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -6896,6 +8514,9 @@ class UaMethodAttributes(UaType):
         self._value.userExecutable = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaMethodAttributes) : NULL\n"
+        
         return ("(UaMethodAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -6910,11 +8531,12 @@ class UaMethodAttributes(UaType):
 class UaUserNameIdentityToken(UaType):
     def __init__(self, val=ffi.new("UA_UserNameIdentityToken*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._policy_id = UaString(val=val.policyId, is_pointer=False)
-        self._user_name = UaString(val=val.userName, is_pointer=False)
-        self._password = UaByteString(val=val.password, is_pointer=False)
-        self._encryption_algorithm = UaString(val=val.encryptionAlgorithm, is_pointer=False)
+        
+        if not self._null:
+            self._policy_id = UaString(val=val.policyId, is_pointer=False)
+            self._user_name = UaString(val=val.userName, is_pointer=False)
+            self._password = UaByteString(val=val.password, is_pointer=False)
+            self._encryption_algorithm = UaString(val=val.encryptionAlgorithm, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6922,26 +8544,39 @@ class UaUserNameIdentityToken(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._policy_id._value[0] = _val(val.policyId)
-        self._user_name._value[0] = _val(val.userName)
-        self._password._value[0] = _val(val.password)
-        self._encryption_algorithm._value[0] = _val(val.encryptionAlgorithm)
+        if not _is_null(val):
+            self._policy_id._value[0] = _val(val.policyId)
+            self._user_name._value[0] = _val(val.userName)
+            self._password._value[0] = _val(val.password)
+            self._encryption_algorithm._value[0] = _val(val.encryptionAlgorithm)
 
     @property
     def policy_id(self):
-        return self._policy_id
+        if self._null:
+            return None
+        else:
+            return self._policy_id
 
     @property
     def user_name(self):
-        return self._user_name
+        if self._null:
+            return None
+        else:
+            return self._user_name
 
     @property
     def password(self):
-        return self._password
+        if self._null:
+            return None
+        else:
+            return self._password
 
     @property
     def encryption_algorithm(self):
-        return self._encryption_algorithm
+        if self._null:
+            return None
+        else:
+            return self._encryption_algorithm
 
     @policy_id.setter
     def policy_id(self, val):
@@ -6964,6 +8599,9 @@ class UaUserNameIdentityToken(UaType):
         self._value.encryptionAlgorithm = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaUserNameIdentityToken) : NULL\n"
+        
         return ("(UaUserNameIdentityToken) :\n" +
                 "\t"*(n+1) + "policy_id" + self._policy_id.__str__(n+1) +
                 "\t"*(n+1) + "user_name" + self._user_name.__str__(n+1) +
@@ -6975,10 +8613,11 @@ class UaUserNameIdentityToken(UaType):
 class UaUnregisterNodesRequest(UaType):
     def __init__(self, val=ffi.new("UA_UnregisterNodesRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._nodes_to_unregister_size = SizeT(val=val.nodesToUnregisterSize, is_pointer=False)
-        self._nodes_to_unregister = UaNodeId(val=val.nodesToUnregister, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._nodes_to_unregister_size = SizeT(val=val.nodesToUnregisterSize, is_pointer=False)
+            self._nodes_to_unregister = UaNodeId(val=val.nodesToUnregister, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -6986,21 +8625,31 @@ class UaUnregisterNodesRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._nodes_to_unregister_size._value[0] = _val(val.nodesToUnregisterSize)
-        self._nodes_to_unregister._value = val.nodesToUnregister
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._nodes_to_unregister_size._value[0] = _val(val.nodesToUnregisterSize)
+            self._nodes_to_unregister._value = val.nodesToUnregister
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def nodes_to_unregister_size(self):
-        return self._nodes_to_unregister_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_unregister_size
 
     @property
     def nodes_to_unregister(self):
-        return self._nodes_to_unregister
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_unregister
 
     @request_header.setter
     def request_header(self, val):
@@ -7018,6 +8667,9 @@ class UaUnregisterNodesRequest(UaType):
         self._value.nodesToUnregister = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaUnregisterNodesRequest) : NULL\n"
+        
         return ("(UaUnregisterNodesRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "nodes_to_unregister_size" + self._nodes_to_unregister_size.__str__(n+1) +
@@ -7028,11 +8680,12 @@ class UaUnregisterNodesRequest(UaType):
 class UaOpenSecureChannelResponse(UaType):
     def __init__(self, val=ffi.new("UA_OpenSecureChannelResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._server_protocol_version = UaUInt32(val=val.serverProtocolVersion, is_pointer=False)
-        self._security_token = UaChannelSecurityToken(val=val.securityToken, is_pointer=False)
-        self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._server_protocol_version = UaUInt32(val=val.serverProtocolVersion, is_pointer=False)
+            self._security_token = UaChannelSecurityToken(val=val.securityToken, is_pointer=False)
+            self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7040,26 +8693,39 @@ class UaOpenSecureChannelResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._server_protocol_version._value[0] = _val(val.serverProtocolVersion)
-        self._security_token._value[0] = _val(val.securityToken)
-        self._server_nonce._value[0] = _val(val.serverNonce)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._server_protocol_version._value[0] = _val(val.serverProtocolVersion)
+            self._security_token._value[0] = _val(val.securityToken)
+            self._server_nonce._value[0] = _val(val.serverNonce)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def server_protocol_version(self):
-        return self._server_protocol_version
+        if self._null:
+            return None
+        else:
+            return self._server_protocol_version
 
     @property
     def security_token(self):
-        return self._security_token
+        if self._null:
+            return None
+        else:
+            return self._security_token
 
     @property
     def server_nonce(self):
-        return self._server_nonce
+        if self._null:
+            return None
+        else:
+            return self._server_nonce
 
     @response_header.setter
     def response_header(self, val):
@@ -7082,6 +8748,9 @@ class UaOpenSecureChannelResponse(UaType):
         self._value.serverNonce = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaOpenSecureChannelResponse) : NULL\n"
+        
         return ("(UaOpenSecureChannelResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "server_protocol_version" + self._server_protocol_version.__str__(n+1) +
@@ -7093,16 +8762,17 @@ class UaOpenSecureChannelResponse(UaType):
 class UaSetTriggeringResponse(UaType):
     def __init__(self, val=ffi.new("UA_SetTriggeringResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._add_results_size = SizeT(val=val.addResultsSize, is_pointer=False)
-        self._add_results = UaStatusCode(val=val.addResults, is_pointer=True)
-        self._add_diagnostic_infos_size = SizeT(val=val.addDiagnosticInfosSize, is_pointer=False)
-        self._add_diagnostic_infos = UaDiagnosticInfo(val=val.addDiagnosticInfos, is_pointer=True)
-        self._remove_results_size = SizeT(val=val.removeResultsSize, is_pointer=False)
-        self._remove_results = UaStatusCode(val=val.removeResults, is_pointer=True)
-        self._remove_diagnostic_infos_size = SizeT(val=val.removeDiagnosticInfosSize, is_pointer=False)
-        self._remove_diagnostic_infos = UaDiagnosticInfo(val=val.removeDiagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._add_results_size = SizeT(val=val.addResultsSize, is_pointer=False)
+            self._add_results = UaStatusCode(val=val.addResults, is_pointer=True)
+            self._add_diagnostic_infos_size = SizeT(val=val.addDiagnosticInfosSize, is_pointer=False)
+            self._add_diagnostic_infos = UaDiagnosticInfo(val=val.addDiagnosticInfos, is_pointer=True)
+            self._remove_results_size = SizeT(val=val.removeResultsSize, is_pointer=False)
+            self._remove_results = UaStatusCode(val=val.removeResults, is_pointer=True)
+            self._remove_diagnostic_infos_size = SizeT(val=val.removeDiagnosticInfosSize, is_pointer=False)
+            self._remove_diagnostic_infos = UaDiagnosticInfo(val=val.removeDiagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7110,51 +8780,79 @@ class UaSetTriggeringResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._add_results_size._value[0] = _val(val.addResultsSize)
-        self._add_results._value = val.addResults
-        self._add_diagnostic_infos_size._value[0] = _val(val.addDiagnosticInfosSize)
-        self._add_diagnostic_infos._value = val.addDiagnosticInfos
-        self._remove_results_size._value[0] = _val(val.removeResultsSize)
-        self._remove_results._value = val.removeResults
-        self._remove_diagnostic_infos_size._value[0] = _val(val.removeDiagnosticInfosSize)
-        self._remove_diagnostic_infos._value = val.removeDiagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._add_results_size._value[0] = _val(val.addResultsSize)
+            self._add_results._value = val.addResults
+            self._add_diagnostic_infos_size._value[0] = _val(val.addDiagnosticInfosSize)
+            self._add_diagnostic_infos._value = val.addDiagnosticInfos
+            self._remove_results_size._value[0] = _val(val.removeResultsSize)
+            self._remove_results._value = val.removeResults
+            self._remove_diagnostic_infos_size._value[0] = _val(val.removeDiagnosticInfosSize)
+            self._remove_diagnostic_infos._value = val.removeDiagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def add_results_size(self):
-        return self._add_results_size
+        if self._null:
+            return None
+        else:
+            return self._add_results_size
 
     @property
     def add_results(self):
-        return self._add_results
+        if self._null:
+            return None
+        else:
+            return self._add_results
 
     @property
     def add_diagnostic_infos_size(self):
-        return self._add_diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._add_diagnostic_infos_size
 
     @property
     def add_diagnostic_infos(self):
-        return self._add_diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._add_diagnostic_infos
 
     @property
     def remove_results_size(self):
-        return self._remove_results_size
+        if self._null:
+            return None
+        else:
+            return self._remove_results_size
 
     @property
     def remove_results(self):
-        return self._remove_results
+        if self._null:
+            return None
+        else:
+            return self._remove_results
 
     @property
     def remove_diagnostic_infos_size(self):
-        return self._remove_diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._remove_diagnostic_infos_size
 
     @property
     def remove_diagnostic_infos(self):
-        return self._remove_diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._remove_diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -7202,6 +8900,9 @@ class UaSetTriggeringResponse(UaType):
         self._value.removeDiagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSetTriggeringResponse) : NULL\n"
+        
         return ("(UaSetTriggeringResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "add_results_size" + self._add_results_size.__str__(n+1) +
@@ -7218,12 +8919,13 @@ class UaSetTriggeringResponse(UaType):
 class UaSimpleAttributeOperand(UaType):
     def __init__(self, val=ffi.new("UA_SimpleAttributeOperand*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._type_definition_id = UaNodeId(val=val.typeDefinitionId, is_pointer=False)
-        self._browse_path_size = SizeT(val=val.browsePathSize, is_pointer=False)
-        self._browse_path = UaQualifiedName(val=val.browsePath, is_pointer=True)
-        self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
-        self._index_range = UaString(val=val.indexRange, is_pointer=False)
+        
+        if not self._null:
+            self._type_definition_id = UaNodeId(val=val.typeDefinitionId, is_pointer=False)
+            self._browse_path_size = SizeT(val=val.browsePathSize, is_pointer=False)
+            self._browse_path = UaQualifiedName(val=val.browsePath, is_pointer=True)
+            self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
+            self._index_range = UaString(val=val.indexRange, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7231,31 +8933,47 @@ class UaSimpleAttributeOperand(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._type_definition_id._value[0] = _val(val.typeDefinitionId)
-        self._browse_path_size._value[0] = _val(val.browsePathSize)
-        self._browse_path._value = val.browsePath
-        self._attribute_id._value[0] = _val(val.attributeId)
-        self._index_range._value[0] = _val(val.indexRange)
+        if not _is_null(val):
+            self._type_definition_id._value[0] = _val(val.typeDefinitionId)
+            self._browse_path_size._value[0] = _val(val.browsePathSize)
+            self._browse_path._value = val.browsePath
+            self._attribute_id._value[0] = _val(val.attributeId)
+            self._index_range._value[0] = _val(val.indexRange)
 
     @property
     def type_definition_id(self):
-        return self._type_definition_id
+        if self._null:
+            return None
+        else:
+            return self._type_definition_id
 
     @property
     def browse_path_size(self):
-        return self._browse_path_size
+        if self._null:
+            return None
+        else:
+            return self._browse_path_size
 
     @property
     def browse_path(self):
-        return self._browse_path
+        if self._null:
+            return None
+        else:
+            return self._browse_path
 
     @property
     def attribute_id(self):
-        return self._attribute_id
+        if self._null:
+            return None
+        else:
+            return self._attribute_id
 
     @property
     def index_range(self):
-        return self._index_range
+        if self._null:
+            return None
+        else:
+            return self._index_range
 
     @type_definition_id.setter
     def type_definition_id(self, val):
@@ -7283,6 +9001,9 @@ class UaSimpleAttributeOperand(UaType):
         self._value.indexRange = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSimpleAttributeOperand) : NULL\n"
+        
         return ("(UaSimpleAttributeOperand) :\n" +
                 "\t"*(n+1) + "type_definition_id" + self._type_definition_id.__str__(n+1) +
                 "\t"*(n+1) + "browse_path_size" + self._browse_path_size.__str__(n+1) +
@@ -7295,10 +9016,11 @@ class UaSimpleAttributeOperand(UaType):
 class UaRepublishRequest(UaType):
     def __init__(self, val=ffi.new("UA_RepublishRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._retransmit_sequence_number = UaUInt32(val=val.retransmitSequenceNumber, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._retransmit_sequence_number = UaUInt32(val=val.retransmitSequenceNumber, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7306,21 +9028,31 @@ class UaRepublishRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._retransmit_sequence_number._value[0] = _val(val.retransmitSequenceNumber)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._retransmit_sequence_number._value[0] = _val(val.retransmitSequenceNumber)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def retransmit_sequence_number(self):
-        return self._retransmit_sequence_number
+        if self._null:
+            return None
+        else:
+            return self._retransmit_sequence_number
 
     @request_header.setter
     def request_header(self, val):
@@ -7338,6 +9070,9 @@ class UaRepublishRequest(UaType):
         self._value.retransmitSequenceNumber = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRepublishRequest) : NULL\n"
+        
         return ("(UaRepublishRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -7348,10 +9083,11 @@ class UaRepublishRequest(UaType):
 class UaRegisterNodesResponse(UaType):
     def __init__(self, val=ffi.new("UA_RegisterNodesResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._registered_node_ids_size = SizeT(val=val.registeredNodeIdsSize, is_pointer=False)
-        self._registered_node_ids = UaNodeId(val=val.registeredNodeIds, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._registered_node_ids_size = SizeT(val=val.registeredNodeIdsSize, is_pointer=False)
+            self._registered_node_ids = UaNodeId(val=val.registeredNodeIds, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7359,21 +9095,31 @@ class UaRegisterNodesResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._registered_node_ids_size._value[0] = _val(val.registeredNodeIdsSize)
-        self._registered_node_ids._value = val.registeredNodeIds
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._registered_node_ids_size._value[0] = _val(val.registeredNodeIdsSize)
+            self._registered_node_ids._value = val.registeredNodeIds
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def registered_node_ids_size(self):
-        return self._registered_node_ids_size
+        if self._null:
+            return None
+        else:
+            return self._registered_node_ids_size
 
     @property
     def registered_node_ids(self):
-        return self._registered_node_ids
+        if self._null:
+            return None
+        else:
+            return self._registered_node_ids
 
     @response_header.setter
     def response_header(self, val):
@@ -7391,6 +9137,9 @@ class UaRegisterNodesResponse(UaType):
         self._value.registeredNodeIds = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaRegisterNodesResponse) : NULL\n"
+        
         return ("(UaRegisterNodesResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "registered_node_ids_size" + self._registered_node_ids_size.__str__(n+1) +
@@ -7401,12 +9150,13 @@ class UaRegisterNodesResponse(UaType):
 class UaModifyMonitoredItemsResponse(UaType):
     def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaMonitoredItemModifyResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaMonitoredItemModifyResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7414,31 +9164,47 @@ class UaModifyMonitoredItemsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -7466,6 +9232,9 @@ class UaModifyMonitoredItemsResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaModifyMonitoredItemsResponse) : NULL\n"
+        
         return ("(UaModifyMonitoredItemsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -7478,10 +9247,11 @@ class UaModifyMonitoredItemsResponse(UaType):
 class UaDeleteSubscriptionsRequest(UaType):
     def __init__(self, val=ffi.new("UA_DeleteSubscriptionsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize, is_pointer=False)
-        self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_ids_size = SizeT(val=val.subscriptionIdsSize, is_pointer=False)
+            self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7489,21 +9259,31 @@ class UaDeleteSubscriptionsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_ids_size._value[0] = _val(val.subscriptionIdsSize)
-        self._subscription_ids._value = val.subscriptionIds
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_ids_size._value[0] = _val(val.subscriptionIdsSize)
+            self._subscription_ids._value = val.subscriptionIds
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_ids_size(self):
-        return self._subscription_ids_size
+        if self._null:
+            return None
+        else:
+            return self._subscription_ids_size
 
     @property
     def subscription_ids(self):
-        return self._subscription_ids
+        if self._null:
+            return None
+        else:
+            return self._subscription_ids
 
     @request_header.setter
     def request_header(self, val):
@@ -7521,6 +9301,9 @@ class UaDeleteSubscriptionsRequest(UaType):
         self._value.subscriptionIds = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteSubscriptionsRequest) : NULL\n"
+        
         return ("(UaDeleteSubscriptionsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n+1) +
@@ -7531,9 +9314,10 @@ class UaDeleteSubscriptionsRequest(UaType):
 class UaBrowsePath(UaType):
     def __init__(self, val=ffi.new("UA_BrowsePath*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._starting_node = UaNodeId(val=val.startingNode, is_pointer=False)
-        self._relative_path = UaRelativePath(val=val.relativePath, is_pointer=False)
+        
+        if not self._null:
+            self._starting_node = UaNodeId(val=val.startingNode, is_pointer=False)
+            self._relative_path = UaRelativePath(val=val.relativePath, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7541,16 +9325,23 @@ class UaBrowsePath(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._starting_node._value[0] = _val(val.startingNode)
-        self._relative_path._value[0] = _val(val.relativePath)
+        if not _is_null(val):
+            self._starting_node._value[0] = _val(val.startingNode)
+            self._relative_path._value[0] = _val(val.relativePath)
 
     @property
     def starting_node(self):
-        return self._starting_node
+        if self._null:
+            return None
+        else:
+            return self._starting_node
 
     @property
     def relative_path(self):
-        return self._relative_path
+        if self._null:
+            return None
+        else:
+            return self._relative_path
 
     @starting_node.setter
     def starting_node(self, val):
@@ -7563,6 +9354,9 @@ class UaBrowsePath(UaType):
         self._value.relativePath = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowsePath) : NULL\n"
+        
         return ("(UaBrowsePath) :\n" +
                 "\t"*(n+1) + "starting_node" + self._starting_node.__str__(n+1) +
                 "\t"*(n+1) + "relative_path" + self._relative_path.__str__(n+1) + "\n")
@@ -7572,13 +9366,14 @@ class UaBrowsePath(UaType):
 class UaObjectAttributes(UaType):
     def __init__(self, val=ffi.new("UA_ObjectAttributes*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._description = UaLocalizedText(val=val.description, is_pointer=False)
-        self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-        self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-        self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
+        
+        if not self._null:
+            self._specified_attributes = UaUInt32(val=val.specifiedAttributes, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
+            self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7586,36 +9381,55 @@ class UaObjectAttributes(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._specified_attributes._value[0] = _val(val.specifiedAttributes)
-        self._display_name._value[0] = _val(val.displayName)
-        self._description._value[0] = _val(val.description)
-        self._write_mask._value[0] = _val(val.writeMask)
-        self._user_write_mask._value[0] = _val(val.userWriteMask)
-        self._event_notifier._value[0] = _val(val.eventNotifier)
+        if not _is_null(val):
+            self._specified_attributes._value[0] = _val(val.specifiedAttributes)
+            self._display_name._value[0] = _val(val.displayName)
+            self._description._value[0] = _val(val.description)
+            self._write_mask._value[0] = _val(val.writeMask)
+            self._user_write_mask._value[0] = _val(val.userWriteMask)
+            self._event_notifier._value[0] = _val(val.eventNotifier)
 
     @property
     def specified_attributes(self):
-        return self._specified_attributes
+        if self._null:
+            return None
+        else:
+            return self._specified_attributes
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def description(self):
-        return self._description
+        if self._null:
+            return None
+        else:
+            return self._description
 
     @property
     def write_mask(self):
-        return self._write_mask
+        if self._null:
+            return None
+        else:
+            return self._write_mask
 
     @property
     def user_write_mask(self):
-        return self._user_write_mask
+        if self._null:
+            return None
+        else:
+            return self._user_write_mask
 
     @property
     def event_notifier(self):
-        return self._event_notifier
+        if self._null:
+            return None
+        else:
+            return self._event_notifier
 
     @specified_attributes.setter
     def specified_attributes(self, val):
@@ -7648,6 +9462,9 @@ class UaObjectAttributes(UaType):
         self._value.eventNotifier = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaObjectAttributes) : NULL\n"
+        
         return ("(UaObjectAttributes) :\n" +
                 "\t"*(n+1) + "specified_attributes" + self._specified_attributes.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
@@ -7661,10 +9478,11 @@ class UaObjectAttributes(UaType):
 class UaPublishRequest(UaType):
     def __init__(self, val=ffi.new("UA_PublishRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_acknowledgements_size = SizeT(val=val.subscriptionAcknowledgementsSize, is_pointer=False)
-        self._subscription_acknowledgements = UaSubscriptionAcknowledgement(val=val.subscriptionAcknowledgements, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_acknowledgements_size = SizeT(val=val.subscriptionAcknowledgementsSize, is_pointer=False)
+            self._subscription_acknowledgements = UaSubscriptionAcknowledgement(val=val.subscriptionAcknowledgements, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7672,21 +9490,31 @@ class UaPublishRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_acknowledgements_size._value[0] = _val(val.subscriptionAcknowledgementsSize)
-        self._subscription_acknowledgements._value = val.subscriptionAcknowledgements
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_acknowledgements_size._value[0] = _val(val.subscriptionAcknowledgementsSize)
+            self._subscription_acknowledgements._value = val.subscriptionAcknowledgements
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_acknowledgements_size(self):
-        return self._subscription_acknowledgements_size
+        if self._null:
+            return None
+        else:
+            return self._subscription_acknowledgements_size
 
     @property
     def subscription_acknowledgements(self):
-        return self._subscription_acknowledgements
+        if self._null:
+            return None
+        else:
+            return self._subscription_acknowledgements
 
     @request_header.setter
     def request_header(self, val):
@@ -7704,6 +9532,9 @@ class UaPublishRequest(UaType):
         self._value.subscriptionAcknowledgements = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaPublishRequest) : NULL\n"
+        
         return ("(UaPublishRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(n+1) +
@@ -7714,13 +9545,14 @@ class UaPublishRequest(UaType):
 class UaFindServersRequest(UaType):
     def __init__(self, val=ffi.new("UA_FindServersRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
-        self._locale_ids_size = SizeT(val=val.localeIdsSize, is_pointer=False)
-        self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
-        self._server_uris_size = SizeT(val=val.serverUrisSize, is_pointer=False)
-        self._server_uris = UaString(val=val.serverUris, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
+            self._locale_ids_size = SizeT(val=val.localeIdsSize, is_pointer=False)
+            self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
+            self._server_uris_size = SizeT(val=val.serverUrisSize, is_pointer=False)
+            self._server_uris = UaString(val=val.serverUris, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7728,36 +9560,55 @@ class UaFindServersRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._endpoint_url._value[0] = _val(val.endpointUrl)
-        self._locale_ids_size._value[0] = _val(val.localeIdsSize)
-        self._locale_ids._value = val.localeIds
-        self._server_uris_size._value[0] = _val(val.serverUrisSize)
-        self._server_uris._value = val.serverUris
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._endpoint_url._value[0] = _val(val.endpointUrl)
+            self._locale_ids_size._value[0] = _val(val.localeIdsSize)
+            self._locale_ids._value = val.localeIds
+            self._server_uris_size._value[0] = _val(val.serverUrisSize)
+            self._server_uris._value = val.serverUris
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def endpoint_url(self):
-        return self._endpoint_url
+        if self._null:
+            return None
+        else:
+            return self._endpoint_url
 
     @property
     def locale_ids_size(self):
-        return self._locale_ids_size
+        if self._null:
+            return None
+        else:
+            return self._locale_ids_size
 
     @property
     def locale_ids(self):
-        return self._locale_ids
+        if self._null:
+            return None
+        else:
+            return self._locale_ids
 
     @property
     def server_uris_size(self):
-        return self._server_uris_size
+        if self._null:
+            return None
+        else:
+            return self._server_uris_size
 
     @property
     def server_uris(self):
-        return self._server_uris
+        if self._null:
+            return None
+        else:
+            return self._server_uris
 
     @request_header.setter
     def request_header(self, val):
@@ -7790,6 +9641,9 @@ class UaFindServersRequest(UaType):
         self._value.serverUris = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaFindServersRequest) : NULL\n"
+        
         return ("(UaFindServersRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "endpoint_url" + self._endpoint_url.__str__(n+1) +
@@ -7803,14 +9657,15 @@ class UaFindServersRequest(UaType):
 class UaReferenceDescription(UaType):
     def __init__(self, val=ffi.new("UA_ReferenceDescription*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
-        self._is_forward = UaBoolean(val=val.isForward, is_pointer=False)
-        self._node_id = UaExpandedNodeId(val=val.nodeId, is_pointer=False)
-        self._browse_name = UaQualifiedName(val=val.browseName, is_pointer=False)
-        self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-        self._node_class = UaNodeClass(val=val.nodeClass, is_pointer=False)
-        self._type_definition = UaExpandedNodeId(val=val.typeDefinition, is_pointer=False)
+        
+        if not self._null:
+            self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
+            self._is_forward = UaBoolean(val=val.isForward, is_pointer=False)
+            self._node_id = UaExpandedNodeId(val=val.nodeId, is_pointer=False)
+            self._browse_name = UaQualifiedName(val=val.browseName, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._node_class = UaNodeClass(val=val.nodeClass, is_pointer=False)
+            self._type_definition = UaExpandedNodeId(val=val.typeDefinition, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7818,41 +9673,63 @@ class UaReferenceDescription(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._reference_type_id._value[0] = _val(val.referenceTypeId)
-        self._is_forward._value[0] = _val(val.isForward)
-        self._node_id._value[0] = _val(val.nodeId)
-        self._browse_name._value[0] = _val(val.browseName)
-        self._display_name._value[0] = _val(val.displayName)
-        self._node_class._value[0] = _val(val.nodeClass)
-        self._type_definition._value[0] = _val(val.typeDefinition)
+        if not _is_null(val):
+            self._reference_type_id._value[0] = _val(val.referenceTypeId)
+            self._is_forward._value[0] = _val(val.isForward)
+            self._node_id._value[0] = _val(val.nodeId)
+            self._browse_name._value[0] = _val(val.browseName)
+            self._display_name._value[0] = _val(val.displayName)
+            self._node_class._value[0] = _val(val.nodeClass)
+            self._type_definition._value[0] = _val(val.typeDefinition)
 
     @property
     def reference_type_id(self):
-        return self._reference_type_id
+        if self._null:
+            return None
+        else:
+            return self._reference_type_id
 
     @property
     def is_forward(self):
-        return self._is_forward
+        if self._null:
+            return None
+        else:
+            return self._is_forward
 
     @property
     def node_id(self):
-        return self._node_id
+        if self._null:
+            return None
+        else:
+            return self._node_id
 
     @property
     def browse_name(self):
-        return self._browse_name
+        if self._null:
+            return None
+        else:
+            return self._browse_name
 
     @property
     def display_name(self):
-        return self._display_name
+        if self._null:
+            return None
+        else:
+            return self._display_name
 
     @property
     def node_class(self):
-        return self._node_class
+        if self._null:
+            return None
+        else:
+            return self._node_class
 
     @property
     def type_definition(self):
-        return self._type_definition
+        if self._null:
+            return None
+        else:
+            return self._type_definition
 
     @reference_type_id.setter
     def reference_type_id(self, val):
@@ -7890,6 +9767,9 @@ class UaReferenceDescription(UaType):
         self._value.typeDefinition = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaReferenceDescription) : NULL\n"
+        
         return ("(UaReferenceDescription) :\n" +
                 "\t"*(n+1) + "reference_type_id" + self._reference_type_id.__str__(n+1) +
                 "\t"*(n+1) + "is_forward" + self._is_forward.__str__(n+1) +
@@ -7904,14 +9784,15 @@ class UaReferenceDescription(UaType):
 class UaCreateSubscriptionRequest(UaType):
     def __init__(self, val=ffi.new("UA_CreateSubscriptionRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._requested_publishing_interval = UaDouble(val=val.requestedPublishingInterval, is_pointer=False)
-        self._requested_lifetime_count = UaUInt32(val=val.requestedLifetimeCount, is_pointer=False)
-        self._requested_max_keep_alive_count = UaUInt32(val=val.requestedMaxKeepAliveCount, is_pointer=False)
-        self._max_notifications_per_publish = UaUInt32(val=val.maxNotificationsPerPublish, is_pointer=False)
-        self._publishing_enabled = UaBoolean(val=val.publishingEnabled, is_pointer=False)
-        self._priority = UaByte(val=val.priority, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._requested_publishing_interval = UaDouble(val=val.requestedPublishingInterval, is_pointer=False)
+            self._requested_lifetime_count = UaUInt32(val=val.requestedLifetimeCount, is_pointer=False)
+            self._requested_max_keep_alive_count = UaUInt32(val=val.requestedMaxKeepAliveCount, is_pointer=False)
+            self._max_notifications_per_publish = UaUInt32(val=val.maxNotificationsPerPublish, is_pointer=False)
+            self._publishing_enabled = UaBoolean(val=val.publishingEnabled, is_pointer=False)
+            self._priority = UaByte(val=val.priority, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -7919,41 +9800,63 @@ class UaCreateSubscriptionRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._requested_publishing_interval._value[0] = _val(val.requestedPublishingInterval)
-        self._requested_lifetime_count._value[0] = _val(val.requestedLifetimeCount)
-        self._requested_max_keep_alive_count._value[0] = _val(val.requestedMaxKeepAliveCount)
-        self._max_notifications_per_publish._value[0] = _val(val.maxNotificationsPerPublish)
-        self._publishing_enabled._value[0] = _val(val.publishingEnabled)
-        self._priority._value[0] = _val(val.priority)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._requested_publishing_interval._value[0] = _val(val.requestedPublishingInterval)
+            self._requested_lifetime_count._value[0] = _val(val.requestedLifetimeCount)
+            self._requested_max_keep_alive_count._value[0] = _val(val.requestedMaxKeepAliveCount)
+            self._max_notifications_per_publish._value[0] = _val(val.maxNotificationsPerPublish)
+            self._publishing_enabled._value[0] = _val(val.publishingEnabled)
+            self._priority._value[0] = _val(val.priority)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def requested_publishing_interval(self):
-        return self._requested_publishing_interval
+        if self._null:
+            return None
+        else:
+            return self._requested_publishing_interval
 
     @property
     def requested_lifetime_count(self):
-        return self._requested_lifetime_count
+        if self._null:
+            return None
+        else:
+            return self._requested_lifetime_count
 
     @property
     def requested_max_keep_alive_count(self):
-        return self._requested_max_keep_alive_count
+        if self._null:
+            return None
+        else:
+            return self._requested_max_keep_alive_count
 
     @property
     def max_notifications_per_publish(self):
-        return self._max_notifications_per_publish
+        if self._null:
+            return None
+        else:
+            return self._max_notifications_per_publish
 
     @property
     def publishing_enabled(self):
-        return self._publishing_enabled
+        if self._null:
+            return None
+        else:
+            return self._publishing_enabled
 
     @property
     def priority(self):
-        return self._priority
+        if self._null:
+            return None
+        else:
+            return self._priority
 
     @request_header.setter
     def request_header(self, val):
@@ -7991,6 +9894,9 @@ class UaCreateSubscriptionRequest(UaType):
         self._value.priority = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCreateSubscriptionRequest) : NULL\n"
+        
         return ("(UaCreateSubscriptionRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "requested_publishing_interval" + self._requested_publishing_interval.__str__(n+1) +
@@ -8005,12 +9911,13 @@ class UaCreateSubscriptionRequest(UaType):
 class UaCallResponse(UaType):
     def __init__(self, val=ffi.new("UA_CallResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaCallMethodResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaCallMethodResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8018,31 +9925,47 @@ class UaCallResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -8070,6 +9993,9 @@ class UaCallResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCallResponse) : NULL\n"
+        
         return ("(UaCallResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -8082,12 +10008,13 @@ class UaCallResponse(UaType):
 class UaDeleteNodesResponse(UaType):
     def __init__(self, val=ffi.new("UA_DeleteNodesResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8095,31 +10022,47 @@ class UaDeleteNodesResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -8147,6 +10090,9 @@ class UaDeleteNodesResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteNodesResponse) : NULL\n"
+        
         return ("(UaDeleteNodesResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -8159,12 +10105,13 @@ class UaDeleteNodesResponse(UaType):
 class UaModifyMonitoredItemsRequest(UaType):
     def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn, is_pointer=False)
-        self._items_to_modify_size = SizeT(val=val.itemsToModifySize, is_pointer=False)
-        self._items_to_modify = UaMonitoredItemModifyRequest(val=val.itemsToModify, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn, is_pointer=False)
+            self._items_to_modify_size = SizeT(val=val.itemsToModifySize, is_pointer=False)
+            self._items_to_modify = UaMonitoredItemModifyRequest(val=val.itemsToModify, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8172,31 +10119,47 @@ class UaModifyMonitoredItemsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._timestamps_to_return._value[0] = _val(val.timestampsToReturn)
-        self._items_to_modify_size._value[0] = _val(val.itemsToModifySize)
-        self._items_to_modify._value = val.itemsToModify
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._timestamps_to_return._value[0] = _val(val.timestampsToReturn)
+            self._items_to_modify_size._value[0] = _val(val.itemsToModifySize)
+            self._items_to_modify._value = val.itemsToModify
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def timestamps_to_return(self):
-        return self._timestamps_to_return
+        if self._null:
+            return None
+        else:
+            return self._timestamps_to_return
 
     @property
     def items_to_modify_size(self):
-        return self._items_to_modify_size
+        if self._null:
+            return None
+        else:
+            return self._items_to_modify_size
 
     @property
     def items_to_modify(self):
-        return self._items_to_modify
+        if self._null:
+            return None
+        else:
+            return self._items_to_modify
 
     @request_header.setter
     def request_header(self, val):
@@ -8224,6 +10187,9 @@ class UaModifyMonitoredItemsRequest(UaType):
         self._value.itemsToModify = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaModifyMonitoredItemsRequest) : NULL\n"
+        
         return ("(UaModifyMonitoredItemsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -8236,8 +10202,9 @@ class UaModifyMonitoredItemsRequest(UaType):
 class UaServiceFault(UaType):
     def __init__(self, val=ffi.new("UA_ServiceFault*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8245,11 +10212,15 @@ class UaServiceFault(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @response_header.setter
     def response_header(self, val):
@@ -8257,6 +10228,9 @@ class UaServiceFault(UaType):
         self._value.responseHeader = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaServiceFault) : NULL\n"
+        
         return ("(UaServiceFault) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) + "\n")
 
@@ -8265,17 +10239,18 @@ class UaServiceFault(UaType):
 class UaPublishResponse(UaType):
     def __init__(self, val=ffi.new("UA_PublishResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._available_sequence_numbers_size = SizeT(val=val.availableSequenceNumbersSize, is_pointer=False)
-        self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
-        self._more_notifications = UaBoolean(val=val.moreNotifications, is_pointer=False)
-        self._notification_message = UaNotificationMessage(val=val.notificationMessage, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaStatusCode(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._available_sequence_numbers_size = SizeT(val=val.availableSequenceNumbersSize, is_pointer=False)
+            self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
+            self._more_notifications = UaBoolean(val=val.moreNotifications, is_pointer=False)
+            self._notification_message = UaNotificationMessage(val=val.notificationMessage, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaStatusCode(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8283,56 +10258,87 @@ class UaPublishResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._available_sequence_numbers_size._value[0] = _val(val.availableSequenceNumbersSize)
-        self._available_sequence_numbers._value = val.availableSequenceNumbers
-        self._more_notifications._value[0] = _val(val.moreNotifications)
-        self._notification_message._value[0] = _val(val.notificationMessage)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._available_sequence_numbers_size._value[0] = _val(val.availableSequenceNumbersSize)
+            self._available_sequence_numbers._value = val.availableSequenceNumbers
+            self._more_notifications._value[0] = _val(val.moreNotifications)
+            self._notification_message._value[0] = _val(val.notificationMessage)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def available_sequence_numbers_size(self):
-        return self._available_sequence_numbers_size
+        if self._null:
+            return None
+        else:
+            return self._available_sequence_numbers_size
 
     @property
     def available_sequence_numbers(self):
-        return self._available_sequence_numbers
+        if self._null:
+            return None
+        else:
+            return self._available_sequence_numbers
 
     @property
     def more_notifications(self):
-        return self._more_notifications
+        if self._null:
+            return None
+        else:
+            return self._more_notifications
 
     @property
     def notification_message(self):
-        return self._notification_message
+        if self._null:
+            return None
+        else:
+            return self._notification_message
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -8385,6 +10391,9 @@ class UaPublishResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaPublishResponse) : NULL\n"
+        
         return ("(UaPublishResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -8402,12 +10411,13 @@ class UaPublishResponse(UaType):
 class UaCreateMonitoredItemsRequest(UaType):
     def __init__(self, val=ffi.new("UA_CreateMonitoredItemsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn, is_pointer=False)
-        self._items_to_create_size = SizeT(val=val.itemsToCreateSize, is_pointer=False)
-        self._items_to_create = UaMonitoredItemCreateRequest(val=val.itemsToCreate, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn, is_pointer=False)
+            self._items_to_create_size = SizeT(val=val.itemsToCreateSize, is_pointer=False)
+            self._items_to_create = UaMonitoredItemCreateRequest(val=val.itemsToCreate, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8415,31 +10425,47 @@ class UaCreateMonitoredItemsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._timestamps_to_return._value[0] = _val(val.timestampsToReturn)
-        self._items_to_create_size._value[0] = _val(val.itemsToCreateSize)
-        self._items_to_create._value = val.itemsToCreate
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._timestamps_to_return._value[0] = _val(val.timestampsToReturn)
+            self._items_to_create_size._value[0] = _val(val.itemsToCreateSize)
+            self._items_to_create._value = val.itemsToCreate
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def timestamps_to_return(self):
-        return self._timestamps_to_return
+        if self._null:
+            return None
+        else:
+            return self._timestamps_to_return
 
     @property
     def items_to_create_size(self):
-        return self._items_to_create_size
+        if self._null:
+            return None
+        else:
+            return self._items_to_create_size
 
     @property
     def items_to_create(self):
-        return self._items_to_create
+        if self._null:
+            return None
+        else:
+            return self._items_to_create
 
     @request_header.setter
     def request_header(self, val):
@@ -8467,6 +10493,9 @@ class UaCreateMonitoredItemsRequest(UaType):
         self._value.itemsToCreate = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCreateMonitoredItemsRequest) : NULL\n"
+        
         return ("(UaCreateMonitoredItemsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -8479,13 +10508,14 @@ class UaCreateMonitoredItemsRequest(UaType):
 class UaOpenSecureChannelRequest(UaType):
     def __init__(self, val=ffi.new("UA_OpenSecureChannelRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._client_protocol_version = UaUInt32(val=val.clientProtocolVersion, is_pointer=False)
-        self._request_type = UaSecurityTokenRequestType(val=val.requestType, is_pointer=False)
-        self._security_mode = UaMessageSecurityMode(val=val.securityMode, is_pointer=False)
-        self._client_nonce = UaByteString(val=val.clientNonce, is_pointer=False)
-        self._requested_lifetime = UaUInt32(val=val.requestedLifetime, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._client_protocol_version = UaUInt32(val=val.clientProtocolVersion, is_pointer=False)
+            self._request_type = UaSecurityTokenRequestType(val=val.requestType, is_pointer=False)
+            self._security_mode = UaMessageSecurityMode(val=val.securityMode, is_pointer=False)
+            self._client_nonce = UaByteString(val=val.clientNonce, is_pointer=False)
+            self._requested_lifetime = UaUInt32(val=val.requestedLifetime, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8493,36 +10523,55 @@ class UaOpenSecureChannelRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._client_protocol_version._value[0] = _val(val.clientProtocolVersion)
-        self._request_type._value[0] = _val(val.requestType)
-        self._security_mode._value[0] = _val(val.securityMode)
-        self._client_nonce._value[0] = _val(val.clientNonce)
-        self._requested_lifetime._value[0] = _val(val.requestedLifetime)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._client_protocol_version._value[0] = _val(val.clientProtocolVersion)
+            self._request_type._value[0] = _val(val.requestType)
+            self._security_mode._value[0] = _val(val.securityMode)
+            self._client_nonce._value[0] = _val(val.clientNonce)
+            self._requested_lifetime._value[0] = _val(val.requestedLifetime)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def client_protocol_version(self):
-        return self._client_protocol_version
+        if self._null:
+            return None
+        else:
+            return self._client_protocol_version
 
     @property
     def request_type(self):
-        return self._request_type
+        if self._null:
+            return None
+        else:
+            return self._request_type
 
     @property
     def security_mode(self):
-        return self._security_mode
+        if self._null:
+            return None
+        else:
+            return self._security_mode
 
     @property
     def client_nonce(self):
-        return self._client_nonce
+        if self._null:
+            return None
+        else:
+            return self._client_nonce
 
     @property
     def requested_lifetime(self):
-        return self._requested_lifetime
+        if self._null:
+            return None
+        else:
+            return self._requested_lifetime
 
     @request_header.setter
     def request_header(self, val):
@@ -8555,6 +10604,9 @@ class UaOpenSecureChannelRequest(UaType):
         self._value.requestedLifetime = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaOpenSecureChannelRequest) : NULL\n"
+        
         return ("(UaOpenSecureChannelRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "client_protocol_version" + self._client_protocol_version.__str__(n+1) +
@@ -8568,9 +10620,10 @@ class UaOpenSecureChannelRequest(UaType):
 class UaCloseSessionRequest(UaType):
     def __init__(self, val=ffi.new("UA_CloseSessionRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._delete_subscriptions = UaBoolean(val=val.deleteSubscriptions, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._delete_subscriptions = UaBoolean(val=val.deleteSubscriptions, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8578,16 +10631,23 @@ class UaCloseSessionRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._delete_subscriptions._value[0] = _val(val.deleteSubscriptions)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._delete_subscriptions._value[0] = _val(val.deleteSubscriptions)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def delete_subscriptions(self):
-        return self._delete_subscriptions
+        if self._null:
+            return None
+        else:
+            return self._delete_subscriptions
 
     @request_header.setter
     def request_header(self, val):
@@ -8600,6 +10660,9 @@ class UaCloseSessionRequest(UaType):
         self._value.deleteSubscriptions = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCloseSessionRequest) : NULL\n"
+        
         return ("(UaCloseSessionRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "delete_subscriptions" + self._delete_subscriptions.__str__(n+1) + "\n")
@@ -8609,14 +10672,15 @@ class UaCloseSessionRequest(UaType):
 class UaSetTriggeringRequest(UaType):
     def __init__(self, val=ffi.new("UA_SetTriggeringRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
-        self._triggering_item_id = UaUInt32(val=val.triggeringItemId, is_pointer=False)
-        self._links_to_add_size = SizeT(val=val.linksToAddSize, is_pointer=False)
-        self._links_to_add = UaUInt32(val=val.linksToAdd, is_pointer=True)
-        self._links_to_remove_size = SizeT(val=val.linksToRemoveSize, is_pointer=False)
-        self._links_to_remove = UaUInt32(val=val.linksToRemove, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._subscription_id = UaUInt32(val=val.subscriptionId, is_pointer=False)
+            self._triggering_item_id = UaUInt32(val=val.triggeringItemId, is_pointer=False)
+            self._links_to_add_size = SizeT(val=val.linksToAddSize, is_pointer=False)
+            self._links_to_add = UaUInt32(val=val.linksToAdd, is_pointer=True)
+            self._links_to_remove_size = SizeT(val=val.linksToRemoveSize, is_pointer=False)
+            self._links_to_remove = UaUInt32(val=val.linksToRemove, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8624,41 +10688,63 @@ class UaSetTriggeringRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._subscription_id._value[0] = _val(val.subscriptionId)
-        self._triggering_item_id._value[0] = _val(val.triggeringItemId)
-        self._links_to_add_size._value[0] = _val(val.linksToAddSize)
-        self._links_to_add._value = val.linksToAdd
-        self._links_to_remove_size._value[0] = _val(val.linksToRemoveSize)
-        self._links_to_remove._value = val.linksToRemove
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._subscription_id._value[0] = _val(val.subscriptionId)
+            self._triggering_item_id._value[0] = _val(val.triggeringItemId)
+            self._links_to_add_size._value[0] = _val(val.linksToAddSize)
+            self._links_to_add._value = val.linksToAdd
+            self._links_to_remove_size._value[0] = _val(val.linksToRemoveSize)
+            self._links_to_remove._value = val.linksToRemove
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def subscription_id(self):
-        return self._subscription_id
+        if self._null:
+            return None
+        else:
+            return self._subscription_id
 
     @property
     def triggering_item_id(self):
-        return self._triggering_item_id
+        if self._null:
+            return None
+        else:
+            return self._triggering_item_id
 
     @property
     def links_to_add_size(self):
-        return self._links_to_add_size
+        if self._null:
+            return None
+        else:
+            return self._links_to_add_size
 
     @property
     def links_to_add(self):
-        return self._links_to_add
+        if self._null:
+            return None
+        else:
+            return self._links_to_add
 
     @property
     def links_to_remove_size(self):
-        return self._links_to_remove_size
+        if self._null:
+            return None
+        else:
+            return self._links_to_remove_size
 
     @property
     def links_to_remove(self):
-        return self._links_to_remove
+        if self._null:
+            return None
+        else:
+            return self._links_to_remove
 
     @request_header.setter
     def request_header(self, val):
@@ -8696,6 +10782,9 @@ class UaSetTriggeringRequest(UaType):
         self._value.linksToRemove = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSetTriggeringRequest) : NULL\n"
+        
         return ("(UaSetTriggeringRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "subscription_id" + self._subscription_id.__str__(n+1) +
@@ -8710,11 +10799,12 @@ class UaSetTriggeringRequest(UaType):
 class UaBrowseResult(UaType):
     def __init__(self, val=ffi.new("UA_BrowseResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._continuation_point = UaByteString(val=val.continuationPoint, is_pointer=False)
-        self._references_size = SizeT(val=val.referencesSize, is_pointer=False)
-        self._references = UaReferenceDescription(val=val.references, is_pointer=True)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._continuation_point = UaByteString(val=val.continuationPoint, is_pointer=False)
+            self._references_size = SizeT(val=val.referencesSize, is_pointer=False)
+            self._references = UaReferenceDescription(val=val.references, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8722,26 +10812,39 @@ class UaBrowseResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._continuation_point._value[0] = _val(val.continuationPoint)
-        self._references_size._value[0] = _val(val.referencesSize)
-        self._references._value = val.references
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._continuation_point._value[0] = _val(val.continuationPoint)
+            self._references_size._value[0] = _val(val.referencesSize)
+            self._references._value = val.references
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def continuation_point(self):
-        return self._continuation_point
+        if self._null:
+            return None
+        else:
+            return self._continuation_point
 
     @property
     def references_size(self):
-        return self._references_size
+        if self._null:
+            return None
+        else:
+            return self._references_size
 
     @property
     def references(self):
-        return self._references
+        if self._null:
+            return None
+        else:
+            return self._references
 
     @status_code.setter
     def status_code(self, val):
@@ -8764,6 +10867,9 @@ class UaBrowseResult(UaType):
         self._value.references = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowseResult) : NULL\n"
+        
         return ("(UaBrowseResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "continuation_point" + self._continuation_point.__str__(n+1) +
@@ -8775,10 +10881,11 @@ class UaBrowseResult(UaType):
 class UaAddReferencesRequest(UaType):
     def __init__(self, val=ffi.new("UA_AddReferencesRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._references_to_add_size = SizeT(val=val.referencesToAddSize, is_pointer=False)
-        self._references_to_add = UaAddReferencesItem(val=val.referencesToAdd, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._references_to_add_size = SizeT(val=val.referencesToAddSize, is_pointer=False)
+            self._references_to_add = UaAddReferencesItem(val=val.referencesToAdd, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8786,21 +10893,31 @@ class UaAddReferencesRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._references_to_add_size._value[0] = _val(val.referencesToAddSize)
-        self._references_to_add._value = val.referencesToAdd
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._references_to_add_size._value[0] = _val(val.referencesToAddSize)
+            self._references_to_add._value = val.referencesToAdd
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def references_to_add_size(self):
-        return self._references_to_add_size
+        if self._null:
+            return None
+        else:
+            return self._references_to_add_size
 
     @property
     def references_to_add(self):
-        return self._references_to_add
+        if self._null:
+            return None
+        else:
+            return self._references_to_add
 
     @request_header.setter
     def request_header(self, val):
@@ -8818,6 +10935,9 @@ class UaAddReferencesRequest(UaType):
         self._value.referencesToAdd = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddReferencesRequest) : NULL\n"
+        
         return ("(UaAddReferencesRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "references_to_add_size" + self._references_to_add_size.__str__(n+1) +
@@ -8828,14 +10948,15 @@ class UaAddReferencesRequest(UaType):
 class UaAddNodesItem(UaType):
     def __init__(self, val=ffi.new("UA_AddNodesItem*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._parent_node_id = UaExpandedNodeId(val=val.parentNodeId, is_pointer=False)
-        self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
-        self._requested_new_node_id = UaExpandedNodeId(val=val.requestedNewNodeId, is_pointer=False)
-        self._browse_name = UaQualifiedName(val=val.browseName, is_pointer=False)
-        self._node_class = UaNodeClass(val=val.nodeClass, is_pointer=False)
-        self._node_attributes = UaExtensionObject(val=val.nodeAttributes, is_pointer=False)
-        self._type_definition = UaExpandedNodeId(val=val.typeDefinition, is_pointer=False)
+        
+        if not self._null:
+            self._parent_node_id = UaExpandedNodeId(val=val.parentNodeId, is_pointer=False)
+            self._reference_type_id = UaNodeId(val=val.referenceTypeId, is_pointer=False)
+            self._requested_new_node_id = UaExpandedNodeId(val=val.requestedNewNodeId, is_pointer=False)
+            self._browse_name = UaQualifiedName(val=val.browseName, is_pointer=False)
+            self._node_class = UaNodeClass(val=val.nodeClass, is_pointer=False)
+            self._node_attributes = UaExtensionObject(val=val.nodeAttributes, is_pointer=False)
+            self._type_definition = UaExpandedNodeId(val=val.typeDefinition, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8843,41 +10964,63 @@ class UaAddNodesItem(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._parent_node_id._value[0] = _val(val.parentNodeId)
-        self._reference_type_id._value[0] = _val(val.referenceTypeId)
-        self._requested_new_node_id._value[0] = _val(val.requestedNewNodeId)
-        self._browse_name._value[0] = _val(val.browseName)
-        self._node_class._value[0] = _val(val.nodeClass)
-        self._node_attributes._value[0] = _val(val.nodeAttributes)
-        self._type_definition._value[0] = _val(val.typeDefinition)
+        if not _is_null(val):
+            self._parent_node_id._value[0] = _val(val.parentNodeId)
+            self._reference_type_id._value[0] = _val(val.referenceTypeId)
+            self._requested_new_node_id._value[0] = _val(val.requestedNewNodeId)
+            self._browse_name._value[0] = _val(val.browseName)
+            self._node_class._value[0] = _val(val.nodeClass)
+            self._node_attributes._value[0] = _val(val.nodeAttributes)
+            self._type_definition._value[0] = _val(val.typeDefinition)
 
     @property
     def parent_node_id(self):
-        return self._parent_node_id
+        if self._null:
+            return None
+        else:
+            return self._parent_node_id
 
     @property
     def reference_type_id(self):
-        return self._reference_type_id
+        if self._null:
+            return None
+        else:
+            return self._reference_type_id
 
     @property
     def requested_new_node_id(self):
-        return self._requested_new_node_id
+        if self._null:
+            return None
+        else:
+            return self._requested_new_node_id
 
     @property
     def browse_name(self):
-        return self._browse_name
+        if self._null:
+            return None
+        else:
+            return self._browse_name
 
     @property
     def node_class(self):
-        return self._node_class
+        if self._null:
+            return None
+        else:
+            return self._node_class
 
     @property
     def node_attributes(self):
-        return self._node_attributes
+        if self._null:
+            return None
+        else:
+            return self._node_attributes
 
     @property
     def type_definition(self):
-        return self._type_definition
+        if self._null:
+            return None
+        else:
+            return self._type_definition
 
     @parent_node_id.setter
     def parent_node_id(self, val):
@@ -8915,6 +11058,9 @@ class UaAddNodesItem(UaType):
         self._value.typeDefinition = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddNodesItem) : NULL\n"
+        
         return ("(UaAddNodesItem) :\n" +
                 "\t"*(n+1) + "parent_node_id" + self._parent_node_id.__str__(n+1) +
                 "\t"*(n+1) + "reference_type_id" + self._reference_type_id.__str__(n+1) +
@@ -8929,13 +11075,14 @@ class UaAddNodesItem(UaType):
 class UaServerStatusDataType(UaType):
     def __init__(self, val=ffi.new("UA_ServerStatusDataType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._start_time = UaDateTime(val=val.startTime, is_pointer=False)
-        self._current_time = UaDateTime(val=val.currentTime, is_pointer=False)
-        self._state = UaServerState(val=val.state, is_pointer=False)
-        self._build_info = UaBuildInfo(val=val.buildInfo, is_pointer=False)
-        self._seconds_till_shutdown = UaUInt32(val=val.secondsTillShutdown, is_pointer=False)
-        self._shutdown_reason = UaLocalizedText(val=val.shutdownReason, is_pointer=False)
+        
+        if not self._null:
+            self._start_time = UaDateTime(val=val.startTime, is_pointer=False)
+            self._current_time = UaDateTime(val=val.currentTime, is_pointer=False)
+            self._state = UaServerState(val=val.state, is_pointer=False)
+            self._build_info = UaBuildInfo(val=val.buildInfo, is_pointer=False)
+            self._seconds_till_shutdown = UaUInt32(val=val.secondsTillShutdown, is_pointer=False)
+            self._shutdown_reason = UaLocalizedText(val=val.shutdownReason, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -8943,36 +11090,55 @@ class UaServerStatusDataType(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._start_time._value[0] = _val(val.startTime)
-        self._current_time._value[0] = _val(val.currentTime)
-        self._state._value[0] = _val(val.state)
-        self._build_info._value[0] = _val(val.buildInfo)
-        self._seconds_till_shutdown._value[0] = _val(val.secondsTillShutdown)
-        self._shutdown_reason._value[0] = _val(val.shutdownReason)
+        if not _is_null(val):
+            self._start_time._value[0] = _val(val.startTime)
+            self._current_time._value[0] = _val(val.currentTime)
+            self._state._value[0] = _val(val.state)
+            self._build_info._value[0] = _val(val.buildInfo)
+            self._seconds_till_shutdown._value[0] = _val(val.secondsTillShutdown)
+            self._shutdown_reason._value[0] = _val(val.shutdownReason)
 
     @property
     def start_time(self):
-        return self._start_time
+        if self._null:
+            return None
+        else:
+            return self._start_time
 
     @property
     def current_time(self):
-        return self._current_time
+        if self._null:
+            return None
+        else:
+            return self._current_time
 
     @property
     def state(self):
-        return self._state
+        if self._null:
+            return None
+        else:
+            return self._state
 
     @property
     def build_info(self):
-        return self._build_info
+        if self._null:
+            return None
+        else:
+            return self._build_info
 
     @property
     def seconds_till_shutdown(self):
-        return self._seconds_till_shutdown
+        if self._null:
+            return None
+        else:
+            return self._seconds_till_shutdown
 
     @property
     def shutdown_reason(self):
-        return self._shutdown_reason
+        if self._null:
+            return None
+        else:
+            return self._shutdown_reason
 
     @start_time.setter
     def start_time(self, val):
@@ -9005,6 +11171,9 @@ class UaServerStatusDataType(UaType):
         self._value.shutdownReason = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaServerStatusDataType) : NULL\n"
+        
         return ("(UaServerStatusDataType) :\n" +
                 "\t"*(n+1) + "start_time" + self._start_time.__str__(n+1) +
                 "\t"*(n+1) + "current_time" + self._current_time.__str__(n+1) +
@@ -9018,12 +11187,13 @@ class UaServerStatusDataType(UaType):
 class UaBrowseNextResponse(UaType):
     def __init__(self, val=ffi.new("UA_BrowseNextResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaBrowseResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaBrowseResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9031,31 +11201,47 @@ class UaBrowseNextResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -9083,6 +11269,9 @@ class UaBrowseNextResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowseNextResponse) : NULL\n"
+        
         return ("(UaBrowseNextResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -9095,13 +11284,14 @@ class UaBrowseNextResponse(UaType):
 class UaAxisInformation(UaType):
     def __init__(self, val=ffi.new("UA_AxisInformation*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._engineering_units = UaEUInformation(val=val.engineeringUnits, is_pointer=False)
-        self._e_u_range = UaRange(val=val.eURange, is_pointer=False)
-        self._title = UaLocalizedText(val=val.title, is_pointer=False)
-        self._axis_scale_type = UaAxisScaleEnumeration(val=val.axisScaleType, is_pointer=False)
-        self._axis_steps_size = SizeT(val=val.axisStepsSize, is_pointer=False)
-        self._axis_steps = UaDouble(val=val.axisSteps, is_pointer=True)
+        
+        if not self._null:
+            self._engineering_units = UaEUInformation(val=val.engineeringUnits, is_pointer=False)
+            self._e_u_range = UaRange(val=val.eURange, is_pointer=False)
+            self._title = UaLocalizedText(val=val.title, is_pointer=False)
+            self._axis_scale_type = UaAxisScaleEnumeration(val=val.axisScaleType, is_pointer=False)
+            self._axis_steps_size = SizeT(val=val.axisStepsSize, is_pointer=False)
+            self._axis_steps = UaDouble(val=val.axisSteps, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9109,36 +11299,55 @@ class UaAxisInformation(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._engineering_units._value[0] = _val(val.engineeringUnits)
-        self._e_u_range._value[0] = _val(val.eURange)
-        self._title._value[0] = _val(val.title)
-        self._axis_scale_type._value[0] = _val(val.axisScaleType)
-        self._axis_steps_size._value[0] = _val(val.axisStepsSize)
-        self._axis_steps._value = val.axisSteps
+        if not _is_null(val):
+            self._engineering_units._value[0] = _val(val.engineeringUnits)
+            self._e_u_range._value[0] = _val(val.eURange)
+            self._title._value[0] = _val(val.title)
+            self._axis_scale_type._value[0] = _val(val.axisScaleType)
+            self._axis_steps_size._value[0] = _val(val.axisStepsSize)
+            self._axis_steps._value = val.axisSteps
 
     @property
     def engineering_units(self):
-        return self._engineering_units
+        if self._null:
+            return None
+        else:
+            return self._engineering_units
 
     @property
     def e_u_range(self):
-        return self._e_u_range
+        if self._null:
+            return None
+        else:
+            return self._e_u_range
 
     @property
     def title(self):
-        return self._title
+        if self._null:
+            return None
+        else:
+            return self._title
 
     @property
     def axis_scale_type(self):
-        return self._axis_scale_type
+        if self._null:
+            return None
+        else:
+            return self._axis_scale_type
 
     @property
     def axis_steps_size(self):
-        return self._axis_steps_size
+        if self._null:
+            return None
+        else:
+            return self._axis_steps_size
 
     @property
     def axis_steps(self):
-        return self._axis_steps
+        if self._null:
+            return None
+        else:
+            return self._axis_steps
 
     @engineering_units.setter
     def engineering_units(self, val):
@@ -9171,6 +11380,9 @@ class UaAxisInformation(UaType):
         self._value.axisSteps = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAxisInformation) : NULL\n"
+        
         return ("(UaAxisInformation) :\n" +
                 "\t"*(n+1) + "engineering_units" + self._engineering_units.__str__(n+1) +
                 "\t"*(n+1) + "e_u_range" + self._e_u_range.__str__(n+1) +
@@ -9184,15 +11396,16 @@ class UaAxisInformation(UaType):
 class UaApplicationDescription(UaType):
     def __init__(self, val=ffi.new("UA_ApplicationDescription*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._application_uri = UaString(val=val.applicationUri, is_pointer=False)
-        self._product_uri = UaString(val=val.productUri, is_pointer=False)
-        self._application_name = UaLocalizedText(val=val.applicationName, is_pointer=False)
-        self._application_type = UaApplicationType(val=val.applicationType, is_pointer=False)
-        self._gateway_server_uri = UaString(val=val.gatewayServerUri, is_pointer=False)
-        self._discovery_profile_uri = UaString(val=val.discoveryProfileUri, is_pointer=False)
-        self._discovery_urls_size = SizeT(val=val.discoveryUrlsSize, is_pointer=False)
-        self._discovery_urls = UaString(val=val.discoveryUrls, is_pointer=True)
+        
+        if not self._null:
+            self._application_uri = UaString(val=val.applicationUri, is_pointer=False)
+            self._product_uri = UaString(val=val.productUri, is_pointer=False)
+            self._application_name = UaLocalizedText(val=val.applicationName, is_pointer=False)
+            self._application_type = UaApplicationType(val=val.applicationType, is_pointer=False)
+            self._gateway_server_uri = UaString(val=val.gatewayServerUri, is_pointer=False)
+            self._discovery_profile_uri = UaString(val=val.discoveryProfileUri, is_pointer=False)
+            self._discovery_urls_size = SizeT(val=val.discoveryUrlsSize, is_pointer=False)
+            self._discovery_urls = UaString(val=val.discoveryUrls, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9200,46 +11413,71 @@ class UaApplicationDescription(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._application_uri._value[0] = _val(val.applicationUri)
-        self._product_uri._value[0] = _val(val.productUri)
-        self._application_name._value[0] = _val(val.applicationName)
-        self._application_type._value[0] = _val(val.applicationType)
-        self._gateway_server_uri._value[0] = _val(val.gatewayServerUri)
-        self._discovery_profile_uri._value[0] = _val(val.discoveryProfileUri)
-        self._discovery_urls_size._value[0] = _val(val.discoveryUrlsSize)
-        self._discovery_urls._value = val.discoveryUrls
+        if not _is_null(val):
+            self._application_uri._value[0] = _val(val.applicationUri)
+            self._product_uri._value[0] = _val(val.productUri)
+            self._application_name._value[0] = _val(val.applicationName)
+            self._application_type._value[0] = _val(val.applicationType)
+            self._gateway_server_uri._value[0] = _val(val.gatewayServerUri)
+            self._discovery_profile_uri._value[0] = _val(val.discoveryProfileUri)
+            self._discovery_urls_size._value[0] = _val(val.discoveryUrlsSize)
+            self._discovery_urls._value = val.discoveryUrls
 
     @property
     def application_uri(self):
-        return self._application_uri
+        if self._null:
+            return None
+        else:
+            return self._application_uri
 
     @property
     def product_uri(self):
-        return self._product_uri
+        if self._null:
+            return None
+        else:
+            return self._product_uri
 
     @property
     def application_name(self):
-        return self._application_name
+        if self._null:
+            return None
+        else:
+            return self._application_name
 
     @property
     def application_type(self):
-        return self._application_type
+        if self._null:
+            return None
+        else:
+            return self._application_type
 
     @property
     def gateway_server_uri(self):
-        return self._gateway_server_uri
+        if self._null:
+            return None
+        else:
+            return self._gateway_server_uri
 
     @property
     def discovery_profile_uri(self):
-        return self._discovery_profile_uri
+        if self._null:
+            return None
+        else:
+            return self._discovery_profile_uri
 
     @property
     def discovery_urls_size(self):
-        return self._discovery_urls_size
+        if self._null:
+            return None
+        else:
+            return self._discovery_urls_size
 
     @property
     def discovery_urls(self):
-        return self._discovery_urls
+        if self._null:
+            return None
+        else:
+            return self._discovery_urls
 
     @application_uri.setter
     def application_uri(self, val):
@@ -9282,6 +11520,9 @@ class UaApplicationDescription(UaType):
         self._value.discoveryUrls = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaApplicationDescription) : NULL\n"
+        
         return ("(UaApplicationDescription) :\n" +
                 "\t"*(n+1) + "application_uri" + self._application_uri.__str__(n+1) +
                 "\t"*(n+1) + "product_uri" + self._product_uri.__str__(n+1) +
@@ -9297,12 +11538,13 @@ class UaApplicationDescription(UaType):
 class UaReadRequest(UaType):
     def __init__(self, val=ffi.new("UA_ReadRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._max_age = UaDouble(val=val.maxAge, is_pointer=False)
-        self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn, is_pointer=False)
-        self._nodes_to_read_size = SizeT(val=val.nodesToReadSize, is_pointer=False)
-        self._nodes_to_read = UaReadValueId(val=val.nodesToRead, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._max_age = UaDouble(val=val.maxAge, is_pointer=False)
+            self._timestamps_to_return = UaTimestampsToReturn(val=val.timestampsToReturn, is_pointer=False)
+            self._nodes_to_read_size = SizeT(val=val.nodesToReadSize, is_pointer=False)
+            self._nodes_to_read = UaReadValueId(val=val.nodesToRead, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9310,31 +11552,47 @@ class UaReadRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._max_age._value[0] = _val(val.maxAge)
-        self._timestamps_to_return._value[0] = _val(val.timestampsToReturn)
-        self._nodes_to_read_size._value[0] = _val(val.nodesToReadSize)
-        self._nodes_to_read._value = val.nodesToRead
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._max_age._value[0] = _val(val.maxAge)
+            self._timestamps_to_return._value[0] = _val(val.timestampsToReturn)
+            self._nodes_to_read_size._value[0] = _val(val.nodesToReadSize)
+            self._nodes_to_read._value = val.nodesToRead
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def max_age(self):
-        return self._max_age
+        if self._null:
+            return None
+        else:
+            return self._max_age
 
     @property
     def timestamps_to_return(self):
-        return self._timestamps_to_return
+        if self._null:
+            return None
+        else:
+            return self._timestamps_to_return
 
     @property
     def nodes_to_read_size(self):
-        return self._nodes_to_read_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_read_size
 
     @property
     def nodes_to_read(self):
-        return self._nodes_to_read
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_read
 
     @request_header.setter
     def request_header(self, val):
@@ -9362,6 +11620,9 @@ class UaReadRequest(UaType):
         self._value.nodesToRead = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaReadRequest) : NULL\n"
+        
         return ("(UaReadRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "max_age" + self._max_age.__str__(n+1) +
@@ -9374,15 +11635,16 @@ class UaReadRequest(UaType):
 class UaActivateSessionRequest(UaType):
     def __init__(self, val=ffi.new("UA_ActivateSessionRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._client_signature = UaSignatureData(val=val.clientSignature, is_pointer=False)
-        self._client_software_certificates_size = SizeT(val=val.clientSoftwareCertificatesSize, is_pointer=False)
-        self._client_software_certificates = UaSignedSoftwareCertificate(val=val.clientSoftwareCertificates, is_pointer=True)
-        self._locale_ids_size = SizeT(val=val.localeIdsSize, is_pointer=False)
-        self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
-        self._user_identity_token = UaExtensionObject(val=val.userIdentityToken, is_pointer=False)
-        self._user_token_signature = UaSignatureData(val=val.userTokenSignature, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._client_signature = UaSignatureData(val=val.clientSignature, is_pointer=False)
+            self._client_software_certificates_size = SizeT(val=val.clientSoftwareCertificatesSize, is_pointer=False)
+            self._client_software_certificates = UaSignedSoftwareCertificate(val=val.clientSoftwareCertificates, is_pointer=True)
+            self._locale_ids_size = SizeT(val=val.localeIdsSize, is_pointer=False)
+            self._locale_ids = UaString(val=val.localeIds, is_pointer=True)
+            self._user_identity_token = UaExtensionObject(val=val.userIdentityToken, is_pointer=False)
+            self._user_token_signature = UaSignatureData(val=val.userTokenSignature, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9390,46 +11652,71 @@ class UaActivateSessionRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._client_signature._value[0] = _val(val.clientSignature)
-        self._client_software_certificates_size._value[0] = _val(val.clientSoftwareCertificatesSize)
-        self._client_software_certificates._value = val.clientSoftwareCertificates
-        self._locale_ids_size._value[0] = _val(val.localeIdsSize)
-        self._locale_ids._value = val.localeIds
-        self._user_identity_token._value[0] = _val(val.userIdentityToken)
-        self._user_token_signature._value[0] = _val(val.userTokenSignature)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._client_signature._value[0] = _val(val.clientSignature)
+            self._client_software_certificates_size._value[0] = _val(val.clientSoftwareCertificatesSize)
+            self._client_software_certificates._value = val.clientSoftwareCertificates
+            self._locale_ids_size._value[0] = _val(val.localeIdsSize)
+            self._locale_ids._value = val.localeIds
+            self._user_identity_token._value[0] = _val(val.userIdentityToken)
+            self._user_token_signature._value[0] = _val(val.userTokenSignature)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def client_signature(self):
-        return self._client_signature
+        if self._null:
+            return None
+        else:
+            return self._client_signature
 
     @property
     def client_software_certificates_size(self):
-        return self._client_software_certificates_size
+        if self._null:
+            return None
+        else:
+            return self._client_software_certificates_size
 
     @property
     def client_software_certificates(self):
-        return self._client_software_certificates
+        if self._null:
+            return None
+        else:
+            return self._client_software_certificates
 
     @property
     def locale_ids_size(self):
-        return self._locale_ids_size
+        if self._null:
+            return None
+        else:
+            return self._locale_ids_size
 
     @property
     def locale_ids(self):
-        return self._locale_ids
+        if self._null:
+            return None
+        else:
+            return self._locale_ids
 
     @property
     def user_identity_token(self):
-        return self._user_identity_token
+        if self._null:
+            return None
+        else:
+            return self._user_identity_token
 
     @property
     def user_token_signature(self):
-        return self._user_token_signature
+        if self._null:
+            return None
+        else:
+            return self._user_token_signature
 
     @request_header.setter
     def request_header(self, val):
@@ -9472,6 +11759,9 @@ class UaActivateSessionRequest(UaType):
         self._value.userTokenSignature = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaActivateSessionRequest) : NULL\n"
+        
         return ("(UaActivateSessionRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "client_signature" + self._client_signature.__str__(n+1) +
@@ -9487,10 +11777,11 @@ class UaActivateSessionRequest(UaType):
 class UaBrowsePathResult(UaType):
     def __init__(self, val=ffi.new("UA_BrowsePathResult*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
-        self._targets_size = SizeT(val=val.targetsSize, is_pointer=False)
-        self._targets = UaBrowsePathTarget(val=val.targets, is_pointer=True)
+        
+        if not self._null:
+            self._status_code = UaStatusCode(val=val.statusCode, is_pointer=False)
+            self._targets_size = SizeT(val=val.targetsSize, is_pointer=False)
+            self._targets = UaBrowsePathTarget(val=val.targets, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9498,21 +11789,31 @@ class UaBrowsePathResult(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._status_code._value[0] = _val(val.statusCode)
-        self._targets_size._value[0] = _val(val.targetsSize)
-        self._targets._value = val.targets
+        if not _is_null(val):
+            self._status_code._value[0] = _val(val.statusCode)
+            self._targets_size._value[0] = _val(val.targetsSize)
+            self._targets._value = val.targets
 
     @property
     def status_code(self):
-        return self._status_code
+        if self._null:
+            return None
+        else:
+            return self._status_code
 
     @property
     def targets_size(self):
-        return self._targets_size
+        if self._null:
+            return None
+        else:
+            return self._targets_size
 
     @property
     def targets(self):
-        return self._targets
+        if self._null:
+            return None
+        else:
+            return self._targets
 
     @status_code.setter
     def status_code(self, val):
@@ -9530,6 +11831,9 @@ class UaBrowsePathResult(UaType):
         self._value.targets = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowsePathResult) : NULL\n"
+        
         return ("(UaBrowsePathResult) :\n" +
                 "\t"*(n+1) + "status_code" + self._status_code.__str__(n+1) +
                 "\t"*(n+1) + "targets_size" + self._targets_size.__str__(n+1) +
@@ -9540,10 +11844,11 @@ class UaBrowsePathResult(UaType):
 class UaAddNodesRequest(UaType):
     def __init__(self, val=ffi.new("UA_AddNodesRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._nodes_to_add_size = SizeT(val=val.nodesToAddSize, is_pointer=False)
-        self._nodes_to_add = UaAddNodesItem(val=val.nodesToAdd, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._nodes_to_add_size = SizeT(val=val.nodesToAddSize, is_pointer=False)
+            self._nodes_to_add = UaAddNodesItem(val=val.nodesToAdd, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9551,21 +11856,31 @@ class UaAddNodesRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._nodes_to_add_size._value[0] = _val(val.nodesToAddSize)
-        self._nodes_to_add._value = val.nodesToAdd
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._nodes_to_add_size._value[0] = _val(val.nodesToAddSize)
+            self._nodes_to_add._value = val.nodesToAdd
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def nodes_to_add_size(self):
-        return self._nodes_to_add_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_add_size
 
     @property
     def nodes_to_add(self):
-        return self._nodes_to_add
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_add
 
     @request_header.setter
     def request_header(self, val):
@@ -9583,6 +11898,9 @@ class UaAddNodesRequest(UaType):
         self._value.nodesToAdd = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddNodesRequest) : NULL\n"
+        
         return ("(UaAddNodesRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "nodes_to_add_size" + self._nodes_to_add_size.__str__(n+1) +
@@ -9593,12 +11911,13 @@ class UaAddNodesRequest(UaType):
 class UaBrowseRequest(UaType):
     def __init__(self, val=ffi.new("UA_BrowseRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._view = UaViewDescription(val=val.view, is_pointer=False)
-        self._requested_max_references_per_node = UaUInt32(val=val.requestedMaxReferencesPerNode, is_pointer=False)
-        self._nodes_to_browse_size = SizeT(val=val.nodesToBrowseSize, is_pointer=False)
-        self._nodes_to_browse = UaBrowseDescription(val=val.nodesToBrowse, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._view = UaViewDescription(val=val.view, is_pointer=False)
+            self._requested_max_references_per_node = UaUInt32(val=val.requestedMaxReferencesPerNode, is_pointer=False)
+            self._nodes_to_browse_size = SizeT(val=val.nodesToBrowseSize, is_pointer=False)
+            self._nodes_to_browse = UaBrowseDescription(val=val.nodesToBrowse, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9606,31 +11925,47 @@ class UaBrowseRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._view._value[0] = _val(val.view)
-        self._requested_max_references_per_node._value[0] = _val(val.requestedMaxReferencesPerNode)
-        self._nodes_to_browse_size._value[0] = _val(val.nodesToBrowseSize)
-        self._nodes_to_browse._value = val.nodesToBrowse
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._view._value[0] = _val(val.view)
+            self._requested_max_references_per_node._value[0] = _val(val.requestedMaxReferencesPerNode)
+            self._nodes_to_browse_size._value[0] = _val(val.nodesToBrowseSize)
+            self._nodes_to_browse._value = val.nodesToBrowse
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def view(self):
-        return self._view
+        if self._null:
+            return None
+        else:
+            return self._view
 
     @property
     def requested_max_references_per_node(self):
-        return self._requested_max_references_per_node
+        if self._null:
+            return None
+        else:
+            return self._requested_max_references_per_node
 
     @property
     def nodes_to_browse_size(self):
-        return self._nodes_to_browse_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_browse_size
 
     @property
     def nodes_to_browse(self):
-        return self._nodes_to_browse
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_browse
 
     @request_header.setter
     def request_header(self, val):
@@ -9658,6 +11993,9 @@ class UaBrowseRequest(UaType):
         self._value.nodesToBrowse = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowseRequest) : NULL\n"
+        
         return ("(UaBrowseRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "view" + self._view.__str__(n+1) +
@@ -9670,10 +12008,11 @@ class UaBrowseRequest(UaType):
 class UaWriteRequest(UaType):
     def __init__(self, val=ffi.new("UA_WriteRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._nodes_to_write_size = SizeT(val=val.nodesToWriteSize, is_pointer=False)
-        self._nodes_to_write = UaWriteValue(val=val.nodesToWrite, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._nodes_to_write_size = SizeT(val=val.nodesToWriteSize, is_pointer=False)
+            self._nodes_to_write = UaWriteValue(val=val.nodesToWrite, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9681,21 +12020,31 @@ class UaWriteRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._nodes_to_write_size._value[0] = _val(val.nodesToWriteSize)
-        self._nodes_to_write._value = val.nodesToWrite
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._nodes_to_write_size._value[0] = _val(val.nodesToWriteSize)
+            self._nodes_to_write._value = val.nodesToWrite
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def nodes_to_write_size(self):
-        return self._nodes_to_write_size
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_write_size
 
     @property
     def nodes_to_write(self):
-        return self._nodes_to_write
+        if self._null:
+            return None
+        else:
+            return self._nodes_to_write
 
     @request_header.setter
     def request_header(self, val):
@@ -9713,6 +12062,9 @@ class UaWriteRequest(UaType):
         self._value.nodesToWrite = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaWriteRequest) : NULL\n"
+        
         return ("(UaWriteRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "nodes_to_write_size" + self._nodes_to_write_size.__str__(n+1) +
@@ -9723,12 +12075,13 @@ class UaWriteRequest(UaType):
 class UaAddNodesResponse(UaType):
     def __init__(self, val=ffi.new("UA_AddNodesResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaAddNodesResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaAddNodesResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9736,31 +12089,47 @@ class UaAddNodesResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -9788,6 +12157,9 @@ class UaAddNodesResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAddNodesResponse) : NULL\n"
+        
         return ("(UaAddNodesResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -9800,12 +12172,13 @@ class UaAddNodesResponse(UaType):
 class UaAttributeOperand(UaType):
     def __init__(self, val=ffi.new("UA_AttributeOperand*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
-        self._alias = UaString(val=val.alias, is_pointer=False)
-        self._browse_path = UaRelativePath(val=val.browsePath, is_pointer=False)
-        self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
-        self._index_range = UaString(val=val.indexRange, is_pointer=False)
+        
+        if not self._null:
+            self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
+            self._alias = UaString(val=val.alias, is_pointer=False)
+            self._browse_path = UaRelativePath(val=val.browsePath, is_pointer=False)
+            self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
+            self._index_range = UaString(val=val.indexRange, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9813,31 +12186,47 @@ class UaAttributeOperand(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._node_id._value[0] = _val(val.nodeId)
-        self._alias._value[0] = _val(val.alias)
-        self._browse_path._value[0] = _val(val.browsePath)
-        self._attribute_id._value[0] = _val(val.attributeId)
-        self._index_range._value[0] = _val(val.indexRange)
+        if not _is_null(val):
+            self._node_id._value[0] = _val(val.nodeId)
+            self._alias._value[0] = _val(val.alias)
+            self._browse_path._value[0] = _val(val.browsePath)
+            self._attribute_id._value[0] = _val(val.attributeId)
+            self._index_range._value[0] = _val(val.indexRange)
 
     @property
     def node_id(self):
-        return self._node_id
+        if self._null:
+            return None
+        else:
+            return self._node_id
 
     @property
     def alias(self):
-        return self._alias
+        if self._null:
+            return None
+        else:
+            return self._alias
 
     @property
     def browse_path(self):
-        return self._browse_path
+        if self._null:
+            return None
+        else:
+            return self._browse_path
 
     @property
     def attribute_id(self):
-        return self._attribute_id
+        if self._null:
+            return None
+        else:
+            return self._attribute_id
 
     @property
     def index_range(self):
-        return self._index_range
+        if self._null:
+            return None
+        else:
+            return self._index_range
 
     @node_id.setter
     def node_id(self, val):
@@ -9865,6 +12254,9 @@ class UaAttributeOperand(UaType):
         self._value.indexRange = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaAttributeOperand) : NULL\n"
+        
         return ("(UaAttributeOperand) :\n" +
                 "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
                 "\t"*(n+1) + "alias" + self._alias.__str__(n+1) +
@@ -9877,10 +12269,11 @@ class UaAttributeOperand(UaType):
 class UaDataChangeFilter(UaType):
     def __init__(self, val=ffi.new("UA_DataChangeFilter*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._trigger = UaDataChangeTrigger(val=val.trigger, is_pointer=False)
-        self._deadband_type = UaUInt32(val=val.deadbandType, is_pointer=False)
-        self._deadband_value = UaDouble(val=val.deadbandValue, is_pointer=False)
+        
+        if not self._null:
+            self._trigger = UaDataChangeTrigger(val=val.trigger, is_pointer=False)
+            self._deadband_type = UaUInt32(val=val.deadbandType, is_pointer=False)
+            self._deadband_value = UaDouble(val=val.deadbandValue, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9888,21 +12281,31 @@ class UaDataChangeFilter(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._trigger._value[0] = _val(val.trigger)
-        self._deadband_type._value[0] = _val(val.deadbandType)
-        self._deadband_value._value[0] = _val(val.deadbandValue)
+        if not _is_null(val):
+            self._trigger._value[0] = _val(val.trigger)
+            self._deadband_type._value[0] = _val(val.deadbandType)
+            self._deadband_value._value[0] = _val(val.deadbandValue)
 
     @property
     def trigger(self):
-        return self._trigger
+        if self._null:
+            return None
+        else:
+            return self._trigger
 
     @property
     def deadband_type(self):
-        return self._deadband_type
+        if self._null:
+            return None
+        else:
+            return self._deadband_type
 
     @property
     def deadband_value(self):
-        return self._deadband_value
+        if self._null:
+            return None
+        else:
+            return self._deadband_value
 
     @trigger.setter
     def trigger(self, val):
@@ -9920,6 +12323,9 @@ class UaDataChangeFilter(UaType):
         self._value.deadbandValue = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDataChangeFilter) : NULL\n"
+        
         return ("(UaDataChangeFilter) :\n" +
                 "\t"*(n+1) + "trigger" + self._trigger.__str__(n+1) +
                 "\t"*(n+1) + "deadband_type" + self._deadband_type.__str__(n+1) +
@@ -9930,16 +12336,17 @@ class UaDataChangeFilter(UaType):
 class UaEndpointDescription(UaType):
     def __init__(self, val=ffi.new("UA_EndpointDescription*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
-        self._server = UaApplicationDescription(val=val.server, is_pointer=False)
-        self._server_certificate = UaByteString(val=val.serverCertificate, is_pointer=False)
-        self._security_mode = UaMessageSecurityMode(val=val.securityMode, is_pointer=False)
-        self._security_policy_uri = UaString(val=val.securityPolicyUri, is_pointer=False)
-        self._user_identity_tokens_size = SizeT(val=val.userIdentityTokensSize, is_pointer=False)
-        self._user_identity_tokens = UaUserTokenPolicy(val=val.userIdentityTokens, is_pointer=True)
-        self._transport_profile_uri = UaString(val=val.transportProfileUri, is_pointer=False)
-        self._security_level = UaByte(val=val.securityLevel, is_pointer=False)
+        
+        if not self._null:
+            self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
+            self._server = UaApplicationDescription(val=val.server, is_pointer=False)
+            self._server_certificate = UaByteString(val=val.serverCertificate, is_pointer=False)
+            self._security_mode = UaMessageSecurityMode(val=val.securityMode, is_pointer=False)
+            self._security_policy_uri = UaString(val=val.securityPolicyUri, is_pointer=False)
+            self._user_identity_tokens_size = SizeT(val=val.userIdentityTokensSize, is_pointer=False)
+            self._user_identity_tokens = UaUserTokenPolicy(val=val.userIdentityTokens, is_pointer=True)
+            self._transport_profile_uri = UaString(val=val.transportProfileUri, is_pointer=False)
+            self._security_level = UaByte(val=val.securityLevel, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -9947,51 +12354,79 @@ class UaEndpointDescription(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._endpoint_url._value[0] = _val(val.endpointUrl)
-        self._server._value[0] = _val(val.server)
-        self._server_certificate._value[0] = _val(val.serverCertificate)
-        self._security_mode._value[0] = _val(val.securityMode)
-        self._security_policy_uri._value[0] = _val(val.securityPolicyUri)
-        self._user_identity_tokens_size._value[0] = _val(val.userIdentityTokensSize)
-        self._user_identity_tokens._value = val.userIdentityTokens
-        self._transport_profile_uri._value[0] = _val(val.transportProfileUri)
-        self._security_level._value[0] = _val(val.securityLevel)
+        if not _is_null(val):
+            self._endpoint_url._value[0] = _val(val.endpointUrl)
+            self._server._value[0] = _val(val.server)
+            self._server_certificate._value[0] = _val(val.serverCertificate)
+            self._security_mode._value[0] = _val(val.securityMode)
+            self._security_policy_uri._value[0] = _val(val.securityPolicyUri)
+            self._user_identity_tokens_size._value[0] = _val(val.userIdentityTokensSize)
+            self._user_identity_tokens._value = val.userIdentityTokens
+            self._transport_profile_uri._value[0] = _val(val.transportProfileUri)
+            self._security_level._value[0] = _val(val.securityLevel)
 
     @property
     def endpoint_url(self):
-        return self._endpoint_url
+        if self._null:
+            return None
+        else:
+            return self._endpoint_url
 
     @property
     def server(self):
-        return self._server
+        if self._null:
+            return None
+        else:
+            return self._server
 
     @property
     def server_certificate(self):
-        return self._server_certificate
+        if self._null:
+            return None
+        else:
+            return self._server_certificate
 
     @property
     def security_mode(self):
-        return self._security_mode
+        if self._null:
+            return None
+        else:
+            return self._security_mode
 
     @property
     def security_policy_uri(self):
-        return self._security_policy_uri
+        if self._null:
+            return None
+        else:
+            return self._security_policy_uri
 
     @property
     def user_identity_tokens_size(self):
-        return self._user_identity_tokens_size
+        if self._null:
+            return None
+        else:
+            return self._user_identity_tokens_size
 
     @property
     def user_identity_tokens(self):
-        return self._user_identity_tokens
+        if self._null:
+            return None
+        else:
+            return self._user_identity_tokens
 
     @property
     def transport_profile_uri(self):
-        return self._transport_profile_uri
+        if self._null:
+            return None
+        else:
+            return self._transport_profile_uri
 
     @property
     def security_level(self):
-        return self._security_level
+        if self._null:
+            return None
+        else:
+            return self._security_level
 
     @endpoint_url.setter
     def endpoint_url(self, val):
@@ -10039,6 +12474,9 @@ class UaEndpointDescription(UaType):
         self._value.securityLevel = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEndpointDescription) : NULL\n"
+        
         return ("(UaEndpointDescription) :\n" +
                 "\t"*(n+1) + "endpoint_url" + self._endpoint_url.__str__(n+1) +
                 "\t"*(n+1) + "server" + self._server.__str__(n+1) +
@@ -10055,10 +12493,11 @@ class UaEndpointDescription(UaType):
 class UaDeleteReferencesRequest(UaType):
     def __init__(self, val=ffi.new("UA_DeleteReferencesRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._references_to_delete_size = SizeT(val=val.referencesToDeleteSize, is_pointer=False)
-        self._references_to_delete = UaDeleteReferencesItem(val=val.referencesToDelete, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._references_to_delete_size = SizeT(val=val.referencesToDeleteSize, is_pointer=False)
+            self._references_to_delete = UaDeleteReferencesItem(val=val.referencesToDelete, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10066,21 +12505,31 @@ class UaDeleteReferencesRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._references_to_delete_size._value[0] = _val(val.referencesToDeleteSize)
-        self._references_to_delete._value = val.referencesToDelete
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._references_to_delete_size._value[0] = _val(val.referencesToDeleteSize)
+            self._references_to_delete._value = val.referencesToDelete
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def references_to_delete_size(self):
-        return self._references_to_delete_size
+        if self._null:
+            return None
+        else:
+            return self._references_to_delete_size
 
     @property
     def references_to_delete(self):
-        return self._references_to_delete
+        if self._null:
+            return None
+        else:
+            return self._references_to_delete
 
     @request_header.setter
     def request_header(self, val):
@@ -10098,6 +12547,9 @@ class UaDeleteReferencesRequest(UaType):
         self._value.referencesToDelete = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaDeleteReferencesRequest) : NULL\n"
+        
         return ("(UaDeleteReferencesRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "references_to_delete_size" + self._references_to_delete_size.__str__(n+1) +
@@ -10108,10 +12560,11 @@ class UaDeleteReferencesRequest(UaType):
 class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
     def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._browse_paths_size = SizeT(val=val.browsePathsSize, is_pointer=False)
-        self._browse_paths = UaBrowsePath(val=val.browsePaths, is_pointer=True)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._browse_paths_size = SizeT(val=val.browsePathsSize, is_pointer=False)
+            self._browse_paths = UaBrowsePath(val=val.browsePaths, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10119,21 +12572,31 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._browse_paths_size._value[0] = _val(val.browsePathsSize)
-        self._browse_paths._value = val.browsePaths
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._browse_paths_size._value[0] = _val(val.browsePathsSize)
+            self._browse_paths._value = val.browsePaths
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def browse_paths_size(self):
-        return self._browse_paths_size
+        if self._null:
+            return None
+        else:
+            return self._browse_paths_size
 
     @property
     def browse_paths(self):
-        return self._browse_paths
+        if self._null:
+            return None
+        else:
+            return self._browse_paths
 
     @request_header.setter
     def request_header(self, val):
@@ -10151,6 +12614,9 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
         self._value.browsePaths = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaTranslateBrowsePathsToNodeIdsRequest) : NULL\n"
+        
         return ("(UaTranslateBrowsePathsToNodeIdsRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "browse_paths_size" + self._browse_paths_size.__str__(n+1) +
@@ -10161,10 +12627,11 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
 class UaFindServersResponse(UaType):
     def __init__(self, val=ffi.new("UA_FindServersResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._servers_size = SizeT(val=val.serversSize, is_pointer=False)
-        self._servers = UaApplicationDescription(val=val.servers, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._servers_size = SizeT(val=val.serversSize, is_pointer=False)
+            self._servers = UaApplicationDescription(val=val.servers, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10172,21 +12639,31 @@ class UaFindServersResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._servers_size._value[0] = _val(val.serversSize)
-        self._servers._value = val.servers
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._servers_size._value[0] = _val(val.serversSize)
+            self._servers._value = val.servers
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def servers_size(self):
-        return self._servers_size
+        if self._null:
+            return None
+        else:
+            return self._servers_size
 
     @property
     def servers(self):
-        return self._servers
+        if self._null:
+            return None
+        else:
+            return self._servers
 
     @response_header.setter
     def response_header(self, val):
@@ -10204,6 +12681,9 @@ class UaFindServersResponse(UaType):
         self._value.servers = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaFindServersResponse) : NULL\n"
+        
         return ("(UaFindServersResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "servers_size" + self._servers_size.__str__(n+1) +
@@ -10214,16 +12694,17 @@ class UaFindServersResponse(UaType):
 class UaCreateSessionRequest(UaType):
     def __init__(self, val=ffi.new("UA_CreateSessionRequest*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
-        self._client_description = UaApplicationDescription(val=val.clientDescription, is_pointer=False)
-        self._server_uri = UaString(val=val.serverUri, is_pointer=False)
-        self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
-        self._session_name = UaString(val=val.sessionName, is_pointer=False)
-        self._client_nonce = UaByteString(val=val.clientNonce, is_pointer=False)
-        self._client_certificate = UaByteString(val=val.clientCertificate, is_pointer=False)
-        self._requested_session_timeout = UaDouble(val=val.requestedSessionTimeout, is_pointer=False)
-        self._max_response_message_size = UaUInt32(val=val.maxResponseMessageSize, is_pointer=False)
+        
+        if not self._null:
+            self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
+            self._client_description = UaApplicationDescription(val=val.clientDescription, is_pointer=False)
+            self._server_uri = UaString(val=val.serverUri, is_pointer=False)
+            self._endpoint_url = UaString(val=val.endpointUrl, is_pointer=False)
+            self._session_name = UaString(val=val.sessionName, is_pointer=False)
+            self._client_nonce = UaByteString(val=val.clientNonce, is_pointer=False)
+            self._client_certificate = UaByteString(val=val.clientCertificate, is_pointer=False)
+            self._requested_session_timeout = UaDouble(val=val.requestedSessionTimeout, is_pointer=False)
+            self._max_response_message_size = UaUInt32(val=val.maxResponseMessageSize, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10231,51 +12712,79 @@ class UaCreateSessionRequest(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._request_header._value[0] = _val(val.requestHeader)
-        self._client_description._value[0] = _val(val.clientDescription)
-        self._server_uri._value[0] = _val(val.serverUri)
-        self._endpoint_url._value[0] = _val(val.endpointUrl)
-        self._session_name._value[0] = _val(val.sessionName)
-        self._client_nonce._value[0] = _val(val.clientNonce)
-        self._client_certificate._value[0] = _val(val.clientCertificate)
-        self._requested_session_timeout._value[0] = _val(val.requestedSessionTimeout)
-        self._max_response_message_size._value[0] = _val(val.maxResponseMessageSize)
+        if not _is_null(val):
+            self._request_header._value[0] = _val(val.requestHeader)
+            self._client_description._value[0] = _val(val.clientDescription)
+            self._server_uri._value[0] = _val(val.serverUri)
+            self._endpoint_url._value[0] = _val(val.endpointUrl)
+            self._session_name._value[0] = _val(val.sessionName)
+            self._client_nonce._value[0] = _val(val.clientNonce)
+            self._client_certificate._value[0] = _val(val.clientCertificate)
+            self._requested_session_timeout._value[0] = _val(val.requestedSessionTimeout)
+            self._max_response_message_size._value[0] = _val(val.maxResponseMessageSize)
 
     @property
     def request_header(self):
-        return self._request_header
+        if self._null:
+            return None
+        else:
+            return self._request_header
 
     @property
     def client_description(self):
-        return self._client_description
+        if self._null:
+            return None
+        else:
+            return self._client_description
 
     @property
     def server_uri(self):
-        return self._server_uri
+        if self._null:
+            return None
+        else:
+            return self._server_uri
 
     @property
     def endpoint_url(self):
-        return self._endpoint_url
+        if self._null:
+            return None
+        else:
+            return self._endpoint_url
 
     @property
     def session_name(self):
-        return self._session_name
+        if self._null:
+            return None
+        else:
+            return self._session_name
 
     @property
     def client_nonce(self):
-        return self._client_nonce
+        if self._null:
+            return None
+        else:
+            return self._client_nonce
 
     @property
     def client_certificate(self):
-        return self._client_certificate
+        if self._null:
+            return None
+        else:
+            return self._client_certificate
 
     @property
     def requested_session_timeout(self):
-        return self._requested_session_timeout
+        if self._null:
+            return None
+        else:
+            return self._requested_session_timeout
 
     @property
     def max_response_message_size(self):
-        return self._max_response_message_size
+        if self._null:
+            return None
+        else:
+            return self._max_response_message_size
 
     @request_header.setter
     def request_header(self, val):
@@ -10323,6 +12832,9 @@ class UaCreateSessionRequest(UaType):
         self._value.maxResponseMessageSize = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCreateSessionRequest) : NULL\n"
+        
         return ("(UaCreateSessionRequest) :\n" +
                 "\t"*(n+1) + "request_header" + self._request_header.__str__(n+1) +
                 "\t"*(n+1) + "client_description" + self._client_description.__str__(n+1) +
@@ -10339,10 +12851,11 @@ class UaCreateSessionRequest(UaType):
 class UaContentFilterElement(UaType):
     def __init__(self, val=ffi.new("UA_ContentFilterElement*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._filter_operator = UaFilterOperator(val=val.filterOperator, is_pointer=False)
-        self._filter_operands_size = SizeT(val=val.filterOperandsSize, is_pointer=False)
-        self._filter_operands = UaExtensionObject(val=val.filterOperands, is_pointer=True)
+        
+        if not self._null:
+            self._filter_operator = UaFilterOperator(val=val.filterOperator, is_pointer=False)
+            self._filter_operands_size = SizeT(val=val.filterOperandsSize, is_pointer=False)
+            self._filter_operands = UaExtensionObject(val=val.filterOperands, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10350,21 +12863,31 @@ class UaContentFilterElement(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._filter_operator._value[0] = _val(val.filterOperator)
-        self._filter_operands_size._value[0] = _val(val.filterOperandsSize)
-        self._filter_operands._value = val.filterOperands
+        if not _is_null(val):
+            self._filter_operator._value[0] = _val(val.filterOperator)
+            self._filter_operands_size._value[0] = _val(val.filterOperandsSize)
+            self._filter_operands._value = val.filterOperands
 
     @property
     def filter_operator(self):
-        return self._filter_operator
+        if self._null:
+            return None
+        else:
+            return self._filter_operator
 
     @property
     def filter_operands_size(self):
-        return self._filter_operands_size
+        if self._null:
+            return None
+        else:
+            return self._filter_operands_size
 
     @property
     def filter_operands(self):
-        return self._filter_operands
+        if self._null:
+            return None
+        else:
+            return self._filter_operands
 
     @filter_operator.setter
     def filter_operator(self, val):
@@ -10382,6 +12905,9 @@ class UaContentFilterElement(UaType):
         self._value.filterOperands = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaContentFilterElement) : NULL\n"
+        
         return ("(UaContentFilterElement) :\n" +
                 "\t"*(n+1) + "filter_operator" + self._filter_operator.__str__(n+1) +
                 "\t"*(n+1) + "filter_operands_size" + self._filter_operands_size.__str__(n+1) +
@@ -10392,12 +12918,13 @@ class UaContentFilterElement(UaType):
 class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
     def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaBrowsePathResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaBrowsePathResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10405,31 +12932,47 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -10457,6 +13000,9 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaTranslateBrowsePathsToNodeIdsResponse) : NULL\n"
+        
         return ("(UaTranslateBrowsePathsToNodeIdsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -10469,12 +13015,13 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
 class UaBrowseResponse(UaType):
     def __init__(self, val=ffi.new("UA_BrowseResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
-        self._results = UaBrowseResult(val=val.results, is_pointer=True)
-        self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
-        self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._results_size = SizeT(val=val.resultsSize, is_pointer=False)
+            self._results = UaBrowseResult(val=val.results, is_pointer=True)
+            self._diagnostic_infos_size = SizeT(val=val.diagnosticInfosSize, is_pointer=False)
+            self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10482,31 +13029,47 @@ class UaBrowseResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._results_size._value[0] = _val(val.resultsSize)
-        self._results._value = val.results
-        self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
-        self._diagnostic_infos._value = val.diagnosticInfos
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._results_size._value[0] = _val(val.resultsSize)
+            self._results._value = val.results
+            self._diagnostic_infos_size._value[0] = _val(val.diagnosticInfosSize)
+            self._diagnostic_infos._value = val.diagnosticInfos
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def results_size(self):
-        return self._results_size
+        if self._null:
+            return None
+        else:
+            return self._results_size
 
     @property
     def results(self):
-        return self._results
+        if self._null:
+            return None
+        else:
+            return self._results
 
     @property
     def diagnostic_infos_size(self):
-        return self._diagnostic_infos_size
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos_size
 
     @property
     def diagnostic_infos(self):
-        return self._diagnostic_infos
+        if self._null:
+            return None
+        else:
+            return self._diagnostic_infos
 
     @response_header.setter
     def response_header(self, val):
@@ -10534,6 +13097,9 @@ class UaBrowseResponse(UaType):
         self._value.diagnosticInfos = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaBrowseResponse) : NULL\n"
+        
         return ("(UaBrowseResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "results_size" + self._results_size.__str__(n+1) +
@@ -10546,19 +13112,20 @@ class UaBrowseResponse(UaType):
 class UaCreateSessionResponse(UaType):
     def __init__(self, val=ffi.new("UA_CreateSessionResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._session_id = UaNodeId(val=val.sessionId, is_pointer=False)
-        self._authentication_token = UaNodeId(val=val.authenticationToken, is_pointer=False)
-        self._revised_session_timeout = UaDouble(val=val.revisedSessionTimeout, is_pointer=False)
-        self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
-        self._server_certificate = UaByteString(val=val.serverCertificate, is_pointer=False)
-        self._server_endpoints_size = SizeT(val=val.serverEndpointsSize, is_pointer=False)
-        self._server_endpoints = UaEndpointDescription(val=val.serverEndpoints, is_pointer=True)
-        self._server_software_certificates_size = SizeT(val=val.serverSoftwareCertificatesSize, is_pointer=False)
-        self._server_software_certificates = UaSignedSoftwareCertificate(val=val.serverSoftwareCertificates, is_pointer=True)
-        self._server_signature = UaSignatureData(val=val.serverSignature, is_pointer=False)
-        self._max_request_message_size = UaUInt32(val=val.maxRequestMessageSize, is_pointer=False)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._session_id = UaNodeId(val=val.sessionId, is_pointer=False)
+            self._authentication_token = UaNodeId(val=val.authenticationToken, is_pointer=False)
+            self._revised_session_timeout = UaDouble(val=val.revisedSessionTimeout, is_pointer=False)
+            self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
+            self._server_certificate = UaByteString(val=val.serverCertificate, is_pointer=False)
+            self._server_endpoints_size = SizeT(val=val.serverEndpointsSize, is_pointer=False)
+            self._server_endpoints = UaEndpointDescription(val=val.serverEndpoints, is_pointer=True)
+            self._server_software_certificates_size = SizeT(val=val.serverSoftwareCertificatesSize, is_pointer=False)
+            self._server_software_certificates = UaSignedSoftwareCertificate(val=val.serverSoftwareCertificates, is_pointer=True)
+            self._server_signature = UaSignatureData(val=val.serverSignature, is_pointer=False)
+            self._max_request_message_size = UaUInt32(val=val.maxRequestMessageSize, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10566,66 +13133,103 @@ class UaCreateSessionResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._session_id._value[0] = _val(val.sessionId)
-        self._authentication_token._value[0] = _val(val.authenticationToken)
-        self._revised_session_timeout._value[0] = _val(val.revisedSessionTimeout)
-        self._server_nonce._value[0] = _val(val.serverNonce)
-        self._server_certificate._value[0] = _val(val.serverCertificate)
-        self._server_endpoints_size._value[0] = _val(val.serverEndpointsSize)
-        self._server_endpoints._value = val.serverEndpoints
-        self._server_software_certificates_size._value[0] = _val(val.serverSoftwareCertificatesSize)
-        self._server_software_certificates._value = val.serverSoftwareCertificates
-        self._server_signature._value[0] = _val(val.serverSignature)
-        self._max_request_message_size._value[0] = _val(val.maxRequestMessageSize)
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._session_id._value[0] = _val(val.sessionId)
+            self._authentication_token._value[0] = _val(val.authenticationToken)
+            self._revised_session_timeout._value[0] = _val(val.revisedSessionTimeout)
+            self._server_nonce._value[0] = _val(val.serverNonce)
+            self._server_certificate._value[0] = _val(val.serverCertificate)
+            self._server_endpoints_size._value[0] = _val(val.serverEndpointsSize)
+            self._server_endpoints._value = val.serverEndpoints
+            self._server_software_certificates_size._value[0] = _val(val.serverSoftwareCertificatesSize)
+            self._server_software_certificates._value = val.serverSoftwareCertificates
+            self._server_signature._value[0] = _val(val.serverSignature)
+            self._max_request_message_size._value[0] = _val(val.maxRequestMessageSize)
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def session_id(self):
-        return self._session_id
+        if self._null:
+            return None
+        else:
+            return self._session_id
 
     @property
     def authentication_token(self):
-        return self._authentication_token
+        if self._null:
+            return None
+        else:
+            return self._authentication_token
 
     @property
     def revised_session_timeout(self):
-        return self._revised_session_timeout
+        if self._null:
+            return None
+        else:
+            return self._revised_session_timeout
 
     @property
     def server_nonce(self):
-        return self._server_nonce
+        if self._null:
+            return None
+        else:
+            return self._server_nonce
 
     @property
     def server_certificate(self):
-        return self._server_certificate
+        if self._null:
+            return None
+        else:
+            return self._server_certificate
 
     @property
     def server_endpoints_size(self):
-        return self._server_endpoints_size
+        if self._null:
+            return None
+        else:
+            return self._server_endpoints_size
 
     @property
     def server_endpoints(self):
-        return self._server_endpoints
+        if self._null:
+            return None
+        else:
+            return self._server_endpoints
 
     @property
     def server_software_certificates_size(self):
-        return self._server_software_certificates_size
+        if self._null:
+            return None
+        else:
+            return self._server_software_certificates_size
 
     @property
     def server_software_certificates(self):
-        return self._server_software_certificates
+        if self._null:
+            return None
+        else:
+            return self._server_software_certificates
 
     @property
     def server_signature(self):
-        return self._server_signature
+        if self._null:
+            return None
+        else:
+            return self._server_signature
 
     @property
     def max_request_message_size(self):
-        return self._max_request_message_size
+        if self._null:
+            return None
+        else:
+            return self._max_request_message_size
 
     @response_header.setter
     def response_header(self, val):
@@ -10688,6 +13292,9 @@ class UaCreateSessionResponse(UaType):
         self._value.maxRequestMessageSize = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaCreateSessionResponse) : NULL\n"
+        
         return ("(UaCreateSessionResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "session_id" + self._session_id.__str__(n+1) +
@@ -10707,9 +13314,10 @@ class UaCreateSessionResponse(UaType):
 class UaContentFilter(UaType):
     def __init__(self, val=ffi.new("UA_ContentFilter*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._elements_size = SizeT(val=val.elementsSize, is_pointer=False)
-        self._elements = UaContentFilterElement(val=val.elements, is_pointer=True)
+        
+        if not self._null:
+            self._elements_size = SizeT(val=val.elementsSize, is_pointer=False)
+            self._elements = UaContentFilterElement(val=val.elements, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10717,16 +13325,23 @@ class UaContentFilter(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._elements_size._value[0] = _val(val.elementsSize)
-        self._elements._value = val.elements
+        if not _is_null(val):
+            self._elements_size._value[0] = _val(val.elementsSize)
+            self._elements._value = val.elements
 
     @property
     def elements_size(self):
-        return self._elements_size
+        if self._null:
+            return None
+        else:
+            return self._elements_size
 
     @property
     def elements(self):
-        return self._elements
+        if self._null:
+            return None
+        else:
+            return self._elements
 
     @elements_size.setter
     def elements_size(self, val):
@@ -10739,6 +13354,9 @@ class UaContentFilter(UaType):
         self._value.elements = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaContentFilter) : NULL\n"
+        
         return ("(UaContentFilter) :\n" +
                 "\t"*(n+1) + "elements_size" + self._elements_size.__str__(n+1) +
                 "\t"*(n+1) + "elements" + self._elements.__str__(n+1) + "\n")
@@ -10748,10 +13366,11 @@ class UaContentFilter(UaType):
 class UaGetEndpointsResponse(UaType):
     def __init__(self, val=ffi.new("UA_GetEndpointsResponse*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
-        self._endpoints_size = SizeT(val=val.endpointsSize, is_pointer=False)
-        self._endpoints = UaEndpointDescription(val=val.endpoints, is_pointer=True)
+        
+        if not self._null:
+            self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
+            self._endpoints_size = SizeT(val=val.endpointsSize, is_pointer=False)
+            self._endpoints = UaEndpointDescription(val=val.endpoints, is_pointer=True)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10759,21 +13378,31 @@ class UaGetEndpointsResponse(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._response_header._value[0] = _val(val.responseHeader)
-        self._endpoints_size._value[0] = _val(val.endpointsSize)
-        self._endpoints._value = val.endpoints
+        if not _is_null(val):
+            self._response_header._value[0] = _val(val.responseHeader)
+            self._endpoints_size._value[0] = _val(val.endpointsSize)
+            self._endpoints._value = val.endpoints
 
     @property
     def response_header(self):
-        return self._response_header
+        if self._null:
+            return None
+        else:
+            return self._response_header
 
     @property
     def endpoints_size(self):
-        return self._endpoints_size
+        if self._null:
+            return None
+        else:
+            return self._endpoints_size
 
     @property
     def endpoints(self):
-        return self._endpoints
+        if self._null:
+            return None
+        else:
+            return self._endpoints
 
     @response_header.setter
     def response_header(self, val):
@@ -10791,6 +13420,9 @@ class UaGetEndpointsResponse(UaType):
         self._value.endpoints = val._ptr
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaGetEndpointsResponse) : NULL\n"
+        
         return ("(UaGetEndpointsResponse) :\n" +
                 "\t"*(n+1) + "response_header" + self._response_header.__str__(n+1) +
                 "\t"*(n+1) + "endpoints_size" + self._endpoints_size.__str__(n+1) +
@@ -10801,10 +13433,11 @@ class UaGetEndpointsResponse(UaType):
 class UaEventFilter(UaType):
     def __init__(self, val=ffi.new("UA_EventFilter*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._select_clauses_size = SizeT(val=val.selectClausesSize, is_pointer=False)
-        self._select_clauses = UaSimpleAttributeOperand(val=val.selectClauses, is_pointer=True)
-        self._where_clause = UaContentFilter(val=val.whereClause, is_pointer=False)
+        
+        if not self._null:
+            self._select_clauses_size = SizeT(val=val.selectClausesSize, is_pointer=False)
+            self._select_clauses = UaSimpleAttributeOperand(val=val.selectClauses, is_pointer=True)
+            self._where_clause = UaContentFilter(val=val.whereClause, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -10812,21 +13445,31 @@ class UaEventFilter(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._select_clauses_size._value[0] = _val(val.selectClausesSize)
-        self._select_clauses._value = val.selectClauses
-        self._where_clause._value[0] = _val(val.whereClause)
+        if not _is_null(val):
+            self._select_clauses_size._value[0] = _val(val.selectClausesSize)
+            self._select_clauses._value = val.selectClauses
+            self._where_clause._value[0] = _val(val.whereClause)
 
     @property
     def select_clauses_size(self):
-        return self._select_clauses_size
+        if self._null:
+            return None
+        else:
+            return self._select_clauses_size
 
     @property
     def select_clauses(self):
-        return self._select_clauses
+        if self._null:
+            return None
+        else:
+            return self._select_clauses
 
     @property
     def where_clause(self):
-        return self._where_clause
+        if self._null:
+            return None
+        else:
+            return self._where_clause
 
     @select_clauses_size.setter
     def select_clauses_size(self, val):
@@ -10844,6 +13487,9 @@ class UaEventFilter(UaType):
         self._value.whereClause = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaEventFilter) : NULL\n"
+        
         return ("(UaEventFilter) :\n" +
                 "\t"*(n+1) + "select_clauses_size" + self._select_clauses_size.__str__(n+1) +
                 "\t"*(n+1) + "select_clauses" + self._select_clauses.__str__(n+1) +
