@@ -9,7 +9,7 @@ x = UaStatusCode(0x80000000)
 print(x.is_bad())
 
 client = clientApi.UaClient()
-retval = UaStatusCode(client.connect(b"opc.tcp://127.0.0.1:4840/"))
+retval = UaStatusCode(client.connect("opc.tcp://127.0.0.1:4840/"))
 
 # adding node
 myIntegerNodeId = UaNodeId(1, "the answer")
@@ -17,7 +17,7 @@ myIntegerName = UaQualifiedName(1, "the.answer")
 parentNodeId = UaNodeId(0, UaNodeId.UA_NS0ID_OBJECTSFOLDER)
 parentReferenceNodeId = UaNodeId(0, UaNodeId.UA_NS0ID_ORGANIZES)
 variableType = UaNodeId(0, UaNodeId.UA_NS0ID_BASEDATAVARIABLETYPE)
-#print(parentReferenceNodeId._UaType__value)
+# print(parentReferenceNodeId._UaType__value)
 parent_node_read_result = client.read_node_id_attribute(parentReferenceNodeId._val)
 print("read_node_id_attribute was successful: " + str(not UaStatusCode(parent_node_read_result.status_code).is_bad()))
 read_node_id = UaNodeId(val=parent_node_read_result.out_node_id)

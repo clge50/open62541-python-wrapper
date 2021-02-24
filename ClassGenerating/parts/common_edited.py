@@ -228,12 +228,13 @@ class UaSessionState(UaType):
 class UaNetworkStatistics(UaType):
     def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._current_connection_count = SizeT(val=val.currentConnectionCount, is_pointer=False)
-        self._cumulated_connection_count = SizeT(val=val.cumulatedConnectionCount, is_pointer=False)
-        self._rejected_connection_count = SizeT(val=val.rejectedConnectionCount, is_pointer=False)
-        self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=False)
-        self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
+        
+        if not self._null:
+            self._current_connection_count = SizeT(val=val.currentConnectionCount, is_pointer=False)
+            self._cumulated_connection_count = SizeT(val=val.cumulatedConnectionCount, is_pointer=False)
+            self._rejected_connection_count = SizeT(val=val.rejectedConnectionCount, is_pointer=False)
+            self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=False)
+            self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -241,31 +242,47 @@ class UaNetworkStatistics(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._current_connection_count._value[0] = _val(val.currentConnectionCount)
-        self._cumulated_connection_count._value[0] = _val(val.cumulatedConnectionCount)
-        self._rejected_connection_count._value[0] = _val(val.rejectedConnectionCount)
-        self._connection_timeout_count._value[0] = _val(val.connectionTimeoutCount)
-        self._connection_abort_count._value[0] = _val(val.connectionAbortCount)
+        if not _is_null(val):
+            self._current_connection_count._value[0] = _val(val.currentConnectionCount)
+            self._cumulated_connection_count._value[0] = _val(val.cumulatedConnectionCount)
+            self._rejected_connection_count._value[0] = _val(val.rejectedConnectionCount)
+            self._connection_timeout_count._value[0] = _val(val.connectionTimeoutCount)
+            self._connection_abort_count._value[0] = _val(val.connectionAbortCount)
 
     @property
     def current_connection_count(self):
-        return self._current_connection_count
+        if self._null:
+            return None
+        else:
+            return self._current_connection_count
 
     @property
     def cumulated_connection_count(self):
-        return self._cumulated_connection_count
+        if self._null:
+            return None
+        else:
+            return self._cumulated_connection_count
 
     @property
     def rejected_connection_count(self):
-        return self._rejected_connection_count
+        if self._null:
+            return None
+        else:
+            return self._rejected_connection_count
 
     @property
     def connection_timeout_count(self):
-        return self._connection_timeout_count
+        if self._null:
+            return None
+        else:
+            return self._connection_timeout_count
 
     @property
     def connection_abort_count(self):
-        return self._connection_abort_count
+        if self._null:
+            return None
+        else:
+            return self._connection_abort_count
 
     @current_connection_count.setter
     def current_connection_count(self, val):
@@ -293,6 +310,9 @@ class UaNetworkStatistics(UaType):
         self._value.connectionAbortCount = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaNetworkStatistics) : NULL\n"
+        
         return ("(UaNetworkStatistics) :\n" +
                 "\t"*(n+1) + "current_connection_count" + self._current_connection_count.__str__(n+1) +
                 "\t"*(n+1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n+1) +
@@ -305,13 +325,14 @@ class UaNetworkStatistics(UaType):
 class UaSecureChannelStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
-
-        self._current_channel_count = SizeT(val=val.currentChannelCount, is_pointer=False)
-        self._cumulated_channel_count = SizeT(val=val.cumulatedChannelCount, is_pointer=False)
-        self._rejected_channel_count = SizeT(val=val.rejectedChannelCount, is_pointer=False)
-        self._channel_timeout_count = SizeT(val=val.channelTimeoutCount, is_pointer=False)
-        self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=False)
-        self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
+        
+        if not self._null:
+            self._current_channel_count = SizeT(val=val.currentChannelCount, is_pointer=False)
+            self._cumulated_channel_count = SizeT(val=val.cumulatedChannelCount, is_pointer=False)
+            self._rejected_channel_count = SizeT(val=val.rejectedChannelCount, is_pointer=False)
+            self._channel_timeout_count = SizeT(val=val.channelTimeoutCount, is_pointer=False)
+            self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=False)
+            self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -319,36 +340,55 @@ class UaSecureChannelStatistics(UaType):
         else:
             self._value[0] = _val(val)
 
-        self._current_channel_count._value[0] = _val(val.currentChannelCount)
-        self._cumulated_channel_count._value[0] = _val(val.cumulatedChannelCount)
-        self._rejected_channel_count._value[0] = _val(val.rejectedChannelCount)
-        self._channel_timeout_count._value[0] = _val(val.channelTimeoutCount)
-        self._channel_abort_count._value[0] = _val(val.channelAbortCount)
-        self._channel_purge_count._value[0] = _val(val.channelPurgeCount)
+        if not _is_null(val):
+            self._current_channel_count._value[0] = _val(val.currentChannelCount)
+            self._cumulated_channel_count._value[0] = _val(val.cumulatedChannelCount)
+            self._rejected_channel_count._value[0] = _val(val.rejectedChannelCount)
+            self._channel_timeout_count._value[0] = _val(val.channelTimeoutCount)
+            self._channel_abort_count._value[0] = _val(val.channelAbortCount)
+            self._channel_purge_count._value[0] = _val(val.channelPurgeCount)
 
     @property
     def current_channel_count(self):
-        return self._current_channel_count
+        if self._null:
+            return None
+        else:
+            return self._current_channel_count
 
     @property
     def cumulated_channel_count(self):
-        return self._cumulated_channel_count
+        if self._null:
+            return None
+        else:
+            return self._cumulated_channel_count
 
     @property
     def rejected_channel_count(self):
-        return self._rejected_channel_count
+        if self._null:
+            return None
+        else:
+            return self._rejected_channel_count
 
     @property
     def channel_timeout_count(self):
-        return self._channel_timeout_count
+        if self._null:
+            return None
+        else:
+            return self._channel_timeout_count
 
     @property
     def channel_abort_count(self):
-        return self._channel_abort_count
+        if self._null:
+            return None
+        else:
+            return self._channel_abort_count
 
     @property
     def channel_purge_count(self):
-        return self._channel_purge_count
+        if self._null:
+            return None
+        else:
+            return self._channel_purge_count
 
     @current_channel_count.setter
     def current_channel_count(self, val):
@@ -381,6 +421,9 @@ class UaSecureChannelStatistics(UaType):
         self._value.channelPurgeCount = val._val
 
     def __str__(self, n=0):
+        if self._null:
+            return "(UaSecureChannelStatistics) : NULL\n"
+        
         return ("(UaSecureChannelStatistics) :\n" +
                 "\t"*(n+1) + "current_channel_count" + self._current_channel_count.__str__(n+1) +
                 "\t"*(n+1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n+1) +
