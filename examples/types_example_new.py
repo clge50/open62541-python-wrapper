@@ -30,7 +30,6 @@ print(
     f"myIntegerNodeId (string) read from server add_variable_node_result response: {str(add_variable_node_result.out_new_node_id)}")
 
 # reading node
-print(str(add_variable_node_result.out_new_node_id))
-my_int_node_id_result = client.read_node_id_attribute(UaNodeId(1, "the answer"))
+my_int_node_id_result = client.read_node_id_attribute(add_variable_node_result.out_new_node_id)
 print(f"read_node_id_attribute UaStatuscode was: {str(my_int_node_id_result.status_code)}")
 print(f"myIntegerNodeId (string) read from server read_node_id_attribute: {str(my_int_node_id_result.out_node_id)}")
