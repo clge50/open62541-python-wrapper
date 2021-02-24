@@ -1,4 +1,8 @@
 from intermediateApi import lib, ffi
+import server_service_results as ServerServiceResults
+    
+    
+VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
 
 
 class UaServer:
@@ -33,87 +37,174 @@ class UaServer:
     def set_default_config(self):
         return lib.UA_ServerConfig_setDefault(self.getConfig())
 
-### recently added
+
+#########
+###
+### new
+###
+
+
     def read(self, item, timestamps):
         return lib.UA_Server_read(self.ua_server, item, timestamps)
+
+    def write(self, value):
+        return lib.UA_Server_write(self.ua_server, value)
+
+    def write_value(self, node_id, value):
+        return lib.UA_Server_writeValue(self.ua_server, node_id, value)
     
-    def writeDataValue(self, nodeId, value):
-        return lib.UA_Server_writeDataValue(self.ua_server, nodeId, value)
+    def write_data_value(self, node_id, value):
+        return lib.UA_Server_writeDataValue(self.ua_server, node_id, value)
     
-    def writeDataType(self, nodeId, dataType):
-        return lib.UA_Server_writeDataTyoe(self.ua_server, nodeId, dataType)
+    def write_data_type(self, node_id, data_type):
+        return lib.UA_Server_writeDataType(self.ua_server, node_id, data_type)
 
-    ## useful?
-    def writeValueRank(self, nodeId, valueRank):
-        return lib.UA_Server_writeValueRank(self.ua_server, nodeId, valueRank)
+    def write_value_rank(self, node_id, value_rank):
+        return lib.UA_Server_writeValueRank(self.ua_server, node_id, value_rank)
 
-    def writeArrayDimensions(self, nodeId, arrayDimensions):
-        return lib.UA_Server_writeArrayDimensions(self.ua_server, nodeId, arrayDimensions)
+    def write_array_dimensions(self, node_id, array_dimensions):
+        return lib.UA_Server_writeArrayDimensions(self.ua_server, node_id, array_dimensions)
 
-    def writeAccessLevel(self, nodeId, accessLevel):
-        return lib.UA_Server_writeAccessLevel(self.ua_server, nodeId, accessLevel)
+    def write_access_level(self, node_id, access_level):
+        return lib.UA_Server_writeAccessLevel(self.ua_server, node_id, access_level)
 
-    def writeMinimumSamplingInterval(self, nodeId, minimumSamplingInterval):
-        return lib.UA_Server_writeMinimumSamplingInterval(self.ua_server, nodeId, minimumSamplingInterval)
+    def write_minimum_sampling_interval(self, node_id, minimum_sampling_interval):
+        return lib.UA_Server_writeMinimumSamplingInterval(self.ua_server, node_id, minimum_sampling_interval)
 
-    ## def writeHistorizing
+    def write_executable(self, node_id, executable):
+        return lib.UA_Server_writeExecutable(self.ua_server, node_id, executable)
+ 
+    def browse_next(self, release_continuation_point, continuation_point):
+        return lib.UA_Server_browseNext(self.ua_server, release_continuation_point, continuation_point)
 
-    def writeExecutable(self, nodeId, executable):
-        return UA_Server_writeExecutable(self.ua_server, nodeId, executable)
+    def translate_browse_path_to_node_ids(self, browse_path):
+        return lib.UA_Server_translateBrowsePathToNodeIds(self.ua_server, browse_path)
 
-    # node management
-    #def browse(self, maxReferences, bd):
-    #    return UA_Server_browse(self.ua_server, maxReferences, bd)
-    
-    def browseNext(self, releaseContinuationPoint, continuationPoint):
-        return lib.UA_server__browseNext(self.ua_server, releaseContinuationPoint, continuationPoint)
+    def write_object_property(self, object_id, property_name, value):
+        return lib.UA_Server_writeObjectProperty(self.ua_server, object_id, property_name, value)
 
-    ## pointer issues?
-    def browseRecursive(self, bd, resultsSize, results):
-        return lib.UA_Server_browseRecursive(self.ua_server, bd, resultsSize, results)
+    def write_object_property_scalar(self, object_id, property_name, value, data_type):
+        return lib.UA_Server_writeObjectProperty_scalar(self.ua_server, object_id, property_name, value, data_type)
 
-    def translateBrowsePathToNodeIds(self, browsePath):
-        return lib.UA_Server_translateBrowsePathToNodeIds(self.ua_server, browsePath)
-
-    def writeObjectProperty(self, objectId, propertyName, value):
-        return lib.UA_Server_writeObjectProperty(self.ua_server, objectId, propertyName, value)
-
-    def writeObjectProperty_scalar(self, objectId, propertyName, value, dataType):
-        return lib.UA_Server_writeObjectProperty_scalar(self.ua_server, objectId, propertyName, value, dataType)
-
-    def readObjectProperty(self, objectId, propertyName, value):
-        return UA_Server_readObjectProperty(self.ua_server, objectId, propertyName, value)
+    def read_object_property(self, object_id, property_name, value):
+        return lib.UA_Server_readObjectProperty(self.ua_server, object_id, property_name, value)
 
     def call(self, request):
-        return UA_Server_call(self.ua_server, request)
+        return lib.UA_Server_call(self.ua_server, request)
 
-    def addDataSourceVariableNode(self, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, typeDefinition, attr, dataSource, nodeContext, outNewNodeId):
-        return A_Server_addDataSourceVariableNode(self.ua_server, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, typeDefinition, attr, dataSource, nodeContext, outNewNodeId)
+    def add_data_source_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, data_source, outNewnode_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+        out_node = ffi.new("UA_node_id *")
 
-    def addMethodNodeEx(self, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, attr, method, inputArgumentsSize, inputArguments,  inputArgumentsRequestedNewNodeId, inputArgumentsOutNewNodeId, outputArgumentsSize, outputAarguments,  outputArgumentsRequestedNewNodeId, outputArgumentsOutNewNodeId, nodeContext, outNewNodeId):
-        return li.UA_Server_addMethodNodeEx(self.ua_server, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, attr, method, inputArgumentsSize, inputArguments,  inputArgumentsRequestedNewNodeId, inputArgumentsOutNewNodeId, outputArgumentsSize, outputAarguments,  outputArgumentsRequestedNewNodeId, outputArgumentsOutNewNodeId, nodeContext, outNewNodeId)
+        # TODO: test
+        if node_context is not None: 
+           node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
-    def addNode_finish(self, nodeId):
-        return lib.UA_Server_addNode_finish(self.ua_server, nodeId)
+        status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, data_source, node_context, outnode)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node) # TODO: out_node not None?
 
-    def addNode_begin(self, nodeClass,  requestedNewNodeId,  parentNodeId,  referenceTypeId, browseName, typeDefinition, attr, attributeType, nodeContext, outNewNodeId):
-        return lib.UA_Server_addNode_begin(self.ua_server, nodeClass,  requestedNewNodeId,  parentNodeId,  referenceTypeId, browseName, typeDefinition, attr, attributeType, nodeContext, outNewNodeId)
+    def delete_node(self, node_id, delete_references):
+        return lib.UA_Server_deleteNode(self.ua_server, node_id, delete_references)
 
-    def addMethodNode_finish(self, nodeId, method, inputArgumentsSize, inputArguments, outputArgumentsSize, outputArguments):
-        return lib.UA_Server_addMethodNode_finish(self.ua_server, nodeId, method, inputArgumentsSize, inputArguments, outputArgumentsSize, outputArguments)
+    def add_reference(self , source_id, ref_type_id, target_id, is_forward):
+        return lib.UA_Server_addReference(self.ua_server , source_id, ref_type_id, target_id, is_forward)
+
+    def delete_reference(self, source_node_id, reference_type_id,  is_forward, target_node_id, delete_bidirectional):
+        return lib.UA_Server_deleteReference(self.ua_server, sourcenode_id, reference_type_id,  isForward, targetnode_id, deleteBidirectional)   
+
+    def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+        out_node_id = ffi.new("UA_NodeId *")
+                
+        # TODO: test
+        if node_context is not None: 
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+        
+        status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
+
+    def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+        out_node_id = ffi.new("UA_NodeId *")
+                
+        # TODO: test
+        if node_context is not None: 
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
+
+    def add_object_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+        out_node_id = ffi.new("UA_NodeId *")
+                
+        # TODO: test
+        if node_context is not None: 
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
+
+    def add_object_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+        out_node_id = ffi.new("UA_NodeId *")
+                
+        # TODO: test
+        if node_context is not None: 
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
+        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
+
+    # TODO: test
+    def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+        out_node_id = ffi.new("UA_NodeId *")
+
+        
+        if node_context is not None: 
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        status_code = lib.UA_Server_addMethodNode()
+        return ServerServiceResults.AddMethodNodeResult(status_code, output_arg_size, output_args, out_node)
+        
+
+    #######
+    #
+    # node management functions
+    #
+    #def browse(self, maxReferences, bd):
+    #    return lib.UA_Server_browse(self.ua_server, maxReferences, bd)
+
+    #def browseRecursive(self, bd, resultsSize, results):
+    #   return lib.UA_Server_browseRecursive(self.ua_server, bd, resultsSize, results)
+
+    #def finddata_type(self, typeId):
+    #    return lib.UA_Server_finddata_type(self.ua_server, typeId)
+
+    #def addMethodNodeEx(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr, method, input_arguments_size, input_arguments,  input_arguments_requested_newnode_id, input_arguments_out_newnode_id, output_arguments_size, output_arguments,  output_arguments_requested_newnode_id, output_arguments_out_new_node_id, node_context, outNewnode_id):
+    #    return lib.UA_Server_addMethodNodeEx(self.ua_server, requestedNewnode_id, parentnode_id, reference_type_id, browse_name, attr, method, inputArgumentsSize, inputArguments,  inputArgumentsRequestedNewnode_id, inputArgumentsOutNewnode_id, outputArgumentsSize, outputAarguments,  outputArgumentsRequestedNewnode_id, outputArgumentsOutNewnode_id, node_context, outNewnode_id)
+
+    #def addNode_finish(self, node_id):
+    #    return lib.UA_Server_addNode_finish(self.ua_server, node_id)
+
+    #def addNode_begin(self, nodeClass,  requestedNewnode_id,  parentnode_id,  reference_type_id, browse_name, type_definition, attr, attributeType, node_context, outNewnode_id):
+    #     outnode = ffi.new("UA_node_id *")
+    #    return lib.UA_Server_addNode_begin(self.ua_server, nodeClass,  requestedNewnode_id,  parentnode_id,  reference_type_id, browse_name, type_definition, attr, attributeType, node_context, outnode)
+
+    #def addMethodNode_finish(self, node_id, method, inputArgumentsSize, inputArguments, outputArgumentsSize, outputArguments):
+    #    return lib.UA_Server_addMethodNode_finish(self.ua_server, node_id, method, inputArgumentsSize, inputArguments, outputArgumentsSize, outputArguments)
     
-    def deleteNode(self, nodeId, deleteReferences):
-        return lib.UA_Server_deleteNode(self.ua_server, nodeId, deleteReferences)
 
-    def addReference(self , sourceId, refTypeId, targetId, isForward):
-        return lib .UA_Server_addReference(self.ua_server , sourceId, refTypeId, targetId, isForward)
+    #######
+    #
+    # skipping historizing for now...
+    #
 
-    def deleteReference(self, sourceNodeId, referenceTypeId,  isForward, targetNodeId, deleteBidirectional):
-        return lib.UA_Server_deleteReference(self.ua_server, sourceNodeId, referenceTypeId,  isForward, targetNodeId, deleteBidirectional)
-
-    # node management
-    #def findDataType(self, typeId):
-    #    return lib.UA_Server_findDataType(self.ua_server, typeId)
-
-    def addVariableNode(self, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, typeDefinition, attr, nodeContext, outNewNodeId):
-        return lib.UA_Server_addVariableNode(self.ua_server, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, typeDefinition, attr, nodeContext, outNewNodeId)
+    # def writeHistorizing

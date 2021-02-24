@@ -1,0 +1,88 @@
+typedef enum {
+    UA_ATTRIBUTEID_NODEID                  = 1,
+    UA_ATTRIBUTEID_NODECLASS               = 2,
+    UA_ATTRIBUTEID_BROWSENAME              = 3,
+    UA_ATTRIBUTEID_DISPLAYNAME             = 4,
+    UA_ATTRIBUTEID_DESCRIPTION             = 5,
+    UA_ATTRIBUTEID_WRITEMASK               = 6,
+    UA_ATTRIBUTEID_USERWRITEMASK           = 7,
+    UA_ATTRIBUTEID_ISABSTRACT              = 8,
+    UA_ATTRIBUTEID_SYMMETRIC               = 9,
+    UA_ATTRIBUTEID_INVERSENAME             = 10,
+    UA_ATTRIBUTEID_CONTAINSNOLOOPS         = 11,
+    UA_ATTRIBUTEID_EVENTNOTIFIER           = 12,
+    UA_ATTRIBUTEID_VALUE                   = 13,
+    UA_ATTRIBUTEID_DATATYPE                = 14,
+    UA_ATTRIBUTEID_VALUERANK               = 15,
+    UA_ATTRIBUTEID_ARRAYDIMENSIONS         = 16,
+    UA_ATTRIBUTEID_ACCESSLEVEL             = 17,
+    UA_ATTRIBUTEID_USERACCESSLEVEL         = 18,
+    UA_ATTRIBUTEID_MINIMUMSAMPLINGINTERVAL = 19,
+    UA_ATTRIBUTEID_HISTORIZING             = 20,
+    UA_ATTRIBUTEID_EXECUTABLE              = 21,
+    UA_ATTRIBUTEID_USEREXECUTABLE          = 22,
+    UA_ATTRIBUTEID_DATATYPEDEFINITION      = 23,
+    UA_ATTRIBUTEID_ROLEPERMISSIONS         = 24,
+    UA_ATTRIBUTEID_USERROLEPERMISSIONS     = 25,
+    UA_ATTRIBUTEID_ACCESSRESTRICTIONS      = 26,
+    UA_ATTRIBUTEID_ACCESSLEVELEX           = 27
+} UA_AttributeId;
+
+typedef enum {
+    UA_RULEHANDLING_DEFAULT = 0,
+    UA_RULEHANDLING_ABORT,
+    UA_RULEHANDLING_WARN,
+    UA_RULEHANDLING_ACCEPT,
+} UA_RuleHandling;
+
+typedef enum {
+    UA_ORDER_LESS = -1,
+    UA_ORDER_EQ = 0,
+    UA_ORDER_MORE = 1
+} UA_Order;
+
+typedef enum {
+    UA_SECURECHANNELSTATE_CLOSED,
+    UA_SECURECHANNELSTATE_HEL_SENT,
+    UA_SECURECHANNELSTATE_HEL_RECEIVED,
+    UA_SECURECHANNELSTATE_ACK_SENT,
+    UA_SECURECHANNELSTATE_ACK_RECEIVED,
+    UA_SECURECHANNELSTATE_OPN_SENT,
+    UA_SECURECHANNELSTATE_OPEN,
+    UA_SECURECHANNELSTATE_CLOSING
+} UA_SecureChannelState;
+
+typedef enum {
+    UA_SESSIONSTATE_CLOSED,
+    UA_SESSIONSTATE_CREATE_REQUESTED,
+    UA_SESSIONSTATE_CREATED,
+    UA_SESSIONSTATE_ACTIVATE_REQUESTED,
+    UA_SESSIONSTATE_ACTIVATED,
+    UA_SESSIONSTATE_CLOSING
+} UA_SessionState;
+
+typedef struct {
+    size_t currentConnectionCount;
+    size_t cumulatedConnectionCount;
+    size_t rejectedConnectionCount;
+    size_t connectionTimeoutCount;
+    size_t connectionAbortCount;
+} UA_NetworkStatistics;
+
+typedef struct {
+    size_t currentChannelCount;
+    size_t cumulatedChannelCount;
+    size_t rejectedChannelCount;
+    size_t channelTimeoutCount;
+    size_t channelAbortCount;
+    size_t channelPurgeCount;
+} UA_SecureChannelStatistics;
+
+typedef struct {
+    size_t currentSessionCount;
+    size_t cumulatedSessionCount;
+    size_t securityRejectedSessionCount;
+    size_t rejectedSessionCount;
+    size_t sessionTimeoutCount;
+    size_t sessionAbortCount;
+} UA_SessionStatistics;

@@ -1,0 +1,200 @@
+
+
+typedef struct {
+    size_t length;
+    UA_Byte *data;
+} UA_String;
+
+
+typedef struct {
+ UA_UInt16 nanoSec;
+ UA_UInt16 microSec;
+ UA_UInt16 milliSec;
+ UA_UInt16 sec;
+ UA_UInt16 min;
+ UA_UInt16 hour;
+ UA_UInt16 day;
+ UA_UInt16 month;
+ UA_UInt16 year;
+} UA_DateTimeStruct;
+
+
+
+typedef struct {
+ UA_UInt32 data1;
+ UA_UInt16 data2;
+ UA_UInt16 data3;
+ UA_Byte *data4;
+} UA_Guid;
+
+
+typedef enum {
+ UA_NODEIDTYPE_NUMERIC = 0,
+ UA_NODEIDTYPE_STRING = 3,
+ UA_NODEIDTYPE_GUID = 4,
+ UA_NODEIDTYPE_BYTESTRING = 5
+} UA_NodeIdType;
+
+
+typedef struct {
+ UA_NodeId nodeId;
+ UA_String namespaceUri;
+ UA_UInt32 serverIndex;
+} UA_ExpandedNodeId;
+
+
+typedef struct {
+ UA_UInt16 namespaceIndex;
+ UA_String name;
+} UA_QualifiedName;
+
+
+typedef struct {
+ UA_String locale;
+ UA_String text;
+} UA_LocalizedText;
+
+
+
+typedef struct {
+ UA_UInt32 min;
+ UA_UInt32 max;
+} UA_NumericRangeDimension;
+
+
+typedef struct {
+ size_t dimensionsSize;
+ UA_NumericRangeDimension *dimensions;
+} UA_NumericRange;
+
+
+
+typedef enum {
+ UA_VARIANT_DATA = 0,
+ UA_VARIANT_DATA_NODELETE = 1
+} UA_VariantStorageType;
+
+typedef struct {
+ UA_DataType *type;
+ UA_VariantStorageType storageType;
+ size_t arrayLength;
+ void *data;
+ size_t arrayDimensionsSize;
+ UA_UInt32 *arrayDimensions;
+} UA_Variant;
+
+
+typedef enum {
+ UA_EXTENSIONOBJECT_ENCODED_NOBODY = 0,
+ UA_EXTENSIONOBJECT_ENCODED_BYTESTRING = 1,
+ UA_EXTENSIONOBJECT_ENCODED_XML = 2,
+ UA_EXTENSIONOBJECT_DECODED = 3,
+ UA_EXTENSIONOBJECT_DECODED_NODELETE = 4
+} UA_ExtensionObjectEncoding;
+
+
+
+typedef struct {
+ UA_Variant value;
+ UA_DateTime sourceTimestamp;
+ UA_DateTime serverTimestamp;
+ UA_UInt16 sourcePicoseconds;
+ UA_UInt16 serverPicoseconds;
+ UA_StatusCode status;
+ UA_Boolean hasValue;
+ UA_Boolean hasStatus;
+ UA_Boolean hasSourceTimestamp;
+ UA_Boolean hasServerTimestamp;
+ UA_Boolean hasSourcePicoseconds;
+ UA_Boolean hasServerPicoseconds;
+} UA_DataValue;
+
+
+
+typedef struct {
+ UA_Boolean hasSymbolicId;
+ UA_Boolean hasNamespaceUri;
+ UA_Boolean hasLocalizedText;
+ UA_Boolean hasLocale;
+ UA_Boolean hasAdditionalInfo;
+ UA_Boolean hasInnerStatusCode;
+ UA_Boolean hasInnerDiagnosticInfo;
+ UA_Int32 symbolicId;
+ UA_Int32 namespaceUri;
+ UA_Int32 localizedText;
+ UA_Int32 locale;
+ UA_String additionalInfo;
+ UA_StatusCode innerStatusCode;
+ UA_DiagnosticInfo *innerDiagnosticInfo;
+} UA_DiagnosticInfo;
+
+
+
+typedef struct {
+ UA_UInt16 memberTypeIndex;
+ UA_Byte padding;
+ UA_Boolean namespaceZero;
+ UA_Boolean isArray;
+ UA_Boolean isOptional;
+ char *memberName;
+} UA_DataTypeMember;
+
+
+
+typedef enum {
+ UA_DATATYPEKIND_BOOLEAN = 0,
+ UA_DATATYPEKIND_SBYTE = 1,
+ UA_DATATYPEKIND_BYTE = 2,
+ UA_DATATYPEKIND_INT16 = 3,
+ UA_DATATYPEKIND_UINT16 = 4,
+ UA_DATATYPEKIND_INT32 = 5,
+ UA_DATATYPEKIND_UINT32 = 6,
+ UA_DATATYPEKIND_INT64 = 7,
+ UA_DATATYPEKIND_UINT64 = 8,
+ UA_DATATYPEKIND_FLOAT = 9,
+ UA_DATATYPEKIND_DOUBLE = 10,
+ UA_DATATYPEKIND_STRING = 11,
+ UA_DATATYPEKIND_DATETIME = 12,
+ UA_DATATYPEKIND_GUID = 13,
+ UA_DATATYPEKIND_BYTESTRING = 14,
+ UA_DATATYPEKIND_XMLELEMENT = 15,
+ UA_DATATYPEKIND_NODEID = 16,
+ UA_DATATYPEKIND_EXPANDEDNODEID = 17,
+ UA_DATATYPEKIND_STATUSCODE = 18,
+ UA_DATATYPEKIND_QUALIFIEDNAME = 19,
+ UA_DATATYPEKIND_LOCALIZEDTEXT = 20,
+ UA_DATATYPEKIND_EXTENSIONOBJECT = 21,
+ UA_DATATYPEKIND_DATAVALUE = 22,
+ UA_DATATYPEKIND_VARIANT = 23,
+ UA_DATATYPEKIND_DIAGNOSTICINFO = 24,
+ UA_DATATYPEKIND_DECIMAL = 25,
+ UA_DATATYPEKIND_ENUM = 26,
+ UA_DATATYPEKIND_STRUCTURE = 27,
+ UA_DATATYPEKIND_OPTSTRUCT = 28,
+ UA_DATATYPEKIND_UNION = 29,
+ UA_DATATYPEKIND_BITFIELDCLUSTER = 30
+} UA_DataTypeKind;
+
+
+
+typedef struct {
+ UA_NodeId typeId;
+ UA_NodeId binaryEncodingId;
+ UA_UInt16 memSize;
+ UA_UInt16 typeIndex;
+ UA_UInt32 typeKind;
+ UA_UInt32 pointerFree;
+ UA_UInt32 overlayable;
+ UA_UInt32 membersSize;
+ UA_DataTypeMember *members;
+ char *typeName;
+} UA_DataType;
+
+
+
+typedef struct {
+ UA_DataTypeArray *next;
+ size_t typesSize;
+ UA_DataType *types;
+} UA_DataTypeArray;
+
