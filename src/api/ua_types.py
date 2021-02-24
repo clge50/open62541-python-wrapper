@@ -37,11 +37,12 @@ def _is_ptr(val):
     else:
         return False
 
-
     # _value should always be a pointer
     # to get a pointer call ._ptr to get the value call ._val
     # TODO: Idea -> free the passed memory when ever a primitive type is copied in _ptr.
     #  Then all base types hold their owner.
+
+
 class UaType:
     def __init__(self, val, is_pointer=False):
         if not is_pointer:
@@ -357,7 +358,6 @@ class UaSessionState(UaType):
 
     def __str__(self, n=0):
         return f"(UaSessionState): {self.val_to_string[self._val]} ({str(self._val)})\n"
-
 
 
 # -------------------------------------------------------------
@@ -809,6 +809,7 @@ class UaDouble(UaType):
 
     def __str__(self, n=0):
         return "(UaDouble): " + str(self._val) + "\n"
+
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
@@ -1335,7 +1336,13 @@ class UaStatusCode(UaType):
             self._value[0] = ffi.cast("UA_StatusCode", _val(val))
 
     def __str__(self, n=0):
-        return "(UaStatusCode): " + str(self._val) + "\n"
+        return "(UaStatusCode): " + UaStatusCode.val_to_string[self._val] + "\n"
+
+    def is_bad(self):
+        return lib.UA_StatusCode_isBad(self._val)
+
+    def is_good(self):
+        return not lib.UA_StatusCode_isBad(self._val)
 
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
@@ -13356,7 +13363,6 @@ class UaQualifiedName(UaType):
         else:
             return self._name
 
-
     @namespace_index.setter
     def namespace_index(self, val):
         self._namespace_index = val
@@ -13402,7 +13408,8 @@ class UaLocalizedText(UaType):
                 if type(text) is str:
                     val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"), bytes(text, "utf-8"))
                 if type(text) is UaString:
-                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"), bytes(text.to_string(), "utf-8"))
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"),
+                                                     bytes(text.to_string(), "utf-8"))
                 else:
                     raise AttributeError(f"text={text} has to be str or UaString")
             else:
@@ -13815,7 +13822,6 @@ class UaDataValue(UaType):
             return None
         else:
             return self._status
-
 
     @property
     def has_variant(self):
@@ -17427,7 +17433,7 @@ class UaCallMethodResult(UaType):
                 "\t" * (n + 1) + "input_argument_results_size" + self._input_argument_results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "input_argument_results" + self._input_argument_results.__str__(n + 1) +
                 "\t" * (
-                            n + 1) + "input_argument_diagnostic_infos_size" + self._input_argument_diagnostic_infos_size.__str__(
+                        n + 1) + "input_argument_diagnostic_infos_size" + self._input_argument_diagnostic_infos_size.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "input_argument_diagnostic_infos" + self._input_argument_diagnostic_infos.__str__(
                     n + 1) +
@@ -22021,7 +22027,7 @@ class UaEventFilterResult(UaType):
                 "\t" * (n + 1) + "select_clause_results_size" + self._select_clause_results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "select_clause_results" + self._select_clause_results.__str__(n + 1) +
                 "\t" * (
-                            n + 1) + "select_clause_diagnostic_infos_size" + self._select_clause_diagnostic_infos_size.__str__(
+                        n + 1) + "select_clause_diagnostic_infos_size" + self._select_clause_diagnostic_infos_size.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "select_clause_diagnostic_infos" + self._select_clause_diagnostic_infos.__str__(
                     n + 1) +
@@ -24180,7 +24186,7 @@ class UaPublishRequest(UaType):
         return ("(UaPublishRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (
-                            n + 1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(
+                        n + 1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "subscription_acknowledgements" + self._subscription_acknowledgements.__str__(
                     n + 1) + "\n")
@@ -28146,5 +28152,3 @@ class UaEventFilter(UaType):
                 "\t" * (n + 1) + "select_clauses_size" + self._select_clauses_size.__str__(n + 1) +
                 "\t" * (n + 1) + "select_clauses" + self._select_clauses.__str__(n + 1) +
                 "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1) + "\n")
-
-

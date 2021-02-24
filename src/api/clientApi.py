@@ -239,78 +239,81 @@ class UaClient:
     def read_node_id_attribute(self, node_id: ua_types.UaNodeId):
         out_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_readNodeIdAttribute(self.ua_client, node_id._val, out_node_id._ptr)
-        return ClientServiceResult.ReadNodeIdAttributeResult(status_code, out_node_id)
+        return ClientServiceResult.ReadNodeIdAttributeResult(ua_types.UaStatusCode(status_code), out_node_id)
 
     def read_node_class_attribute(self, node_id: ua_types.UaNodeId):
         out_node_class = ua_types.UaNodeClass()
         status_code = lib.UA_Client_readNodeClassAttribute(self.ua_client, node_id._val, out_node_class._ptr)
-        return ClientServiceResult.ReadNodeClassAttributeResult(status_code, out_node_class)
+        return ClientServiceResult.ReadNodeClassAttributeResult(ua_types.UaStatusCode(status_code), out_node_class)
 
     def read_browse_name_attribute(self, node_id: ua_types.UaNodeId):
         out_browse_name = ua_types.UaQualifiedName()
         status_code = lib.UA_Client_readBrowseNameAttribute(self.ua_client, node_id._val, out_browse_name._ptr)
-        return ClientServiceResult.ReadBrowseNameAttributeResult(status_code, out_browse_name)
+        return ClientServiceResult.ReadBrowseNameAttributeResult(ua_types.UaStatusCode(status_code), out_browse_name)
 
     def read_display_name_attribute(self, node_id: ua_types.UaNodeId):
         out_display_name = ua_types.UaLocalizedText()
         status_code = lib.UA_Client_readDisplayNameAttribute(self.ua_client, node_id._val, out_display_name._ptr)
-        return ClientServiceResult.ReadDisplayNameAttributeResult(status_code, out_display_name)
+        return ClientServiceResult.ReadDisplayNameAttributeResult(ua_types.UaStatusCode(status_code), out_display_name)
 
     def read_description_attribute(self, node_id: ua_types.UaNodeId):
         out_description = ua_types.UaLocalizedText()
         status_code = lib.UA_Client_readDescriptionAttribute(self.ua_client, node_id._val, out_description._ptr)
-        return ClientServiceResult.ReadDescriptionAttributeResult(status_code, out_description)
+        return ClientServiceResult.ReadDescriptionAttributeResult(ua_types.UaStatusCode(status_code), out_description)
 
     def read_write_mask_attribute(self, node_id: ua_types.UaNodeId):
         out_write_mask = ua_types.UaUInt32()
         status_code = lib.UA_Client_readWriteMaskAttribute(self.ua_client, node_id._val, out_write_mask._ptr)
-        return ClientServiceResult.ReadWriteMaskAttributeResult(status_code, out_write_mask)
+        return ClientServiceResult.ReadWriteMaskAttributeResult(ua_types.UaStatusCode(status_code), out_write_mask)
 
     def read_user_write_mask_attribute(self, node_id: ua_types.UaNodeId):
         out_user_write_mask = ua_types.UaUInt32()
         status_code = lib.UA_Client_readUserWriteMaskAttribute(self.ua_client, node_id._val, out_user_write_mask._ptr)
-        return ClientServiceResult.ReadUserWriteMaskAttributeResult(status_code, out_user_write_mask)
+        return ClientServiceResult.ReadUserWriteMaskAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                    out_user_write_mask)
 
     def read_is_abstract_attribute(self, node_id: ua_types.UaNodeId):
         out_is_abstract = ua_types.UaBoolean()
         status_code = lib.UA_Client_readIsAbstractAttribute(self.ua_client, node_id._val, out_is_abstract._ptr)
-        return ClientServiceResult.ReadIsAbstractAttributeResult(status_code, out_is_abstract)
+        return ClientServiceResult.ReadIsAbstractAttributeResult(ua_types.UaStatusCode(status_code), out_is_abstract)
 
     def read_symmetric_attribute(self, node_id: ua_types.UaNodeId):
         out_symmetric = ua_types.UaBoolean()
         status_code = lib.UA_Client_readSymmetricAttribute(self.ua_client, node_id._val, out_symmetric._ptr)
-        return ClientServiceResult.ReadSymmetricAttributeResult(status_code, out_symmetric)
+        return ClientServiceResult.ReadSymmetricAttributeResult(ua_types.UaStatusCode(status_code), out_symmetric)
 
     def read_inverse_name_attribute(self, node_id: ua_types.UaNodeId):
         out_inverse_name = ua_types.UaLocalizedText()
         status_code = lib.UA_Client_readInverseNameAttribute(self.ua_client, node_id._val, out_inverse_name._ptr)
-        return ClientServiceResult.ReadInverseNameAttributeResult(status_code, out_inverse_name)
+        return ClientServiceResult.ReadInverseNameAttributeResult(ua_types.UaStatusCode(status_code), out_inverse_name)
 
     def read_contains_no_loops_attribute(self, node_id: ua_types.UaNodeId):
         out_contains_no_loops = ua_types.UaBoolean()
         status_code = lib.UA_Client_readContainsNoLoopsAttribute(self.ua_client, node_id._val,
                                                                  out_contains_no_loops._ptr)
-        return ClientServiceResult.ReadContainsNoLoopsAttributeResult(status_code, out_contains_no_loops)
+        return ClientServiceResult.ReadContainsNoLoopsAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                      out_contains_no_loops)
 
     def read_event_notifier_attribute(self, node_id: ua_types.UaNodeId):
         out_event_notifier = ua_types.UaByte()
         status_code = lib.UA_Client_readEventNotifierAttribute(self.ua_client, node_id._val, out_event_notifier._ptr)
-        return ClientServiceResult.ReadEventNotifierAttributeResult(status_code, out_event_notifier)
+        return ClientServiceResult.ReadEventNotifierAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                    out_event_notifier)
 
     def read_value_attribute(self, node_id: ua_types.UaNodeId):
         value = ua_types.UaVariant()
         status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id._val, value._ptr)
-        return ClientServiceResult.ReadValueAttributeResult(status_code, value)
+        return ClientServiceResult.ReadValueAttributeResult(ua_types.UaStatusCode(status_code), value)
 
     def read_data_type_attribute(self, node_id: ua_types.UaNodeId):
         out_data_type = ua_types.UaNodeId()
         status_code = lib.UA_Client_readDataTypeAttribute(self.ua_client, node_id._val, out_data_type._ptr)
-        return ClientServiceResult.ReadDataTypeAttribute(status_code, out_data_type)
+        return ClientServiceResult.ReadDataTypeAttribute(ua_types.UaStatusCode(status_code), out_data_type)
 
     def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
         out_value_rank = ua_types.UaUInt32()
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
-        return ClientServiceResult.ReadValueRankAttribute(status_code, out_value_rank)
+        return ClientServiceResult.ReadValueRankAttribute(ua_types.UaStatusCode(status_code), out_value_rank)
 
     def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
         out_array_dimensions_size = ua_types.SizeT()
@@ -318,25 +321,28 @@ class UaClient:
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                                  out_array_dimensions_size._ptr,
                                                                  out_array_dimensions._ptr)
-        return ClientServiceResult.ReadArrayDimensionsAttributeResult(status_code, out_array_dimensions_size,
+        return ClientServiceResult.ReadArrayDimensionsAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                      out_array_dimensions_size,
                                                                       out_array_dimensions)
 
     def read_access_level_attribute(self, node_id: ua_types.UaNodeId):
         out_access_level = ua_types.UaByte()
         status_code = lib.UA_Client_readAccessLevelAttribute(self.ua_client, node_id._val, out_access_level._ptr)
-        return ClientServiceResult.ReadAccessLevelAttributeResult(status_code, out_access_level)
+        return ClientServiceResult.ReadAccessLevelAttributeResult(ua_types.UaStatusCode(status_code), out_access_level)
 
     def read_user_access_level_attribute(self, node_id: ua_types.UaNodeId):
         out_user_access_level = ua_types.UaByte()
         status_code = lib.UA_Client_readUserAccessLevelAttribute(self.ua_client, node_id._val,
                                                                  out_user_access_level._ptr)
-        return ClientServiceResult.ReadUserAccessLevelAttributeResult(status_code, out_user_access_level)
+        return ClientServiceResult.ReadUserAccessLevelAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                      out_user_access_level)
 
     def read_minimum_sampling_interval_attribute(self, node_id: ua_types.UaNodeId):
         out_min_sampling_interval = ua_types.UaDouble()
         status_code = lib.UA_Client_readMinimumSamplingIntervalAttribute(self.ua_client, node_id._val,
                                                                          out_min_sampling_interval._ptr)
-        return ClientServiceResult.ReadMinimumSamplingIntervalAttributeResult(status_code, out_min_sampling_interval)
+        return ClientServiceResult.ReadMinimumSamplingIntervalAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                              out_min_sampling_interval)
 
     def read_executable_attribute(self, node_id: ua_types.UaNodeId):
         out_executable = ua_types.UaBoolean()
@@ -346,7 +352,8 @@ class UaClient:
     def read_user_executable_attribute(self, node_id: ua_types.UaNodeId):
         out_user_executable = ua_types.UaBoolean()
         status_code = lib.UA_Client_readUserExecutableAttribute(self.ua_client, node_id._val, out_user_executable._ptr)
-        return ClientServiceResult.ReadUserExecutableAttributeResult(status_code, out_user_executable)
+        return ClientServiceResult.ReadUserExecutableAttributeResult(ua_types.UaStatusCode(status_code),
+                                                                     out_user_executable)
 
     # high level write service
 
