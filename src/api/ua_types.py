@@ -13400,14 +13400,14 @@ class UaLocalizedText(UaType):
             if type(locale) is str:
                 if type(text) is str:
                     val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(text, "utf-8"))
-                if type(text) is UaString:
+                elif type(text) is UaString:
                     val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(text.to_string(), "utf-8"))
                 else:
                     raise AttributeError(f"text={text} has to be str or UaString")
-            if type(locale) is UaString:
+            elif type(locale) is UaString:
                 if type(text) is str:
                     val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"), bytes(text, "utf-8"))
-                if type(text) is UaString:
+                elif type(text) is UaString:
                     val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"),
                                                      bytes(text.to_string(), "utf-8"))
                 else:
@@ -13710,7 +13710,7 @@ class UaVariant(UaType):
     def set_array(self, array, size, data_type):
         if size is int:
             size = SizeT(size)
-        if size is not SizeT:
+        elif size is not SizeT:
             raise AttributeError(f"size={size} has to be int or SizeT")
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_setArrayCopy(self._ptr, ffi.new_handle(array), size._val, data_type._ptr)
@@ -13732,7 +13732,7 @@ class UaVariant(UaType):
     def set_range_copy(self, array, size, num_range: UaNumericRange):
         if size is int:
             size = SizeT(size)
-        if size is not SizeT:
+        elif size is not SizeT:
             raise AttributeError(f"size={size} has to be int or SizeT")
         # TODO: might cause memory problems
         status_code = lib.UA_Variant_setRangeCopy(self._ptr, ffi.new_handle(array), size, num_range._val)
