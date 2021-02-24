@@ -1,0 +1,3 @@
+cffi
+pdoc3
+sphinx_rtd_theme
