@@ -12,7 +12,7 @@ from status_code import StatusCode
 
 
 
-# TODO: change when types are properly implemented!
+# Set up variable parameters
 attr = lib.UA_VariableAttributes_default
 node_id = ua_types.UaNodeId(1, "test1")
 qualified_name = ua_types.UaQualifiedName(1, "Test1")
