@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 // callback typedefs
 typedef void (*UA_ClientAsyncTranslateCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_TranslateBrowsePathsToNodeIdsResponse *tr);
 typedef void (*UA_ClientAsyncBrowseCallback)(UA_Client *client, void *userdata, UA_UInt32 requestId, UA_BrowseResponse *wr);

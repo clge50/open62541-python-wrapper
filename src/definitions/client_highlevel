@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 // read service
 UA_StatusCode __UA_Client_readAttribute(UA_Client *client, const UA_NodeId *nodeId, UA_AttributeId attributeId, void *out, const UA_DataType *outDataType);
 UA_StatusCode UA_Client_readNodeIdAttribute(UA_Client *client, const UA_NodeId nodeId, UA_NodeId *outNodeId);
