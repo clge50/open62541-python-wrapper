@@ -5,7 +5,7 @@ import ua_types
 
 
 class DefaultAttributes:
-    VARIABLE_ATTRIBUTES_DEFAULT = ua_types.UaNodeAttributes(val=lib.UA_VariableAttributes_default)
+    VARIABLE_ATTRIBUTES_DEFAULT = ua_types.UaVariableAttributes(val=lib.UA_VariableAttributes_default)
     VARIABLE_TYPE_ATTRIBUTES_DEFAULT = ua_types.UaVariableTypeAttributes(val=lib.UA_VariableTypeAttributes_default)
     METHOD_ATTRIBUTES_DEFAULT = ua_types.UaMethodAttributes(val=lib.UA_MethodAttributes_default)
     OBJECT_ATTRIBUTES_DEFAULT = ua_types.UaObjectAttributes(val=lib.UA_ObjectAttributes_default)
