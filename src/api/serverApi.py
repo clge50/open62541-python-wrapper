@@ -1,5 +1,6 @@
 from intermediateApi import lib, ffi
 import server_service_results as ServerServiceResults
+import ua_types
     
     
 VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
@@ -13,29 +14,36 @@ class UaServer:
         else:
             self.ua_server = lib.UA_Server_newWithConfig(config)
 
-    def run( self, running):
-        return lib.UA_Server_run( self.ua_server, running)
+    def run( self, running:ua_types.UaBoolean):
+        raw_result = lib.UA_Server_run( self.ua_server, running._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
     def run_shutdown(self):
-        return lib.UA_Server_run_shutdown(self.ua_server)
+        raw_result = lib.UA_Server_run_shutdown(self.ua_server)
+        return ua_types.UaStatusCode(val=raw_result)
 
     def getConfig(self):
-        return lib.UA_Server_getConfig(self.ua_server)
+        raw_result = lib.UA_Server_getConfig(self.ua_server)
+        return ua_types.UaServerConfig(val=raw_result)
 
     def run_startup(self):
-        return lib.UA_Server_run_startup(self.ua_server)
+        raw_value = lib.UA_Server_run_startup(self.ua_server)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def run_iterate(self, wait_internal):
-        return lib.UA_Server_run_iterate(self.ua_server, wait_internal)
+    def run_iterate(self, wait_internal:ua_types.UaBoolean):
+        raw_value = lib.UA_Server_run_iterate(self.ua_server, wait_internal._val)
+        return ua_types.UaUInt16(val=raw_value)
 
     #    def delete(self):
     #        return lib.UA_Server_delete(self.ua_server)
 
-    def set_minimal_config(self, port_number, certificate):
-        return lib.UA_ServerConfig_setMinimal(self.getConfig(), port_number, certificate)
+    def set_minimal_config(self, port_number:ua_types.UaInt16, certificate:ua_types.UaByteString):
+        raw_result = lib.UA_ServerConfig_setMinimal(self.getConfig(), port_number._val, certificate._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
     def set_default_config(self):
-        return lib.UA_ServerConfig_setDefault(self.getConfig())
+        raw_result = lib.UA_ServerConfig_setDefault(self.getConfig())
+        return ua_types.UaStatusCode(val=raw_result)
 
 
 #########
@@ -44,55 +52,71 @@ class UaServer:
 ###
 
 
-    def read(self, item, timestamps):
-        return lib.UA_Server_read(self.ua_server, item, timestamps)
+    def read(self, item:ua_types.UaReadValueId, timestamps:ua_types.UaTimestampsToReturn):
+        raw_result = lib.UA_Server_read(self.ua_server, item._ptr, timestamps._val)
+        return ua_types.UaDataValue(val=raw_result)
 
-    def write(self, value):
-        return lib.UA_Server_write(self.ua_server, value)
+    def write(self, value:ua_types.UaDataValue):
+        raw_result = lib.UA_Server_write(self.ua_server, value._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_value(self, node_id, value):
-        return lib.UA_Server_writeValue(self.ua_server, node_id, value)
+    def write_value(self, node_id: ua_types.UaNodeId, value:ua_types.UaDataValue):
+        raw_result = lib.UA_Server_writeValue(self.ua_server, node_id, value)
+        return ua_types.UaStatusCode(val=raw_result)
     
-    def write_data_value(self, node_id, value):
-        return lib.UA_Server_writeDataValue(self.ua_server, node_id, value)
+    def write_data_value(self, node_id: ua_types.UaNodeId, value:ua_types.UaDataValue):
+        raw_value = lib.UA_Server_writeDataValue(self.ua_server, node_id._val, value._val)
+        return ua_types.UaStatusCode(val=raw_result)
     
-    def write_data_type(self, node_id, data_type):
-        return lib.UA_Server_writeDataType(self.ua_server, node_id, data_type)
+    def write_data_type(self, node_id: ua_types.UaNodeId, data_type:ua_types.UaDataValue):
+        raw_value =  lib.UA_Server_writeDataType(self.ua_server, node_id._val, data_type._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_value_rank(self, node_id, value_rank):
-        return lib.UA_Server_writeValueRank(self.ua_server, node_id, value_rank)
+    def write_value_rank(self, node_id: ua_types.UaNodeId, value_rank:ua_types.UaInt32):
+        raw_value =  lib.UA_Server_writeValueRank(self.ua_server, node_id._val, value_rank._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_array_dimensions(self, node_id, array_dimensions):
-        return lib.UA_Server_writeArrayDimensions(self.ua_server, node_id, array_dimensions)
+    def write_array_dimensions(self, node_id: ua_types.UaNodeId, array_dimensions:ua_types.UaVariant):
+        raw_value =  lib.UA_Server_writeArrayDimensions(self.ua_server, node_id._val, array_dimensions._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_access_level(self, node_id, access_level):
-        return lib.UA_Server_writeAccessLevel(self.ua_server, node_id, access_level)
+    def write_access_level(self, node_id: ua_types.UaNodeId, access_level:ua_types.UaByte):
+        raw_value =  lib.UA_Server_writeAccessLevel(self.ua_server, node_id._val, access_level._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_minimum_sampling_interval(self, node_id, minimum_sampling_interval):
-        return lib.UA_Server_writeMinimumSamplingInterval(self.ua_server, node_id, minimum_sampling_interval)
+    def write_minimum_sampling_interval(self, node_id: ua_types.UaNodeId, minimum_sampling_interval:ua_types.UaDouble):
+        raw_value =  lib.UA_Server_writeMinimumSamplingInterval(self.ua_server, node_id._val, minimum_sampling_interval._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_executable(self, node_id, executable):
-        return lib.UA_Server_writeExecutable(self.ua_server, node_id, executable)
+    def write_executable(self, node_id: ua_types.UaNodeId, executable:ua_types.UaBoolean):
+        raw_value =  lib.UA_Server_writeExecutable(self.ua_server, node_id._val, executable._val)
+        return ua_types.UaStatusCode(val=raw_result)
  
-    def browse_next(self, release_continuation_point, continuation_point):
-        return lib.UA_Server_browseNext(self.ua_server, release_continuation_point, continuation_point)
+    def browse_next(self, release_continuation_point:ua_types.UaBoolean, continuation_point:ua_types.UaByteString):
+        raw_value =  lib.UA_Server_browseNext(self.ua_server, release_continuation_point._val, continuation_point._ptr)
+        return ua_types.UaBrowseResult(val=raw_result)
 
-    def translate_browse_path_to_node_ids(self, browse_path):
-        return lib.UA_Server_translateBrowsePathToNodeIds(self.ua_server, browse_path)
+    def translate_browse_path_to_node_ids(self, browse_path:ua_types.UaBrowsePath):
+        raw_value =  lib.UA_Server_translateBrowsePathToNodeIds(self.ua_server, browse_path._ptr)
+        return ua_types.UaBrowsePathResult(val=raw_result)
 
-    def write_object_property(self, object_id, property_name, value):
-        return lib.UA_Server_writeObjectProperty(self.ua_server, object_id, property_name, value)
+    def write_object_property(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue):
+        raw_value =  lib.UA_Server_writeObjectProperty(self.ua_server, object_id._val, property_name._val, value._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def write_object_property_scalar(self, object_id, property_name, value, data_type):
-        return lib.UA_Server_writeObjectProperty_scalar(self.ua_server, object_id, property_name, value, data_type)
+    def write_object_property_scalar(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue, data_type:UaDataType):
+        raw_value =  lib.UA_Server_writeObjectProperty_scalar(self.ua_server, object_id._val, property_name._val, value._ptr, data_type._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def read_object_property(self, object_id, property_name, value):
-        return lib.UA_Server_readObjectProperty(self.ua_server, object_id, property_name, value)
+    def read_object_property(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue):
+        raw_value =  lib.UA_Server_readObjectProperty(self.ua_server, object_id._val, property_name._val, value._ptr)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def call(self, request):
-        return lib.UA_Server_call(self.ua_server, request)
+    def call(self, request:ua_types.UaCallMethodRequest):
+        raw_value =  lib.UA_Server_call(self.ua_server, request._ptr)
+        return ua_types.UaCallMethodResult(val=raw_result)
 
-    def add_data_source_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, data_source, outNewnode_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+    def add_data_source_variable_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, data_source:ua_types.UaDataSource, outNewnode_id: ua_types.UaNodeId, attr:ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
         out_node = ffi.new("UA_node_id *")
 
         # TODO: test
@@ -101,19 +125,24 @@ class UaServer:
         else:
             node_context = ffi.NULL
 
-        status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, data_source, node_context, outnode)
-        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node) # TODO: out_node not None?
+        status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, data_source._val, node_context._ptr, outnode._ptr)
+        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node) # TODO: out_node not None?
 
-    def delete_node(self, node_id, delete_references):
-        return lib.UA_Server_deleteNode(self.ua_server, node_id, delete_references)
+    def delete_node(self, node_id:ua_types.UaNodeId, delete_references:ua_types.UaBoolean):
+        raw_result = lib.UA_Server_deleteNode(self.ua_server, node_id._val, delete_references._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def add_reference(self , source_id, ref_type_id, target_id, is_forward):
-        return lib.UA_Server_addReference(self.ua_server , source_id, ref_type_id, target_id, is_forward)
 
-    def delete_reference(self, source_node_id, reference_type_id,  is_forward, target_node_id, delete_bidirectional):
-        return lib.UA_Server_deleteReference(self.ua_server, sourcenode_id, reference_type_id,  isForward, targetnode_id, deleteBidirectional)   
+    def add_reference(self , source_id:ua_types.UaNodeId, ref_type_id:ua_types.UaNodeId, target_id:ua_types.UaNodeId, is_forward:ua_types.UaBoolean):
+        raw_result = lib.UA_Server_addReference(self.ua_server , source_id._val, ref_type_id._val, target_id._val, is_forward._val)
+        return ua_types.UaStatusCode(val=raw_result)
 
-    def add_variable_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+
+    def delete_reference(self, source_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId,  is_forward:ua_types.UaBoolean, target_node_id:ua_types.UaNodeId, delete_bidirectional):
+        raw_result = lib.UA_Server_deleteReference(self.ua_server, sourcenode_id._val, reference_type_id._val,  isForward._val, targetnode_id._val, deleteBidirectional._val)   
+        return ua_types.UaStatusCode(val=raw_result)
+
+    def add_variable_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, out_new_node_id:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -122,10 +151,10 @@ class UaServer:
         else:
             node_context = ffi.NULL
         
-        status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
-        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
+        status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
+        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
 
-    def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+    def add_variable_type_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, out_new_node_id:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -133,11 +162,11 @@ class UaServer:
             node_context = ffi.new_handle(node_context)
         else:
             node_context = ffi.NULL
+        
+        status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
+        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
 
-        status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
-        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
-
-    def add_object_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+    def add_object_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, out_new_node_id:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -145,11 +174,11 @@ class UaServer:
             node_context = ffi.new_handle(node_context)
         else:
             node_context = ffi.NULL
+        
+        status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
+        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
 
-        status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
-        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
-
-    def add_object_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+    def add_object_type_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, out_new_node_id:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -157,54 +186,20 @@ class UaServer:
             node_context = ffi.new_handle(node_context)
         else:
             node_context = ffi.NULL
-
-        status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition, attr, node_context, out_node_id)
-        return ServerServiceResults.AddNodeAttributeResult(status_code, out_node)
+        
+        status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
+        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
 
     # TODO: test
-    def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
-        out_node_id = ffi.new("UA_NodeId *")
+    #def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+    #    out_node_id = ffi.new("UA_NodeId *")
 
         
-        if node_context is not None: 
-            node_context = ffi.new_handle(node_context)
-        else:
-            node_context = ffi.NULL
+    #    if node_context is not None: 
+    #        node_context = ffi.new_handle(node_context)
+    #    else:
+    #        node_context = ffi.NULL
 
-        status_code = lib.UA_Server_addMethodNode()
-        return ServerServiceResults.AddMethodNodeResult(status_code, output_arg_size, output_args, out_node)
+    #    status_code = lib.UA_Server_addMethodNode()
+    #    return ServerServiceResults.AddMethodNodeResult(ua_types.UaStatusCode(status_code), output_arg_size, output_args, out_node)
         
-
-    #######
-    #
-    # node management functions
-    #
-    #def browse(self, maxReferences, bd):
-    #    return lib.UA_Server_browse(self.ua_server, maxReferences, bd)
-
-    #def browseRecursive(self, bd, resultsSize, results):
-    #   return lib.UA_Server_browseRecursive(self.ua_server, bd, resultsSize, results)
-
-    #def finddata_type(self, typeId):
-    #    return lib.UA_Server_finddata_type(self.ua_server, typeId)
-
-    #def addMethodNodeEx(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, attr, method, input_arguments_size, input_arguments,  input_arguments_requested_newnode_id, input_arguments_out_newnode_id, output_arguments_size, output_arguments,  output_arguments_requested_newnode_id, output_arguments_out_new_node_id, node_context, outNewnode_id):
-    #    return lib.UA_Server_addMethodNodeEx(self.ua_server, requestedNewnode_id, parentnode_id, reference_type_id, browse_name, attr, method, inputArgumentsSize, inputArguments,  inputArgumentsRequestedNewnode_id, inputArgumentsOutNewnode_id, outputArgumentsSize, outputAarguments,  outputArgumentsRequestedNewnode_id, outputArgumentsOutNewnode_id, node_context, outNewnode_id)
-
-    #def addNode_finish(self, node_id):
-    #    return lib.UA_Server_addNode_finish(self.ua_server, node_id)
-
-    #def addNode_begin(self, nodeClass,  requestedNewnode_id,  parentnode_id,  reference_type_id, browse_name, type_definition, attr, attributeType, node_context, outNewnode_id):
-    #     outnode = ffi.new("UA_node_id *")
-    #    return lib.UA_Server_addNode_begin(self.ua_server, nodeClass,  requestedNewnode_id,  parentnode_id,  reference_type_id, browse_name, type_definition, attr, attributeType, node_context, outnode)
-
-    #def addMethodNode_finish(self, node_id, method, inputArgumentsSize, inputArguments, outputArgumentsSize, outputArguments):
-    #    return lib.UA_Server_addMethodNode_finish(self.ua_server, node_id, method, inputArgumentsSize, inputArguments, outputArgumentsSize, outputArguments)
-    
-
-    #######
-    #
-    # skipping historizing for now...
-    #
-
-    # def writeHistorizing

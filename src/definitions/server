@@ -1,52 +1,6 @@
 UA_Server * UA_Server_new(void);
 
 
-struct UA_ServerConfig {
-    ...;
-};
-
-typedef struct {
-    //UA_NodeId nodeId;
-    //UA_UInt32 attributeId;
-    //UA_String indexRange;
-    //UA_QualifiedName dataEncoding;
-
-    ...;
-} UA_ReadValueId;
-
-typedef enum {
-    UA_TIMESTAMPSTORETURN_SOURCE = 0,
-    UA_TIMESTAMPSTORETURN_SERVER = 1,
-    UA_TIMESTAMPSTORETURN_BOTH = 2,
-    UA_TIMESTAMPSTORETURN_NEITHER = 3,
-    UA_TIMESTAMPSTORETURN_INVALID = 4,
-    __UA_TIMESTAMPSTORETURN_FORCE32BIT = 0x7fffffff
-} UA_TimestampsToReturn;
-
-typedef struct {
-    ...;
-} UA_WriteValue;
-
-typedef struct {
-    ...;
-} UA_BrowseResult;
-
-typedef struct {
-    ...;
-} UA_BrowsePathResult;
-
-typedef struct {
-    ...;
-} UA_BrowsePath;
-
-typedef struct {
-    ...;
-} UA_CallMethodResult;
-
-typedef struct {
-    ...;
-} UA_CallMethodRequest;
-
 typedef struct {
     ...;
 } UA_DataSource;
