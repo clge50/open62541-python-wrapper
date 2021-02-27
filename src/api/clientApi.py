@@ -171,7 +171,7 @@ class _UaCallback:
 
 
 class UaClient:
-    def __init__(self, config=None):
+    def __init__(self, config: ua_types.UaClientConfig = None):
         if config is None:
             self.ua_client = lib.UA_Client_new()
             self.set_default_config()
@@ -571,7 +571,6 @@ class UaClient:
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     # utils
-    # todo: integrate config in type system
     def get_config(self):
         return lib.UA_Client_getConfig(self.ua_client)
 

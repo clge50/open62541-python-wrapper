@@ -28161,7 +28161,7 @@ class UaEventFilter(UaType):
 
 # +++++++++++++++++++ UaClientConfig +++++++++++++++++++++++
 class UaClientConfig(UaType):
-    def __init__(self, val=lib.UA_ClientConfig_setDefault(lib.ffi.new("UA_ClientConfig*")), is_pointer=False):
+    def __init__(self, val=lib.UA_ClientConfig_setDefault(ffi.new("UA_ClientConfig*")), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:
@@ -28198,7 +28198,7 @@ class UaClientConfig(UaType):
             self._secure_channel_life_time._value[0] = _val(val.secureChannelLifeTime)
             self._requested_session_timeout._value[0] = _val(val.requestedSessionTimeout)
             self._connectivity_check_interval._value[0] = _val(val.connectivityCheckInterval)
-            self._custom_data_types._value = val.customDataTypes
+            self._custom_data_types = val.customDataTypes
 
     @property
     def client_context(self):
@@ -28283,6 +28283,13 @@ class UaClientConfig(UaType):
             return None
         else:
             return self._connectivity_check_interval
+
+    @property
+    def custom_data_types(self):
+        if self._null:
+            return None
+        else:
+            return self._custom_data_types
 
     @client_context.setter
     def client_context(self, val):
