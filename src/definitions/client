@@ -15,12 +15,15 @@ typedef struct {
     UA_UserTokenPolicy userTokenPolicy;
     UA_UInt32 secureChannelLifeTime;
     UA_UInt32 requestedSessionTimeout;
-    UA_ConnectionConfig localConnectionConfig;
     UA_UInt32 connectivityCheckInterval;
     const UA_DataTypeArray *customDataTypes;
+
+    // TODO: Types that are neither built in types nor automatically generated as well as associated fields
+    // nor seemed to be absolutely crucial for early iterations have not been made available yet.
+    /*
+    UA_ConnectionConfig localConnectionConfig;
     size_t securityPoliciesSize;
-    /* TODO */
-    /* UA_SecurityPolicy *securityPolicies;
+    UA_SecurityPolicy *securityPolicies;
     UA_CertificateVerification certificateVerification;
     UA_ConnectClientConnection initConnectionFunc;
 
@@ -32,9 +35,7 @@ typedef struct {
                           UA_SessionState sessionState,
                           UA_StatusCode connectStatus);
     void (*inactivityCallback)(UA_Client *client);
-    */
 
-/* pub/sub
     UA_UInt16 outStandingPublishRequests;
 
     void (*subscriptionInactivityCallback)(UA_Client *client,
