@@ -248,7 +248,8 @@ class UaClient:
     # high level read service
     # todo: this doesn't really work because out is a void pointer. variable has to be created dynamically depending on type
     # also needs generic result class object as result
-    def __read_attribute(self, node_id, attribute_id, out, out_data_type):
+    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId, out: ua_types.Void,
+                         out_data_type: ua_types.UaDataType):
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id, attribute_id, out, out_data_type)
         return status_code
 
@@ -824,7 +825,8 @@ class UaClient:
         return ClientServiceResult.AsyncResponse(ua_types.UaStatusCode(val=status_code), req_id)
 
     # todo: how to handle _in (*void)?
-    def __write_attribute_async(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaAttributeId, _in,
+    def __write_attribute_async(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaAttributeId,
+                                _in: ua_types.Void,
                                 in_data_type: ua_types.UaDataType, callback):
         req_id = ua_types.UaUInt32()
         status_code = lib.__UA_Client_writeAttribute_async(self.ua_client,
@@ -1321,11 +1323,12 @@ class UaClient:
         channel_state = ua_types.UaSecureChannelState()
         session_state = ua_types.UaSessionState()
         connect_status = None  # todo: there is no ua_types.UaConnectSatus() yet
-        return lib.UA_Client_getState(self.ua_client, channel_state, session_state, connect_status)
+        return lib.UA_Client_getState(self.ua_client, channel_state, session_state,
+                                      connect_status)  # todo: create response wrapper
 
-    # todo: wrap response. Problem: return type is void* --> which type to use for handling this? UaType?
+    # todo: wrap response. Problem: return type is void*
     def get_context(self):
-        return lib.UA_Client_getContext(self.ua_client)
+        return ua_types.Void(val=lib.UA_Client_getContext(self.ua_client))
 
     def modify_async_callback(self, callback):
         req_id = ua_types.UaUInt32()
