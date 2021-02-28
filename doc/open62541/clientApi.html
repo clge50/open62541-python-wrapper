@@ -261,12 +261,12 @@ class _UaCallback:
         ffi.from_handle(fun)(ua_types.UaNodeId(child_id), ua_types.UaBoolean(is_inverse),
                              ua_types.UaNodeId(reference_type_id))
 
-        @staticmethod
-        @ffi.def_extern()
-        def python_wrapper_UA_ClientCallback(client, fun):
-            ua_client = UaClient()
-            ua_client.ua_client = client
-            ffi.from_handle(fun)(ua_client, ua_types.UaNodeId(child_id))
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientCallback(client, fun):
+        ua_client = UaClient()
+        ua_client.ua_client = client
+        ffi.from_handle(fun)(ua_client, ua_types.UaNodeId(child_id))
 
 
 class UaClient:
@@ -348,8 +348,7 @@ class UaClient:
     # high level read service
     # todo: this doesn&#39;t really work because out is a void pointer. variable has to be created dynamically depending on type
     # also needs generic result class object as result
-    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId,
-                         out_data_type: ua_types.UaDataType):
+    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId):
         out = ua_types.Void()
         out_data_type = ua_types.UaDataType
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id._ptr, attribute_id._val, out._ptr,
@@ -436,19 +435,20 @@ class UaClient:
         return ClientServiceResult.ReadDataTypeAttribute(ua_types.UaStatusCode(val=status_code), out_data_type)
 
     def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
-        out_value_rank = ua_types.UaUInt32()
+        out_value_rank = ua_types.UaInt32()
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(ua_types.UaStatusCode(val=status_code), out_value_rank)
 
+    # todo: adapt type system to support UA_UInt32 **&#34;
     def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
         out_array_dimensions_size = ua_types.SizeT()
-        out_array_dimensions = ua_types.UaUInt32()
+        out_array_dimensions = ffi.new(&#34;UA_UInt32 **&#34;)
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                                  out_array_dimensions_size._ptr,
-                                                                 out_array_dimensions._ptr)
+                                                                 out_array_dimensions)
         return ClientServiceResult.ReadArrayDimensionsAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                       out_array_dimensions_size,
-                                                                      out_array_dimensions)
+                                                                      out_array_dimensions)  # todo: fix return value
 
     def read_access_level_attribute(self, node_id: ua_types.UaNodeId):
         out_access_level = ua_types.UaByte()
@@ -1768,8 +1768,7 @@ class UaClient:
     # high level read service
     # todo: this doesn&#39;t really work because out is a void pointer. variable has to be created dynamically depending on type
     # also needs generic result class object as result
-    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId,
-                         out_data_type: ua_types.UaDataType):
+    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId):
         out = ua_types.Void()
         out_data_type = ua_types.UaDataType
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id._ptr, attribute_id._val, out._ptr,
@@ -1856,19 +1855,20 @@ class UaClient:
         return ClientServiceResult.ReadDataTypeAttribute(ua_types.UaStatusCode(val=status_code), out_data_type)
 
     def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
-        out_value_rank = ua_types.UaUInt32()
+        out_value_rank = ua_types.UaInt32()
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(ua_types.UaStatusCode(val=status_code), out_value_rank)
 
+    # todo: adapt type system to support UA_UInt32 **&#34;
     def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
         out_array_dimensions_size = ua_types.SizeT()
-        out_array_dimensions = ua_types.UaUInt32()
+        out_array_dimensions = ffi.new(&#34;UA_UInt32 **&#34;)
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                                  out_array_dimensions_size._ptr,
-                                                                 out_array_dimensions._ptr)
+                                                                 out_array_dimensions)
         return ClientServiceResult.ReadArrayDimensionsAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                       out_array_dimensions_size,
-                                                                      out_array_dimensions)
+                                                                      out_array_dimensions)  # todo: fix return value
 
     def read_access_level_attribute(self, node_id: ua_types.UaNodeId):
         out_access_level = ua_types.UaByte()
@@ -3816,13 +3816,13 @@ class UaClient:
 </summary>
 <pre><code class="python">def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
     out_array_dimensions_size = ua_types.SizeT()
-    out_array_dimensions = ua_types.UaUInt32()
+    out_array_dimensions = ffi.new(&#34;UA_UInt32 **&#34;)
     status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                              out_array_dimensions_size._ptr,
-                                                             out_array_dimensions._ptr)
+                                                             out_array_dimensions)
     return ClientServiceResult.ReadArrayDimensionsAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                   out_array_dimensions_size,
-                                                                  out_array_dimensions)</code></pre>
+                                                                  out_array_dimensions)  # todo: fix return value</code></pre>
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_browse_name_attribute"><code class="name flex">
@@ -4485,7 +4485,7 @@ class UaClient:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
-    out_value_rank = ua_types.UaUInt32()
+    out_value_rank = ua_types.UaInt32()
     status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
     return ClientServiceResult.ReadValueRankAttribute(ua_types.UaStatusCode(val=status_code), out_value_rank)</code></pre>
 </details>

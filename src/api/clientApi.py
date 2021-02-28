@@ -407,19 +407,20 @@ class UaClient:
         return ClientServiceResult.ReadDataTypeAttribute(ua_types.UaStatusCode(val=status_code), out_data_type)
 
     def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
-        out_value_rank = ua_types.UaUInt32()
+        out_value_rank = ua_types.UaInt32()
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(ua_types.UaStatusCode(val=status_code), out_value_rank)
 
+    # todo: adapt type system to support UA_UInt32 **"
     def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
         out_array_dimensions_size = ua_types.SizeT()
-        out_array_dimensions = ua_types.UaUInt32()
+        out_array_dimensions = ffi.new("UA_UInt32 **")
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                                  out_array_dimensions_size._ptr,
-                                                                 out_array_dimensions._ptr)
+                                                                 out_array_dimensions)
         return ClientServiceResult.ReadArrayDimensionsAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                       out_array_dimensions_size,
-                                                                      out_array_dimensions)
+                                                                      out_array_dimensions)  # todo: fix return value
 
     def read_access_level_attribute(self, node_id: ua_types.UaNodeId):
         out_access_level = ua_types.UaByte()
