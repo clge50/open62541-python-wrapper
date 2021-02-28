@@ -28165,6 +28165,7 @@ class UaClientConfig(UaType):
         if val is None:
             val = ffi.new("UA_ClientConfig*")
             lib.UA_ClientConfig_setDefault(val)
+        super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)

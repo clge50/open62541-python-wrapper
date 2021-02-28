@@ -10,6 +10,5 @@ from intermediateApi import ffi, lib
 
 class TestTypes:
 
-
-    def test_read_node_id_attribute(self):
+    def test(self):
         pass

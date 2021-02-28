@@ -233,12 +233,12 @@ class _UaCallback:
         ffi.from_handle(fun)(ua_types.UaNodeId(child_id), ua_types.UaBoolean(is_inverse),
                              ua_types.UaNodeId(reference_type_id))
 
-        @staticmethod
-        @ffi.def_extern()
-        def python_wrapper_UA_ClientCallback(client, fun):
-            ua_client = UaClient()
-            ua_client.ua_client = client
-            ffi.from_handle(fun)(ua_client, ua_types.UaNodeId(child_id))
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientCallback(client, fun):
+        ua_client = UaClient()
+        ua_client.ua_client = client
+        ffi.from_handle(fun)(ua_client)
 
 
 class UaClient:
@@ -320,8 +320,7 @@ class UaClient:
     # high level read service
     # todo: this doesn't really work because out is a void pointer. variable has to be created dynamically depending on type
     # also needs generic result class object as result
-    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId,
-                         out_data_type: ua_types.UaDataType):
+    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId):
         out = ua_types.Void()
         out_data_type = ua_types.UaDataType
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id._ptr, attribute_id._val, out._ptr,
@@ -408,19 +407,20 @@ class UaClient:
         return ClientServiceResult.ReadDataTypeAttribute(ua_types.UaStatusCode(val=status_code), out_data_type)
 
     def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
-        out_value_rank = ua_types.UaUInt32()
+        out_value_rank = ua_types.UaInt32()
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(ua_types.UaStatusCode(val=status_code), out_value_rank)
 
+    # todo: adapt type system to support UA_UInt32 **"
     def read_array_dimensions_attribute(self, node_id: ua_types.UaNodeId):
         out_array_dimensions_size = ua_types.SizeT()
-        out_array_dimensions = ua_types.UaUInt32()
+        out_array_dimensions = ffi.new("UA_UInt32 **")
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                                  out_array_dimensions_size._ptr,
-                                                                 out_array_dimensions._ptr)
+                                                                 out_array_dimensions)
         return ClientServiceResult.ReadArrayDimensionsAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                       out_array_dimensions_size,
-                                                                      out_array_dimensions)
+                                                                      out_array_dimensions)  # todo: fix return value
 
     def read_access_level_attribute(self, node_id: ua_types.UaNodeId):
         out_access_level = ua_types.UaByte()
@@ -593,7 +593,8 @@ class UaClient:
                                                     out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_variable_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+    def add_variable_type_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                               reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                                attr: ua_types.UaVariableTypeAttributes = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
@@ -601,7 +602,9 @@ class UaClient:
                                                         out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_object_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, type_definition,
+    def add_object_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                        reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
+                        type_definition: ua_types.UaNodeId,
                         attr: ua_types.UaObjectAttributes = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
@@ -610,7 +613,8 @@ class UaClient:
                                                   out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_object_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+    def add_object_type_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                             reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                              attr: ua_types.UaObjectTypeAttributes = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
@@ -618,7 +622,8 @@ class UaClient:
                                                       out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_view_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+    def add_view_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                      reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                       attr: ua_types.UaViewAttributes = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
@@ -626,7 +631,8 @@ class UaClient:
                                                 out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_reference_type_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+    def add_reference_type_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                                reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                                 attr: ua_types.UaReferenceTypeAttributes = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id._val,
@@ -635,7 +641,8 @@ class UaClient:
                                                          out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_data_type_node(self, requested_node_id, parent_node_id, reference_type_id, browse_name,
+    def add_data_type_node(self, requested_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                           reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                            attr: ua_types.UaDataTypeAttributes = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_node_id._val, parent_node_id._val,
@@ -643,7 +650,8 @@ class UaClient:
                                                     out_new_node_id._ptr)
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
-    def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name,
+    def add_method_node(self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId,
+                        reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName,
                         attr: ua_types.UaMethodAttributes = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
         out_new_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
@@ -652,28 +660,34 @@ class UaClient:
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     # utils
+    # todo: wrap config once UA_Logger type is available
     def get_config(self):
         return lib.UA_Client_getConfig(self.ua_client)
 
+    # todo: adapt once UA_Logger type is available and get_config has been wrapped
     def set_default_config(self):
         lib.UA_ClientConfig_setDefault(self.get_config())
 
-    def find_data_type(self, type_id):
-        return ua_types.UaDataType(lib.UA_Client_findDataType(self.ua_client, type_id), is_pointer=True)
+    def find_data_type(self, type_id: ua_types.UaNodeId):
+        return ua_types.UaDataType(val=lib.UA_Client_findDataType(self.ua_client, type_id._ptr), is_pointer=True)
 
-    def get_endpoints(self, server_url, endpoint_descriptions_size, endpoint_descriptions):
+    # todo: endpoint_descriptions is of type UA_EndpointDescription** --> array with multiple entries?
+    def get_endpoints(self, server_url: str, endpoint_descriptions_size: ua_types.SizeT,
+                      endpoint_descriptions: ua_types.UaApplicationDescription):
         status_code = lib.UA_Client_getEndpoints(self.ua_client, server_url, endpoint_descriptions_size,
                                                  endpoint_descriptions)
         return ua_types.UaStatusCode(val=status_code)
 
-    def find_servers(self, server_url, server_uris_size, locale_ids_size, locale_ids, registered_servers_size,
-                     registered_servers):
+    # todo: registered_servers is of type UA_ApplicationDescription ** --> array with multiple entries?
+    def find_servers(self, server_url: str, server_uris_size: ua_types.SizeT, locale_ids_size: ua_types.SizeT,
+                     locale_ids: ua_types.UaString, registered_servers_size: ua_types.SizeT,
+                     registered_servers: ua_types.UaApplicationDescription):
         status_code = lib.UA_Client_findServers(self.ua_client, server_url, server_uris_size, locale_ids_size,
                                                 locale_ids,
                                                 registered_servers_size, registered_servers)
         return ua_types.UaStatusCode(val=status_code)
 
-    def run_iterate(self, timeout):
+    def run_iterate(self, timeout: ua_types.UaUInt32):
         status_code = lib.UA_Client_run_iterate(self.ua_client, timeout)
         return ua_types.UaStatusCode(val=status_code)
 
