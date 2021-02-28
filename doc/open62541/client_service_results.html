@@ -160,6 +160,13 @@ class ReadUserExecutableAttributeResult:
         self.out_user_executable = out_user_executable
 
 
+class ReadAttributeResult:
+    def __init__(self, status_code, out, out_data_type):
+        self.status_code = status_code
+        self.out = out
+        self.out_data_type = out_data_type
+
+
 # misc service
 
 class CallResult:
@@ -179,9 +186,10 @@ class AddNodeResult:
 
 # async simple service
 class AsyncResponse:
-    def __init__(self, status_code, req_id):
+    def __init__(self, status_code, req_id, _handle):
         self.status_code = status_code
-        self.req_id = req_id</code></pre>
+        self.req_id = req_id
+        self._handle = _handle</code></pre>
 </details>
 </section>
 <section>
@@ -211,7 +219,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.AsyncResponse"><code class="flex name class">
 <span>class <span class="ident">AsyncResponse</span></span>
-<span>(</span><span>status_code, req_id)</span>
+<span>(</span><span>status_code, req_id, _handle)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -220,9 +228,10 @@ class AsyncResponse:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class AsyncResponse:
-    def __init__(self, status_code, req_id):
+    def __init__(self, status_code, req_id, _handle):
         self.status_code = status_code
-        self.req_id = req_id</code></pre>
+        self.req_id = req_id
+        self._handle = _handle</code></pre>
 </details>
 </dd>
 <dt id="open62541.client_service_results.CallResult"><code class="flex name class">
@@ -273,6 +282,23 @@ class AsyncResponse:
         self.status_code = status_code
         self.out_array_dimensions_size = out_array_dimensions_size
         self.out_array_dimensions = out_array_dimensions</code></pre>
+</details>
+</dd>
+<dt id="open62541.client_service_results.ReadAttributeResult"><code class="flex name class">
+<span>class <span class="ident">ReadAttributeResult</span></span>
+<span>(</span><span>status_code, out, out_data_type)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ReadAttributeResult:
+    def __init__(self, status_code, out, out_data_type):
+        self.status_code = status_code
+        self.out = out
+        self.out_data_type = out_data_type</code></pre>
 </details>
 </dd>
 <dt id="open62541.client_service_results.ReadBrowseNameAttributeResult"><code class="flex name class">
@@ -609,6 +635,9 @@ class AsyncResponse:
 </li>
 <li>
 <h4><code><a title="open62541.client_service_results.ReadArrayDimensionsAttributeResult" href="#open62541.client_service_results.ReadArrayDimensionsAttributeResult">ReadArrayDimensionsAttributeResult</a></code></h4>
+</li>
+<li>
+<h4><code><a title="open62541.client_service_results.ReadAttributeResult" href="#open62541.client_service_results.ReadAttributeResult">ReadAttributeResult</a></code></h4>
 </li>
 <li>
 <h4><code><a title="open62541.client_service_results.ReadBrowseNameAttributeResult" href="#open62541.client_service_results.ReadBrowseNameAttributeResult">ReadBrowseNameAttributeResult</a></code></h4>

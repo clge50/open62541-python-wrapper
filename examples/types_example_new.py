@@ -12,11 +12,11 @@ client = clientApi.UaClient()
 retval = client.connect("opc.tcp://127.0.0.1:4840/")
 
 # configuring attribute
-attr = clientApi.DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
-myInteger = UaInt32(42)
+# attr = clientApi.DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
+# myInteger = UaInt32(42)
 # UA_Variant_setScalar(&attr.value, &myInteger, &UA_TYPES[UA_TYPES_INT32]);
-attr.description = UaLocalizedText("en-US", "hello world!")
-attr.displayName = UaLocalizedText("en-US", "Just to be sure")
+# attr.description = UaLocalizedText("en-US", "hello world!")
+# attr.displayName = UaLocalizedText("en-US", "Just to be sure")
 # attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
 
 # adding node

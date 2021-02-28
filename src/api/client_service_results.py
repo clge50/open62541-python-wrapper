@@ -132,6 +132,13 @@ class ReadUserExecutableAttributeResult:
         self.out_user_executable = out_user_executable
 
 
+class ReadAttributeResult:
+    def __init__(self, status_code, out, out_data_type):
+        self.status_code = status_code
+        self.out = out
+        self.out_data_type = out_data_type
+
+
 # misc service
 
 class CallResult:
@@ -151,6 +158,7 @@ class AddNodeResult:
 
 # async simple service
 class AsyncResponse:
-    def __init__(self, status_code, req_id):
+    def __init__(self, status_code, req_id, _handle):
         self.status_code = status_code
         self.req_id = req_id
+        self._handle = _handle
