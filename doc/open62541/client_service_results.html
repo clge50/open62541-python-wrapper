@@ -179,9 +179,10 @@ class AddNodeResult:
 
 # async simple service
 class AsyncResponse:
-    def __init__(self, status_code, req_id):
+    def __init__(self, status_code, req_id, _handle):
         self.status_code = status_code
-        self.req_id = req_id</code></pre>
+        self.req_id = req_id
+        self._handle = _handle</code></pre>
 </details>
 </section>
 <section>
@@ -211,7 +212,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.AsyncResponse"><code class="flex name class">
 <span>class <span class="ident">AsyncResponse</span></span>
-<span>(</span><span>status_code, req_id)</span>
+<span>(</span><span>status_code, req_id, _handle)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -220,9 +221,10 @@ class AsyncResponse:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class AsyncResponse:
-    def __init__(self, status_code, req_id):
+    def __init__(self, status_code, req_id, _handle):
         self.status_code = status_code
-        self.req_id = req_id</code></pre>
+        self.req_id = req_id
+        self._handle = _handle</code></pre>
 </details>
 </dd>
 <dt id="open62541.client_service_results.CallResult"><code class="flex name class">
