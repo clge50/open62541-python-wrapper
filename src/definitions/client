@@ -74,6 +74,7 @@ typedef void (*UA_ClientCallback)(UA_Client *client, void *data);
 
 // callback function pointer implementations
 extern "Python" void python_wrapper_UA_ClientAsyncServiceCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, void *response);
+extern "Python" void python_wrapper_UA_ClientCallback(UA_Client *client, void *data);
 
 // utils
 UA_ClientConfig * UA_Client_getConfig(UA_Client *client);

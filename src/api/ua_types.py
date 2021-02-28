@@ -28161,8 +28161,10 @@ class UaEventFilter(UaType):
 
 # +++++++++++++++++++ UaClientConfig +++++++++++++++++++++++
 class UaClientConfig(UaType):
-    def __init__(self, val=lib.UA_ClientConfig_setDefault(ffi.new("UA_ClientConfig*")), is_pointer=False):
-        super().__init__(val=val, is_pointer=is_pointer)
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ClientConfig*")
+            lib.UA_ClientConfig_setDefault(val)
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)
