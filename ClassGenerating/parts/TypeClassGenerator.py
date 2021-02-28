@@ -59,7 +59,7 @@ class {to_python_class_name(struct_name)}(UaType):
         if not self._null:
 {new_line.join(map(
         lambda attr:
-        tab * 3 + f"self._{inflection.underscore(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
+        tab * 3 + f"self._{to_python_ident(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
         attribute_to_type.keys()))}
 
     def _set_value(self, val):
@@ -71,26 +71,26 @@ class {to_python_class_name(struct_name)}(UaType):
         if not _is_null(val):
 {new_line.join(map(
         lambda attr:
-        tab * 3 + f"self._{inflection.underscore(attr)}._value = val.{attr}"
+        tab * 3 + f"self._{to_python_ident(attr)}._value = val.{attr}"
         if attribute_to_type[attr][1] else
-        tab * 3 + f"self._{inflection.underscore(attr)}._value[0] = _val(val.{attr})",
+        tab * 3 + f"self._{to_python_ident(attr)}._value[0] = _val(val.{attr})",
         attribute_to_type.keys()))}
 
 {(new_line * 2).join(map(
         lambda attr:
         tab + f"@property" + new_line +
-        tab + f"def {inflection.underscore(attr)}(self):" + new_line +
+        tab + f"def {to_python_ident(attr)}(self):" + new_line +
         tab * 2 + f"if self._null:" + new_line +
         tab * 3 + f"return None" + new_line +
         tab * 2 + f"else:" + new_line +
-        tab * 3 + f"return self._{inflection.underscore(attr)}",
+        tab * 3 + f"return self._{to_python_ident(attr)}",
         attribute_to_type.keys()))}
 
 {(new_line * 2).join(map(
         lambda attr:
-        tab + f"@{inflection.underscore(attr)}.setter" + new_line +
-        tab + f"def {inflection.underscore(attr)}(self, val):" + new_line +
-        tab * 2 + f"self._{inflection.underscore(attr)} = val" + new_line +
+        tab + f"@{to_python_ident(attr)}.setter" + new_line +
+        tab + f"def {to_python_ident(attr)}(self, val):" + new_line +
+        tab * 2 + f"self._{to_python_ident(attr)} = val" + new_line +
         (tab * 2 + f"self._value.{attr} = val._ptr"
          if attribute_to_type[attr][1] else
          tab * 2 + f"self._value.{attr} = val._val"),
@@ -103,7 +103,7 @@ class {to_python_class_name(struct_name)}(UaType):
         return ("({to_python_class_name(struct_name)}) :\\n" +
 {new_line.join(map(
         lambda attr:
-        tab * 4 + f"{quote}{backslash}t{quote}*(n+1) + {quote}{inflection.underscore(attr)}{quote} + self._{inflection.underscore(attr)}.__str__(n+1) +",
+        tab * 4 + f"{quote}{backslash}t{quote}*(n+1) + {quote}{to_python_ident(attr)}{quote} + self._{to_python_ident(attr)}.__str__(n+1) +",
         attribute_to_type.keys()))} "\\n")
 
 
@@ -154,6 +154,10 @@ class {to_python_class_name(enum_name)}(UaType):
 """
     return class_str
 
+def to_python_ident(attr: str):
+    if attr == "value":
+        return "data_value"
+    return inflection.underscore(attr)
 
 def to_python_class_name(open62541_name: str):
     if open62541_name[0:3] == "UA_":
