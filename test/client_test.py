@@ -5,24 +5,26 @@ import time
 sys.path.append("../build/open62541")
 import serverApi
 import clientApi
-from intermediateApi import ffi, lib
+import ua_types
+from node_ids import NodeIds
 
 
 class TestClientApi:
     server = None
-    client = None
+    client: clientApi.UaClient = None
     running = [True]
     thread = None
+    connect_status: ua_types.UaStatusCode = None
 
     def setup_method(self):
         print("start of setUp")
         self.server = serverApi.UaServer()
-        self.thread = threading.Thread(target=self.server.run, args=[self.running], daemon=True)
+        self.thread = threading.Thread(target=self.server.run, args=self.running, daemon=True)
         self.thread.start()
         time.sleep(2)
 
         self.client = clientApi.UaClient()
-        self.client.connect("opc.tcp://127.0.0.1:4840/")
+        self.connect_status = self.client.connect("opc.tcp://127.0.0.1:4840/")
         print("end of setUp")
 
     def teardown_method(self):
@@ -35,13 +37,19 @@ class TestClientApi:
 
     # basic methods tests
 
-    # def test_connect(self):
+    def test_connect(self):
+        assert self.connect_status.is_good()
 
-    # def test_disconnect(self):
+    def test_disconnect(self):
+        assert self.client.disconnect().is_good()
 
-    # def test_connect_secure_channel(self):
+    def test_connect_secure_channel(self):
+        assert clientApi.UaClient().connect_secure_channel("opc.tcp://127.0.0.1:4840/").is_good()
 
-    # def test_disconnect_secure_channel(self):
+    def test_disconnect_secure_channel(self):
+        client: clientApi.UaClient = clientApi.UaClient()
+        assert client.connect_secure_channel("opc.tcp://127.0.0.1:4840/").is_good()
+        assert client.disconnect_secure_channel().is_good()
 
     # def test_service_read(self):
 
@@ -72,11 +80,9 @@ class TestClientApi:
     # reads a node from the server and verifies the id and the status code
     def test_read_node_id_attribute(self):
         print("Start of test_read_node_id_attribute")
-        parent_node_id = lib.UA_NODEID_NUMERIC(ffi.cast("UA_UInt16", 0), ffi.cast("UA_UInt32", 85))
+        parent_node_id = ua_types.UaNodeId(0, NodeIds.UA_NS0ID_OBJECTSFOLDER)
         res = self.client.read_node_id_attribute(parent_node_id)
-        assert not lib.UA_StatusCode_isBad(res.status_code)
-        assert str(res.status_code) == "0"
-        assert str(res.out_node_id.identifier.numeric) == "85"
+        assert res.status_code.is_good()
         print("End of test_read_node_id_attribute")
 
     # def test_read_node_class_attribute(self):

@@ -233,12 +233,12 @@ class _UaCallback:
         ffi.from_handle(fun)(ua_types.UaNodeId(child_id), ua_types.UaBoolean(is_inverse),
                              ua_types.UaNodeId(reference_type_id))
 
-        @staticmethod
-        @ffi.def_extern()
-        def python_wrapper_UA_ClientCallback(client, fun):
-            ua_client = UaClient()
-            ua_client.ua_client = client
-            ffi.from_handle(fun)(ua_client, ua_types.UaNodeId(child_id))
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientCallback(client, fun):
+        ua_client = UaClient()
+        ua_client.ua_client = client
+        ffi.from_handle(fun)(ua_client, ua_types.UaNodeId(child_id))
 
 
 class UaClient:
@@ -320,8 +320,7 @@ class UaClient:
     # high level read service
     # todo: this doesn't really work because out is a void pointer. variable has to be created dynamically depending on type
     # also needs generic result class object as result
-    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId,
-                         out_data_type: ua_types.UaDataType):
+    def __read_attribute(self, node_id: ua_types.UaNodeId, attribute_id: ua_types.UaNodeId):
         out = ua_types.Void()
         out_data_type = ua_types.UaDataType
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id._ptr, attribute_id._val, out._ptr,
