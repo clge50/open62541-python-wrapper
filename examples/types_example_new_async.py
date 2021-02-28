@@ -27,18 +27,19 @@ parent_node_id = UaNodeId(0, UaNodeId.UA_NS0ID_OBJECTSFOLDER)
 parent_reference_node_id = UaNodeId(0, UaNodeId.UA_NS0ID_ORGANIZES)
 variable_type = UaNodeId(0, UaNodeId.UA_NS0ID_BASEDATAVARIABLETYPE)
 
-fun = lambda _client, req_id, out, user_data="Test": print(
-    f"Node id: {str(out)}, request-id: {str(req_id)} user_data: {user_data}")
-parent_node_read_result = client.read_node_id_attribute_async(parent_reference_node_id, fun)
+parent_node_read_result = client.read_node_id_attribute_async(parent_reference_node_id,
+                                                              lambda _client, req_id, out,
+                                                                     user_data="async test 1": print(
+                                                                  f"Node id: {str(out)}, request-id: {str(req_id)}, user_data: {user_data}"))
 print("req_id: " + str(parent_node_read_result.req_id))
-client.run_iterate(4)
+client.run_iterate(1)
 print("parent node read status code: " + str(parent_node_read_result.status_code))
 
-fun2 = lambda _client, req_id, ar, user_data="Test": print(f"Request-id: {str(req_id)} user_data: {user_data}")
-add_variable_node_result = client.add_variable_node_async(my_integer_node_id, parent_node_id, parent_reference_node_id,
-                                                          my_integer_name, variable_type, fun2)
-
-for i in range(0, 4):
-    print("Status code: " + str(add_variable_node_result.status_code))
-    time.sleep(5)
-    client.run_iterate(4)
+add_variable_node_result = client.add_variable_node_async(my_integer_node_id,
+                                                          parent_node_id,
+                                                          parent_reference_node_id,
+                                                          my_integer_name,
+                                                          variable_type,
+                                                          lambda _client, req_id, ar, user_data="async test 2": print(
+                                                              f"Request-id: {str(req_id)}, user_data: {user_data}"))
+client.run_iterate(1)
