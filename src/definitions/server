@@ -5,6 +5,8 @@ typedef struct {
     ...;
 } UA_DataSource;
 
+
+
 UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
 
 UA_StatusCode UA_Server_run_shutdown(UA_Server *server);
@@ -62,21 +64,21 @@ UA_StatusCode UA_Server_deleteReference(UA_Server *server, const UA_NodeId sourc
 
 UA_StatusCode UA_Server_addVariableNode(UA_Server *server, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_VariableAttributes attr, void *nodeContext, UA_NodeId *outNewNodeId);
 
-UA_StatusCode UA_Server_readNodeId(UA_Server *server, const UA_NodeId nodeId, UA_NodeId *outNodeId)
-UA_StatusCode UA_Server_readNodeClass(UA_Server *server, const UA_NodeId nodeId, UA_NodeClass *outNodeClass)
-UA_StatusCode UA_Server_readBrowseName(UA_Server *server, const UA_NodeId nodeId, UA_QualifiedName *outBrowseName)
-UA_StatusCode UA_Server_readDisplayName(UA_Server *server, const UA_NodeId nodeId, UA_LocalizedText *outDisplayName)
-UA_StatusCode UA_Server_readDescription(UA_Server *server, const UA_NodeId nodeId, UA_LocalizedText *outDescription)
-UA_StatusCode UA_Server_readWriteMask(UA_Server *server, const UA_NodeId nodeId, UA_UInt32 *outWriteMask)
-UA_StatusCode UA_Server_readIsAbstract(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outIsAbstract)
-UA_StatusCode UA_Server_readSymmetric(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outSymmetric)
-UA_StatusCode UA_Server_readInverseName(UA_Server *server, const UA_NodeId nodeId, UA_LocalizedText *outInverseName)
-UA_StatusCode UA_Server_readContainsNoLoops(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outContainsNoLoops)
-UA_StatusCode UA_Server_readEventNotifier(UA_Server *server, const UA_NodeId nodeId, UA_Byte *outEventNotifier)
-UA_StatusCode UA_Server_readValue(UA_Server *server, const UA_NodeId nodeId, UA_Variant *outValue)
-UA_StatusCode UA_Server_readDataType(UA_Server *server, const UA_NodeId nodeId, UA_NodeId *outDataType)
-UA_StatusCode UA_Server_readValueRank(UA_Server *server, const UA_NodeId nodeId, UA_Int32 *outValueRank)
-UA_StatusCode UA_Server_readArrayDimensions(UA_Server *server, const UA_NodeId nodeId, UA_Variant *outArrayDimensions)
-UA_StatusCode UA_Server_readAccessLevel(UA_Server *server, const UA_NodeId nodeId, UA_Byte *outAccessLevel)
-UA_StatusCode UA_Server_readMinimumSamplingInterval(UA_Server *server, const UA_NodeId nodeId, UA_Double *outMinimumSamplingInterval)
-UA_StatusCode UA_Server_readExecutable(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outExecutable)
+UA_StatusCode UA_Server_readNodeId(UA_Server *server, const UA_NodeId nodeId, UA_NodeId *outNodeId);
+UA_StatusCode UA_Server_readNodeClass(UA_Server *server, const UA_NodeId nodeId, UA_NodeClass *outNodeClass);
+UA_StatusCode UA_Server_readBrowseName(UA_Server *server, const UA_NodeId nodeId, UA_QualifiedName *outBrowseName);
+UA_StatusCode UA_Server_readDisplayName(UA_Server *server, const UA_NodeId nodeId, UA_LocalizedText *outDisplayName);
+UA_StatusCode UA_Server_readDescription(UA_Server *server, const UA_NodeId nodeId, UA_LocalizedText *outDescription);
+UA_StatusCode UA_Server_readWriteMask(UA_Server *server, const UA_NodeId nodeId, UA_UInt32 *outWriteMask);
+UA_StatusCode UA_Server_readIsAbstract(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outIsAbstract);
+UA_StatusCode UA_Server_readSymmetric(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outSymmetric);
+UA_StatusCode UA_Server_readInverseName(UA_Server *server, const UA_NodeId nodeId, UA_LocalizedText *outInverseName);
+UA_StatusCode UA_Server_readContainsNoLoops(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outContainsNoLoops);
+UA_StatusCode UA_Server_readEventNotifier(UA_Server *server, const UA_NodeId nodeId, UA_Byte *outEventNotifier);
+UA_StatusCode UA_Server_readValue(UA_Server *server, const UA_NodeId nodeId, UA_Variant *outValue);
+UA_StatusCode UA_Server_readDataType(UA_Server *server, const UA_NodeId nodeId, UA_NodeId *outDataType);
+UA_StatusCode UA_Server_readValueRank(UA_Server *server, const UA_NodeId nodeId, UA_Int32 *outValueRank);
+UA_StatusCode UA_Server_readArrayDimensions(UA_Server *server, const UA_NodeId nodeId, UA_Variant *outArrayDimensions);
+UA_StatusCode UA_Server_readAccessLevel(UA_Server *server, const UA_NodeId nodeId, UA_Byte *outAccessLevel);
+UA_StatusCode UA_Server_readMinimumSamplingInterval(UA_Server *server, const UA_NodeId nodeId, UA_Double *outMinimumSamplingInterval);
+UA_StatusCode UA_Server_readExecutable(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outExecutable);
