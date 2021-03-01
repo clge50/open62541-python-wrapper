@@ -7,6 +7,7 @@ VARIABLE_ATTRIBUTES_DEFAULT = lib.UA_VariableAttributes_default
 
 
 class UaServer:
+    
     def __init__(self, config=None):
         if config is None:
             self.ua_server = lib.UA_Server_new()
@@ -14,33 +15,42 @@ class UaServer:
         else:
             self.ua_server = lib.UA_Server_newWithConfig(config)
 
+    
     def run( self, running:ua_types.UaBoolean):
         raw_result = lib.UA_Server_run( self.ua_server, running)
         return ua_types.UaStatusCode(val=raw_result)
 
+   
     def run_shutdown(self):
         raw_result = lib.UA_Server_run_shutdown(self.ua_server)
         return ua_types.UaStatusCode(val=raw_result)
 
+    
     def getConfig(self):
-          # UaServerConfig is missing
+          # TODO: UaServerConfig is missing
         return lib.UA_Server_getConfig(self.ua_server)
 
+    
     def run_startup(self):
         raw_value = lib.UA_Server_run_startup(self.ua_server)
         return ua_types.UaStatusCode(val=raw_result)
 
+   
     def run_iterate(self, wait_internal:ua_types.UaBoolean):
         raw_value = lib.UA_Server_run_iterate(self.ua_server, wait_internal._val)
         return ua_types.UaUInt16(val=raw_value)
 
+   
+    # TODO:
     #    def delete(self):
     #        return lib.UA_Server_delete(self.ua_server)
 
+    
     def set_minimal_config(self, port_number:ua_types.UaInt16, certificate:ua_types.UaByteString):
         raw_result = lib.UA_ServerConfig_setMinimal(self.getConfig(), port_number._val, certificate._ptr)
         return ua_types.UaStatusCode(val=raw_result)
 
+   
     def set_default_config(self):
         raw_result = lib.UA_ServerConfig_setDefault(self.getConfig())
         return ua_types.UaStatusCode(val=raw_result)
@@ -54,33 +64,41 @@ class UaServer:
         raw_result = lib.UA_Server_write(self.ua_server, value._ptr)
         return ua_types.UaStatusCode(val=raw_result)
 
+  
     def write_value(self, node_id: ua_types.UaNodeId, value:ua_types.UaDataValue):
         raw_result = lib.UA_Server_writeValue(self.ua_server, node_id, value)
         return ua_types.UaStatusCode(val=raw_result)
     
+ 
     def write_data_value(self, node_id: ua_types.UaNodeId, value:ua_types.UaDataValue):
         raw_value = lib.UA_Server_writeDataValue(self.ua_server, node_id._val, value._val)
         return ua_types.UaStatusCode(val=raw_result)
     
+  
     def write_data_type(self, node_id: ua_types.UaNodeId, data_type:ua_types.UaDataValue):
         raw_value =  lib.UA_Server_writeDataType(self.ua_server, node_id._val, data_type._val)
         return ua_types.UaStatusCode(val=raw_result)
 
+    
     def write_value_rank(self, node_id: ua_types.UaNodeId, value_rank:ua_types.UaInt32):
         raw_value =  lib.UA_Server_writeValueRank(self.ua_server, node_id._val, value_rank._val)
         return ua_types.UaStatusCode(val=raw_result)
 
+   
     def write_array_dimensions(self, node_id: ua_types.UaNodeId, array_dimensions:ua_types.UaVariant):
         raw_value =  lib.UA_Server_writeArrayDimensions(self.ua_server, node_id._val, array_dimensions._val)
         return ua_types.UaStatusCode(val=raw_result)
 
+ 
     def write_access_level(self, node_id: ua_types.UaNodeId, access_level:ua_types.UaByte):
         raw_value =  lib.UA_Server_writeAccessLevel(self.ua_server, node_id._val, access_level._val)
         return ua_types.UaStatusCode(val=raw_result)
 
+
     def write_minimum_sampling_interval(self, node_id: ua_types.UaNodeId, minimum_sampling_interval:ua_types.UaDouble):
         raw_value =  lib.UA_Server_writeMinimumSamplingInterval(self.ua_server, node_id._val, minimum_sampling_interval._val)
         return ua_types.UaStatusCode(val=raw_result)
+
 
     def write_executable(self, node_id: ua_types.UaNodeId, executable:ua_types.UaBoolean):
         raw_value =  lib.UA_Server_writeExecutable(self.ua_server, node_id._val, executable._val)
@@ -90,6 +108,7 @@ class UaServer:
     def write_object_property(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue):
         raw_value =  lib.UA_Server_writeObjectProperty(self.ua_server, object_id._val, property_name._val, value._val)
         return ua_types.UaStatusCode(val=raw_result)
+
 
     def write_object_property_scalar(self, 
     object_id:ua_types.UaNodeId, 
@@ -384,7 +403,8 @@ class UaServer:
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
         return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node)
 
-    # TODO: test
+
+    # TODO: implement and test:
     #def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
     #    out_node_id = ffi.new("UA_NodeId *")
 
@@ -396,8 +416,9 @@ class UaServer:
 
     #    status_code = lib.UA_Server_addMethodNode()
     #    return ServerServiceResults.AddMethodNodeResult(ua_types.UaStatusCode(status_code), output_arg_size, output_args, out_node)
-        
-    def set_node_type_lifecycle(self, node_id:ua_types.UaNodeId, lifecycle:ua_types.UaNodeTypeLifecycle): # TODO: lifecycle is of type UA_NodeTypeLifecycle
+
+
+    def set_node_type_lifecycle(self, node_id:ua_types.UaNodeId, lifecycle:ua_types.UaNodeTypeLifecycle): # TODO: UA_NodeTypeLifecycle IMPLEMENT AS UaType
         raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server,node_id._val, lifecycle._val)
         return ua_types.StatusCode(val=raw_result)
 
@@ -407,12 +428,12 @@ class UaServer:
         return ua_types.StatusCode(val=raw_result)
 
 
-    def set_variable_node_value_callback(self, node_id:ua_types.UaNodeId, callback:ua_types.UaValueCallback): #TODO: callback is of type UA_ValueCallback
+    def set_variable_node_value_callback(self, node_id:ua_types.UaNodeId, callback:ua_types.UaValueCallback): #TODO: UA_ValueCallback IMPLEMENT AS UaType
         raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
         return ua_types.StatusCode(val=raw_result)
 
 
-    def set_variable_node_value_backend(self, node_id:ua_types.UaNodeId, callback:ua_types.UaValueBackend): #TODO: callback is of type UA_ValueBackend
+    def set_variable_node_value_backend(self, node_id:ua_types.UaNodeId, callback:ua_types.UaValueBackend): #TODO: UA_ValueBackend IMPLEMENT AS UaType
         raw_result = lib.UA_Server_setVariableNode_valuebackend(self.ua_server, node_id._val, callback._val)
         return ua_types.StatusCode(val=raw_result)
 
@@ -433,6 +454,7 @@ class UaServer:
     def set_condition_field(self, condition:ua_types.UaNodeId, value:ua_types.UaVariant, field_name:ua_types.UaQualifiedName):
         raw_result = lib.UA_Server_setConditionField(self.ua_server, condition._val, value._ptr, field_name._val)
         return ua_types.StatusCode(val=raw_result)
+
 
     def set_condition_variable_field_property(self, 
     condition:ua_types.UaNodeId, 
