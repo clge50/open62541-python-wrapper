@@ -28377,3 +28377,110 @@ class UaClientConfig(UaType):
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1) + "\n")
+
+
+# +++++++++++++++++++ UaLogCategory +++++++++++++++++++++++
+class UaLogCategory(UaType):
+    UA_LOGCATEGORY_NETWORK = 0
+    UA_LOGCATEGORY_SECURECHANNEL = 1
+    UA_LOGCATEGORY_SESSION = 2
+    UA_LOGCATEGORY_SERVER = 3
+    UA_LOGCATEGORY_CLIENT = 4
+    UA_LOGCATEGORY_USERLAND = 5
+    UA_LOGCATEGORY_SECURITYPOLICY = 6
+
+    val_to_string = dict([
+        (0, "UA_LOGCATEGORY_NETWORK"),
+        (1, "UA_LOGCATEGORY_SECURECHANNEL"),
+        (2, "UA_LOGCATEGORY_SESSION"),
+        (3, "UA_LOGCATEGORY_SERVER"),
+        (4, "UA_LOGCATEGORY_CLIENT"),
+        (5, "UA_LOGCATEGORY_USERLAND"),
+        (6, "UA_LOGCATEGORY_SECURITYPOLICY")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_LogCategory*"), is_pointer)
+        else:
+            super().__init__(ffi.cast("UA_LogCategory", _val(val)), is_pointer)
+
+    def _set_value(self, val):
+        if _val(val) in self.val_to_string.keys():
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_LogCategory")
+            else:
+                self._value[0] = _val(val)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self, n=0):
+        return f"(UaLogCategory): {self.val_to_string[self._val]} ({str(self._val)})\n"
+
+
+# +++++++++++++++++++ UaLogLevel +++++++++++++++++++++++
+class UaLogLevel(UaType):
+    UA_LOGLEVEL_TRACE = 0
+    UA_LOGLEVEL_DEBUG = 1
+    UA_LOGLEVEL_INFO = 2
+    UA_LOGLEVEL_WARNING = 3
+    UA_LOGLEVEL_ERROR = 4
+    UA_LOGLEVEL_FATAL = 5
+
+    val_to_string = dict([
+        (0, "UA_LOGLEVEL_TRACE"),
+        (1, "UA_LOGLEVEL_DEBUG"),
+        (2, "UA_LOGLEVEL_INFO"),
+        (3, "UA_LOGLEVEL_WARNING"),
+        (4, "UA_LOGLEVEL_ERROR"),
+        (5, "UA_LOGLEVEL_FATAL")])
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_LogLevel*"), is_pointer)
+        else:
+            super().__init__(ffi.cast("UA_LogLevel", _val(val)), is_pointer)
+
+    def _set_value(self, val):
+        if _val(val) in self.val_to_string.keys():
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_LogLevel")
+            else:
+                self._value[0] = _val(val)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self, n=0):
+        return f"(UaLogLevel): {self.val_to_string[self._val]} ({str(self._val)})\n"
+
+# +++++++++++++++++++ UaLogger +++++++++++++++++++++++
+class UaLogger(UaType):
+    def __init__(self, val=ffi.new("UA_Logger*"), is_pointer=False):
+        super().__init__(val=val, is_pointer=is_pointer)
+
+    def _set_value(self, val):
+        if self._is_pointer:
+            self._value = _ptr(val, "UA_Logger")
+        else:
+            self._value[0] = _val(val)
+
+    def __str__(self, n=0):
+        return "\t"*n + str(self._val)
+
+    def trace(self, category: UaLogCategory, msg: bytes):
+        lib.UA_LOG_TRACE(self._ptr, category._val, CString(msg)._ptr)
+
+    def debug(self, category: UaLogCategory, msg: bytes):
+        lib.UA_LOG_DEBUG(self._ptr, category._val, CString(msg)._ptr)
+
+    def info(self, category: UaLogCategory, msg: bytes):
+        lib.UA_LOG_INFO(self._ptr, category._val, CString(msg)._ptr)
+
+    def warning(self, category: UaLogCategory, msg: bytes):
+        lib.UA_LOG_WARNING(self._ptr, category._val, CString(msg)._ptr)
+
+    def error(self, category: UaLogCategory, msg: bytes):
+        lib.UA_LOG_ERROR(self._ptr, category._val, CString(msg)._ptr)
+
+    def fatal(self, category: UaLogCategory, msg: bytes):
+        lib.UA_LOG_FATAL(self._ptr, category._val, CString(msg)._ptr)
+
