@@ -17,7 +17,7 @@ class EventResult:
         self.out_event = out_event
 
 class NodeClassResult:
-    def __init__(self, status_code:ua_types.UaStatusCode, node_class:ua_types.UaNodeClass): #TODO: implement UaNodeClass
+    def __init__(self, status_code:ua_types.UaStatusCode, node_class:ua_types.UaNodeClass):
         self.status_code = status_code
         self.node_class = node_class
 
@@ -27,12 +27,12 @@ class BrowseNameResult:
         self.out_name = out_name
 
 class LocalizedTextResult:
-    def __init__(self, status_code:ua_types.UaStatusCode, out_name:ua_types.UaLocalizedText): #TODO: implement UaLocalizedText
+    def __init__(self, status_code:ua_types.UaStatusCode, out_name:ua_types.UaLocalizedText):
         self.status_code = status_code
         self.out_name = out_name
 
 class UInt32Result:
-    def __init__(self, status_code:ua_types.UaStatusCode, out_number:ua_types.UaUInt32): # TODO: check if UInt32 is implemented
+    def __init__(self, status_code:ua_types.UaStatusCode, out_number:ua_types.UaUInt32):
         self.status_code = status_code
         self.out_number = out_number
 
@@ -47,7 +47,7 @@ class ByteResult:
         self.out_byte = out_byte
 
 class VariantResult:
-    def __init__(self, status_code:ua_types.UaStatusCode, out_variant:ua_types.UaVariant): # TODO: implement UaVariant
+    def __init__(self, status_code:ua_types.UaStatusCode, out_variant:ua_types.UaVariant):
         self.status_code = status_code
         self.out_variant = out_variant
 
@@ -56,3 +56,7 @@ class DoubleResult:
         self.status_code = status_code
         self.out_double = out_double
 
+class BrowseResultResult:
+    def __init__(self, status_code):ua_types.UaStatusCode, out_browse_result:ua_types:UaBrowseResult):
+        self.status_code = status_code
+        self.out_browse_result = out_browse_result

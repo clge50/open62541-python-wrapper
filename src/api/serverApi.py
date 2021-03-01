@@ -86,14 +86,7 @@ class UaServer:
         raw_value =  lib.UA_Server_writeExecutable(self.ua_server, node_id._val, executable._val)
         return ua_types.UaStatusCode(val=raw_result)
  
-    def browse_next(self, release_continuation_point:ua_types.UaBoolean, continuation_point:ua_types.UaByteString):
-        raw_value =  lib.UA_Server_browseNext(self.ua_server, release_continuation_point._val, continuation_point._ptr)
-        return ua_types.UaBrowseResult(val=raw_result)
-
-    def translate_browse_path_to_node_ids(self, browse_path:ua_types.UaBrowsePath):
-        raw_value =  lib.UA_Server_translateBrowsePathToNodeIds(self.ua_server, browse_path._ptr)
-        return ua_types.UaBrowsePathResult(val=raw_result)
-
+    
     def write_object_property(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue):
         raw_value =  lib.UA_Server_writeObjectProperty(self.ua_server, object_id._val, property_name._val, value._val)
         return ua_types.UaStatusCode(val=raw_result)
@@ -228,12 +221,32 @@ class UaServer:
         return ServerServiceResults.BooleanResult(status_code, out_exe)
 
 
-    # def read_historizing():  TODO: to be implemented....
+    # def read_historizing():  TODO: to be implemented...
+
+
+###
+### Browse Functions
+###
+
+    def browse(self, max_refs:ua_types.UaUInt32, browse_description:ua_types.UaBrowseDescription): #TODO: implement UaBrowseDescription
+        out_bd = ffi.new("UA_BrowseDescription *")
+        status_code = lib.UA_Server_browse(self.ua_server, max_refs._val, out_bd)
+        return ServerServiceResults.BrowseResultResult(status_code, out_bd)
+
+
+    def browse_next(self, release_continuation_point:ua_types.UaBoolean, continuation_point:ua_types.UaByteString):
+        raw_value =  lib.UA_Server_browseNext(self.ua_server, release_continuation_point._val, continuation_point._ptr)
+        return ua_types.UaBrowseResult(val=raw_result)
+
+
+    def translate_browse_path_to_node_ids(self, browse_path:ua_types.UaBrowsePath):
+        raw_value =  lib.UA_Server_translateBrowsePathToNodeIds(self.ua_server, browse_path._ptr)
+        return ua_types.UaBrowsePathResult(val=raw_result)
+ 
 
 ###
 ### Misc Functions
 ###
-
 
     def call(self, request:ua_types.UaCallMethodRequest):
         raw_value =  lib.UA_Server_call(self.ua_server, request._ptr)
