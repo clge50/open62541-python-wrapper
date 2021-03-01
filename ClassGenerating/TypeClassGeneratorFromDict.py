@@ -146,8 +146,11 @@ def to_python_class_name(open62541_name: str):
 # } UA_ExampleStruct;
 
 class_from_struct = generator_struct(
-    "UA_Logger",
+    "UA_ExampleStruct",
     {
+        "attributeNameA": ("UA_ExampleTypeA", True),
+        "attributeNameB": ("UA_ExampleTypeB", False),
+        "attributeNameC": ("UA_ExampleTypeC", False),
     }
 )
 
@@ -159,27 +162,11 @@ class_from_struct = generator_struct(
 # } UA_ExampleEnum;
 
 class_from_enum = generator_enum(
-    "UA_LogCategory",
+    "UA_ExampleEnum",
     {
-        "UA_LOGCATEGORY_NETWORK": 0,
-        "UA_LOGCATEGORY_SECURECHANNEL": 1,
-        "UA_LOGCATEGORY_SESSION": 2,
-        "UA_LOGCATEGORY_SERVER": 3,
-        "UA_LOGCATEGORY_CLIENT": 4,
-        "UA_LOGCATEGORY_USERLAND": 5,
-        "UA_LOGCATEGORY_SECURITYPOLICY": 6
-    }
-)
-
-class_from_enum += generator_enum(
-    "UA_LogLevel",
-    {
-        "UA_LOGLEVEL_TRACE": 0,
-        "UA_LOGLEVEL_DEBUG": 1,
-        "UA_LOGLEVEL_INFO": 2,
-        "UA_LOGLEVEL_WARNING": 3,
-        "UA_LOGLEVEL_ERROR": 4,
-        "UA_LOGLEVEL_FATAL": 5
+        "attributeNameA": 7,
+        "attributeNameB": 13,
+        "attributeNameC": 35
     }
 )
 
