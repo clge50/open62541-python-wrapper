@@ -46,15 +46,9 @@ class UaServer:
         return ua_types.UaStatusCode(val=raw_result)
 
 
-#########
 ###
-### new
+### Write Functions
 ###
-
-
-    def read(self, item:ua_types.UaReadValueId, timestamps:ua_types.UaTimestampsToReturn):
-        raw_result = lib.UA_Server_read(self.ua_server, item._ptr, timestamps._val)
-        return ua_types.UaDataValue(val=raw_result)
 
     def write(self, value:ua_types.UaDataValue):
         raw_result = lib.UA_Server_write(self.ua_server, value._ptr)
@@ -104,22 +98,158 @@ class UaServer:
         raw_value =  lib.UA_Server_writeObjectProperty(self.ua_server, object_id._val, property_name._val, value._val)
         return ua_types.UaStatusCode(val=raw_result)
 
-    def write_object_property_scalar(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue, data_type:ua_types.UaDataType):
+    def write_object_property_scalar(self, 
+    object_id:ua_types.UaNodeId, 
+    property_name:ua_types.UaQualifiedName, 
+    value:ua_types.UaDataValue, 
+    data_type:ua_types.UaDataType):
         raw_value =  lib.UA_Server_writeObjectProperty_scalar(self.ua_server, object_id._val, property_name._val, value._ptr, data_type._ptr)
         return ua_types.UaStatusCode(val=raw_result)
+
+###
+### Read Functions
+###
+
+    def read(self, item:ua_types.UaReadValueId, timestamps:ua_types.UaTimestampsToReturn):
+        raw_result = lib.UA_Server_read(self.ua_server, item._ptr, timestamps._val)
+        return ua_types.UaDataValue(val=raw_result)
+
 
     def read_object_property(self, object_id:ua_types.UaNodeId, property_name:ua_types.UaQualifiedName, value:ua_types.UaDataValue):
         raw_value =  lib.UA_Server_readObjectProperty(self.ua_server, object_id._val, property_name._val, value._ptr)
         return ua_types.UaStatusCode(val=raw_result)
 
+
+    def read_node_id(self, node_id:ua_types.UaNodeId):
+        out_node_id = ffi.new("UA_NodeId *")
+        status_code = lib.UA_Server_readNodeId(self.ua_server,node_id._val, out_node_id)
+        return  ServerServiceResults.NodeIdResult(status_code, out_node_id)
+
+
+    def read_node_class(self, node_id:ua_types.UaNodeId):
+        out_node_class = ffi.new("UA_NodeClass *")
+        status_code = lib.UA_Server_readNodeClass(self.ua_server, node_id._val, out_node_class)
+        return  ServerServiceResults.NodeClassResult(status_code, out_node_class)
+
+
+    def read_browse_name(self, node_id:ua_types.UaNodeId):
+        out_browse_name = ffi.new("UA_QualifiedName *")
+        status_code = lib.UA_Server_readBrowseName(self.ua_server, node_id._val, out_browse_name)
+        return ServerServiceResults.BrowseNameResult(status_code, out_browse_name)
+
+
+    def read_display_name(self, node_id:ua_types.UaNodeId):
+        out_display_name = ffi.new("UA_LocalizedText *")
+        status_code = lib.UA_Server_readDisplayName(self.ua_server, node_id._val, out_display_name)
+        return ServerServiceResults.LocalizedTextResult(status_code, out_display_name)
+
+
+    def read_description(self, node_id:ua_types.UaNodeId):
+        out_description = ffi.new("UA_LocalizedText *")
+        status_code = lib.UA_Server_readDescription(self.ua_server, node_id._val, out_description)
+        return ServerServiceResults.LocalizedTextResult(status_code, out_description)
+
+
+    def read_write_mask(self, node_id:ua_types.UaNodeId):
+        out_write_mask = ffi.new("UA_UInt32 *")
+        status_code = lib.UA_Server_readWriteMask(self.ua_server, node_id._val, out_write_mask)
+        return ServerServiceResults.UInt32Result(status_code, out_write_mask)
+
+   
+    def read_is_abstract(self, node_id:ua_types.UaNodeId):
+        out_is_abstract = ffi.new("UA_Boolean *")
+        status_code = lib.UA_Server_readIsAbstract(self.ua_server, node_id._val, out_is_abstract)
+        return ServerServiceResults.BooleanResult(status_code, out_is_abstract)
+
+
+    def read_symmetric(self, node_id:ua_types.UaNodeId):
+        out_symmetric = ffi.new("UA_Boolean *")
+        status_code = lib.UA_Server_readSymmetric(self.ua_server, node_id._val, out_symmetric)
+        return ServerServiceResults.BooleanResult(status_code, out_symmetric)
+
+
+    def read_inverse_name(self, node_id:ua_types.UaNodeId):
+        out_name = ffi.new("UA_LocalizedText *")
+        status_code = lib.UA_Server_readInverseName(self.ua_server, node_id._val, out_name)
+        return ServerServiceResults.LocalizedTextResult(status_code, out_name)
+
+
+    def read_contains_no_loops(self, node_id:ua_types.UaNodeId):
+        out_no_loops = ffi.new("UA_Boolean *")
+        status_code = lib.UA_Server_readContainsNoLoops(self.ua_server, node_id._val, out_no_loops)
+        return ServerServiceResults.BooleanResult(status_code, out_no_loops)
+
+
+    def read_event_notifier(self, node_id:ua_types.UaNodeId):
+        out_event_notifier = ffi.new("UA_Byte *")
+        status_code = lib.UA_Server_readEventNotifier(self.ua_server, node_id._val, out_event_notifier)
+        return ServerServiceResults.ByteResult(status_code, out_event_notifier)
+
+
+    def read_value(self, node_id:ua_types.UaNodeId):
+        out_value = ffi.new("UA_Variant *")
+        status_code = lib.UA_Server_readValue(self.ua_server, node_id._val, out_value)
+        return ServerServiceResults.VariantResult(status_code, out_value)
+
+
+    def read_data_type(self, node_id:ua_types.UaNodeId):
+        out_type = ffi.new("UA_NodeId *")
+        status_code = lib.UA_Server_readDataType(self.ua_server, node_id._val, out_type)
+        return ServerServiceResults.NodeIdResult(status_code, out_type)
+
+    
+    def read_value_rank(self, node_id:ua_types.UaNodeId):
+        out_rank = ffi.new("UA_UInt32 *")
+        status_code = lib.UA_Server_readValueRank(self.ua_server, node_id._val, out_rank)
+        return ServerServiceResults.UInt32Result(status_code, out_rank)
+
+
+    def read_array_dimensions(self, node_id:ua_types.ua_server):
+        out_dim = ffi.new("UA_Variant *")
+        status_code = lib.UA_Server_readArrayDimensions(self.ua_server, node_id._val, out_dim)
+        return ServerServiceResults.VariantResult(status_code, out_dim)
+
+
+    def read_access_level(self, node_id:ua_types.ua_server):
+        out_level = ffi.new("UA_Byte *")
+        status_code = lib.UA_Server_readAccessLevel(self.ua_server, node_id._val, out_level)
+        return ServerServiceResults.ByteResult(status_code, out_level)
+
+
+    def read_minimum_sampling_interval(self, node_id:ua_types.ua_server):
+        out_interval = ffi.new("UA_Double *")
+        status_code = lib.UA_Server_readMinimumSamplingInterval(self.ua_server, node_id._val, out_interval)
+        return ServerServiceResults.DoubleResult(status_code, out_interval)
+
+    
+    def read_executable(self, node_id:ua_types.ua_server):
+        out_exe = ffi.new("UA_Boolean *")
+        status_code = lib.UA_Server_readExecutable(self.ua_server, node_id._val, out_exe)
+        return ServerServiceResults.BooleanResult(status_code, out_exe)
+
+
+    # def read_historizing():  TODO: to be implemented....
+
+###
+### Misc Functions
+###
+
+
     def call(self, request:ua_types.UaCallMethodRequest):
         raw_value =  lib.UA_Server_call(self.ua_server, request._ptr)
         return ua_types.UaCallMethodResult(val=raw_result)
 
-    def add_data_source_variable_node(self, requested_new_node_id: ua_types.UaNodeId, 
-    parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, 
-    type_definition:ua_types.UaNodeId, data_source, 
-    attr:ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None): # TODO:UaDataSource is missing
+
+    def add_data_source_variable_node(self, 
+    requested_new_node_id: ua_types.UaNodeId, 
+    parent_node_id: ua_types.UaNodeId, 
+    reference_type_id: ua_types.UaNodeId, 
+    browse_name:ua_types.UaQualifiedName, 
+    type_definition:ua_types.UaNodeId, 
+    data_source, 
+    attr:ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT, 
+    node_context = None): # TODO:UaDataSource is missing
+
         out_node_id = ffi.new("UA_NodeId *")
 
         # TODO: test
@@ -129,26 +259,44 @@ class UaServer:
             node_context = ffi.NULL
 
         status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, data_source._val, node_context._ptr, out_node_id._ptr)
-        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node_id) # TODO: out_node not None?
+        return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node_id) # TODO: out_node not None?
+
 
     def delete_node(self, node_id:ua_types.UaNodeId, delete_references:ua_types.UaBoolean):
         raw_result = lib.UA_Server_deleteNode(self.ua_server, node_id._val, delete_references._val)
         return ua_types.UaStatusCode(val=raw_result)
 
 
-    def add_reference(self , source_id:ua_types.UaNodeId, ref_type_id:ua_types.UaNodeId, target_id:ua_types.UaNodeId, is_forward:ua_types.UaBoolean):
+    def add_reference(self, 
+    source_id:ua_types.UaNodeId, 
+    ref_type_id:ua_types.UaNodeId, 
+    target_id:ua_types.UaNodeId, 
+    is_forward:ua_types.UaBoolean):
+
         raw_result = lib.UA_Server_addReference(self.ua_server , source_id._val, ref_type_id._val, target_id._val, is_forward._val)
         return ua_types.UaStatusCode(val=raw_result)
 
 
-    def delete_reference(self, source_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId,  is_forward:ua_types.UaBoolean, target_node_id:ua_types.UaNodeId, delete_bidirectional):
+    def delete_reference(self, 
+    source_node_id:ua_types.UaNodeId, 
+    reference_type_id:ua_types.UaNodeId, 
+    is_forward:ua_types.UaBoolean, 
+    target_node_id:ua_types.UaNodeId, 
+    delete_bidirectional):
+
         raw_result = lib.UA_Server_deleteReference(self.ua_server, sourcenode_id._val, reference_type_id._val,  isForward._val, targetnode_id._val, deleteBidirectional._val)   
         return ua_types.UaStatusCode(val=raw_result)
 
-    def add_variable_node(self, requested_new_node_id:ua_types.UaNodeId, 
-    parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, 
-    browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, 
-    attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+
+    def add_variable_node(self, 
+    requested_new_node_id:ua_types.UaNodeId, 
+    parent_node_id:ua_types.UaNodeId, 
+    reference_type_id:ua_types.UaNodeId, 
+    browse_name:ua_types.UaQualifiedName, 
+    type_definition:ua_types.UaNodeId, 
+    attr = VARIABLE_ATTRIBUTES_DEFAULT, 
+    node_context = None):
+
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -158,9 +306,18 @@ class UaServer:
             node_context = ffi.NULL
         
         status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr, node_context, out_node_id)
-        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node_id)
+        return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node_id)
 
-    def add_variable_type_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+
+    def add_variable_type_node(self, 
+    requested_new_node_id:ua_types.UaNodeId, 
+    parent_node_id:ua_types.UaNodeId, 
+    reference_type_id:ua_types.UaNodeId, 
+    browse_name:ua_types.UaQualifiedName, 
+    type_definition:ua_types.UaNodeId, 
+    attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, 
+    node_context = None):
+
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -170,9 +327,18 @@ class UaServer:
             node_context = ffi.NULL
         
         status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr, node_context, out_node_id._ptr)
-        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
+        return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node)
 
-    def add_object_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+
+    def add_object_node(self, 
+    requested_new_node_id:ua_types.UaNodeId, 
+    parent_node_id:ua_types.UaNodeId, 
+    reference_type_id:ua_types.UaNodeId, 
+    browse_name:ua_types.UaQualifiedName, 
+    type_definition:ua_types.UaNodeId, 
+    attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, 
+    node_context = None):
+
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -182,9 +348,18 @@ class UaServer:
             node_context = ffi.NULL
         
         status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
-        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
+        return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node)
 
-    def add_object_type_node(self, requested_new_node_id:ua_types.UaNodeId, parent_node_id:ua_types.UaNodeId, reference_type_id:ua_types.UaNodeId, browse_name:ua_types.UaQualifiedName, type_definition:ua_types.UaNodeId, attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+
+    def add_object_type_node(self, 
+    requested_new_node_id:ua_types.UaNodeId, 
+    parent_node_id:ua_types.UaNodeId, 
+    reference_type_id:ua_types.UaNodeId, 
+    browse_name:ua_types.UaQualifiedName, 
+    type_definition:ua_types.UaNodeId, 
+    attr:ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT, 
+    node_context = None):
+
         out_node_id = ffi.new("UA_NodeId *")
                 
         # TODO: test
@@ -194,7 +369,7 @@ class UaServer:
             node_context = ffi.NULL
         
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val, reference_type_id._val, browse_name._val, type_definition._val, attr._val, node_context._ptr, out_node_id._ptr)
-        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node)
+        return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node)
 
     # TODO: test
     #def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
@@ -213,37 +388,63 @@ class UaServer:
         raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server,node_id._val, lifecycle._val)
         return ua_types.StatusCode(val=raw_result)
 
+
     def trigger_event(self, node_id:ua_types.UaNodeId, origin_id:ua_types.UaNodeId, out_event_id:ua_type.UaByteString, delete_event_node:ua_types.UaBoolean):
         raw_result = lib.UA_Server_triggerEvent(self.ua_server, node_id._val, origin_id._val, out_event_id._ptr, delete_event_node._val)
         return ua_types.StatusCode(val=raw_result)
+
 
     def set_variable_node_value_callback(self, node_id:ua_types.UaNodeId, callback:ua_types.UaValueCallback): #TODO: callback is of type UA_ValueCallback
         raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
         return ua_types.StatusCode(val=raw_result)
 
+
     def set_variable_node_value_backend(self, node_id:ua_types.UaNodeId, callback:ua_types.UaValueBackend): #TODO: callback is of type UA_ValueBackend
         raw_result = lib.UA_Server_setVariableNode_valuebackend(self.ua_server, node_id._val, callback._val)
         return ua_types.StatusCode(val=raw_result)
 
-    def create_condition(self, condition_id:ua_types.UaNodeId, condition_type:ua_types.UaNodeId, condition_name:ua_types.UaQualifiedName, condition_source:ua_types.UaNodeId, hierarchical_reference_type:ua_types.UaNodeId):
+
+    def create_condition(self, 
+    condition_id:ua_types.UaNodeId, 
+    condition_type:ua_types.UaNodeId, 
+    condition_name:ua_types.UaQualifiedName, 
+    condition_source:ua_types.UaNodeId, 
+    hierarchical_reference_type:ua_types.UaNodeId):
+
         out_node_id = ffi.new("UA_NodeId *")
 
         status_code = lib.UA_Server_createCondition(self.ua_server, condition_id._val, condition_type._val, condition_name._val, condition_source._val, hierarchical_reference_type._val, out_node_id._ptr)
-        return ServerServiceResults.AddNodeAttributeResult(ua_types.UaStatusCode(status_code), out_node_id)
+        return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code), out_node_id)
+
 
     def set_condition_field(self, condition:ua_types.UaNodeId, value:ua_types.UaVariant, field_name:ua_types.UaQualifiedName):
         raw_result = lib.UA_Server_setConditionField(self.ua_server, condition._val, value._ptr, field_name._val)
         return ua_types.StatusCode(val=raw_result)
 
-    def set_condition_variable_field_property(self, condition:ua_types.UaNodeId, value:ua_types.UaVariant, var_field_name:ua_types.UaQualifiedName, var_property_name:ua_types.UaQualifiedName):
+    def set_condition_variable_field_property(self, 
+    condition:ua_types.UaNodeId, 
+    value:ua_types.UaVariant, 
+    var_field_name:ua_types.UaQualifiedName, 
+    var_property_name:ua_types.UaQualifiedName):
+
         raw_result = lib.UA_Server_setConditionVariableFieldProperty(self.ua_server, condition._val, value._ptr, var_field_name._val, var_property_name._val)
         return ua_types.StatusCode(val=raw_result)
+
 
     def trigger_condition_event(self, condition:ua_types.UaNodeId, condition_source:ua_types.UaNodeId):
         out_event_id = ffi.new("UA_ByteString *")
         status_code = lib.UA_Server_triggerConditionEvent(self.ua_server, condition._val, condition_source._val, out_event_id._ptr)
-        return ServerServiceResults.AddConditionEventResult(status_code, out_event_id)
+        return ServerServiceResults.EventResult(status_code, out_event_id)
 
-    def set_condition_two_state_variable_callback(self, condition:ua_types.UaNodeId, condition_source:ua_types.UaNodeId, remove_branch:ua_types.UaBoolean, callback:ua_types:UaTwoStateVariableChangeCallback, callback_type:ua_types:UaTwoStateVariableCallbackType)
+
+    def set_condition_two_state_variable_callback(self, 
+    condition:ua_types.UaNodeId, 
+    condition_source:ua_types.UaNodeId, 
+    remove_branch:ua_types.UaBoolean, 
+    callback:ua_types:UaTwoStateVariableChangeCallback, 
+    callback_type:ua_types:UaTwoStateVariableCallbackType) #TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
+
         raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source, remove_branch, callback, callback_type)
         return ua_types.UaStatusCode(raw_result)
+
+    
