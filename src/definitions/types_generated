@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+//TODO: not sure whether this number is stable under diffrent builds. probably better not hardcoded
+extern const UA_DataType UA_TYPES[190];
+
 /**
  * ViewAttributes
  * ^^^^^^^^^^^^^^

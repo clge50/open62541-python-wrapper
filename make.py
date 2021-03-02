@@ -90,11 +90,17 @@ def generate_api():
         with open(dirname + r"/src/definitions/" + file_name) as file_handler:
             decls_list.append(file_handler.read())
 
+    decls_list.append("void pseudoFree(void *ptr);")
     cffi_input = reduce(lambda s1, s2: s1 + "\n" + s2, decls_list)
 
     ffi_builder = FFI()
     ffi_builder.set_source("intermediateApi",
                            r"""#include "open62541.h"
+                           
+                            void pseudoFree(void *ptr) {
+                                printf("doing nothing\n");
+                            }
+                           
                            """,
                            include_dirs=[dirname + r"/open62541/build"],
                            library_dirs=[dirname + r"/open62541/build/bin"],
