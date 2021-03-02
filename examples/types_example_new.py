@@ -5,6 +5,9 @@ import clientApi
 from ua_types import *
 from intermediateApi import ffi, lib
 
+logger = UaLogger()
+logger.info(UaLogCategory(0), b"eine nachticht")
+
 x = UaStatusCode(0x80000000)
 print(x.is_bad())
 
