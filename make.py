@@ -57,7 +57,7 @@ def generate_node_ids():
         lines.insert(1, "\n")
 
     os.chdir(dirname + r"/build/open62541/")
-    with open('ua_nso_node_ids.py', 'w+') as file:
+    with open('ua_ns0_node_ids.py', 'w+') as file:
         file.writelines(lines)
 
 
