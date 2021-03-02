@@ -48,6 +48,9 @@ v3.array_dimensions = UaUInt32([3, 3])
 v3.array_dimensions_size = SizeT(2)
 
 print(v3.has_array_type(TYPES.DOUBLE))
+data = ffi.cast("UA_Double[9]", v3._data._value)
+data = ffi.unpack(data, 9)
+print(data)
 
 
 
