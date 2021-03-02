@@ -205,6 +205,8 @@ UA_StatusCode UA_Variant_setArrayCopy(UA_Variant *v, const void *array, size_t a
 UA_StatusCode UA_Variant_copyRange(const UA_Variant *src, UA_Variant *dst, const UA_NumericRange range);
 UA_StatusCode UA_Variant_setRange(UA_Variant *v, void *array, size_t arraySize, const UA_NumericRange range);
 UA_StatusCode UA_Variant_setRangeCopy(UA_Variant *v, const void *array, size_t arraySize, const UA_NumericRange range);
+static UA_StatusCode UA_Variant_copy(const UA_Variant *src, UA_Variant *dst);
+
 
 
 

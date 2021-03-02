@@ -801,7 +801,9 @@ class UaDouble(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Double[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Double*", _val(val)), is_pointer)
@@ -13644,35 +13646,35 @@ class UaVariant(UaType):
         else:
             return self._array_dimensions
 
-    # @type.setter
-    # def type(self, val):
-    #     self._type = val
-    #     self._value.type = val._ptr
-    #
-    # @storage_type.setter
-    # def storage_type(self, val):
-    #     self._storage_type = val
-    #     self._value.storageType = val._val
-    #
-    # @array_length.setter
-    # def array_length(self, val):
-    #     self._array_length = val
-    #     self._value.arrayLength = val._val
-    #
-    # @data.setter
-    # def data(self, val):
-    #     self._data = val
-    #     self._value.data = val._ptr
-    #
-    # @array_dimensions_size.setter
-    # def array_dimensions_size(self, val):
-    #     self._array_dimensions_size = val
-    #     self._value.arrayDimensionsSize = val._val
-    #
-    # @array_dimensions.setter
-    # def array_dimensions(self, val):
-    #     self._array_dimensions = val
-    #     self._value.arrayDimensions = val._ptr
+    @type.setter
+    def type(self, val):
+        self._type = val
+        self._value.type = val._ptr
+
+    @storage_type.setter
+    def storage_type(self, val):
+        self._storage_type = val
+        self._value.storageType = val._val
+
+    @array_length.setter
+    def array_length(self, val):
+        self._array_length = val
+        self._value.arrayLength = val._val
+
+    @data.setter
+    def data(self, val):
+        self._data = val
+        self._value.data = val._ptr
+
+    @array_dimensions_size.setter
+    def array_dimensions_size(self, val):
+        self._array_dimensions_size = val
+        self._value.arrayDimensionsSize = val._val
+
+    @array_dimensions.setter
+    def array_dimensions(self, val):
+        self._array_dimensions = val
+        self._value.arrayDimensions = val._ptr
 
     def __str__(self, n=0):
         if self._null:
@@ -13687,16 +13689,16 @@ class UaVariant(UaType):
                 "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) + "\n")
 
     def is_empty(self):
-        lib.UA_Variant_isEmpty(self._ptr)
+        return lib.UA_Variant_isEmpty(self._ptr)
 
     def is_scalar(self):
-        lib.UA_Variant_isScalar(self._ptr)
+        return lib.UA_Variant_isScalar(self._ptr)
 
     def has_scalar_type(self, data_type):
-        lib.UA_Variant_hasScalarType(self._ptr, data_type._ptr)
+        return lib.UA_Variant_hasScalarType(self._ptr, data_type._ptr)
 
     def has_array_type(self, data_type):
-        lib.UA_Variant_hasArrayType(self._ptr, data_type._ptr)
+        return lib.UA_Variant_hasArrayType(self._ptr, data_type._ptr)
 
     # TODO: memory management
     def _set_attributes(self):
@@ -13707,15 +13709,21 @@ class UaVariant(UaType):
         self._array_dimensions_size._value = self._value.arrayDimensionsSize
         self._array_dimensions._value = self._value.arrayDimensions
 
+    # data is the python object matching the data_type or an void ptr
     def set_scalar(self, data, data_type):
+        self.__mem_protect = ffi.new_handle(data._val)
+        lib.UA_Variant_setScalar(self._ptr, self.__mem_protect, data_type._ptr)
+        self._set_attributes()
+
+    def set_scalar_copy(self, data, data_type):
         # TODO: might cause memory problems!
-        lib.UA_Variant_setScalarCopy(self._ptr, ffi.new_handle(data), data_type._ptr)
+        lib.UA_Variant_setScalarCopy(self._ptr, data, data_type._ptr)
         self._set_attributes()
 
     def set_array(self, array, size, data_type):
-        if size is int:
+        if type(size) is int:
             size = SizeT(size)
-        elif size is not SizeT:
+        if type(size) is not SizeT:
             raise AttributeError(f"size={size} has to be int or SizeT")
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_setArrayCopy(self._ptr, ffi.new_handle(array), size._val, data_type._ptr)
@@ -13728,6 +13736,15 @@ class UaVariant(UaType):
     def copy_range_to(self, variant, num_range: UaNumericRange):
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copyRange(self._ptr, variant._ptr, num_range._val)
+        status_code = UaStatusCode(status_code)
+        if not status_code.is_bad():
+            self._set_attributes()
+        else:
+            raise AttributeError(f"An Error occured - {str(status_code)}")
+
+    def copy(self, variant):
+        # TODO: might cause memory problems!
+        status_code = lib.UA_Variant_copy(self._ptr, variant._ptr)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
             self._set_attributes()
@@ -14369,6 +14386,7 @@ class UaDataTypeMember(UaType):
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
 class UaDataType(UaType):
+
     def __init__(self, val=ffi.new("UA_DataType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
 
@@ -14551,6 +14569,12 @@ class UaDataType(UaType):
     # returns void ptr
     def new_instance(self):
         return lib.UA_new(self._ptr)
+
+    #TODO: handling difficult, cast to something?
+    def new_array(self, size: SizeT):
+        return Void(val=lib.UA_Array_new(size._val, self._ptr))
+
+
 
 
 # +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
@@ -28169,7 +28193,7 @@ class UaClientConfig(UaType):
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)
-            self._logger = UaLogger(val=val.logger, is_pointer=False)
+            self._logger = UaSimpleAttributeOperand(val=val.logger, is_pointer=False)
             self._timeout = UaUInt32(val=val.timeout, is_pointer=False)
             self._client_description = UaUInt32(val=val.clientDescription, is_pointer=False)
             self._user_identity_token = UaUserIdentityToken(val=val.userIdentityToken, is_pointer=False)
@@ -28495,3 +28519,197 @@ class UaLogger(UaType):
     #     lib.UA_Log_Stdout_log(context, level._val, category._val, UaString(msg)._ptr, ffi.NULL)
 
 
+
+
+class TYPES:
+	COUNT = 190
+	BOOLEAN = UaDataType(val=lib.UA_TYPES[0])
+	SBYTE = UaDataType(val=lib.UA_TYPES[1])
+	BYTE = UaDataType(val=lib.UA_TYPES[2])
+	INT16 = UaDataType(val=lib.UA_TYPES[3])
+	UINT16 = UaDataType(val=lib.UA_TYPES[4])
+	INT32 = UaDataType(val=lib.UA_TYPES[5])
+	UINT32 = UaDataType(val=lib.UA_TYPES[6])
+	INT64 = UaDataType(val=lib.UA_TYPES[7])
+	UINT64 = UaDataType(val=lib.UA_TYPES[8])
+	FLOAT = UaDataType(val=lib.UA_TYPES[9])
+	DOUBLE = UaDataType(val=lib.UA_TYPES[10])
+	STRING = UaDataType(val=lib.UA_TYPES[11])
+	DATETIME = UaDataType(val=lib.UA_TYPES[12])
+	GUID = UaDataType(val=lib.UA_TYPES[13])
+	BYTESTRING = UaDataType(val=lib.UA_TYPES[14])
+	XMLELEMENT = UaDataType(val=lib.UA_TYPES[15])
+	NODEID = UaDataType(val=lib.UA_TYPES[16])
+	EXPANDEDNODEID = UaDataType(val=lib.UA_TYPES[17])
+	STATUSCODE = UaDataType(val=lib.UA_TYPES[18])
+	QUALIFIEDNAME = UaDataType(val=lib.UA_TYPES[19])
+	LOCALIZEDTEXT = UaDataType(val=lib.UA_TYPES[20])
+	EXTENSIONOBJECT = UaDataType(val=lib.UA_TYPES[21])
+	DATAVALUE = UaDataType(val=lib.UA_TYPES[22])
+	VARIANT = UaDataType(val=lib.UA_TYPES[23])
+	DIAGNOSTICINFO = UaDataType(val=lib.UA_TYPES[24])
+	VIEWATTRIBUTES = UaDataType(val=lib.UA_TYPES[25])
+	XVTYPE = UaDataType(val=lib.UA_TYPES[26])
+	ELEMENTOPERAND = UaDataType(val=lib.UA_TYPES[27])
+	VARIABLEATTRIBUTES = UaDataType(val=lib.UA_TYPES[28])
+	ENUMVALUETYPE = UaDataType(val=lib.UA_TYPES[29])
+	EVENTFIELDLIST = UaDataType(val=lib.UA_TYPES[30])
+	MONITOREDITEMCREATERESULT = UaDataType(val=lib.UA_TYPES[31])
+	EUINFORMATION = UaDataType(val=lib.UA_TYPES[32])
+	SERVERDIAGNOSTICSSUMMARYDATATYPE = UaDataType(val=lib.UA_TYPES[33])
+	CONTENTFILTERELEMENTRESULT = UaDataType(val=lib.UA_TYPES[34])
+	LITERALOPERAND = UaDataType(val=lib.UA_TYPES[35])
+	MESSAGESECURITYMODE = UaDataType(val=lib.UA_TYPES[36])
+	UTCTIME = UaDataType(val=lib.UA_TYPES[37])
+	USERIDENTITYTOKEN = UaDataType(val=lib.UA_TYPES[38])
+	X509IDENTITYTOKEN = UaDataType(val=lib.UA_TYPES[39])
+	MONITOREDITEMNOTIFICATION = UaDataType(val=lib.UA_TYPES[40])
+	STRUCTURETYPE = UaDataType(val=lib.UA_TYPES[41])
+	RESPONSEHEADER = UaDataType(val=lib.UA_TYPES[42])
+	SIGNATUREDATA = UaDataType(val=lib.UA_TYPES[43])
+	NODEATTRIBUTES = UaDataType(val=lib.UA_TYPES[44])
+	ACTIVATESESSIONRESPONSE = UaDataType(val=lib.UA_TYPES[45])
+	ENUMFIELD = UaDataType(val=lib.UA_TYPES[46])
+	VARIABLETYPEATTRIBUTES = UaDataType(val=lib.UA_TYPES[47])
+	CALLMETHODRESULT = UaDataType(val=lib.UA_TYPES[48])
+	MONITORINGMODE = UaDataType(val=lib.UA_TYPES[49])
+	SETMONITORINGMODERESPONSE = UaDataType(val=lib.UA_TYPES[50])
+	BROWSERESULTMASK = UaDataType(val=lib.UA_TYPES[51])
+	REQUESTHEADER = UaDataType(val=lib.UA_TYPES[52])
+	MONITOREDITEMMODIFYRESULT = UaDataType(val=lib.UA_TYPES[53])
+	CLOSESECURECHANNELREQUEST = UaDataType(val=lib.UA_TYPES[54])
+	NOTIFICATIONMESSAGE = UaDataType(val=lib.UA_TYPES[55])
+	CREATESUBSCRIPTIONRESPONSE = UaDataType(val=lib.UA_TYPES[56])
+	ENUMDEFINITION = UaDataType(val=lib.UA_TYPES[57])
+	AXISSCALEENUMERATION = UaDataType(val=lib.UA_TYPES[58])
+	BROWSEDIRECTION = UaDataType(val=lib.UA_TYPES[59])
+	CALLMETHODREQUEST = UaDataType(val=lib.UA_TYPES[60])
+	READRESPONSE = UaDataType(val=lib.UA_TYPES[61])
+	TIMESTAMPSTORETURN = UaDataType(val=lib.UA_TYPES[62])
+	NODECLASS = UaDataType(val=lib.UA_TYPES[63])
+	MODIFYSUBSCRIPTIONRESPONSE = UaDataType(val=lib.UA_TYPES[64])
+	OBJECTTYPEATTRIBUTES = UaDataType(val=lib.UA_TYPES[65])
+	SECURITYTOKENREQUESTTYPE = UaDataType(val=lib.UA_TYPES[66])
+	CLOSESESSIONRESPONSE = UaDataType(val=lib.UA_TYPES[67])
+	SETPUBLISHINGMODEREQUEST = UaDataType(val=lib.UA_TYPES[68])
+	ISSUEDIDENTITYTOKEN = UaDataType(val=lib.UA_TYPES[69])
+	DELETEMONITOREDITEMSRESPONSE = UaDataType(val=lib.UA_TYPES[70])
+	APPLICATIONTYPE = UaDataType(val=lib.UA_TYPES[71])
+	BROWSENEXTREQUEST = UaDataType(val=lib.UA_TYPES[72])
+	MODIFYSUBSCRIPTIONREQUEST = UaDataType(val=lib.UA_TYPES[73])
+	BROWSEDESCRIPTION = UaDataType(val=lib.UA_TYPES[74])
+	SIGNEDSOFTWARECERTIFICATE = UaDataType(val=lib.UA_TYPES[75])
+	BROWSEPATHTARGET = UaDataType(val=lib.UA_TYPES[76])
+	WRITERESPONSE = UaDataType(val=lib.UA_TYPES[77])
+	ADDNODESRESULT = UaDataType(val=lib.UA_TYPES[78])
+	ADDREFERENCESITEM = UaDataType(val=lib.UA_TYPES[79])
+	DELETESUBSCRIPTIONSRESPONSE = UaDataType(val=lib.UA_TYPES[80])
+	DELETEREFERENCESRESPONSE = UaDataType(val=lib.UA_TYPES[81])
+	RELATIVEPATHELEMENT = UaDataType(val=lib.UA_TYPES[82])
+	SUBSCRIPTIONACKNOWLEDGEMENT = UaDataType(val=lib.UA_TYPES[83])
+	TRANSFERRESULT = UaDataType(val=lib.UA_TYPES[84])
+	CREATEMONITOREDITEMSRESPONSE = UaDataType(val=lib.UA_TYPES[85])
+	DELETEREFERENCESITEM = UaDataType(val=lib.UA_TYPES[86])
+	WRITEVALUE = UaDataType(val=lib.UA_TYPES[87])
+	DATATYPEATTRIBUTES = UaDataType(val=lib.UA_TYPES[88])
+	TRANSFERSUBSCRIPTIONSRESPONSE = UaDataType(val=lib.UA_TYPES[89])
+	ADDREFERENCESRESPONSE = UaDataType(val=lib.UA_TYPES[90])
+	DEADBANDTYPE = UaDataType(val=lib.UA_TYPES[91])
+	DATACHANGETRIGGER = UaDataType(val=lib.UA_TYPES[92])
+	BUILDINFO = UaDataType(val=lib.UA_TYPES[93])
+	FILTEROPERAND = UaDataType(val=lib.UA_TYPES[94])
+	MONITORINGPARAMETERS = UaDataType(val=lib.UA_TYPES[95])
+	DOUBLECOMPLEXNUMBERTYPE = UaDataType(val=lib.UA_TYPES[96])
+	DELETENODESITEM = UaDataType(val=lib.UA_TYPES[97])
+	READVALUEID = UaDataType(val=lib.UA_TYPES[98])
+	CALLREQUEST = UaDataType(val=lib.UA_TYPES[99])
+	RELATIVEPATH = UaDataType(val=lib.UA_TYPES[100])
+	DELETENODESREQUEST = UaDataType(val=lib.UA_TYPES[101])
+	MONITOREDITEMMODIFYREQUEST = UaDataType(val=lib.UA_TYPES[102])
+	USERTOKENTYPE = UaDataType(val=lib.UA_TYPES[103])
+	AGGREGATECONFIGURATION = UaDataType(val=lib.UA_TYPES[104])
+	LOCALEID = UaDataType(val=lib.UA_TYPES[105])
+	UNREGISTERNODESRESPONSE = UaDataType(val=lib.UA_TYPES[106])
+	CONTENTFILTERRESULT = UaDataType(val=lib.UA_TYPES[107])
+	USERTOKENPOLICY = UaDataType(val=lib.UA_TYPES[108])
+	DELETEMONITOREDITEMSREQUEST = UaDataType(val=lib.UA_TYPES[109])
+	SETMONITORINGMODEREQUEST = UaDataType(val=lib.UA_TYPES[110])
+	DURATION = UaDataType(val=lib.UA_TYPES[111])
+	REFERENCETYPEATTRIBUTES = UaDataType(val=lib.UA_TYPES[112])
+	GETENDPOINTSREQUEST = UaDataType(val=lib.UA_TYPES[113])
+	CLOSESECURECHANNELRESPONSE = UaDataType(val=lib.UA_TYPES[114])
+	VIEWDESCRIPTION = UaDataType(val=lib.UA_TYPES[115])
+	SETPUBLISHINGMODERESPONSE = UaDataType(val=lib.UA_TYPES[116])
+	STATUSCHANGENOTIFICATION = UaDataType(val=lib.UA_TYPES[117])
+	STRUCTUREFIELD = UaDataType(val=lib.UA_TYPES[118])
+	NODEATTRIBUTESMASK = UaDataType(val=lib.UA_TYPES[119])
+	EVENTFILTERRESULT = UaDataType(val=lib.UA_TYPES[120])
+	MONITOREDITEMCREATEREQUEST = UaDataType(val=lib.UA_TYPES[121])
+	COMPLEXNUMBERTYPE = UaDataType(val=lib.UA_TYPES[122])
+	RANGE = UaDataType(val=lib.UA_TYPES[123])
+	DATACHANGENOTIFICATION = UaDataType(val=lib.UA_TYPES[124])
+	ARGUMENT = UaDataType(val=lib.UA_TYPES[125])
+	TRANSFERSUBSCRIPTIONSREQUEST = UaDataType(val=lib.UA_TYPES[126])
+	CHANNELSECURITYTOKEN = UaDataType(val=lib.UA_TYPES[127])
+	SERVERSTATE = UaDataType(val=lib.UA_TYPES[128])
+	EVENTNOTIFICATIONLIST = UaDataType(val=lib.UA_TYPES[129])
+	ANONYMOUSIDENTITYTOKEN = UaDataType(val=lib.UA_TYPES[130])
+	FILTEROPERATOR = UaDataType(val=lib.UA_TYPES[131])
+	DELETESUBSCRIPTIONSREQUEST = UaDataType(val=lib.UA_TYPES[132])
+	AGGREGATEFILTER = UaDataType(val=lib.UA_TYPES[133])
+	REPUBLISHRESPONSE = UaDataType(val=lib.UA_TYPES[134])
+	REGISTERNODESREQUEST = UaDataType(val=lib.UA_TYPES[135])
+	STRUCTUREDEFINITION = UaDataType(val=lib.UA_TYPES[136])
+	METHODATTRIBUTES = UaDataType(val=lib.UA_TYPES[137])
+	USERNAMEIDENTITYTOKEN = UaDataType(val=lib.UA_TYPES[138])
+	UNREGISTERNODESREQUEST = UaDataType(val=lib.UA_TYPES[139])
+	OPENSECURECHANNELRESPONSE = UaDataType(val=lib.UA_TYPES[140])
+	SETTRIGGERINGRESPONSE = UaDataType(val=lib.UA_TYPES[141])
+	SIMPLEATTRIBUTEOPERAND = UaDataType(val=lib.UA_TYPES[142])
+	REPUBLISHREQUEST = UaDataType(val=lib.UA_TYPES[143])
+	REGISTERNODESRESPONSE = UaDataType(val=lib.UA_TYPES[144])
+	MODIFYMONITOREDITEMSRESPONSE = UaDataType(val=lib.UA_TYPES[145])
+	REDUNDANCYSUPPORT = UaDataType(val=lib.UA_TYPES[146])
+	BROWSEPATH = UaDataType(val=lib.UA_TYPES[147])
+	OBJECTATTRIBUTES = UaDataType(val=lib.UA_TYPES[148])
+	PUBLISHREQUEST = UaDataType(val=lib.UA_TYPES[149])
+	FINDSERVERSREQUEST = UaDataType(val=lib.UA_TYPES[150])
+	REFERENCEDESCRIPTION = UaDataType(val=lib.UA_TYPES[151])
+	CREATESUBSCRIPTIONREQUEST = UaDataType(val=lib.UA_TYPES[152])
+	CALLRESPONSE = UaDataType(val=lib.UA_TYPES[153])
+	DELETENODESRESPONSE = UaDataType(val=lib.UA_TYPES[154])
+	MODIFYMONITOREDITEMSREQUEST = UaDataType(val=lib.UA_TYPES[155])
+	SERVICEFAULT = UaDataType(val=lib.UA_TYPES[156])
+	PUBLISHRESPONSE = UaDataType(val=lib.UA_TYPES[157])
+	CREATEMONITOREDITEMSREQUEST = UaDataType(val=lib.UA_TYPES[158])
+	OPENSECURECHANNELREQUEST = UaDataType(val=lib.UA_TYPES[159])
+	CLOSESESSIONREQUEST = UaDataType(val=lib.UA_TYPES[160])
+	SETTRIGGERINGREQUEST = UaDataType(val=lib.UA_TYPES[161])
+	BROWSERESULT = UaDataType(val=lib.UA_TYPES[162])
+	ADDREFERENCESREQUEST = UaDataType(val=lib.UA_TYPES[163])
+	ADDNODESITEM = UaDataType(val=lib.UA_TYPES[164])
+	SERVERSTATUSDATATYPE = UaDataType(val=lib.UA_TYPES[165])
+	BROWSENEXTRESPONSE = UaDataType(val=lib.UA_TYPES[166])
+	AXISINFORMATION = UaDataType(val=lib.UA_TYPES[167])
+	APPLICATIONDESCRIPTION = UaDataType(val=lib.UA_TYPES[168])
+	READREQUEST = UaDataType(val=lib.UA_TYPES[169])
+	ACTIVATESESSIONREQUEST = UaDataType(val=lib.UA_TYPES[170])
+	DELETEREFERENCESREQUEST = UaDataType(val=lib.UA_TYPES[171])
+	BROWSEPATHRESULT = UaDataType(val=lib.UA_TYPES[172])
+	ADDNODESREQUEST = UaDataType(val=lib.UA_TYPES[173])
+	BROWSEREQUEST = UaDataType(val=lib.UA_TYPES[174])
+	WRITEREQUEST = UaDataType(val=lib.UA_TYPES[175])
+	ADDNODESRESPONSE = UaDataType(val=lib.UA_TYPES[176])
+	ATTRIBUTEOPERAND = UaDataType(val=lib.UA_TYPES[177])
+	DATACHANGEFILTER = UaDataType(val=lib.UA_TYPES[178])
+	ENDPOINTDESCRIPTION = UaDataType(val=lib.UA_TYPES[179])
+	TRANSLATEBROWSEPATHSTONODEIDSREQUEST = UaDataType(val=lib.UA_TYPES[180])
+	FINDSERVERSRESPONSE = UaDataType(val=lib.UA_TYPES[181])
+	CREATESESSIONREQUEST = UaDataType(val=lib.UA_TYPES[182])
+	CONTENTFILTERELEMENT = UaDataType(val=lib.UA_TYPES[183])
+	TRANSLATEBROWSEPATHSTONODEIDSRESPONSE = UaDataType(val=lib.UA_TYPES[184])
+	BROWSERESPONSE = UaDataType(val=lib.UA_TYPES[185])
+	CREATESESSIONRESPONSE = UaDataType(val=lib.UA_TYPES[186])
+	CONTENTFILTER = UaDataType(val=lib.UA_TYPES[187])
+	GETENDPOINTSRESPONSE = UaDataType(val=lib.UA_TYPES[188])
+	EVENTFILTER = UaDataType(val=lib.UA_TYPES[189])
