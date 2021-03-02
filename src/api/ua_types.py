@@ -28452,9 +28452,12 @@ class UaLogLevel(UaType):
     def __str__(self, n=0):
         return f"(UaLogLevel): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
+
 # +++++++++++++++++++ UaLogger +++++++++++++++++++++++
 class UaLogger(UaType):
-    def __init__(self, val=ffi.new("UA_Logger*"), is_pointer=False):
+    def __init__(self, log_level: UaLogLevel=None, val=lib.UA_Log_Stdout, is_pointer=False):
+        if log_level is not None:
+            val = lib.UA_Log_Stdout_withLevel(log_level._val)
         super().__init__(val=val, is_pointer=is_pointer)
 
     def _set_value(self, val):
@@ -28483,4 +28486,12 @@ class UaLogger(UaType):
 
     def fatal(self, category: UaLogCategory, msg: bytes):
         lib.UA_LOG_FATAL(self._ptr, category._val, CString(msg)._ptr)
+
+    # see definitions/log -> Problem with va_list
+    # @staticmethod
+    # #the context seems to be an open todo in open62541
+    # def stdout_log(level: UaLogLevel, category: UaLogCategory, msg: bytes, context=ffi.NULL):
+    #     # TODO: something like: pass msg as format string and parse to bytestring + va_list
+    #     lib.UA_Log_Stdout_log(context, level._val, category._val, UaString(msg)._ptr, ffi.NULL)
+
 

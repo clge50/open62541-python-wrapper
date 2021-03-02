@@ -14617,3 +14617,5 @@ class Randomize:
     @staticmethod
     def ua_random_seed(seed: int):
         lib.UA_random_seed(ffi.cast("UA_UInt64*", seed))
+
+
