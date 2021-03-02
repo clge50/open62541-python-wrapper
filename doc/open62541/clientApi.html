@@ -3065,7 +3065,7 @@ class UaClient:
 <h3>Methods</h3>
 <dl>
 <dt id="open62541.clientApi.UaClient.add_data_type_node"><code class="name flex">
-<span>def <span class="ident">add_data_type_node</span></span>(<span>self, requested_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, attr: ua_types.UaDataTypeAttributes = &lt;ua_types.UaDataTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_data_type_node</span></span>(<span>self, requested_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, attr: ua_types_generated_structs.UaDataTypeAttributes = &lt;ua_types_generated_structs.UaDataTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3084,7 +3084,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_data_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_data_type_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaDataTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_data_type_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaDataTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3113,7 +3113,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_method_node"><code class="name flex">
-<span>def <span class="ident">add_method_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, attr: ua_types.UaMethodAttributes = &lt;ua_types.UaMethodAttributes object&gt;)</span>
+<span>def <span class="ident">add_method_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, attr: ua_types_generated_structs.UaMethodAttributes = &lt;ua_types_generated_structs.UaMethodAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3132,7 +3132,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_method_node_async"><code class="name flex">
-<span>def <span class="ident">add_method_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaMethodAttributes object&gt;)</span>
+<span>def <span class="ident">add_method_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaMethodAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3161,7 +3161,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_node"><code class="name flex">
-<span>def <span class="ident">add_object_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, type_definition: ua_types.UaNodeId, attr: ua_types.UaObjectAttributes = &lt;ua_types.UaObjectAttributes object&gt;)</span>
+<span>def <span class="ident">add_object_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaObjectAttributes = &lt;ua_types_generated_structs.UaObjectAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3182,7 +3182,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_node_async"><code class="name flex">
-<span>def <span class="ident">add_object_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, type_definition: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaObjectAttributes object&gt;)</span>
+<span>def <span class="ident">add_object_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaObjectAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3213,7 +3213,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_type_node"><code class="name flex">
-<span>def <span class="ident">add_object_type_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, attr: ua_types.UaObjectTypeAttributes = &lt;ua_types.UaObjectTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_object_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, attr: ua_types_generated_structs.UaObjectTypeAttributes = &lt;ua_types_generated_structs.UaObjectTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3232,7 +3232,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_object_type_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaObjectTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_object_type_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaObjectTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3262,7 +3262,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_reference"><code class="name flex">
-<span>def <span class="ident">add_reference</span></span>(<span>self, source_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, is_forward: ua_types.UaBoolean, target_server_uri: ua_types.UaString, target_node_id: ua_types.UaExpandedNodeId, target_node_class: ua_types.UaNodeClass)</span>
+<span>def <span class="ident">add_reference</span></span>(<span>self, source_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, is_forward: ua_primitve_types.UaBoolean, target_server_uri: ua_base_types.UaString, target_node_id: ua_base_types.UaExpandedNodeId, target_node_class: ua_types_generated_enums.UaNodeClass)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3281,7 +3281,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_reference_type_node"><code class="name flex">
-<span>def <span class="ident">add_reference_type_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, attr: ua_types.UaReferenceTypeAttributes = &lt;ua_types.UaReferenceTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_reference_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, attr: ua_types_generated_structs.UaReferenceTypeAttributes = &lt;ua_types_generated_structs.UaReferenceTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3301,7 +3301,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_reference_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_reference_type_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaReferenceTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_reference_type_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaReferenceTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3331,7 +3331,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_repeated_callback"><code class="name flex">
-<span>def <span class="ident">add_repeated_callback</span></span>(<span>self, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.Void], NoneType], interval_ms: ua_types.UaDouble, callback_id: ua_types.UaUInt64)</span>
+<span>def <span class="ident">add_repeated_callback</span></span>(<span>self, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), c_types.Void], NoneType], interval_ms: ua_primitve_types.UaDouble, callback_id: ua_primitve_types.UaUInt64)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3351,7 +3351,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_timed_callback"><code class="name flex">
-<span>def <span class="ident">add_timed_callback</span></span>(<span>self, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.Void], NoneType], date: ua_types.UaDateTime, callback_id)</span>
+<span>def <span class="ident">add_timed_callback</span></span>(<span>self, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), c_types.Void], NoneType], date: ua_primitve_types.UaDateTime, callback_id)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3370,7 +3370,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_node"><code class="name flex">
-<span>def <span class="ident">add_variable_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, type_definition: ua_types.UaNodeId, attr: ua_types.UaVariableAttributes = &lt;ua_types.UaVariableAttributes object&gt;)</span>
+<span>def <span class="ident">add_variable_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaVariableAttributes = &lt;ua_types_generated_structs.UaVariableAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3391,7 +3391,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_node_async"><code class="name flex">
-<span>def <span class="ident">add_variable_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, type_definition: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr: ua_types.UaVariableAttributes = &lt;ua_types.UaVariableAttributes object&gt;)</span>
+<span>def <span class="ident">add_variable_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr: ua_types_generated_structs.UaVariableAttributes = &lt;ua_types_generated_structs.UaVariableAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3422,7 +3422,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_type_node"><code class="name flex">
-<span>def <span class="ident">add_variable_type_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, attr: ua_types.UaVariableTypeAttributes = &lt;ua_types.UaVariableTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_variable_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, attr: ua_types_generated_structs.UaVariableTypeAttributes = &lt;ua_types_generated_structs.UaVariableTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3441,7 +3441,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_variable_type_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaVariableTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_variable_type_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaVariableTypeAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3471,7 +3471,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_view_node"><code class="name flex">
-<span>def <span class="ident">add_view_node</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, attr: ua_types.UaViewAttributes = &lt;ua_types.UaViewAttributes object&gt;)</span>
+<span>def <span class="ident">add_view_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, attr: ua_types_generated_structs.UaViewAttributes = &lt;ua_types_generated_structs.UaViewAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3490,7 +3490,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_view_node_async"><code class="name flex">
-<span>def <span class="ident">add_view_node_async</span></span>(<span>self, requested_new_node_id: ua_types.UaNodeId, parent_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, browse_name: ua_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaAddNodesResponse], NoneType], attr=&lt;ua_types.UaViewAttributes object&gt;)</span>
+<span>def <span class="ident">add_view_node_async</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], attr=&lt;ua_types_generated_structs.UaViewAttributes object&gt;)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3519,7 +3519,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, object_id: ua_types.UaNodeId, method_id: ua_types.UaNodeId, input_size: ua_types.SizeT, call_input: ua_types.UaVariant)</span>
+<span>def <span class="ident">call</span></span>(<span>self, object_id: ua_base_types.UaNodeId, method_id: ua_base_types.UaNodeId, input_size: c_types.SizeT, call_input: ua_base_types.UaVariant)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3540,7 +3540,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.call_async"><code class="name flex">
-<span>def <span class="ident">call_async</span></span>(<span>self, object_id: ua_types.UaNodeId, method_id: ua_types.UaNodeId, input_size: ua_types.SizeT, _input: ua_types.UaVariant, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaCallResponse], NoneType])</span>
+<span>def <span class="ident">call_async</span></span>(<span>self, object_id: ua_base_types.UaNodeId, method_id: ua_base_types.UaNodeId, input_size: c_types.SizeT, _input: ua_base_types.UaVariant, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaCallResponse], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3565,7 +3565,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.change_repeated_callback_interval"><code class="name flex">
-<span>def <span class="ident">change_repeated_callback_interval</span></span>(<span>self, callback_id: ua_types.UaUInt64, interval_ms: ua_types.UaDouble)</span>
+<span>def <span class="ident">change_repeated_callback_interval</span></span>(<span>self, callback_id: ua_primitve_types.UaUInt64, interval_ms: ua_primitve_types.UaDouble)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3606,7 +3606,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.delete_node"><code class="name flex">
-<span>def <span class="ident">delete_node</span></span>(<span>self, node_id: ua_types.UaNodeId, delete_target_references: ua_types.UaBoolean)</span>
+<span>def <span class="ident">delete_node</span></span>(<span>self, node_id: ua_base_types.UaNodeId, delete_target_references: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3620,7 +3620,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.delete_reference"><code class="name flex">
-<span>def <span class="ident">delete_reference</span></span>(<span>self, source_node_id: ua_types.UaNodeId, reference_type_id: ua_types.UaNodeId, is_forward: ua_types.UaBoolean, target_node_id: ua_types.UaExpandedNodeId, delete_bidirectional: ua_types.UaBoolean)</span>
+<span>def <span class="ident">delete_reference</span></span>(<span>self, source_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, is_forward: ua_primitve_types.UaBoolean, target_node_id: ua_base_types.UaExpandedNodeId, delete_bidirectional: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3665,7 +3665,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.find_data_type"><code class="name flex">
-<span>def <span class="ident">find_data_type</span></span>(<span>self, type_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">find_data_type</span></span>(<span>self, type_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3678,7 +3678,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.find_servers"><code class="name flex">
-<span>def <span class="ident">find_servers</span></span>(<span>self, server_url: str, server_uris_size: ua_types.SizeT, locale_ids_size: ua_types.SizeT, locale_ids: ua_types.UaString, registered_servers_size: ua_types.SizeT, registered_servers: ua_types.UaApplicationDescription)</span>
+<span>def <span class="ident">find_servers</span></span>(<span>self, server_url: str, server_uris_size: c_types.SizeT, locale_ids_size: c_types.SizeT, locale_ids: ua_base_types.UaString, registered_servers_size: c_types.SizeT, registered_servers: ua_types_generated_structs.UaApplicationDescription)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3696,7 +3696,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.for_each_child_node_call"><code class="name flex">
-<span>def <span class="ident">for_each_child_node_call</span></span>(<span>self, parent_node_id: ua_types.UaNodeId, callback: Callable[[ua_types.UaNodeId, ua_types.UaBoolean, ua_types.UaNodeId], NoneType])</span>
+<span>def <span class="ident">for_each_child_node_call</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, callback: Callable[[ua_base_types.UaNodeId, ua_primitve_types.UaBoolean, ua_base_types.UaNodeId], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3740,7 +3740,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.get_endpoints"><code class="name flex">
-<span>def <span class="ident">get_endpoints</span></span>(<span>self, server_url: str, endpoint_descriptions_size: ua_types.SizeT, endpoint_descriptions: ua_types.UaApplicationDescription)</span>
+<span>def <span class="ident">get_endpoints</span></span>(<span>self, server_url: str, endpoint_descriptions_size: c_types.SizeT, endpoint_descriptions: ua_types_generated_structs.UaApplicationDescription)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3773,7 +3773,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.modify_async_callback"><code class="name flex">
-<span>def <span class="ident">modify_async_callback</span></span>(<span>self, req_id: ua_types.UaUInt32, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">modify_async_callback</span></span>(<span>self, req_id: ua_primitve_types.UaUInt32, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3791,7 +3791,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.namespace_get_index"><code class="name flex">
-<span>def <span class="ident">namespace_get_index</span></span>(<span>self, namespace_uri: ua_types.UaString, namespace_index: ua_types.UaUInt16)</span>
+<span>def <span class="ident">namespace_get_index</span></span>(<span>self, namespace_uri: ua_base_types.UaString, namespace_index: ua_primitve_types.UaUInt16)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3807,7 +3807,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_access_level_attribute"><code class="name flex">
-<span>def <span class="ident">read_access_level_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_access_level_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3823,7 +3823,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_access_level_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_access_level_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaByte], NoneType])</span>
+<span>def <span class="ident">read_access_level_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaByte], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3844,7 +3844,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_array_dimensions_attribute"><code class="name flex">
-<span>def <span class="ident">read_array_dimensions_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_array_dimensions_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3864,7 +3864,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_browse_name_attribute"><code class="name flex">
-<span>def <span class="ident">read_browse_name_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_browse_name_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3880,7 +3880,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_browse_name_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_browse_name_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaQualifiedName], NoneType])</span>
+<span>def <span class="ident">read_browse_name_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaQualifiedName], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3901,7 +3901,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_contains_no_loops_attribute"><code class="name flex">
-<span>def <span class="ident">read_contains_no_loops_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_contains_no_loops_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3918,7 +3918,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_contains_no_loops_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_contains_no_loops_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBoolean], NoneType])</span>
+<span>def <span class="ident">read_contains_no_loops_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaBoolean], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3939,7 +3939,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_data_type_attribute"><code class="name flex">
-<span>def <span class="ident">read_data_type_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_data_type_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3954,7 +3954,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_data_type_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_data_type_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaNodeId], NoneType])</span>
+<span>def <span class="ident">read_data_type_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaNodeId], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3975,7 +3975,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_description_attribute"><code class="name flex">
-<span>def <span class="ident">read_description_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_description_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3991,7 +3991,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_description_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_description_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaLocalizedText], NoneType])</span>
+<span>def <span class="ident">read_description_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaLocalizedText], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4012,7 +4012,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_display_name_attribute"><code class="name flex">
-<span>def <span class="ident">read_display_name_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_display_name_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4028,7 +4028,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_display_name_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_display_name_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaLocalizedText], NoneType])</span>
+<span>def <span class="ident">read_display_name_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaLocalizedText], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4050,7 +4050,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_event_notifier_attribute"><code class="name flex">
-<span>def <span class="ident">read_event_notifier_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_event_notifier_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4066,7 +4066,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_event_notifier_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_event_notifier_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaByte], NoneType])</span>
+<span>def <span class="ident">read_event_notifier_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaByte], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4087,7 +4087,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_executable_attribute"><code class="name flex">
-<span>def <span class="ident">read_executable_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_executable_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4102,7 +4102,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_executable_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_executable_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBoolean], NoneType])</span>
+<span>def <span class="ident">read_executable_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaBoolean], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4123,7 +4123,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_historizing_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_historizing_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBoolean], NoneType])</span>
+<span>def <span class="ident">read_historizing_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaBoolean], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4144,7 +4144,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_inverse_name_attribute"><code class="name flex">
-<span>def <span class="ident">read_inverse_name_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_inverse_name_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4160,7 +4160,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_inverse_name_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_inverse_name_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaLocalizedText], NoneType])</span>
+<span>def <span class="ident">read_inverse_name_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaLocalizedText], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4181,7 +4181,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_is_abstract_attribute"><code class="name flex">
-<span>def <span class="ident">read_is_abstract_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_is_abstract_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4197,7 +4197,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_is_abstract_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_is_abstract_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBoolean], NoneType])</span>
+<span>def <span class="ident">read_is_abstract_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaBoolean], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4218,7 +4218,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_minimum_sampling_interval_attribute"><code class="name flex">
-<span>def <span class="ident">read_minimum_sampling_interval_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_minimum_sampling_interval_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4235,7 +4235,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_minimum_sampling_interval_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_minimum_sampling_interval_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaDouble], NoneType])</span>
+<span>def <span class="ident">read_minimum_sampling_interval_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaDouble], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4256,7 +4256,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_node_class_attribute"><code class="name flex">
-<span>def <span class="ident">read_node_class_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_node_class_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4271,7 +4271,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_node_class_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_node_class_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaNodeClass], NoneType])</span>
+<span>def <span class="ident">read_node_class_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_enums.UaNodeClass], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4293,7 +4293,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_node_id_attribute"><code class="name flex">
-<span>def <span class="ident">read_node_id_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_node_id_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4308,7 +4308,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_node_id_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_node_id_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaNodeId], NoneType])</span>
+<span>def <span class="ident">read_node_id_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaNodeId], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4329,7 +4329,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_symmetric_attribute"><code class="name flex">
-<span>def <span class="ident">read_symmetric_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_symmetric_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4344,7 +4344,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_symmetric_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_symmetric_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBoolean], NoneType])</span>
+<span>def <span class="ident">read_symmetric_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaBoolean], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4365,7 +4365,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_user_access_level_attribute"><code class="name flex">
-<span>def <span class="ident">read_user_access_level_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_user_access_level_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4382,7 +4382,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_user_access_level_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_user_access_level_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaByte], NoneType])</span>
+<span>def <span class="ident">read_user_access_level_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaByte], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4403,7 +4403,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_user_executable_attribute"><code class="name flex">
-<span>def <span class="ident">read_user_executable_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_user_executable_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4419,7 +4419,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_user_executable_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_user_executable_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBoolean], NoneType])</span>
+<span>def <span class="ident">read_user_executable_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaBoolean], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4440,7 +4440,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_user_write_mask_attribute"><code class="name flex">
-<span>def <span class="ident">read_user_write_mask_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_user_write_mask_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4456,7 +4456,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_user_write_mask_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_user_write_mask_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaUInt32], NoneType])</span>
+<span>def <span class="ident">read_user_write_mask_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaUInt32], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4478,7 +4478,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_value_attribute"><code class="name flex">
-<span>def <span class="ident">read_value_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_value_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4493,7 +4493,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_value_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_value_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaVariant], NoneType])</span>
+<span>def <span class="ident">read_value_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaVariant], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4514,7 +4514,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_value_rank_attribute"><code class="name flex">
-<span>def <span class="ident">read_value_rank_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_value_rank_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4529,7 +4529,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_value_rank_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_value_rank_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaUInt32], NoneType])</span>
+<span>def <span class="ident">read_value_rank_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaUInt32], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4550,7 +4550,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_write_mask_attribute"><code class="name flex">
-<span>def <span class="ident">read_write_mask_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">read_write_mask_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4565,7 +4565,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.read_write_mask_attribute_async"><code class="name flex">
-<span>def <span class="ident">read_write_mask_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaUInt32], NoneType])</span>
+<span>def <span class="ident">read_write_mask_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_primitve_types.UaUInt32], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4586,7 +4586,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.remove_callback"><code class="name flex">
-<span>def <span class="ident">remove_callback</span></span>(<span>self, callback_id: ua_types.UaUInt64)</span>
+<span>def <span class="ident">remove_callback</span></span>(<span>self, callback_id: ua_primitve_types.UaUInt64)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4613,7 +4613,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.run_iterate"><code class="name flex">
-<span>def <span class="ident">run_iterate</span></span>(<span>self, timeout: ua_types.UaUInt32)</span>
+<span>def <span class="ident">run_iterate</span></span>(<span>self, timeout: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4627,7 +4627,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.send_async_browse_request"><code class="name flex">
-<span>def <span class="ident">send_async_browse_request</span></span>(<span>self, request: ua_types.UaBrowseRequest, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaBrowseResponse], NoneType])</span>
+<span>def <span class="ident">send_async_browse_request</span></span>(<span>self, request: ua_types_generated_structs.UaBrowseRequest, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaBrowseResponse], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4648,7 +4648,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.send_async_read_request"><code class="name flex">
-<span>def <span class="ident">send_async_read_request</span></span>(<span>self, request: ua_types.UaReadRequest, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaVariant], NoneType])</span>
+<span>def <span class="ident">send_async_read_request</span></span>(<span>self, request: ua_types_generated_structs.UaReadRequest, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_base_types.UaVariant], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4669,7 +4669,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.send_async_write_request"><code class="name flex">
-<span>def <span class="ident">send_async_write_request</span></span>(<span>self, request: ua_types.UaWriteRequest, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaWriteResponse], NoneType])</span>
+<span>def <span class="ident">send_async_write_request</span></span>(<span>self, request: ua_types_generated_structs.UaWriteRequest, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaWriteResponse], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4690,7 +4690,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_add_nodes"><code class="name flex">
-<span>def <span class="ident">service_add_nodes</span></span>(<span>self, request: ua_types.UaAddNodesRequest)</span>
+<span>def <span class="ident">service_add_nodes</span></span>(<span>self, request: ua_types_generated_structs.UaAddNodesRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4704,7 +4704,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_add_reference"><code class="name flex">
-<span>def <span class="ident">service_add_reference</span></span>(<span>self, request: ua_types.UaAddReferencesRequest)</span>
+<span>def <span class="ident">service_add_reference</span></span>(<span>self, request: ua_types_generated_structs.UaAddReferencesRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4718,7 +4718,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_browse"><code class="name flex">
-<span>def <span class="ident">service_browse</span></span>(<span>self, request: ua_types.UaBrowseRequest)</span>
+<span>def <span class="ident">service_browse</span></span>(<span>self, request: ua_types_generated_structs.UaBrowseRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4732,7 +4732,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_browse_next"><code class="name flex">
-<span>def <span class="ident">service_browse_next</span></span>(<span>self, request: ua_types.UaBrowseNextRequest)</span>
+<span>def <span class="ident">service_browse_next</span></span>(<span>self, request: ua_types_generated_structs.UaBrowseNextRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4746,7 +4746,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_call"><code class="name flex">
-<span>def <span class="ident">service_call</span></span>(<span>self, request: ua_types.UaCallRequest)</span>
+<span>def <span class="ident">service_call</span></span>(<span>self, request: ua_types_generated_structs.UaCallRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4760,7 +4760,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_delete_nodes"><code class="name flex">
-<span>def <span class="ident">service_delete_nodes</span></span>(<span>self, request: ua_types.UaDeleteNodesRequest)</span>
+<span>def <span class="ident">service_delete_nodes</span></span>(<span>self, request: ua_types_generated_structs.UaDeleteNodesRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4774,7 +4774,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_delete_references"><code class="name flex">
-<span>def <span class="ident">service_delete_references</span></span>(<span>self, request: ua_types.UaDeleteReferencesRequest)</span>
+<span>def <span class="ident">service_delete_references</span></span>(<span>self, request: ua_types_generated_structs.UaDeleteReferencesRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4788,7 +4788,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_read"><code class="name flex">
-<span>def <span class="ident">service_read</span></span>(<span>self, request: ua_types.UaReadRequest)</span>
+<span>def <span class="ident">service_read</span></span>(<span>self, request: ua_types_generated_structs.UaReadRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4802,7 +4802,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_register_node"><code class="name flex">
-<span>def <span class="ident">service_register_node</span></span>(<span>self, request: ua_types.UaRegisterNodesRequest)</span>
+<span>def <span class="ident">service_register_node</span></span>(<span>self, request: ua_types_generated_structs.UaRegisterNodesRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4816,7 +4816,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_translate_browse_paths_to_node_ids"><code class="name flex">
-<span>def <span class="ident">service_translate_browse_paths_to_node_ids</span></span>(<span>self, request: ua_types.UaTranslateBrowsePathsToNodeIdsRequest)</span>
+<span>def <span class="ident">service_translate_browse_paths_to_node_ids</span></span>(<span>self, request: ua_types_generated_structs.UaTranslateBrowsePathsToNodeIdsRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4831,7 +4831,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_unregister_node"><code class="name flex">
-<span>def <span class="ident">service_unregister_node</span></span>(<span>self, request: ua_types.UaUnregisterNodesRequest)</span>
+<span>def <span class="ident">service_unregister_node</span></span>(<span>self, request: ua_types_generated_structs.UaUnregisterNodesRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4845,7 +4845,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.service_write"><code class="name flex">
-<span>def <span class="ident">service_write</span></span>(<span>self, request: ua_types.UaWriteRequest)</span>
+<span>def <span class="ident">service_write</span></span>(<span>self, request: ua_types_generated_structs.UaWriteRequest)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4872,7 +4872,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_access_level_attribute"><code class="name flex">
-<span>def <span class="ident">write_access_level_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_access_level: ua_types.UaByte)</span>
+<span>def <span class="ident">write_access_level_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_access_level: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4886,7 +4886,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_access_level_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_access_level_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_access_level_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4909,7 +4909,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_array_dimensions_attribute"><code class="name flex">
-<span>def <span class="ident">write_array_dimensions_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_array_dimensions_size: ua_types.SizeT, new_array_dimensions: ua_types.UaUInt32)</span>
+<span>def <span class="ident">write_array_dimensions_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_array_dimensions_size: c_types.SizeT, new_array_dimensions: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4926,7 +4926,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_browse_name_attribute"><code class="name flex">
-<span>def <span class="ident">write_browse_name_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_browse_name: ua_types.UaQualifiedName)</span>
+<span>def <span class="ident">write_browse_name_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_browse_name: ua_base_types.UaQualifiedName)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4940,7 +4940,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_browse_name_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_browse_name_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_browse_name_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4963,7 +4963,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_contains_no_loops_attribute"><code class="name flex">
-<span>def <span class="ident">write_contains_no_loops_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_contains_no_loops: ua_types.UaBoolean)</span>
+<span>def <span class="ident">write_contains_no_loops_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_contains_no_loops: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4978,7 +4978,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_contains_no_loops_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_contains_no_loops_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_contains_no_loops_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5001,7 +5001,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_data_type_attribute"><code class="name flex">
-<span>def <span class="ident">write_data_type_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_data_type: ua_types.UaNodeId)</span>
+<span>def <span class="ident">write_data_type_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_data_type: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5015,7 +5015,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_data_type_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_data_type_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_data_type_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5038,7 +5038,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_description_attribute"><code class="name flex">
-<span>def <span class="ident">write_description_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_description: ua_types.UaLocalizedText)</span>
+<span>def <span class="ident">write_description_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_description: ua_base_types.UaLocalizedText)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5052,7 +5052,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_description_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_description_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_description_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5075,7 +5075,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_display_name_attribute"><code class="name flex">
-<span>def <span class="ident">write_display_name_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_display_name: ua_types.UaLocalizedText)</span>
+<span>def <span class="ident">write_display_name_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_display_name: ua_base_types.UaLocalizedText)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5089,7 +5089,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_display_name_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_display_name_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_display_name_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5112,7 +5112,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_event_notifier_attribute"><code class="name flex">
-<span>def <span class="ident">write_event_notifier_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_event_notifier: ua_types.UaByte)</span>
+<span>def <span class="ident">write_event_notifier_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_event_notifier: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5126,7 +5126,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_event_notifier_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_event_notifier_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_event_notifier_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5149,7 +5149,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_executable_attribute"><code class="name flex">
-<span>def <span class="ident">write_executable_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_executable: ua_types.UaBoolean)</span>
+<span>def <span class="ident">write_executable_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_executable: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5163,7 +5163,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_executable_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_executable_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_executable_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5186,7 +5186,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_historizing_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_historizing_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType], new_historizing: ua_types.UaBoolean)</span>
+<span>def <span class="ident">write_historizing_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType], new_historizing: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5209,7 +5209,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_inverse_name_attribute"><code class="name flex">
-<span>def <span class="ident">write_inverse_name_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_inverse_name: ua_types.UaLocalizedText)</span>
+<span>def <span class="ident">write_inverse_name_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_inverse_name: ua_base_types.UaLocalizedText)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5223,7 +5223,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_inverse_name_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_inverse_name_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_inverse_name_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5246,7 +5246,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_is_abstract_attribute"><code class="name flex">
-<span>def <span class="ident">write_is_abstract_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_is_abstract: ua_types.UaBoolean)</span>
+<span>def <span class="ident">write_is_abstract_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_is_abstract: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5260,7 +5260,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_is_abstract_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_is_abstract_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_is_abstract_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5283,7 +5283,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_minimum_sampling_interval_attribute"><code class="name flex">
-<span>def <span class="ident">write_minimum_sampling_interval_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_min_interval: ua_types.UaDouble)</span>
+<span>def <span class="ident">write_minimum_sampling_interval_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_min_interval: ua_primitve_types.UaDouble)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5299,7 +5299,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_minimum_sampling_interval_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_minimum_sampling_interval_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType], new_min_interval: ua_types.UaDouble)</span>
+<span>def <span class="ident">write_minimum_sampling_interval_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType], new_min_interval: ua_primitve_types.UaDouble)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5322,7 +5322,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_node_class_attribute"><code class="name flex">
-<span>def <span class="ident">write_node_class_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_node_class: ua_types.UaNodeClass)</span>
+<span>def <span class="ident">write_node_class_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_node_class: ua_types_generated_enums.UaNodeClass)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5336,7 +5336,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_node_class_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_node_class_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_node_class_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5359,7 +5359,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_node_id_attribute"><code class="name flex">
-<span>def <span class="ident">write_node_id_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_node_id: ua_types.UaNodeId)</span>
+<span>def <span class="ident">write_node_id_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5373,7 +5373,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_node_id_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_node_id_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_node_id_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5396,7 +5396,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_symmetric_attribute"><code class="name flex">
-<span>def <span class="ident">write_symmetric_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_symmetric: ua_types.UaBoolean)</span>
+<span>def <span class="ident">write_symmetric_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_symmetric: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5410,7 +5410,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_symmetric_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_symmetric_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_symmetric_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5433,7 +5433,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_user_access_level_attribute"><code class="name flex">
-<span>def <span class="ident">write_user_access_level_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_user_access_level: ua_types.UaByte)</span>
+<span>def <span class="ident">write_user_access_level_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_user_access_level: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5448,7 +5448,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_user_access_level_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_user_access_level_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_user_access_level_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5471,7 +5471,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_user_executable_attribute"><code class="name flex">
-<span>def <span class="ident">write_user_executable_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_user_executable: ua_types.UaBoolean)</span>
+<span>def <span class="ident">write_user_executable_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_user_executable: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5485,7 +5485,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_user_executable_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_user_executable_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_user_executable_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5508,7 +5508,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_user_write_mask_attribute"><code class="name flex">
-<span>def <span class="ident">write_user_write_mask_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_user_write_mask: ua_types.UaUInt32)</span>
+<span>def <span class="ident">write_user_write_mask_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_user_write_mask: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5522,7 +5522,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_user_write_mask_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_user_write_mask_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_user_write_mask_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5545,7 +5545,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_value_attribute"><code class="name flex">
-<span>def <span class="ident">write_value_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_value: ua_types.UaVariant)</span>
+<span>def <span class="ident">write_value_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_value: ua_base_types.UaVariant)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5559,7 +5559,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_value_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_value_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, new_value: ua_types.UaVariant, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.UaWriteResponse], NoneType])</span>
+<span>def <span class="ident">write_value_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_value: ua_base_types.UaVariant, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaWriteResponse], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5582,7 +5582,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_value_rank_attribute"><code class="name flex">
-<span>def <span class="ident">write_value_rank_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_value_rank: ua_types.UaInt32)</span>
+<span>def <span class="ident">write_value_rank_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_value_rank: ua_primitve_types.UaInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5596,7 +5596,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_value_rank_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_value_rank_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_value_rank_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5619,7 +5619,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_write_mask_attribute"><code class="name flex">
-<span>def <span class="ident">write_write_mask_attribute</span></span>(<span>self, node_id: ua_types.UaNodeId, new_write_mask: ua_types.UaUInt32)</span>
+<span>def <span class="ident">write_write_mask_attribute</span></span>(<span>self, node_id: ua_base_types.UaNodeId, new_write_mask: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -5633,7 +5633,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.write_write_mask_attribute_async"><code class="name flex">
-<span>def <span class="ident">write_write_mask_attribute_async</span></span>(<span>self, node_id: ua_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_types.UaUInt32, ua_types.Void], NoneType])</span>
+<span>def <span class="ident">write_write_mask_attribute_async</span></span>(<span>self, node_id: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, c_types.Void], NoneType])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

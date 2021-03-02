@@ -26,7 +26,9 @@ class {to_python_class_name(prim_name)}(UaType):
         if val is None:
             super().__init__(ffi.new("{prim_name}*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("{prim_name}[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("{prim_name}*", _val(val)), is_pointer)

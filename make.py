@@ -5,6 +5,7 @@
 
 import os
 import os.path
+import re
 from functools import reduce
 from shutil import copytree, rmtree
 
@@ -48,11 +49,15 @@ def generate_node_ids():
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if
                  line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
-        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
-        lines.insert(0, "class NodeIds:\n")
+        lines = list(map(lambda l: "\t" + re.sub(r"[a-zA-Z0]*?_[a-zA-Z0]*?_", "", l.split()[0]) +
+                                   " = UaNodeId(0, " + l.split()[1] + ")\n", lines))
+        lines.insert(0, "class NS0ID:\n")
+        lines.insert(0, "from ua_types import UaNodeId\n")
+        lines.insert(1, "\n")
+        lines.insert(1, "\n")
 
     os.chdir(dirname + r"/build/open62541/")
-    with open('node_ids.py', 'w+') as file:
+    with open('ua_ns0_node_ids.py', 'w+') as file:
         file.writelines(lines)
 
 
@@ -60,11 +65,18 @@ def generate_type_ids():
     with open(dirname + r"/open62541/build/src_generated/open62541/types_generated.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define UA_TYPES_"))
-        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
-        lines.insert(0, "class TypeIds:\n")
+        lines = list(map(lambda l: "\t" + l.split()[0].split("_")[2] + " = UaDataType(val=lib.UA_TYPES[" +
+                                   l.split()[1] + "])\n", lines))
+        count = lines.pop(0)
+        lines.insert(0, count.replace("UaDataType(val=lib.UA_TYPES[", "").replace("])", ""))
+        lines.insert(0, "class TYPES:\n")
+        lines.insert(0, "from ua_types import UaDataType\n")
+        lines.insert(0, "from intermediateApi import ffi, lib\n")
+        lines.insert(2, "\n")
+        lines.insert(2, "\n")
 
     os.chdir(dirname + r"/build/open62541/")
-    with open('type_ids.py', 'w+') as file:
+    with open('ua_data_types.py', 'w+') as file:
         file.writelines(lines)
 
 

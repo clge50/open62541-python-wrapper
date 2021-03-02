@@ -209,7 +209,7 @@ class AsyncResponse:
 <dl>
 <dt id="open62541.client_service_results.AddNodeResult"><code class="flex name class">
 <span>class <span class="ident">AddNodeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_new_node_id: ua_types.UaNodeId)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_new_node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -225,7 +225,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.AsyncResponse"><code class="flex name class">
 <span>class <span class="ident">AsyncResponse</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, req_id: ua_types.UaUInt32, _handle)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, req_id: ua_primitve_types.UaUInt32, _handle)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -242,7 +242,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.CallResult"><code class="flex name class">
 <span>class <span class="ident">CallResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, output_size: ua_types.SizeT, output: ua_types.UaVariant)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, output_size: c_types.SizeT, output: ua_base_types.UaVariant)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -259,7 +259,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadAccessLevelAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadAccessLevelAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_access_level: ua_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_access_level: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -275,7 +275,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadArrayDimensionsAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadArrayDimensionsAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_array_dimensions_size: ua_types.SizeT, out_array_dimensions: ua_types.UaUInt32)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_array_dimensions_size: c_types.SizeT, out_array_dimensions: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -293,7 +293,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out: ua_types.Void, out_data_type: ua_types.UaDataType)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out: c_types.Void, out_data_type: ua_base_types.UaDataType)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -310,7 +310,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadBrowseNameAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadBrowseNameAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_browse_name: ua_types.UaQualifiedName)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_browse_name: ua_base_types.UaQualifiedName)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -326,7 +326,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadContainsNoLoopsAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadContainsNoLoopsAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_contains_no_loops: ua_types.UaBoolean)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_contains_no_loops: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -342,7 +342,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadDataTypeAttribute"><code class="flex name class">
 <span>class <span class="ident">ReadDataTypeAttribute</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_data_type: ua_types.UaNodeId)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_data_type: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -358,7 +358,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadDescriptionAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadDescriptionAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_description: ua_types.UaLocalizedText)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_description: ua_base_types.UaLocalizedText)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -374,7 +374,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadDisplayNameAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadDisplayNameAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_display_name: ua_types.UaLocalizedText)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_display_name: ua_base_types.UaLocalizedText)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -390,7 +390,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadEventNotifierAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadEventNotifierAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_event_notifier: ua_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_event_notifier: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -406,7 +406,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadExecutableAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadExecutableAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_executable: ua_types.UaBoolean)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_executable: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -422,7 +422,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadInverseNameAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadInverseNameAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_inverse_name: ua_types.UaLocalizedText)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_inverse_name: ua_base_types.UaLocalizedText)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -438,7 +438,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadIsAbstractAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadIsAbstractAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_is_abstract: ua_types.UaBoolean)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_is_abstract: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -454,7 +454,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadMinimumSamplingIntervalAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadMinimumSamplingIntervalAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_min_sampling_interval: ua_types.UaDouble)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_min_sampling_interval: ua_primitve_types.UaDouble)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -470,7 +470,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadNodeClassAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadNodeClassAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_node_id: ua_types.UaNodeId)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -486,7 +486,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadNodeIdAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadNodeIdAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_node_id: ua_types.UaNodeId)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_node_id: ua_base_types.UaNodeId)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -502,7 +502,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadSymmetricAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadSymmetricAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_symmetric: ua_types.UaBoolean)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_symmetric: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -518,7 +518,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadUserAccessLevelAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadUserAccessLevelAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_user_access_level: ua_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_user_access_level: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -534,7 +534,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadUserExecutableAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadUserExecutableAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_user_executable: ua_types.UaBoolean)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_user_executable: ua_primitve_types.UaBoolean)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -550,7 +550,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadUserWriteMaskAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadUserWriteMaskAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_user_write_mask: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -566,7 +566,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadValueAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadValueAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, value: ua_types.UaVariant)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, value: ua_base_types.UaVariant)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -582,7 +582,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadValueRankAttribute"><code class="flex name class">
 <span>class <span class="ident">ReadValueRankAttribute</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_value_rank: ua_types.UaInt32)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_value_rank: ua_primitve_types.UaInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -598,7 +598,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadWriteMaskAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadWriteMaskAttributeResult</span></span>
-<span>(</span><span>status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_write_mask: ua_primitve_types.UaByte)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

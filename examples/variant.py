@@ -5,6 +5,7 @@ from ua_types import _ptr
 
 sys.path.append("../build/open62541")
 from ua_types import *
+from ua_data_types import TYPES
 from intermediateApi import ffi, lib
 
 # UA_Variant v;
