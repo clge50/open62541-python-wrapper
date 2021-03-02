@@ -28169,7 +28169,7 @@ class UaClientConfig(UaType):
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)
-            self._logger = UaSimpleAttributeOperand(val=val.logger, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=False)
             self._timeout = UaUInt32(val=val.timeout, is_pointer=False)
             self._client_description = UaUInt32(val=val.clientDescription, is_pointer=False)
             self._user_identity_token = UaUserIdentityToken(val=val.userIdentityToken, is_pointer=False)
