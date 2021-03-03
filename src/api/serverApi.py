@@ -476,8 +476,8 @@ class UaServer:
     condition:ua_types.UaNodeId, 
     condition_source:ua_types.UaNodeId, 
     remove_branch:ua_types.UaBoolean, 
-    callback:ua_types:UaTwoStateVariableChangeCallback, 
-    callback_type:ua_types:UaTwoStateVariableCallbackType) #TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
+    callback:ua_types.UaTwoStateVariableChangeCallback, 
+    callback_type:ua_types.UaTwoStateVariableCallbackType) #TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
 
         raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source, remove_branch, callback, callback_type)
         return ua_types.UaStatusCode(raw_result)
