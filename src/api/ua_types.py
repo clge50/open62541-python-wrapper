@@ -28152,3 +28152,33 @@ class UaEventFilter(UaType):
                 "\t" * (n + 1) + "select_clauses_size" + self._select_clauses_size.__str__(n + 1) +
                 "\t" * (n + 1) + "select_clauses" + self._select_clauses.__str__(n + 1) +
                 "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1) + "\n")
+
+
+
+
+
+#++++++++++++++++++++ protos +++++++++++++++++++++++
+
+class UaValueCallback(UaType):
+    def __init__(self):
+        return None
+
+class UaValueBackend(UaType):
+    def __init__(self):
+        return None
+
+class UaDataSource(UaType):
+    def __init__(self):
+        return None
+
+class UaNodeTypeLifecycle(UaType):
+    def __init__(self):
+        return None
+
+class UaTwoStateVariableCallbackType(UaType):
+    def __init__(self):
+        return None
+
+class UaTwoStateVariableChangeCallback(UaType):
+    def __init__(self):
+        return None

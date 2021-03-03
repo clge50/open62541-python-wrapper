@@ -423,7 +423,7 @@ class UaServer:
         return ua_types.StatusCode(val=raw_result)
 
 
-    def trigger_event(self, node_id:ua_types.UaNodeId, origin_id:ua_types.UaNodeId, out_event_id:ua_type.UaByteString, delete_event_node:ua_types.UaBoolean):
+    def trigger_event(self, node_id:ua_types.UaNodeId, origin_id:ua_types.UaNodeId, out_event_id:ua_types.UaByteString, delete_event_node:ua_types.UaBoolean):
         raw_result = lib.UA_Server_triggerEvent(self.ua_server, node_id._val, origin_id._val, out_event_id._ptr, delete_event_node._val)
         return ua_types.StatusCode(val=raw_result)
 
