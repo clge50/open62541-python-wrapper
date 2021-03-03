@@ -144,67 +144,67 @@ class UaClientConfig(UaType):
             return self._custom_data_types
 
     @client_context.setter
-    def client_context(self, val):
+    def client_context(self, val: Void):
         self._client_context = val
         self._value.clientContext = val._ptr
 
     @logger.setter
-    def logger(self, val):
+    def logger(self, val: UaSimpleAttributeOperand):
         self._logger = val
         self._value.logger = val._val
 
     @timeout.setter
-    def timeout(self, val):
+    def timeout(self, val: UaUInt32):
         self._timeout = val
         self._value.timeout = val._val
 
     @client_description.setter
-    def client_description(self, val):
+    def client_description(self, val: UaUInt32):
         self._client_description = val
         self._value.clientDescription = val._val
 
     @user_identity_token.setter
-    def user_identity_token(self, val):
+    def user_identity_token(self, val: UaUserIdentityToken):
         self._user_identity_token = val
         self._value.userIdentityToken = val._val
 
     @security_mode.setter
-    def security_mode(self, val):
+    def security_mode(self, val: UaMessageSecurityMode):
         self._security_mode = val
         self._value.securityMode = val._val
 
     @security_policy_uri.setter
-    def security_policy_uri(self, val):
+    def security_policy_uri(self, val: UaString):
         self._security_policy_uri = val
         self._value.securityPolicyUri = val._val
 
     @endpoint.setter
-    def endpoint(self, val):
+    def endpoint(self, val: UaEndpointDescription):
         self._endpoint = val
         self._value.endpoint = val._val
 
     @user_token_policy.setter
-    def user_token_policy(self, val):
+    def user_token_policy(self, val: UaUserTokenPolicy):
         self._user_token_policy = val
         self._value.userTokenPolicy = val._val
 
     @secure_channel_life_time.setter
-    def secure_channel_life_time(self, val):
+    def secure_channel_life_time(self, val: UaUInt32):
         self.secure_channel_life_time = val
         self._value.secureChannelLifeTime = val._val
 
     @requested_session_timeout.setter
-    def requested_session_timeout(self, val):
+    def requested_session_timeout(self, val: UaUInt32):
         self._requested_session_timeout = val
         self._value.requestedSessionTimeout = val._val
 
     @connectivity_check_interval.setter
-    def connectivity_check_interval(self, val):
+    def connectivity_check_interval(self, val: UaUInt32):
         self._connectivity_check_interval = val
         self._value.connectivityCheckInterval = val._val
 
     @custom_data_types.setter
-    def custom_data_types(self, val):
+    def custom_data_types(self, val: UaDataTypeArray):
         self._custom_data_types = val
         self._value.customDataTypes = val._ptr
 

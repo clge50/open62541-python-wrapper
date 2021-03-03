@@ -18,7 +18,7 @@ class UaMessageSecurityMode(UaType):
         (3, "UA_MESSAGESECURITYMODE_SIGNANDENCRYPT"),
         (2147483647, "__UA_MESSAGESECURITYMODE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_MessageSecurityMode*"), is_pointer)
         else:
@@ -50,7 +50,7 @@ class UaStructureType(UaType):
         (2, "UA_STRUCTURETYPE_UNION"),
         (2147483647, "__UA_STRUCTURETYPE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_StructureType*"), is_pointer)
         else:
@@ -82,7 +82,7 @@ class UaMonitoringMode(UaType):
         (2, "UA_MONITORINGMODE_REPORTING"),
         (2147483647, "__UA_MONITORINGMODE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_MonitoringMode*"), is_pointer)
         else:
@@ -128,7 +128,7 @@ class UaBrowseResultMask(UaType):
         (60, "UA_BROWSERESULTMASK_TARGETINFO"),
         (2147483647, "__UA_BROWSERESULTMASK_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_BrowseResultMask*"), is_pointer)
         else:
@@ -160,7 +160,7 @@ class UaAxisScaleEnumeration(UaType):
         (2, "UA_AXISSCALEENUMERATION_LN"),
         (2147483647, "__UA_AXISSCALEENUMERATION_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_AxisScaleEnumeration*"), is_pointer)
         else:
@@ -194,7 +194,7 @@ class UaBrowseDirection(UaType):
         (3, "UA_BROWSEDIRECTION_INVALID"),
         (2147483647, "__UA_BROWSEDIRECTION_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_BrowseDirection*"), is_pointer)
         else:
@@ -230,7 +230,7 @@ class UaTimestampsToReturn(UaType):
         (4, "UA_TIMESTAMPSTORETURN_INVALID"),
         (2147483647, "__UA_TIMESTAMPSTORETURN_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_TimestampsToReturn*"), is_pointer)
         else:
@@ -274,7 +274,7 @@ class UaNodeClass(UaType):
         (128, "UA_NODECLASS_VIEW"),
         (2147483647, "__UA_NODECLASS_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_NodeClass*"), is_pointer)
         else:
@@ -304,7 +304,7 @@ class UaSecurityTokenRequestType(UaType):
         (1, "UA_SECURITYTOKENREQUESTTYPE_RENEW"),
         (2147483647, "__UA_SECURITYTOKENREQUESTTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_SecurityTokenRequestType*"), is_pointer)
         else:
@@ -338,7 +338,7 @@ class UaApplicationType(UaType):
         (3, "UA_APPLICATIONTYPE_DISCOVERYSERVER"),
         (2147483647, "__UA_APPLICATIONTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_ApplicationType*"), is_pointer)
         else:
@@ -370,7 +370,7 @@ class UaDeadbandType(UaType):
         (2, "UA_DEADBANDTYPE_PERCENT"),
         (2147483647, "__UA_DEADBANDTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_DeadbandType*"), is_pointer)
         else:
@@ -402,7 +402,7 @@ class UaDataChangeTrigger(UaType):
         (2, "UA_DATACHANGETRIGGER_STATUSVALUETIMESTAMP"),
         (2147483647, "__UA_DATACHANGETRIGGER_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_DataChangeTrigger*"), is_pointer)
         else:
@@ -436,7 +436,7 @@ class UaUserTokenType(UaType):
         (3, "UA_USERTOKENTYPE_ISSUEDTOKEN"),
         (2147483647, "__UA_USERTOKENTYPE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UserTokenType*"), is_pointer)
         else:
@@ -532,7 +532,7 @@ class UaNodeAttributesMask(UaType):
         (26501356, "UA_NODEATTRIBUTESMASK_VIEW"),
         (2147483647, "__UA_NODEATTRIBUTESMASK_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_NodeAttributesMask*"), is_pointer)
         else:
@@ -574,7 +574,7 @@ class UaServerState(UaType):
         (7, "UA_SERVERSTATE_UNKNOWN"),
         (2147483647, "__UA_SERVERSTATE_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_ServerState*"), is_pointer)
         else:
@@ -636,7 +636,7 @@ class UaFilterOperator(UaType):
         (17, "UA_FILTEROPERATOR_BITWISEOR"),
         (2147483647, "__UA_FILTEROPERATOR_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_FilterOperator*"), is_pointer)
         else:
@@ -674,7 +674,7 @@ class UaRedundancySupport(UaType):
         (5, "UA_REDUNDANCYSUPPORT_HOTANDMIRRORED"),
         (2147483647, "__UA_REDUNDANCYSUPPORT_FORCE32BIT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_RedundancySupport*"), is_pointer)
         else:
@@ -777,37 +777,37 @@ class UaViewAttributes(UaType):
             return self._event_notifier
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @contains_no_loops.setter
-    def contains_no_loops(self, val):
+    def contains_no_loops(self, val: UaBoolean):
         self._contains_no_loops = val
         self._value.containsNoLoops = val._val
 
     @event_notifier.setter
-    def event_notifier(self, val):
+    def event_notifier(self, val: UaByte):
         self._event_notifier = val
         self._value.eventNotifier = val._val
 
@@ -859,12 +859,12 @@ class UaXVType(UaType):
             return self._data_value
 
     @x.setter
-    def x(self, val):
+    def x(self, val: UaDouble):
         self._x = val
         self._value.x = val._val
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaFloat):
         self._data_value = val
         self._value.value = val._val
 
@@ -902,7 +902,7 @@ class UaElementOperand(UaType):
             return self._index
 
     @index.setter
-    def index(self, val):
+    def index(self, val: UaUInt32):
         self._index = val
         self._value.index = val._val
 
@@ -1056,72 +1056,72 @@ class UaVariableAttributes(UaType):
             return self._historizing
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaVariant):
         self._data_value = val
         self._value.value = val._val
 
     @data_type.setter
-    def data_type(self, val):
+    def data_type(self, val: UaNodeId):
         self._data_type = val
         self._value.dataType = val._val
 
     @value_rank.setter
-    def value_rank(self, val):
+    def value_rank(self, val: UaInt32):
         self._value_rank = val
         self._value.valueRank = val._val
 
     @array_dimensions_size.setter
-    def array_dimensions_size(self, val):
+    def array_dimensions_size(self, val: SizeT):
         self._array_dimensions_size = val
         self._value.arrayDimensionsSize = val._val
 
     @array_dimensions.setter
-    def array_dimensions(self, val):
+    def array_dimensions(self, val: UaUInt32):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
     @access_level.setter
-    def access_level(self, val):
+    def access_level(self, val: UaByte):
         self._access_level = val
         self._value.accessLevel = val._val
 
     @user_access_level.setter
-    def user_access_level(self, val):
+    def user_access_level(self, val: UaByte):
         self._user_access_level = val
         self._value.userAccessLevel = val._val
 
     @minimum_sampling_interval.setter
-    def minimum_sampling_interval(self, val):
+    def minimum_sampling_interval(self, val: UaDouble):
         self._minimum_sampling_interval = val
         self._value.minimumSamplingInterval = val._val
 
     @historizing.setter
-    def historizing(self, val):
+    def historizing(self, val: UaBoolean):
         self._historizing = val
         self._value.historizing = val._val
 
@@ -1189,17 +1189,17 @@ class UaEnumValueType(UaType):
             return self._description
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaInt64):
         self._data_value = val
         self._value.value = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
@@ -1256,17 +1256,17 @@ class UaEventFieldList(UaType):
             return self._event_fields
 
     @client_handle.setter
-    def client_handle(self, val):
+    def client_handle(self, val: UaUInt32):
         self._client_handle = val
         self._value.clientHandle = val._val
 
     @event_fields_size.setter
-    def event_fields_size(self, val):
+    def event_fields_size(self, val: SizeT):
         self._event_fields_size = val
         self._value.eventFieldsSize = val._val
 
     @event_fields.setter
-    def event_fields(self, val):
+    def event_fields(self, val: UaVariant):
         self._event_fields = val
         self._value.eventFields = val._ptr
 
@@ -1341,27 +1341,27 @@ class UaMonitoredItemCreateResult(UaType):
             return self._filter_result
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @monitored_item_id.setter
-    def monitored_item_id(self, val):
+    def monitored_item_id(self, val: UaUInt32):
         self._monitored_item_id = val
         self._value.monitoredItemId = val._val
 
     @revised_sampling_interval.setter
-    def revised_sampling_interval(self, val):
+    def revised_sampling_interval(self, val: UaDouble):
         self._revised_sampling_interval = val
         self._value.revisedSamplingInterval = val._val
 
     @revised_queue_size.setter
-    def revised_queue_size(self, val):
+    def revised_queue_size(self, val: UaUInt32):
         self._revised_queue_size = val
         self._value.revisedQueueSize = val._val
 
     @filter_result.setter
-    def filter_result(self, val):
+    def filter_result(self, val: UaExtensionObject):
         self._filter_result = val
         self._value.filterResult = val._val
 
@@ -1429,22 +1429,22 @@ class UaEUInformation(UaType):
             return self._description
 
     @namespace_uri.setter
-    def namespace_uri(self, val):
+    def namespace_uri(self, val: UaString):
         self._namespace_uri = val
         self._value.namespaceUri = val._val
 
     @unit_id.setter
-    def unit_id(self, val):
+    def unit_id(self, val: UaInt32):
         self._unit_id = val
         self._value.unitId = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
@@ -1583,62 +1583,62 @@ class UaServerDiagnosticsSummaryDataType(UaType):
             return self._rejected_requests_count
 
     @server_view_count.setter
-    def server_view_count(self, val):
+    def server_view_count(self, val: UaUInt32):
         self._server_view_count = val
         self._value.serverViewCount = val._val
 
     @current_session_count.setter
-    def current_session_count(self, val):
+    def current_session_count(self, val: UaUInt32):
         self._current_session_count = val
         self._value.currentSessionCount = val._val
 
     @cumulated_session_count.setter
-    def cumulated_session_count(self, val):
+    def cumulated_session_count(self, val: UaUInt32):
         self._cumulated_session_count = val
         self._value.cumulatedSessionCount = val._val
 
     @security_rejected_session_count.setter
-    def security_rejected_session_count(self, val):
+    def security_rejected_session_count(self, val: UaUInt32):
         self._security_rejected_session_count = val
         self._value.securityRejectedSessionCount = val._val
 
     @rejected_session_count.setter
-    def rejected_session_count(self, val):
+    def rejected_session_count(self, val: UaUInt32):
         self._rejected_session_count = val
         self._value.rejectedSessionCount = val._val
 
     @session_timeout_count.setter
-    def session_timeout_count(self, val):
+    def session_timeout_count(self, val: UaUInt32):
         self._session_timeout_count = val
         self._value.sessionTimeoutCount = val._val
 
     @session_abort_count.setter
-    def session_abort_count(self, val):
+    def session_abort_count(self, val: UaUInt32):
         self._session_abort_count = val
         self._value.sessionAbortCount = val._val
 
     @current_subscription_count.setter
-    def current_subscription_count(self, val):
+    def current_subscription_count(self, val: UaUInt32):
         self._current_subscription_count = val
         self._value.currentSubscriptionCount = val._val
 
     @cumulated_subscription_count.setter
-    def cumulated_subscription_count(self, val):
+    def cumulated_subscription_count(self, val: UaUInt32):
         self._cumulated_subscription_count = val
         self._value.cumulatedSubscriptionCount = val._val
 
     @publishing_interval_count.setter
-    def publishing_interval_count(self, val):
+    def publishing_interval_count(self, val: UaUInt32):
         self._publishing_interval_count = val
         self._value.publishingIntervalCount = val._val
 
     @security_rejected_requests_count.setter
-    def security_rejected_requests_count(self, val):
+    def security_rejected_requests_count(self, val: UaUInt32):
         self._security_rejected_requests_count = val
         self._value.securityRejectedRequestsCount = val._val
 
     @rejected_requests_count.setter
-    def rejected_requests_count(self, val):
+    def rejected_requests_count(self, val: UaUInt32):
         self._rejected_requests_count = val
         self._value.rejectedRequestsCount = val._val
 
@@ -1722,27 +1722,27 @@ class UaContentFilterElementResult(UaType):
             return self._operand_diagnostic_infos
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @operand_status_codes_size.setter
-    def operand_status_codes_size(self, val):
+    def operand_status_codes_size(self, val: SizeT):
         self._operand_status_codes_size = val
         self._value.operandStatusCodesSize = val._val
 
     @operand_status_codes.setter
-    def operand_status_codes(self, val):
+    def operand_status_codes(self, val: UaStatusCode):
         self._operand_status_codes = val
         self._value.operandStatusCodes = val._ptr
 
     @operand_diagnostic_infos_size.setter
-    def operand_diagnostic_infos_size(self, val):
+    def operand_diagnostic_infos_size(self, val: SizeT):
         self._operand_diagnostic_infos_size = val
         self._value.operandDiagnosticInfosSize = val._val
 
     @operand_diagnostic_infos.setter
-    def operand_diagnostic_infos(self, val):
+    def operand_diagnostic_infos(self, val: UaDiagnosticInfo):
         self._operand_diagnostic_infos = val
         self._value.operandDiagnosticInfos = val._ptr
 
@@ -1783,7 +1783,7 @@ class UaLiteralOperand(UaType):
             return self._data_value
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaVariant):
         self._data_value = val
         self._value.value = val._val
 
@@ -1820,7 +1820,7 @@ class UaUserIdentityToken(UaType):
             return self._policy_id
 
     @policy_id.setter
-    def policy_id(self, val):
+    def policy_id(self, val: UaString):
         self._policy_id = val
         self._value.policyId = val._val
 
@@ -1866,12 +1866,12 @@ class UaX509IdentityToken(UaType):
             return self._certificate_data
 
     @policy_id.setter
-    def policy_id(self, val):
+    def policy_id(self, val: UaString):
         self._policy_id = val
         self._value.policyId = val._val
 
     @certificate_data.setter
-    def certificate_data(self, val):
+    def certificate_data(self, val: UaByteString):
         self._certificate_data = val
         self._value.certificateData = val._val
 
@@ -1918,12 +1918,12 @@ class UaMonitoredItemNotification(UaType):
             return self._data_value
 
     @client_handle.setter
-    def client_handle(self, val):
+    def client_handle(self, val: UaUInt32):
         self._client_handle = val
         self._value.clientHandle = val._val
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaDataValue):
         self._data_value = val
         self._value.value = val._val
 
@@ -2015,37 +2015,37 @@ class UaResponseHeader(UaType):
             return self._additional_header
 
     @timestamp.setter
-    def timestamp(self, val):
+    def timestamp(self, val: UaDateTime):
         self._timestamp = val
         self._value.timestamp = val._val
 
     @request_handle.setter
-    def request_handle(self, val):
+    def request_handle(self, val: UaUInt32):
         self._request_handle = val
         self._value.requestHandle = val._val
 
     @service_result.setter
-    def service_result(self, val):
+    def service_result(self, val: UaStatusCode):
         self._service_result = val
         self._value.serviceResult = val._val
 
     @service_diagnostics.setter
-    def service_diagnostics(self, val):
+    def service_diagnostics(self, val: UaDiagnosticInfo):
         self._service_diagnostics = val
         self._value.serviceDiagnostics = val._val
 
     @string_table_size.setter
-    def string_table_size(self, val):
+    def string_table_size(self, val: SizeT):
         self._string_table_size = val
         self._value.stringTableSize = val._val
 
     @string_table.setter
-    def string_table(self, val):
+    def string_table(self, val: UaString):
         self._string_table = val
         self._value.stringTable = val._ptr
 
     @additional_header.setter
-    def additional_header(self, val):
+    def additional_header(self, val: UaExtensionObject):
         self._additional_header = val
         self._value.additionalHeader = val._val
 
@@ -2097,12 +2097,12 @@ class UaSignatureData(UaType):
             return self._signature
 
     @algorithm.setter
-    def algorithm(self, val):
+    def algorithm(self, val: UaString):
         self._algorithm = val
         self._value.algorithm = val._val
 
     @signature.setter
-    def signature(self, val):
+    def signature(self, val: UaByteString):
         self._signature = val
         self._value.signature = val._val
 
@@ -2167,22 +2167,22 @@ class UaModifySubscriptionResponse(UaType):
             return self._revised_max_keep_alive_count
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @revised_publishing_interval.setter
-    def revised_publishing_interval(self, val):
+    def revised_publishing_interval(self, val: UaDouble):
         self._revised_publishing_interval = val
         self._value.revisedPublishingInterval = val._val
 
     @revised_lifetime_count.setter
-    def revised_lifetime_count(self, val):
+    def revised_lifetime_count(self, val: UaUInt32):
         self._revised_lifetime_count = val
         self._value.revisedLifetimeCount = val._val
 
     @revised_max_keep_alive_count.setter
-    def revised_max_keep_alive_count(self, val):
+    def revised_max_keep_alive_count(self, val: UaUInt32):
         self._revised_max_keep_alive_count = val
         self._value.revisedMaxKeepAliveCount = val._val
 
@@ -2258,27 +2258,27 @@ class UaNodeAttributes(UaType):
             return self._user_write_mask
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
@@ -2364,32 +2364,32 @@ class UaActivateSessionResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @server_nonce.setter
-    def server_nonce(self, val):
+    def server_nonce(self, val: UaByteString):
         self._server_nonce = val
         self._value.serverNonce = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -2458,22 +2458,22 @@ class UaEnumField(UaType):
             return self._name
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaInt64):
         self._data_value = val
         self._value.value = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @name.setter
-    def name(self, val):
+    def name(self, val: UaString):
         self._name = val
         self._value.name = val._val
 
@@ -2603,57 +2603,57 @@ class UaVariableTypeAttributes(UaType):
             return self._is_abstract
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaVariant):
         self._data_value = val
         self._value.value = val._val
 
     @data_type.setter
-    def data_type(self, val):
+    def data_type(self, val: UaNodeId):
         self._data_type = val
         self._value.dataType = val._val
 
     @value_rank.setter
-    def value_rank(self, val):
+    def value_rank(self, val: UaInt32):
         self._value_rank = val
         self._value.valueRank = val._val
 
     @array_dimensions_size.setter
-    def array_dimensions_size(self, val):
+    def array_dimensions_size(self, val: SizeT):
         self._array_dimensions_size = val
         self._value.arrayDimensionsSize = val._val
 
     @array_dimensions.setter
-    def array_dimensions(self, val):
+    def array_dimensions(self, val: UaUInt32):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
     @is_abstract.setter
-    def is_abstract(self, val):
+    def is_abstract(self, val: UaBoolean):
         self._is_abstract = val
         self._value.isAbstract = val._val
 
@@ -2754,37 +2754,37 @@ class UaCallMethodResult(UaType):
             return self._output_arguments
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @input_argument_results_size.setter
-    def input_argument_results_size(self, val):
+    def input_argument_results_size(self, val: SizeT):
         self._input_argument_results_size = val
         self._value.inputArgumentResultsSize = val._val
 
     @input_argument_results.setter
-    def input_argument_results(self, val):
+    def input_argument_results(self, val: UaStatusCode):
         self._input_argument_results = val
         self._value.inputArgumentResults = val._ptr
 
     @input_argument_diagnostic_infos_size.setter
-    def input_argument_diagnostic_infos_size(self, val):
+    def input_argument_diagnostic_infos_size(self, val: SizeT):
         self._input_argument_diagnostic_infos_size = val
         self._value.inputArgumentDiagnosticInfosSize = val._val
 
     @input_argument_diagnostic_infos.setter
-    def input_argument_diagnostic_infos(self, val):
+    def input_argument_diagnostic_infos(self, val: UaDiagnosticInfo):
         self._input_argument_diagnostic_infos = val
         self._value.inputArgumentDiagnosticInfos = val._ptr
 
     @output_arguments_size.setter
-    def output_arguments_size(self, val):
+    def output_arguments_size(self, val: SizeT):
         self._output_arguments_size = val
         self._value.outputArgumentsSize = val._val
 
     @output_arguments.setter
-    def output_arguments(self, val):
+    def output_arguments(self, val: UaVariant):
         self._output_arguments = val
         self._value.outputArguments = val._ptr
 
@@ -2863,27 +2863,27 @@ class UaSetMonitoringModeResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -2978,37 +2978,37 @@ class UaRequestHeader(UaType):
             return self._additional_header
 
     @authentication_token.setter
-    def authentication_token(self, val):
+    def authentication_token(self, val: UaNodeId):
         self._authentication_token = val
         self._value.authenticationToken = val._val
 
     @timestamp.setter
-    def timestamp(self, val):
+    def timestamp(self, val: UaDateTime):
         self._timestamp = val
         self._value.timestamp = val._val
 
     @request_handle.setter
-    def request_handle(self, val):
+    def request_handle(self, val: UaUInt32):
         self._request_handle = val
         self._value.requestHandle = val._val
 
     @return_diagnostics.setter
-    def return_diagnostics(self, val):
+    def return_diagnostics(self, val: UaUInt32):
         self._return_diagnostics = val
         self._value.returnDiagnostics = val._val
 
     @audit_entry_id.setter
-    def audit_entry_id(self, val):
+    def audit_entry_id(self, val: UaString):
         self._audit_entry_id = val
         self._value.auditEntryId = val._val
 
     @timeout_hint.setter
-    def timeout_hint(self, val):
+    def timeout_hint(self, val: UaUInt32):
         self._timeout_hint = val
         self._value.timeoutHint = val._val
 
     @additional_header.setter
-    def additional_header(self, val):
+    def additional_header(self, val: UaExtensionObject):
         self._additional_header = val
         self._value.additionalHeader = val._val
 
@@ -3078,22 +3078,22 @@ class UaMonitoredItemModifyResult(UaType):
             return self._filter_result
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @revised_sampling_interval.setter
-    def revised_sampling_interval(self, val):
+    def revised_sampling_interval(self, val: UaDouble):
         self._revised_sampling_interval = val
         self._value.revisedSamplingInterval = val._val
 
     @revised_queue_size.setter
-    def revised_queue_size(self, val):
+    def revised_queue_size(self, val: UaUInt32):
         self._revised_queue_size = val
         self._value.revisedQueueSize = val._val
 
     @filter_result.setter
-    def filter_result(self, val):
+    def filter_result(self, val: UaExtensionObject):
         self._filter_result = val
         self._value.filterResult = val._val
 
@@ -3133,7 +3133,7 @@ class UaCloseSecureChannelRequest(UaType):
             return self._request_header
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
@@ -3197,22 +3197,22 @@ class UaNotificationMessage(UaType):
             return self._notification_data
 
     @sequence_number.setter
-    def sequence_number(self, val):
+    def sequence_number(self, val: UaUInt32):
         self._sequence_number = val
         self._value.sequenceNumber = val._val
 
     @publish_time.setter
-    def publish_time(self, val):
+    def publish_time(self, val: UaDateTime):
         self._publish_time = val
         self._value.publishTime = val._val
 
     @notification_data_size.setter
-    def notification_data_size(self, val):
+    def notification_data_size(self, val: SizeT):
         self._notification_data_size = val
         self._value.notificationDataSize = val._val
 
     @notification_data.setter
-    def notification_data(self, val):
+    def notification_data(self, val: UaExtensionObject):
         self._notification_data = val
         self._value.notificationData = val._ptr
 
@@ -3288,27 +3288,27 @@ class UaCreateSubscriptionResponse(UaType):
             return self._revised_max_keep_alive_count
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @revised_publishing_interval.setter
-    def revised_publishing_interval(self, val):
+    def revised_publishing_interval(self, val: UaDouble):
         self._revised_publishing_interval = val
         self._value.revisedPublishingInterval = val._val
 
     @revised_lifetime_count.setter
-    def revised_lifetime_count(self, val):
+    def revised_lifetime_count(self, val: UaUInt32):
         self._revised_lifetime_count = val
         self._value.revisedLifetimeCount = val._val
 
     @revised_max_keep_alive_count.setter
-    def revised_max_keep_alive_count(self, val):
+    def revised_max_keep_alive_count(self, val: UaUInt32):
         self._revised_max_keep_alive_count = val
         self._value.revisedMaxKeepAliveCount = val._val
 
@@ -3358,12 +3358,12 @@ class UaEnumDefinition(UaType):
             return self._fields
 
     @fields_size.setter
-    def fields_size(self, val):
+    def fields_size(self, val: SizeT):
         self._fields_size = val
         self._value.fieldsSize = val._val
 
     @fields.setter
-    def fields(self, val):
+    def fields(self, val: UaEnumField):
         self._fields = val
         self._value.fields = val._ptr
 
@@ -3428,22 +3428,22 @@ class UaCallMethodRequest(UaType):
             return self._input_arguments
 
     @object_id.setter
-    def object_id(self, val):
+    def object_id(self, val: UaNodeId):
         self._object_id = val
         self._value.objectId = val._val
 
     @method_id.setter
-    def method_id(self, val):
+    def method_id(self, val: UaNodeId):
         self._method_id = val
         self._value.methodId = val._val
 
     @input_arguments_size.setter
-    def input_arguments_size(self, val):
+    def input_arguments_size(self, val: SizeT):
         self._input_arguments_size = val
         self._value.inputArgumentsSize = val._val
 
     @input_arguments.setter
-    def input_arguments(self, val):
+    def input_arguments(self, val: UaVariant):
         self._input_arguments = val
         self._value.inputArguments = val._ptr
 
@@ -3519,27 +3519,27 @@ class UaReadResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaDataValue):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -3625,32 +3625,32 @@ class UaObjectTypeAttributes(UaType):
             return self._is_abstract
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @is_abstract.setter
-    def is_abstract(self, val):
+    def is_abstract(self, val: UaBoolean):
         self._is_abstract = val
         self._value.isAbstract = val._val
 
@@ -3692,7 +3692,7 @@ class UaCloseSessionResponse(UaType):
             return self._response_header
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
@@ -3756,22 +3756,22 @@ class UaSetPublishingModeRequest(UaType):
             return self._subscription_ids
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @publishing_enabled.setter
-    def publishing_enabled(self, val):
+    def publishing_enabled(self, val: UaBoolean):
         self._publishing_enabled = val
         self._value.publishingEnabled = val._val
 
     @subscription_ids_size.setter
-    def subscription_ids_size(self, val):
+    def subscription_ids_size(self, val: SizeT):
         self._subscription_ids_size = val
         self._value.subscriptionIdsSize = val._val
 
     @subscription_ids.setter
-    def subscription_ids(self, val):
+    def subscription_ids(self, val: UaUInt32):
         self._subscription_ids = val
         self._value.subscriptionIds = val._ptr
 
@@ -3829,17 +3829,17 @@ class UaIssuedIdentityToken(UaType):
             return self._encryption_algorithm
 
     @policy_id.setter
-    def policy_id(self, val):
+    def policy_id(self, val: UaString):
         self._policy_id = val
         self._value.policyId = val._val
 
     @token_data.setter
-    def token_data(self, val):
+    def token_data(self, val: UaByteString):
         self._token_data = val
         self._value.tokenData = val._val
 
     @encryption_algorithm.setter
-    def encryption_algorithm(self, val):
+    def encryption_algorithm(self, val: UaString):
         self._encryption_algorithm = val
         self._value.encryptionAlgorithm = val._val
 
@@ -3914,27 +3914,27 @@ class UaDeleteMonitoredItemsResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -4002,22 +4002,22 @@ class UaBrowseNextRequest(UaType):
             return self._continuation_points
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @release_continuation_points.setter
-    def release_continuation_points(self, val):
+    def release_continuation_points(self, val: UaBoolean):
         self._release_continuation_points = val
         self._value.releaseContinuationPoints = val._val
 
     @continuation_points_size.setter
-    def continuation_points_size(self, val):
+    def continuation_points_size(self, val: SizeT):
         self._continuation_points_size = val
         self._value.continuationPointsSize = val._val
 
     @continuation_points.setter
-    def continuation_points(self, val):
+    def continuation_points(self, val: UaByteString):
         self._continuation_points = val
         self._value.continuationPoints = val._ptr
 
@@ -4111,37 +4111,37 @@ class UaModifySubscriptionRequest(UaType):
             return self._priority
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @requested_publishing_interval.setter
-    def requested_publishing_interval(self, val):
+    def requested_publishing_interval(self, val: UaDouble):
         self._requested_publishing_interval = val
         self._value.requestedPublishingInterval = val._val
 
     @requested_lifetime_count.setter
-    def requested_lifetime_count(self, val):
+    def requested_lifetime_count(self, val: UaUInt32):
         self._requested_lifetime_count = val
         self._value.requestedLifetimeCount = val._val
 
     @requested_max_keep_alive_count.setter
-    def requested_max_keep_alive_count(self, val):
+    def requested_max_keep_alive_count(self, val: UaUInt32):
         self._requested_max_keep_alive_count = val
         self._value.requestedMaxKeepAliveCount = val._val
 
     @max_notifications_per_publish.setter
-    def max_notifications_per_publish(self, val):
+    def max_notifications_per_publish(self, val: UaUInt32):
         self._max_notifications_per_publish = val
         self._value.maxNotificationsPerPublish = val._val
 
     @priority.setter
-    def priority(self, val):
+    def priority(self, val: UaByte):
         self._priority = val
         self._value.priority = val._val
 
@@ -4229,32 +4229,32 @@ class UaBrowseDescription(UaType):
             return self._result_mask
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @browse_direction.setter
-    def browse_direction(self, val):
+    def browse_direction(self, val: UaBrowseDirection):
         self._browse_direction = val
         self._value.browseDirection = val._val
 
     @reference_type_id.setter
-    def reference_type_id(self, val):
+    def reference_type_id(self, val: UaNodeId):
         self._reference_type_id = val
         self._value.referenceTypeId = val._val
 
     @include_subtypes.setter
-    def include_subtypes(self, val):
+    def include_subtypes(self, val: UaBoolean):
         self._include_subtypes = val
         self._value.includeSubtypes = val._val
 
     @node_class_mask.setter
-    def node_class_mask(self, val):
+    def node_class_mask(self, val: UaUInt32):
         self._node_class_mask = val
         self._value.nodeClassMask = val._val
 
     @result_mask.setter
-    def result_mask(self, val):
+    def result_mask(self, val: UaUInt32):
         self._result_mask = val
         self._value.resultMask = val._val
 
@@ -4305,12 +4305,12 @@ class UaSignedSoftwareCertificate(UaType):
             return self._signature
 
     @certificate_data.setter
-    def certificate_data(self, val):
+    def certificate_data(self, val: UaByteString):
         self._certificate_data = val
         self._value.certificateData = val._val
 
     @signature.setter
-    def signature(self, val):
+    def signature(self, val: UaByteString):
         self._signature = val
         self._value.signature = val._val
 
@@ -4357,12 +4357,12 @@ class UaBrowsePathTarget(UaType):
             return self._remaining_path_index
 
     @target_id.setter
-    def target_id(self, val):
+    def target_id(self, val: UaExpandedNodeId):
         self._target_id = val
         self._value.targetId = val._val
 
     @remaining_path_index.setter
-    def remaining_path_index(self, val):
+    def remaining_path_index(self, val: UaUInt32):
         self._remaining_path_index = val
         self._value.remainingPathIndex = val._val
 
@@ -4436,27 +4436,27 @@ class UaWriteResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -4506,12 +4506,12 @@ class UaAddNodesResult(UaType):
             return self._added_node_id
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @added_node_id.setter
-    def added_node_id(self, val):
+    def added_node_id(self, val: UaNodeId):
         self._added_node_id = val
         self._value.addedNodeId = val._val
 
@@ -4594,32 +4594,32 @@ class UaAddReferencesItem(UaType):
             return self._target_node_class
 
     @source_node_id.setter
-    def source_node_id(self, val):
+    def source_node_id(self, val: UaNodeId):
         self._source_node_id = val
         self._value.sourceNodeId = val._val
 
     @reference_type_id.setter
-    def reference_type_id(self, val):
+    def reference_type_id(self, val: UaNodeId):
         self._reference_type_id = val
         self._value.referenceTypeId = val._val
 
     @is_forward.setter
-    def is_forward(self, val):
+    def is_forward(self, val: UaBoolean):
         self._is_forward = val
         self._value.isForward = val._val
 
     @target_server_uri.setter
-    def target_server_uri(self, val):
+    def target_server_uri(self, val: UaString):
         self._target_server_uri = val
         self._value.targetServerUri = val._val
 
     @target_node_id.setter
-    def target_node_id(self, val):
+    def target_node_id(self, val: UaExpandedNodeId):
         self._target_node_id = val
         self._value.targetNodeId = val._val
 
     @target_node_class.setter
-    def target_node_class(self, val):
+    def target_node_class(self, val: UaNodeClass):
         self._target_node_class = val
         self._value.targetNodeClass = val._val
 
@@ -4697,27 +4697,27 @@ class UaDeleteReferencesResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -4785,22 +4785,22 @@ class UaRelativePathElement(UaType):
             return self._target_name
 
     @reference_type_id.setter
-    def reference_type_id(self, val):
+    def reference_type_id(self, val: UaNodeId):
         self._reference_type_id = val
         self._value.referenceTypeId = val._val
 
     @is_inverse.setter
-    def is_inverse(self, val):
+    def is_inverse(self, val: UaBoolean):
         self._is_inverse = val
         self._value.isInverse = val._val
 
     @include_subtypes.setter
-    def include_subtypes(self, val):
+    def include_subtypes(self, val: UaBoolean):
         self._include_subtypes = val
         self._value.includeSubtypes = val._val
 
     @target_name.setter
-    def target_name(self, val):
+    def target_name(self, val: UaQualifiedName):
         self._target_name = val
         self._value.targetName = val._val
 
@@ -4849,12 +4849,12 @@ class UaSubscriptionAcknowledgement(UaType):
             return self._sequence_number
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @sequence_number.setter
-    def sequence_number(self, val):
+    def sequence_number(self, val: UaUInt32):
         self._sequence_number = val
         self._value.sequenceNumber = val._val
 
@@ -4910,17 +4910,17 @@ class UaTransferResult(UaType):
             return self._available_sequence_numbers
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @available_sequence_numbers_size.setter
-    def available_sequence_numbers_size(self, val):
+    def available_sequence_numbers_size(self, val: SizeT):
         self._available_sequence_numbers_size = val
         self._value.availableSequenceNumbersSize = val._val
 
     @available_sequence_numbers.setter
-    def available_sequence_numbers(self, val):
+    def available_sequence_numbers(self, val: UaUInt32):
         self._available_sequence_numbers = val
         self._value.availableSequenceNumbers = val._ptr
 
@@ -4995,27 +4995,27 @@ class UaCreateMonitoredItemsResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaMonitoredItemCreateResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -5092,27 +5092,27 @@ class UaDeleteReferencesItem(UaType):
             return self._delete_bidirectional
 
     @source_node_id.setter
-    def source_node_id(self, val):
+    def source_node_id(self, val: UaNodeId):
         self._source_node_id = val
         self._value.sourceNodeId = val._val
 
     @reference_type_id.setter
-    def reference_type_id(self, val):
+    def reference_type_id(self, val: UaNodeId):
         self._reference_type_id = val
         self._value.referenceTypeId = val._val
 
     @is_forward.setter
-    def is_forward(self, val):
+    def is_forward(self, val: UaBoolean):
         self._is_forward = val
         self._value.isForward = val._val
 
     @target_node_id.setter
-    def target_node_id(self, val):
+    def target_node_id(self, val: UaExpandedNodeId):
         self._target_node_id = val
         self._value.targetNodeId = val._val
 
     @delete_bidirectional.setter
-    def delete_bidirectional(self, val):
+    def delete_bidirectional(self, val: UaBoolean):
         self._delete_bidirectional = val
         self._value.deleteBidirectional = val._val
 
@@ -5180,22 +5180,22 @@ class UaWriteValue(UaType):
             return self._data_value
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @attribute_id.setter
-    def attribute_id(self, val):
+    def attribute_id(self, val: UaUInt32):
         self._attribute_id = val
         self._value.attributeId = val._val
 
     @index_range.setter
-    def index_range(self, val):
+    def index_range(self, val: UaString):
         self._index_range = val
         self._value.indexRange = val._val
 
     @data_value.setter
-    def data_value(self, val):
+    def data_value(self, val: UaDataValue):
         self._data_value = val
         self._value.value = val._val
 
@@ -5280,32 +5280,32 @@ class UaDataTypeAttributes(UaType):
             return self._is_abstract
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @is_abstract.setter
-    def is_abstract(self, val):
+    def is_abstract(self, val: UaBoolean):
         self._is_abstract = val
         self._value.isAbstract = val._val
 
@@ -5383,27 +5383,27 @@ class UaTransferSubscriptionsResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaTransferResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -5480,27 +5480,27 @@ class UaAddReferencesResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -5586,32 +5586,32 @@ class UaBuildInfo(UaType):
             return self._build_date
 
     @product_uri.setter
-    def product_uri(self, val):
+    def product_uri(self, val: UaString):
         self._product_uri = val
         self._value.productUri = val._val
 
     @manufacturer_name.setter
-    def manufacturer_name(self, val):
+    def manufacturer_name(self, val: UaString):
         self._manufacturer_name = val
         self._value.manufacturerName = val._val
 
     @product_name.setter
-    def product_name(self, val):
+    def product_name(self, val: UaString):
         self._product_name = val
         self._value.productName = val._val
 
     @software_version.setter
-    def software_version(self, val):
+    def software_version(self, val: UaString):
         self._software_version = val
         self._value.softwareVersion = val._val
 
     @build_number.setter
-    def build_number(self, val):
+    def build_number(self, val: UaString):
         self._build_number = val
         self._value.buildNumber = val._val
 
     @build_date.setter
-    def build_date(self, val):
+    def build_date(self, val: UaDateTime):
         self._build_date = val
         self._value.buildDate = val._val
 
@@ -5689,27 +5689,27 @@ class UaMonitoringParameters(UaType):
             return self._discard_oldest
 
     @client_handle.setter
-    def client_handle(self, val):
+    def client_handle(self, val: UaUInt32):
         self._client_handle = val
         self._value.clientHandle = val._val
 
     @sampling_interval.setter
-    def sampling_interval(self, val):
+    def sampling_interval(self, val: UaDouble):
         self._sampling_interval = val
         self._value.samplingInterval = val._val
 
     @filter.setter
-    def filter(self, val):
+    def filter(self, val: UaExtensionObject):
         self._filter = val
         self._value.filter = val._val
 
     @queue_size.setter
-    def queue_size(self, val):
+    def queue_size(self, val: UaUInt32):
         self._queue_size = val
         self._value.queueSize = val._val
 
     @discard_oldest.setter
-    def discard_oldest(self, val):
+    def discard_oldest(self, val: UaBoolean):
         self._discard_oldest = val
         self._value.discardOldest = val._val
 
@@ -5759,12 +5759,12 @@ class UaDoubleComplexNumberType(UaType):
             return self._imaginary
 
     @real.setter
-    def real(self, val):
+    def real(self, val: UaDouble):
         self._real = val
         self._value.real = val._val
 
     @imaginary.setter
-    def imaginary(self, val):
+    def imaginary(self, val: UaDouble):
         self._imaginary = val
         self._value.imaginary = val._val
 
@@ -5811,12 +5811,12 @@ class UaDeleteNodesItem(UaType):
             return self._delete_target_references
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @delete_target_references.setter
-    def delete_target_references(self, val):
+    def delete_target_references(self, val: UaBoolean):
         self._delete_target_references = val
         self._value.deleteTargetReferences = val._val
 
@@ -5881,22 +5881,22 @@ class UaReadValueId(UaType):
             return self._data_encoding
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @attribute_id.setter
-    def attribute_id(self, val):
+    def attribute_id(self, val: UaUInt32):
         self._attribute_id = val
         self._value.attributeId = val._val
 
     @index_range.setter
-    def index_range(self, val):
+    def index_range(self, val: UaString):
         self._index_range = val
         self._value.indexRange = val._val
 
     @data_encoding.setter
-    def data_encoding(self, val):
+    def data_encoding(self, val: UaQualifiedName):
         self._data_encoding = val
         self._value.dataEncoding = val._val
 
@@ -5954,17 +5954,17 @@ class UaCallRequest(UaType):
             return self._methods_to_call
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @methods_to_call_size.setter
-    def methods_to_call_size(self, val):
+    def methods_to_call_size(self, val: SizeT):
         self._methods_to_call_size = val
         self._value.methodsToCallSize = val._val
 
     @methods_to_call.setter
-    def methods_to_call(self, val):
+    def methods_to_call(self, val: UaCallMethodRequest):
         self._methods_to_call = val
         self._value.methodsToCall = val._ptr
 
@@ -6012,12 +6012,12 @@ class UaRelativePath(UaType):
             return self._elements
 
     @elements_size.setter
-    def elements_size(self, val):
+    def elements_size(self, val: SizeT):
         self._elements_size = val
         self._value.elementsSize = val._val
 
     @elements.setter
-    def elements(self, val):
+    def elements(self, val: UaRelativePathElement):
         self._elements = val
         self._value.elements = val._ptr
 
@@ -6073,17 +6073,17 @@ class UaDeleteNodesRequest(UaType):
             return self._nodes_to_delete
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @nodes_to_delete_size.setter
-    def nodes_to_delete_size(self, val):
+    def nodes_to_delete_size(self, val: SizeT):
         self._nodes_to_delete_size = val
         self._value.nodesToDeleteSize = val._val
 
     @nodes_to_delete.setter
-    def nodes_to_delete(self, val):
+    def nodes_to_delete(self, val: UaDeleteNodesItem):
         self._nodes_to_delete = val
         self._value.nodesToDelete = val._ptr
 
@@ -6131,12 +6131,12 @@ class UaMonitoredItemModifyRequest(UaType):
             return self._requested_parameters
 
     @monitored_item_id.setter
-    def monitored_item_id(self, val):
+    def monitored_item_id(self, val: UaUInt32):
         self._monitored_item_id = val
         self._value.monitoredItemId = val._val
 
     @requested_parameters.setter
-    def requested_parameters(self, val):
+    def requested_parameters(self, val: UaMonitoringParameters):
         self._requested_parameters = val
         self._value.requestedParameters = val._val
 
@@ -6210,27 +6210,27 @@ class UaAggregateConfiguration(UaType):
             return self._use_sloped_extrapolation
 
     @use_server_capabilities_defaults.setter
-    def use_server_capabilities_defaults(self, val):
+    def use_server_capabilities_defaults(self, val: UaBoolean):
         self._use_server_capabilities_defaults = val
         self._value.useServerCapabilitiesDefaults = val._val
 
     @treat_uncertain_as_bad.setter
-    def treat_uncertain_as_bad(self, val):
+    def treat_uncertain_as_bad(self, val: UaBoolean):
         self._treat_uncertain_as_bad = val
         self._value.treatUncertainAsBad = val._val
 
     @percent_data_bad.setter
-    def percent_data_bad(self, val):
+    def percent_data_bad(self, val: UaByte):
         self._percent_data_bad = val
         self._value.percentDataBad = val._val
 
     @percent_data_good.setter
-    def percent_data_good(self, val):
+    def percent_data_good(self, val: UaByte):
         self._percent_data_good = val
         self._value.percentDataGood = val._val
 
     @use_sloped_extrapolation.setter
-    def use_sloped_extrapolation(self, val):
+    def use_sloped_extrapolation(self, val: UaBoolean):
         self._use_sloped_extrapolation = val
         self._value.useSlopedExtrapolation = val._val
 
@@ -6271,7 +6271,7 @@ class UaUnregisterNodesResponse(UaType):
             return self._response_header
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
@@ -6335,22 +6335,22 @@ class UaContentFilterResult(UaType):
             return self._element_diagnostic_infos
 
     @element_results_size.setter
-    def element_results_size(self, val):
+    def element_results_size(self, val: SizeT):
         self._element_results_size = val
         self._value.elementResultsSize = val._val
 
     @element_results.setter
-    def element_results(self, val):
+    def element_results(self, val: UaContentFilterElementResult):
         self._element_results = val
         self._value.elementResults = val._ptr
 
     @element_diagnostic_infos_size.setter
-    def element_diagnostic_infos_size(self, val):
+    def element_diagnostic_infos_size(self, val: SizeT):
         self._element_diagnostic_infos_size = val
         self._value.elementDiagnosticInfosSize = val._val
 
     @element_diagnostic_infos.setter
-    def element_diagnostic_infos(self, val):
+    def element_diagnostic_infos(self, val: UaDiagnosticInfo):
         self._element_diagnostic_infos = val
         self._value.elementDiagnosticInfos = val._ptr
 
@@ -6426,27 +6426,27 @@ class UaUserTokenPolicy(UaType):
             return self._security_policy_uri
 
     @policy_id.setter
-    def policy_id(self, val):
+    def policy_id(self, val: UaString):
         self._policy_id = val
         self._value.policyId = val._val
 
     @token_type.setter
-    def token_type(self, val):
+    def token_type(self, val: UaUserTokenType):
         self._token_type = val
         self._value.tokenType = val._val
 
     @issued_token_type.setter
-    def issued_token_type(self, val):
+    def issued_token_type(self, val: UaString):
         self._issued_token_type = val
         self._value.issuedTokenType = val._val
 
     @issuer_endpoint_url.setter
-    def issuer_endpoint_url(self, val):
+    def issuer_endpoint_url(self, val: UaString):
         self._issuer_endpoint_url = val
         self._value.issuerEndpointUrl = val._val
 
     @security_policy_uri.setter
-    def security_policy_uri(self, val):
+    def security_policy_uri(self, val: UaString):
         self._security_policy_uri = val
         self._value.securityPolicyUri = val._val
 
@@ -6514,22 +6514,22 @@ class UaDeleteMonitoredItemsRequest(UaType):
             return self._monitored_item_ids
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @monitored_item_ids_size.setter
-    def monitored_item_ids_size(self, val):
+    def monitored_item_ids_size(self, val: SizeT):
         self._monitored_item_ids_size = val
         self._value.monitoredItemIdsSize = val._val
 
     @monitored_item_ids.setter
-    def monitored_item_ids(self, val):
+    def monitored_item_ids(self, val: UaUInt32):
         self._monitored_item_ids = val
         self._value.monitoredItemIds = val._ptr
 
@@ -6605,27 +6605,27 @@ class UaSetMonitoringModeRequest(UaType):
             return self._monitored_item_ids
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @monitoring_mode.setter
-    def monitoring_mode(self, val):
+    def monitoring_mode(self, val: UaMonitoringMode):
         self._monitoring_mode = val
         self._value.monitoringMode = val._val
 
     @monitored_item_ids_size.setter
-    def monitored_item_ids_size(self, val):
+    def monitored_item_ids_size(self, val: SizeT):
         self._monitored_item_ids_size = val
         self._value.monitoredItemIdsSize = val._val
 
     @monitored_item_ids.setter
-    def monitored_item_ids(self, val):
+    def monitored_item_ids(self, val: UaUInt32):
         self._monitored_item_ids = val
         self._value.monitoredItemIds = val._ptr
 
@@ -6729,42 +6729,42 @@ class UaReferenceTypeAttributes(UaType):
             return self._inverse_name
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @is_abstract.setter
-    def is_abstract(self, val):
+    def is_abstract(self, val: UaBoolean):
         self._is_abstract = val
         self._value.isAbstract = val._val
 
     @symmetric.setter
-    def symmetric(self, val):
+    def symmetric(self, val: UaBoolean):
         self._symmetric = val
         self._value.symmetric = val._val
 
     @inverse_name.setter
-    def inverse_name(self, val):
+    def inverse_name(self, val: UaLocalizedText):
         self._inverse_name = val
         self._value.inverseName = val._val
 
@@ -6853,32 +6853,32 @@ class UaGetEndpointsRequest(UaType):
             return self._profile_uris
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @endpoint_url.setter
-    def endpoint_url(self, val):
+    def endpoint_url(self, val: UaString):
         self._endpoint_url = val
         self._value.endpointUrl = val._val
 
     @locale_ids_size.setter
-    def locale_ids_size(self, val):
+    def locale_ids_size(self, val: SizeT):
         self._locale_ids_size = val
         self._value.localeIdsSize = val._val
 
     @locale_ids.setter
-    def locale_ids(self, val):
+    def locale_ids(self, val: UaString):
         self._locale_ids = val
         self._value.localeIds = val._ptr
 
     @profile_uris_size.setter
-    def profile_uris_size(self, val):
+    def profile_uris_size(self, val: SizeT):
         self._profile_uris_size = val
         self._value.profileUrisSize = val._val
 
     @profile_uris.setter
-    def profile_uris(self, val):
+    def profile_uris(self, val: UaString):
         self._profile_uris = val
         self._value.profileUris = val._ptr
 
@@ -6920,7 +6920,7 @@ class UaCloseSecureChannelResponse(UaType):
             return self._response_header
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
@@ -6975,17 +6975,17 @@ class UaViewDescription(UaType):
             return self._view_version
 
     @view_id.setter
-    def view_id(self, val):
+    def view_id(self, val: UaNodeId):
         self._view_id = val
         self._value.viewId = val._val
 
     @timestamp.setter
-    def timestamp(self, val):
+    def timestamp(self, val: UaDateTime):
         self._timestamp = val
         self._value.timestamp = val._val
 
     @view_version.setter
-    def view_version(self, val):
+    def view_version(self, val: UaUInt32):
         self._view_version = val
         self._value.viewVersion = val._val
 
@@ -7060,27 +7060,27 @@ class UaSetPublishingModeResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -7130,12 +7130,12 @@ class UaStatusChangeNotification(UaType):
             return self._diagnostic_info
 
     @status.setter
-    def status(self, val):
+    def status(self, val: UaStatusCode):
         self._status = val
         self._value.status = val._val
 
     @diagnostic_info.setter
-    def diagnostic_info(self, val):
+    def diagnostic_info(self, val: UaDiagnosticInfo):
         self._diagnostic_info = val
         self._value.diagnosticInfo = val._val
 
@@ -7236,42 +7236,42 @@ class UaStructureField(UaType):
             return self._is_optional
 
     @name.setter
-    def name(self, val):
+    def name(self, val: UaString):
         self._name = val
         self._value.name = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @data_type.setter
-    def data_type(self, val):
+    def data_type(self, val: UaNodeId):
         self._data_type = val
         self._value.dataType = val._val
 
     @value_rank.setter
-    def value_rank(self, val):
+    def value_rank(self, val: UaInt32):
         self._value_rank = val
         self._value.valueRank = val._val
 
     @array_dimensions_size.setter
-    def array_dimensions_size(self, val):
+    def array_dimensions_size(self, val: SizeT):
         self._array_dimensions_size = val
         self._value.arrayDimensionsSize = val._val
 
     @array_dimensions.setter
-    def array_dimensions(self, val):
+    def array_dimensions(self, val: UaUInt32):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
     @max_string_length.setter
-    def max_string_length(self, val):
+    def max_string_length(self, val: UaUInt32):
         self._max_string_length = val
         self._value.maxStringLength = val._val
 
     @is_optional.setter
-    def is_optional(self, val):
+    def is_optional(self, val: UaBoolean):
         self._is_optional = val
         self._value.isOptional = val._val
 
@@ -7351,27 +7351,27 @@ class UaEventFilterResult(UaType):
             return self._where_clause_result
 
     @select_clause_results_size.setter
-    def select_clause_results_size(self, val):
+    def select_clause_results_size(self, val: SizeT):
         self._select_clause_results_size = val
         self._value.selectClauseResultsSize = val._val
 
     @select_clause_results.setter
-    def select_clause_results(self, val):
+    def select_clause_results(self, val: UaStatusCode):
         self._select_clause_results = val
         self._value.selectClauseResults = val._ptr
 
     @select_clause_diagnostic_infos_size.setter
-    def select_clause_diagnostic_infos_size(self, val):
+    def select_clause_diagnostic_infos_size(self, val: SizeT):
         self._select_clause_diagnostic_infos_size = val
         self._value.selectClauseDiagnosticInfosSize = val._val
 
     @select_clause_diagnostic_infos.setter
-    def select_clause_diagnostic_infos(self, val):
+    def select_clause_diagnostic_infos(self, val: UaDiagnosticInfo):
         self._select_clause_diagnostic_infos = val
         self._value.selectClauseDiagnosticInfos = val._ptr
 
     @where_clause_result.setter
-    def where_clause_result(self, val):
+    def where_clause_result(self, val: UaContentFilterResult):
         self._where_clause_result = val
         self._value.whereClauseResult = val._val
 
@@ -7430,17 +7430,17 @@ class UaMonitoredItemCreateRequest(UaType):
             return self._requested_parameters
 
     @item_to_monitor.setter
-    def item_to_monitor(self, val):
+    def item_to_monitor(self, val: UaReadValueId):
         self._item_to_monitor = val
         self._value.itemToMonitor = val._val
 
     @monitoring_mode.setter
-    def monitoring_mode(self, val):
+    def monitoring_mode(self, val: UaMonitoringMode):
         self._monitoring_mode = val
         self._value.monitoringMode = val._val
 
     @requested_parameters.setter
-    def requested_parameters(self, val):
+    def requested_parameters(self, val: UaMonitoringParameters):
         self._requested_parameters = val
         self._value.requestedParameters = val._val
 
@@ -7488,12 +7488,12 @@ class UaComplexNumberType(UaType):
             return self._imaginary
 
     @real.setter
-    def real(self, val):
+    def real(self, val: UaFloat):
         self._real = val
         self._value.real = val._val
 
     @imaginary.setter
-    def imaginary(self, val):
+    def imaginary(self, val: UaFloat):
         self._imaginary = val
         self._value.imaginary = val._val
 
@@ -7540,12 +7540,12 @@ class UaRange(UaType):
             return self._high
 
     @low.setter
-    def low(self, val):
+    def low(self, val: UaDouble):
         self._low = val
         self._value.low = val._val
 
     @high.setter
-    def high(self, val):
+    def high(self, val: UaDouble):
         self._high = val
         self._value.high = val._val
 
@@ -7610,22 +7610,22 @@ class UaDataChangeNotification(UaType):
             return self._diagnostic_infos
 
     @monitored_items_size.setter
-    def monitored_items_size(self, val):
+    def monitored_items_size(self, val: SizeT):
         self._monitored_items_size = val
         self._value.monitoredItemsSize = val._val
 
     @monitored_items.setter
-    def monitored_items(self, val):
+    def monitored_items(self, val: UaMonitoredItemNotification):
         self._monitored_items = val
         self._value.monitoredItems = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -7710,32 +7710,32 @@ class UaArgument(UaType):
             return self._description
 
     @name.setter
-    def name(self, val):
+    def name(self, val: UaString):
         self._name = val
         self._value.name = val._val
 
     @data_type.setter
-    def data_type(self, val):
+    def data_type(self, val: UaNodeId):
         self._data_type = val
         self._value.dataType = val._val
 
     @value_rank.setter
-    def value_rank(self, val):
+    def value_rank(self, val: UaInt32):
         self._value_rank = val
         self._value.valueRank = val._val
 
     @array_dimensions_size.setter
-    def array_dimensions_size(self, val):
+    def array_dimensions_size(self, val: SizeT):
         self._array_dimensions_size = val
         self._value.arrayDimensionsSize = val._val
 
     @array_dimensions.setter
-    def array_dimensions(self, val):
+    def array_dimensions(self, val: UaUInt32):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
@@ -7804,22 +7804,22 @@ class UaTransferSubscriptionsRequest(UaType):
             return self._send_initial_values
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_ids_size.setter
-    def subscription_ids_size(self, val):
+    def subscription_ids_size(self, val: SizeT):
         self._subscription_ids_size = val
         self._value.subscriptionIdsSize = val._val
 
     @subscription_ids.setter
-    def subscription_ids(self, val):
+    def subscription_ids(self, val: UaUInt32):
         self._subscription_ids = val
         self._value.subscriptionIds = val._ptr
 
     @send_initial_values.setter
-    def send_initial_values(self, val):
+    def send_initial_values(self, val: UaBoolean):
         self._send_initial_values = val
         self._value.sendInitialValues = val._val
 
@@ -7886,22 +7886,22 @@ class UaChannelSecurityToken(UaType):
             return self._revised_lifetime
 
     @channel_id.setter
-    def channel_id(self, val):
+    def channel_id(self, val: UaUInt32):
         self._channel_id = val
         self._value.channelId = val._val
 
     @token_id.setter
-    def token_id(self, val):
+    def token_id(self, val: UaUInt32):
         self._token_id = val
         self._value.tokenId = val._val
 
     @created_at.setter
-    def created_at(self, val):
+    def created_at(self, val: UaDateTime):
         self._created_at = val
         self._value.createdAt = val._val
 
     @revised_lifetime.setter
-    def revised_lifetime(self, val):
+    def revised_lifetime(self, val: UaUInt32):
         self._revised_lifetime = val
         self._value.revisedLifetime = val._val
 
@@ -7950,12 +7950,12 @@ class UaEventNotificationList(UaType):
             return self._events
 
     @events_size.setter
-    def events_size(self, val):
+    def events_size(self, val: SizeT):
         self._events_size = val
         self._value.eventsSize = val._val
 
     @events.setter
-    def events(self, val):
+    def events(self, val: UaEventFieldList):
         self._events = val
         self._value.events = val._ptr
 
@@ -7993,7 +7993,7 @@ class UaAnonymousIdentityToken(UaType):
             return self._policy_id
 
     @policy_id.setter
-    def policy_id(self, val):
+    def policy_id(self, val: UaString):
         self._policy_id = val
         self._value.policyId = val._val
 
@@ -8057,22 +8057,22 @@ class UaAggregateFilter(UaType):
             return self._aggregate_configuration
 
     @start_time.setter
-    def start_time(self, val):
+    def start_time(self, val: UaDateTime):
         self._start_time = val
         self._value.startTime = val._val
 
     @aggregate_type.setter
-    def aggregate_type(self, val):
+    def aggregate_type(self, val: UaNodeId):
         self._aggregate_type = val
         self._value.aggregateType = val._val
 
     @processing_interval.setter
-    def processing_interval(self, val):
+    def processing_interval(self, val: UaDouble):
         self._processing_interval = val
         self._value.processingInterval = val._val
 
     @aggregate_configuration.setter
-    def aggregate_configuration(self, val):
+    def aggregate_configuration(self, val: UaAggregateConfiguration):
         self._aggregate_configuration = val
         self._value.aggregateConfiguration = val._val
 
@@ -8121,12 +8121,12 @@ class UaRepublishResponse(UaType):
             return self._notification_message
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @notification_message.setter
-    def notification_message(self, val):
+    def notification_message(self, val: UaNotificationMessage):
         self._notification_message = val
         self._value.notificationMessage = val._val
 
@@ -8200,27 +8200,27 @@ class UaDeleteSubscriptionsResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -8279,17 +8279,17 @@ class UaRegisterNodesRequest(UaType):
             return self._nodes_to_register
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @nodes_to_register_size.setter
-    def nodes_to_register_size(self, val):
+    def nodes_to_register_size(self, val: SizeT):
         self._nodes_to_register_size = val
         self._value.nodesToRegisterSize = val._val
 
     @nodes_to_register.setter
-    def nodes_to_register(self, val):
+    def nodes_to_register(self, val: UaNodeId):
         self._nodes_to_register = val
         self._value.nodesToRegister = val._ptr
 
@@ -8364,27 +8364,27 @@ class UaStructureDefinition(UaType):
             return self._fields
 
     @default_encoding_id.setter
-    def default_encoding_id(self, val):
+    def default_encoding_id(self, val: UaNodeId):
         self._default_encoding_id = val
         self._value.defaultEncodingId = val._val
 
     @base_data_type.setter
-    def base_data_type(self, val):
+    def base_data_type(self, val: UaNodeId):
         self._base_data_type = val
         self._value.baseDataType = val._val
 
     @structure_type.setter
-    def structure_type(self, val):
+    def structure_type(self, val: UaStructureType):
         self._structure_type = val
         self._value.structureType = val._val
 
     @fields_size.setter
-    def fields_size(self, val):
+    def fields_size(self, val: SizeT):
         self._fields_size = val
         self._value.fieldsSize = val._val
 
     @fields.setter
-    def fields(self, val):
+    def fields(self, val: UaStructureField):
         self._fields = val
         self._value.fields = val._ptr
 
@@ -8479,37 +8479,37 @@ class UaMethodAttributes(UaType):
             return self._user_executable
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @executable.setter
-    def executable(self, val):
+    def executable(self, val: UaBoolean):
         self._executable = val
         self._value.executable = val._val
 
     @user_executable.setter
-    def user_executable(self, val):
+    def user_executable(self, val: UaBoolean):
         self._user_executable = val
         self._value.userExecutable = val._val
 
@@ -8579,22 +8579,22 @@ class UaUserNameIdentityToken(UaType):
             return self._encryption_algorithm
 
     @policy_id.setter
-    def policy_id(self, val):
+    def policy_id(self, val: UaString):
         self._policy_id = val
         self._value.policyId = val._val
 
     @user_name.setter
-    def user_name(self, val):
+    def user_name(self, val: UaString):
         self._user_name = val
         self._value.userName = val._val
 
     @password.setter
-    def password(self, val):
+    def password(self, val: UaByteString):
         self._password = val
         self._value.password = val._val
 
     @encryption_algorithm.setter
-    def encryption_algorithm(self, val):
+    def encryption_algorithm(self, val: UaString):
         self._encryption_algorithm = val
         self._value.encryptionAlgorithm = val._val
 
@@ -8652,17 +8652,17 @@ class UaUnregisterNodesRequest(UaType):
             return self._nodes_to_unregister
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @nodes_to_unregister_size.setter
-    def nodes_to_unregister_size(self, val):
+    def nodes_to_unregister_size(self, val: SizeT):
         self._nodes_to_unregister_size = val
         self._value.nodesToUnregisterSize = val._val
 
     @nodes_to_unregister.setter
-    def nodes_to_unregister(self, val):
+    def nodes_to_unregister(self, val: UaNodeId):
         self._nodes_to_unregister = val
         self._value.nodesToUnregister = val._ptr
 
@@ -8728,22 +8728,22 @@ class UaOpenSecureChannelResponse(UaType):
             return self._server_nonce
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @server_protocol_version.setter
-    def server_protocol_version(self, val):
+    def server_protocol_version(self, val: UaUInt32):
         self._server_protocol_version = val
         self._value.serverProtocolVersion = val._val
 
     @security_token.setter
-    def security_token(self, val):
+    def security_token(self, val: UaChannelSecurityToken):
         self._security_token = val
         self._value.securityToken = val._val
 
     @server_nonce.setter
-    def server_nonce(self, val):
+    def server_nonce(self, val: UaByteString):
         self._server_nonce = val
         self._value.serverNonce = val._val
 
@@ -8855,47 +8855,47 @@ class UaSetTriggeringResponse(UaType):
             return self._remove_diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @add_results_size.setter
-    def add_results_size(self, val):
+    def add_results_size(self, val: SizeT):
         self._add_results_size = val
         self._value.addResultsSize = val._val
 
     @add_results.setter
-    def add_results(self, val):
+    def add_results(self, val: UaStatusCode):
         self._add_results = val
         self._value.addResults = val._ptr
 
     @add_diagnostic_infos_size.setter
-    def add_diagnostic_infos_size(self, val):
+    def add_diagnostic_infos_size(self, val: SizeT):
         self._add_diagnostic_infos_size = val
         self._value.addDiagnosticInfosSize = val._val
 
     @add_diagnostic_infos.setter
-    def add_diagnostic_infos(self, val):
+    def add_diagnostic_infos(self, val: UaDiagnosticInfo):
         self._add_diagnostic_infos = val
         self._value.addDiagnosticInfos = val._ptr
 
     @remove_results_size.setter
-    def remove_results_size(self, val):
+    def remove_results_size(self, val: SizeT):
         self._remove_results_size = val
         self._value.removeResultsSize = val._val
 
     @remove_results.setter
-    def remove_results(self, val):
+    def remove_results(self, val: UaStatusCode):
         self._remove_results = val
         self._value.removeResults = val._ptr
 
     @remove_diagnostic_infos_size.setter
-    def remove_diagnostic_infos_size(self, val):
+    def remove_diagnostic_infos_size(self, val: SizeT):
         self._remove_diagnostic_infos_size = val
         self._value.removeDiagnosticInfosSize = val._val
 
     @remove_diagnostic_infos.setter
-    def remove_diagnostic_infos(self, val):
+    def remove_diagnostic_infos(self, val: UaDiagnosticInfo):
         self._remove_diagnostic_infos = val
         self._value.removeDiagnosticInfos = val._ptr
 
@@ -8976,27 +8976,27 @@ class UaSimpleAttributeOperand(UaType):
             return self._index_range
 
     @type_definition_id.setter
-    def type_definition_id(self, val):
+    def type_definition_id(self, val: UaNodeId):
         self._type_definition_id = val
         self._value.typeDefinitionId = val._val
 
     @browse_path_size.setter
-    def browse_path_size(self, val):
+    def browse_path_size(self, val: SizeT):
         self._browse_path_size = val
         self._value.browsePathSize = val._val
 
     @browse_path.setter
-    def browse_path(self, val):
+    def browse_path(self, val: UaQualifiedName):
         self._browse_path = val
         self._value.browsePath = val._ptr
 
     @attribute_id.setter
-    def attribute_id(self, val):
+    def attribute_id(self, val: UaUInt32):
         self._attribute_id = val
         self._value.attributeId = val._val
 
     @index_range.setter
-    def index_range(self, val):
+    def index_range(self, val: UaString):
         self._index_range = val
         self._value.indexRange = val._val
 
@@ -9055,17 +9055,17 @@ class UaRepublishRequest(UaType):
             return self._retransmit_sequence_number
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @retransmit_sequence_number.setter
-    def retransmit_sequence_number(self, val):
+    def retransmit_sequence_number(self, val: UaUInt32):
         self._retransmit_sequence_number = val
         self._value.retransmitSequenceNumber = val._val
 
@@ -9122,17 +9122,17 @@ class UaRegisterNodesResponse(UaType):
             return self._registered_node_ids
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @registered_node_ids_size.setter
-    def registered_node_ids_size(self, val):
+    def registered_node_ids_size(self, val: SizeT):
         self._registered_node_ids_size = val
         self._value.registeredNodeIdsSize = val._val
 
     @registered_node_ids.setter
-    def registered_node_ids(self, val):
+    def registered_node_ids(self, val: UaNodeId):
         self._registered_node_ids = val
         self._value.registeredNodeIds = val._ptr
 
@@ -9207,27 +9207,27 @@ class UaModifyMonitoredItemsResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaMonitoredItemModifyResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -9286,17 +9286,17 @@ class UaDeleteSubscriptionsRequest(UaType):
             return self._subscription_ids
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_ids_size.setter
-    def subscription_ids_size(self, val):
+    def subscription_ids_size(self, val: SizeT):
         self._subscription_ids_size = val
         self._value.subscriptionIdsSize = val._val
 
     @subscription_ids.setter
-    def subscription_ids(self, val):
+    def subscription_ids(self, val: UaUInt32):
         self._subscription_ids = val
         self._value.subscriptionIds = val._ptr
 
@@ -9344,12 +9344,12 @@ class UaBrowsePath(UaType):
             return self._relative_path
 
     @starting_node.setter
-    def starting_node(self, val):
+    def starting_node(self, val: UaNodeId):
         self._starting_node = val
         self._value.startingNode = val._val
 
     @relative_path.setter
-    def relative_path(self, val):
+    def relative_path(self, val: UaRelativePath):
         self._relative_path = val
         self._value.relativePath = val._val
 
@@ -9432,32 +9432,32 @@ class UaObjectAttributes(UaType):
             return self._event_notifier
 
     @specified_attributes.setter
-    def specified_attributes(self, val):
+    def specified_attributes(self, val: UaUInt32):
         self._specified_attributes = val
         self._value.specifiedAttributes = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @description.setter
-    def description(self, val):
+    def description(self, val: UaLocalizedText):
         self._description = val
         self._value.description = val._val
 
     @write_mask.setter
-    def write_mask(self, val):
+    def write_mask(self, val: UaUInt32):
         self._write_mask = val
         self._value.writeMask = val._val
 
     @user_write_mask.setter
-    def user_write_mask(self, val):
+    def user_write_mask(self, val: UaUInt32):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
     @event_notifier.setter
-    def event_notifier(self, val):
+    def event_notifier(self, val: UaByte):
         self._event_notifier = val
         self._value.eventNotifier = val._val
 
@@ -9517,17 +9517,17 @@ class UaPublishRequest(UaType):
             return self._subscription_acknowledgements
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_acknowledgements_size.setter
-    def subscription_acknowledgements_size(self, val):
+    def subscription_acknowledgements_size(self, val: SizeT):
         self._subscription_acknowledgements_size = val
         self._value.subscriptionAcknowledgementsSize = val._val
 
     @subscription_acknowledgements.setter
-    def subscription_acknowledgements(self, val):
+    def subscription_acknowledgements(self, val: UaSubscriptionAcknowledgement):
         self._subscription_acknowledgements = val
         self._value.subscriptionAcknowledgements = val._ptr
 
@@ -9611,32 +9611,32 @@ class UaFindServersRequest(UaType):
             return self._server_uris
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @endpoint_url.setter
-    def endpoint_url(self, val):
+    def endpoint_url(self, val: UaString):
         self._endpoint_url = val
         self._value.endpointUrl = val._val
 
     @locale_ids_size.setter
-    def locale_ids_size(self, val):
+    def locale_ids_size(self, val: SizeT):
         self._locale_ids_size = val
         self._value.localeIdsSize = val._val
 
     @locale_ids.setter
-    def locale_ids(self, val):
+    def locale_ids(self, val: UaString):
         self._locale_ids = val
         self._value.localeIds = val._ptr
 
     @server_uris_size.setter
-    def server_uris_size(self, val):
+    def server_uris_size(self, val: SizeT):
         self._server_uris_size = val
         self._value.serverUrisSize = val._val
 
     @server_uris.setter
-    def server_uris(self, val):
+    def server_uris(self, val: UaString):
         self._server_uris = val
         self._value.serverUris = val._ptr
 
@@ -9732,37 +9732,37 @@ class UaReferenceDescription(UaType):
             return self._type_definition
 
     @reference_type_id.setter
-    def reference_type_id(self, val):
+    def reference_type_id(self, val: UaNodeId):
         self._reference_type_id = val
         self._value.referenceTypeId = val._val
 
     @is_forward.setter
-    def is_forward(self, val):
+    def is_forward(self, val: UaBoolean):
         self._is_forward = val
         self._value.isForward = val._val
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaExpandedNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @browse_name.setter
-    def browse_name(self, val):
+    def browse_name(self, val: UaQualifiedName):
         self._browse_name = val
         self._value.browseName = val._val
 
     @display_name.setter
-    def display_name(self, val):
+    def display_name(self, val: UaLocalizedText):
         self._display_name = val
         self._value.displayName = val._val
 
     @node_class.setter
-    def node_class(self, val):
+    def node_class(self, val: UaNodeClass):
         self._node_class = val
         self._value.nodeClass = val._val
 
     @type_definition.setter
-    def type_definition(self, val):
+    def type_definition(self, val: UaExpandedNodeId):
         self._type_definition = val
         self._value.typeDefinition = val._val
 
@@ -9859,37 +9859,37 @@ class UaCreateSubscriptionRequest(UaType):
             return self._priority
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @requested_publishing_interval.setter
-    def requested_publishing_interval(self, val):
+    def requested_publishing_interval(self, val: UaDouble):
         self._requested_publishing_interval = val
         self._value.requestedPublishingInterval = val._val
 
     @requested_lifetime_count.setter
-    def requested_lifetime_count(self, val):
+    def requested_lifetime_count(self, val: UaUInt32):
         self._requested_lifetime_count = val
         self._value.requestedLifetimeCount = val._val
 
     @requested_max_keep_alive_count.setter
-    def requested_max_keep_alive_count(self, val):
+    def requested_max_keep_alive_count(self, val: UaUInt32):
         self._requested_max_keep_alive_count = val
         self._value.requestedMaxKeepAliveCount = val._val
 
     @max_notifications_per_publish.setter
-    def max_notifications_per_publish(self, val):
+    def max_notifications_per_publish(self, val: UaUInt32):
         self._max_notifications_per_publish = val
         self._value.maxNotificationsPerPublish = val._val
 
     @publishing_enabled.setter
-    def publishing_enabled(self, val):
+    def publishing_enabled(self, val: UaBoolean):
         self._publishing_enabled = val
         self._value.publishingEnabled = val._val
 
     @priority.setter
-    def priority(self, val):
+    def priority(self, val: UaByte):
         self._priority = val
         self._value.priority = val._val
 
@@ -9968,27 +9968,27 @@ class UaCallResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaCallMethodResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -10065,27 +10065,27 @@ class UaDeleteNodesResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -10162,27 +10162,27 @@ class UaModifyMonitoredItemsRequest(UaType):
             return self._items_to_modify
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @timestamps_to_return.setter
-    def timestamps_to_return(self, val):
+    def timestamps_to_return(self, val: UaTimestampsToReturn):
         self._timestamps_to_return = val
         self._value.timestampsToReturn = val._val
 
     @items_to_modify_size.setter
-    def items_to_modify_size(self, val):
+    def items_to_modify_size(self, val: SizeT):
         self._items_to_modify_size = val
         self._value.itemsToModifySize = val._val
 
     @items_to_modify.setter
-    def items_to_modify(self, val):
+    def items_to_modify(self, val: UaMonitoredItemModifyRequest):
         self._items_to_modify = val
         self._value.itemsToModify = val._ptr
 
@@ -10223,7 +10223,7 @@ class UaServiceFault(UaType):
             return self._response_header
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
@@ -10341,52 +10341,52 @@ class UaPublishResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @available_sequence_numbers_size.setter
-    def available_sequence_numbers_size(self, val):
+    def available_sequence_numbers_size(self, val: SizeT):
         self._available_sequence_numbers_size = val
         self._value.availableSequenceNumbersSize = val._val
 
     @available_sequence_numbers.setter
-    def available_sequence_numbers(self, val):
+    def available_sequence_numbers(self, val: UaUInt32):
         self._available_sequence_numbers = val
         self._value.availableSequenceNumbers = val._ptr
 
     @more_notifications.setter
-    def more_notifications(self, val):
+    def more_notifications(self, val: UaBoolean):
         self._more_notifications = val
         self._value.moreNotifications = val._val
 
     @notification_message.setter
-    def notification_message(self, val):
+    def notification_message(self, val: UaNotificationMessage):
         self._notification_message = val
         self._value.notificationMessage = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaStatusCode):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -10468,27 +10468,27 @@ class UaCreateMonitoredItemsRequest(UaType):
             return self._items_to_create
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @timestamps_to_return.setter
-    def timestamps_to_return(self, val):
+    def timestamps_to_return(self, val: UaTimestampsToReturn):
         self._timestamps_to_return = val
         self._value.timestampsToReturn = val._val
 
     @items_to_create_size.setter
-    def items_to_create_size(self, val):
+    def items_to_create_size(self, val: SizeT):
         self._items_to_create_size = val
         self._value.itemsToCreateSize = val._val
 
     @items_to_create.setter
-    def items_to_create(self, val):
+    def items_to_create(self, val: UaMonitoredItemCreateRequest):
         self._items_to_create = val
         self._value.itemsToCreate = val._ptr
 
@@ -10574,32 +10574,32 @@ class UaOpenSecureChannelRequest(UaType):
             return self._requested_lifetime
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @client_protocol_version.setter
-    def client_protocol_version(self, val):
+    def client_protocol_version(self, val: UaUInt32):
         self._client_protocol_version = val
         self._value.clientProtocolVersion = val._val
 
     @request_type.setter
-    def request_type(self, val):
+    def request_type(self, val: UaSecurityTokenRequestType):
         self._request_type = val
         self._value.requestType = val._val
 
     @security_mode.setter
-    def security_mode(self, val):
+    def security_mode(self, val: UaMessageSecurityMode):
         self._security_mode = val
         self._value.securityMode = val._val
 
     @client_nonce.setter
-    def client_nonce(self, val):
+    def client_nonce(self, val: UaByteString):
         self._client_nonce = val
         self._value.clientNonce = val._val
 
     @requested_lifetime.setter
-    def requested_lifetime(self, val):
+    def requested_lifetime(self, val: UaUInt32):
         self._requested_lifetime = val
         self._value.requestedLifetime = val._val
 
@@ -10650,12 +10650,12 @@ class UaCloseSessionRequest(UaType):
             return self._delete_subscriptions
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @delete_subscriptions.setter
-    def delete_subscriptions(self, val):
+    def delete_subscriptions(self, val: UaBoolean):
         self._delete_subscriptions = val
         self._value.deleteSubscriptions = val._val
 
@@ -10747,37 +10747,37 @@ class UaSetTriggeringRequest(UaType):
             return self._links_to_remove
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @subscription_id.setter
-    def subscription_id(self, val):
+    def subscription_id(self, val: UaUInt32):
         self._subscription_id = val
         self._value.subscriptionId = val._val
 
     @triggering_item_id.setter
-    def triggering_item_id(self, val):
+    def triggering_item_id(self, val: UaUInt32):
         self._triggering_item_id = val
         self._value.triggeringItemId = val._val
 
     @links_to_add_size.setter
-    def links_to_add_size(self, val):
+    def links_to_add_size(self, val: SizeT):
         self._links_to_add_size = val
         self._value.linksToAddSize = val._val
 
     @links_to_add.setter
-    def links_to_add(self, val):
+    def links_to_add(self, val: UaUInt32):
         self._links_to_add = val
         self._value.linksToAdd = val._ptr
 
     @links_to_remove_size.setter
-    def links_to_remove_size(self, val):
+    def links_to_remove_size(self, val: SizeT):
         self._links_to_remove_size = val
         self._value.linksToRemoveSize = val._val
 
     @links_to_remove.setter
-    def links_to_remove(self, val):
+    def links_to_remove(self, val: UaUInt32):
         self._links_to_remove = val
         self._value.linksToRemove = val._ptr
 
@@ -10847,22 +10847,22 @@ class UaBrowseResult(UaType):
             return self._references
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @continuation_point.setter
-    def continuation_point(self, val):
+    def continuation_point(self, val: UaByteString):
         self._continuation_point = val
         self._value.continuationPoint = val._val
 
     @references_size.setter
-    def references_size(self, val):
+    def references_size(self, val: SizeT):
         self._references_size = val
         self._value.referencesSize = val._val
 
     @references.setter
-    def references(self, val):
+    def references(self, val: UaReferenceDescription):
         self._references = val
         self._value.references = val._ptr
 
@@ -10920,17 +10920,17 @@ class UaAddReferencesRequest(UaType):
             return self._references_to_add
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @references_to_add_size.setter
-    def references_to_add_size(self, val):
+    def references_to_add_size(self, val: SizeT):
         self._references_to_add_size = val
         self._value.referencesToAddSize = val._val
 
     @references_to_add.setter
-    def references_to_add(self, val):
+    def references_to_add(self, val: UaAddReferencesItem):
         self._references_to_add = val
         self._value.referencesToAdd = val._ptr
 
@@ -11023,37 +11023,37 @@ class UaAddNodesItem(UaType):
             return self._type_definition
 
     @parent_node_id.setter
-    def parent_node_id(self, val):
+    def parent_node_id(self, val: UaExpandedNodeId):
         self._parent_node_id = val
         self._value.parentNodeId = val._val
 
     @reference_type_id.setter
-    def reference_type_id(self, val):
+    def reference_type_id(self, val: UaNodeId):
         self._reference_type_id = val
         self._value.referenceTypeId = val._val
 
     @requested_new_node_id.setter
-    def requested_new_node_id(self, val):
+    def requested_new_node_id(self, val: UaExpandedNodeId):
         self._requested_new_node_id = val
         self._value.requestedNewNodeId = val._val
 
     @browse_name.setter
-    def browse_name(self, val):
+    def browse_name(self, val: UaQualifiedName):
         self._browse_name = val
         self._value.browseName = val._val
 
     @node_class.setter
-    def node_class(self, val):
+    def node_class(self, val: UaNodeClass):
         self._node_class = val
         self._value.nodeClass = val._val
 
     @node_attributes.setter
-    def node_attributes(self, val):
+    def node_attributes(self, val: UaExtensionObject):
         self._node_attributes = val
         self._value.nodeAttributes = val._val
 
     @type_definition.setter
-    def type_definition(self, val):
+    def type_definition(self, val: UaExpandedNodeId):
         self._type_definition = val
         self._value.typeDefinition = val._val
 
@@ -11141,32 +11141,32 @@ class UaServerStatusDataType(UaType):
             return self._shutdown_reason
 
     @start_time.setter
-    def start_time(self, val):
+    def start_time(self, val: UaDateTime):
         self._start_time = val
         self._value.startTime = val._val
 
     @current_time.setter
-    def current_time(self, val):
+    def current_time(self, val: UaDateTime):
         self._current_time = val
         self._value.currentTime = val._val
 
     @state.setter
-    def state(self, val):
+    def state(self, val: UaServerState):
         self._state = val
         self._value.state = val._val
 
     @build_info.setter
-    def build_info(self, val):
+    def build_info(self, val: UaBuildInfo):
         self._build_info = val
         self._value.buildInfo = val._val
 
     @seconds_till_shutdown.setter
-    def seconds_till_shutdown(self, val):
+    def seconds_till_shutdown(self, val: UaUInt32):
         self._seconds_till_shutdown = val
         self._value.secondsTillShutdown = val._val
 
     @shutdown_reason.setter
-    def shutdown_reason(self, val):
+    def shutdown_reason(self, val: UaLocalizedText):
         self._shutdown_reason = val
         self._value.shutdownReason = val._val
 
@@ -11244,27 +11244,27 @@ class UaBrowseNextResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaBrowseResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -11350,32 +11350,32 @@ class UaAxisInformation(UaType):
             return self._axis_steps
 
     @engineering_units.setter
-    def engineering_units(self, val):
+    def engineering_units(self, val: UaEUInformation):
         self._engineering_units = val
         self._value.engineeringUnits = val._val
 
     @e_u_range.setter
-    def e_u_range(self, val):
+    def e_u_range(self, val: UaRange):
         self._e_u_range = val
         self._value.eURange = val._val
 
     @title.setter
-    def title(self, val):
+    def title(self, val: UaLocalizedText):
         self._title = val
         self._value.title = val._val
 
     @axis_scale_type.setter
-    def axis_scale_type(self, val):
+    def axis_scale_type(self, val: UaAxisScaleEnumeration):
         self._axis_scale_type = val
         self._value.axisScaleType = val._val
 
     @axis_steps_size.setter
-    def axis_steps_size(self, val):
+    def axis_steps_size(self, val: SizeT):
         self._axis_steps_size = val
         self._value.axisStepsSize = val._val
 
     @axis_steps.setter
-    def axis_steps(self, val):
+    def axis_steps(self, val: UaDouble):
         self._axis_steps = val
         self._value.axisSteps = val._ptr
 
@@ -11480,42 +11480,42 @@ class UaApplicationDescription(UaType):
             return self._discovery_urls
 
     @application_uri.setter
-    def application_uri(self, val):
+    def application_uri(self, val: UaString):
         self._application_uri = val
         self._value.applicationUri = val._val
 
     @product_uri.setter
-    def product_uri(self, val):
+    def product_uri(self, val: UaString):
         self._product_uri = val
         self._value.productUri = val._val
 
     @application_name.setter
-    def application_name(self, val):
+    def application_name(self, val: UaLocalizedText):
         self._application_name = val
         self._value.applicationName = val._val
 
     @application_type.setter
-    def application_type(self, val):
+    def application_type(self, val: UaApplicationType):
         self._application_type = val
         self._value.applicationType = val._val
 
     @gateway_server_uri.setter
-    def gateway_server_uri(self, val):
+    def gateway_server_uri(self, val: UaString):
         self._gateway_server_uri = val
         self._value.gatewayServerUri = val._val
 
     @discovery_profile_uri.setter
-    def discovery_profile_uri(self, val):
+    def discovery_profile_uri(self, val: UaString):
         self._discovery_profile_uri = val
         self._value.discoveryProfileUri = val._val
 
     @discovery_urls_size.setter
-    def discovery_urls_size(self, val):
+    def discovery_urls_size(self, val: SizeT):
         self._discovery_urls_size = val
         self._value.discoveryUrlsSize = val._val
 
     @discovery_urls.setter
-    def discovery_urls(self, val):
+    def discovery_urls(self, val: UaString):
         self._discovery_urls = val
         self._value.discoveryUrls = val._ptr
 
@@ -11595,27 +11595,27 @@ class UaReadRequest(UaType):
             return self._nodes_to_read
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @max_age.setter
-    def max_age(self, val):
+    def max_age(self, val: UaDouble):
         self._max_age = val
         self._value.maxAge = val._val
 
     @timestamps_to_return.setter
-    def timestamps_to_return(self, val):
+    def timestamps_to_return(self, val: UaTimestampsToReturn):
         self._timestamps_to_return = val
         self._value.timestampsToReturn = val._val
 
     @nodes_to_read_size.setter
-    def nodes_to_read_size(self, val):
+    def nodes_to_read_size(self, val: SizeT):
         self._nodes_to_read_size = val
         self._value.nodesToReadSize = val._val
 
     @nodes_to_read.setter
-    def nodes_to_read(self, val):
+    def nodes_to_read(self, val: UaReadValueId):
         self._nodes_to_read = val
         self._value.nodesToRead = val._ptr
 
@@ -11719,42 +11719,42 @@ class UaActivateSessionRequest(UaType):
             return self._user_token_signature
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @client_signature.setter
-    def client_signature(self, val):
+    def client_signature(self, val: UaSignatureData):
         self._client_signature = val
         self._value.clientSignature = val._val
 
     @client_software_certificates_size.setter
-    def client_software_certificates_size(self, val):
+    def client_software_certificates_size(self, val: SizeT):
         self._client_software_certificates_size = val
         self._value.clientSoftwareCertificatesSize = val._val
 
     @client_software_certificates.setter
-    def client_software_certificates(self, val):
+    def client_software_certificates(self, val: UaSignedSoftwareCertificate):
         self._client_software_certificates = val
         self._value.clientSoftwareCertificates = val._ptr
 
     @locale_ids_size.setter
-    def locale_ids_size(self, val):
+    def locale_ids_size(self, val: SizeT):
         self._locale_ids_size = val
         self._value.localeIdsSize = val._val
 
     @locale_ids.setter
-    def locale_ids(self, val):
+    def locale_ids(self, val: UaString):
         self._locale_ids = val
         self._value.localeIds = val._ptr
 
     @user_identity_token.setter
-    def user_identity_token(self, val):
+    def user_identity_token(self, val: UaExtensionObject):
         self._user_identity_token = val
         self._value.userIdentityToken = val._val
 
     @user_token_signature.setter
-    def user_token_signature(self, val):
+    def user_token_signature(self, val: UaSignatureData):
         self._user_token_signature = val
         self._value.userTokenSignature = val._val
 
@@ -11816,17 +11816,17 @@ class UaBrowsePathResult(UaType):
             return self._targets
 
     @status_code.setter
-    def status_code(self, val):
+    def status_code(self, val: UaStatusCode):
         self._status_code = val
         self._value.statusCode = val._val
 
     @targets_size.setter
-    def targets_size(self, val):
+    def targets_size(self, val: SizeT):
         self._targets_size = val
         self._value.targetsSize = val._val
 
     @targets.setter
-    def targets(self, val):
+    def targets(self, val: UaBrowsePathTarget):
         self._targets = val
         self._value.targets = val._ptr
 
@@ -11883,17 +11883,17 @@ class UaAddNodesRequest(UaType):
             return self._nodes_to_add
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @nodes_to_add_size.setter
-    def nodes_to_add_size(self, val):
+    def nodes_to_add_size(self, val: SizeT):
         self._nodes_to_add_size = val
         self._value.nodesToAddSize = val._val
 
     @nodes_to_add.setter
-    def nodes_to_add(self, val):
+    def nodes_to_add(self, val: UaAddNodesItem):
         self._nodes_to_add = val
         self._value.nodesToAdd = val._ptr
 
@@ -11968,27 +11968,27 @@ class UaBrowseRequest(UaType):
             return self._nodes_to_browse
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @view.setter
-    def view(self, val):
+    def view(self, val: UaViewDescription):
         self._view = val
         self._value.view = val._val
 
     @requested_max_references_per_node.setter
-    def requested_max_references_per_node(self, val):
+    def requested_max_references_per_node(self, val: UaUInt32):
         self._requested_max_references_per_node = val
         self._value.requestedMaxReferencesPerNode = val._val
 
     @nodes_to_browse_size.setter
-    def nodes_to_browse_size(self, val):
+    def nodes_to_browse_size(self, val: SizeT):
         self._nodes_to_browse_size = val
         self._value.nodesToBrowseSize = val._val
 
     @nodes_to_browse.setter
-    def nodes_to_browse(self, val):
+    def nodes_to_browse(self, val: UaBrowseDescription):
         self._nodes_to_browse = val
         self._value.nodesToBrowse = val._ptr
 
@@ -12047,17 +12047,17 @@ class UaWriteRequest(UaType):
             return self._nodes_to_write
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @nodes_to_write_size.setter
-    def nodes_to_write_size(self, val):
+    def nodes_to_write_size(self, val: SizeT):
         self._nodes_to_write_size = val
         self._value.nodesToWriteSize = val._val
 
     @nodes_to_write.setter
-    def nodes_to_write(self, val):
+    def nodes_to_write(self, val: UaWriteValue):
         self._nodes_to_write = val
         self._value.nodesToWrite = val._ptr
 
@@ -12132,27 +12132,27 @@ class UaAddNodesResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaAddNodesResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -12229,27 +12229,27 @@ class UaAttributeOperand(UaType):
             return self._index_range
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @alias.setter
-    def alias(self, val):
+    def alias(self, val: UaString):
         self._alias = val
         self._value.alias = val._val
 
     @browse_path.setter
-    def browse_path(self, val):
+    def browse_path(self, val: UaRelativePath):
         self._browse_path = val
         self._value.browsePath = val._val
 
     @attribute_id.setter
-    def attribute_id(self, val):
+    def attribute_id(self, val: UaUInt32):
         self._attribute_id = val
         self._value.attributeId = val._val
 
     @index_range.setter
-    def index_range(self, val):
+    def index_range(self, val: UaString):
         self._index_range = val
         self._value.indexRange = val._val
 
@@ -12308,17 +12308,17 @@ class UaDataChangeFilter(UaType):
             return self._deadband_value
 
     @trigger.setter
-    def trigger(self, val):
+    def trigger(self, val: UaDataChangeTrigger):
         self._trigger = val
         self._value.trigger = val._val
 
     @deadband_type.setter
-    def deadband_type(self, val):
+    def deadband_type(self, val: UaUInt32):
         self._deadband_type = val
         self._value.deadbandType = val._val
 
     @deadband_value.setter
-    def deadband_value(self, val):
+    def deadband_value(self, val: UaDouble):
         self._deadband_value = val
         self._value.deadbandValue = val._val
 
@@ -12429,47 +12429,47 @@ class UaEndpointDescription(UaType):
             return self._security_level
 
     @endpoint_url.setter
-    def endpoint_url(self, val):
+    def endpoint_url(self, val: UaString):
         self._endpoint_url = val
         self._value.endpointUrl = val._val
 
     @server.setter
-    def server(self, val):
+    def server(self, val: UaApplicationDescription):
         self._server = val
         self._value.server = val._val
 
     @server_certificate.setter
-    def server_certificate(self, val):
+    def server_certificate(self, val: UaByteString):
         self._server_certificate = val
         self._value.serverCertificate = val._val
 
     @security_mode.setter
-    def security_mode(self, val):
+    def security_mode(self, val: UaMessageSecurityMode):
         self._security_mode = val
         self._value.securityMode = val._val
 
     @security_policy_uri.setter
-    def security_policy_uri(self, val):
+    def security_policy_uri(self, val: UaString):
         self._security_policy_uri = val
         self._value.securityPolicyUri = val._val
 
     @user_identity_tokens_size.setter
-    def user_identity_tokens_size(self, val):
+    def user_identity_tokens_size(self, val: SizeT):
         self._user_identity_tokens_size = val
         self._value.userIdentityTokensSize = val._val
 
     @user_identity_tokens.setter
-    def user_identity_tokens(self, val):
+    def user_identity_tokens(self, val: UaUserTokenPolicy):
         self._user_identity_tokens = val
         self._value.userIdentityTokens = val._ptr
 
     @transport_profile_uri.setter
-    def transport_profile_uri(self, val):
+    def transport_profile_uri(self, val: UaString):
         self._transport_profile_uri = val
         self._value.transportProfileUri = val._val
 
     @security_level.setter
-    def security_level(self, val):
+    def security_level(self, val: UaByte):
         self._security_level = val
         self._value.securityLevel = val._val
 
@@ -12532,17 +12532,17 @@ class UaDeleteReferencesRequest(UaType):
             return self._references_to_delete
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @references_to_delete_size.setter
-    def references_to_delete_size(self, val):
+    def references_to_delete_size(self, val: SizeT):
         self._references_to_delete_size = val
         self._value.referencesToDeleteSize = val._val
 
     @references_to_delete.setter
-    def references_to_delete(self, val):
+    def references_to_delete(self, val: UaDeleteReferencesItem):
         self._references_to_delete = val
         self._value.referencesToDelete = val._ptr
 
@@ -12599,17 +12599,17 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
             return self._browse_paths
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @browse_paths_size.setter
-    def browse_paths_size(self, val):
+    def browse_paths_size(self, val: SizeT):
         self._browse_paths_size = val
         self._value.browsePathsSize = val._val
 
     @browse_paths.setter
-    def browse_paths(self, val):
+    def browse_paths(self, val: UaBrowsePath):
         self._browse_paths = val
         self._value.browsePaths = val._ptr
 
@@ -12666,17 +12666,17 @@ class UaFindServersResponse(UaType):
             return self._servers
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @servers_size.setter
-    def servers_size(self, val):
+    def servers_size(self, val: SizeT):
         self._servers_size = val
         self._value.serversSize = val._val
 
     @servers.setter
-    def servers(self, val):
+    def servers(self, val: UaApplicationDescription):
         self._servers = val
         self._value.servers = val._ptr
 
@@ -12787,47 +12787,47 @@ class UaCreateSessionRequest(UaType):
             return self._max_response_message_size
 
     @request_header.setter
-    def request_header(self, val):
+    def request_header(self, val: UaRequestHeader):
         self._request_header = val
         self._value.requestHeader = val._val
 
     @client_description.setter
-    def client_description(self, val):
+    def client_description(self, val: UaApplicationDescription):
         self._client_description = val
         self._value.clientDescription = val._val
 
     @server_uri.setter
-    def server_uri(self, val):
+    def server_uri(self, val: UaString):
         self._server_uri = val
         self._value.serverUri = val._val
 
     @endpoint_url.setter
-    def endpoint_url(self, val):
+    def endpoint_url(self, val: UaString):
         self._endpoint_url = val
         self._value.endpointUrl = val._val
 
     @session_name.setter
-    def session_name(self, val):
+    def session_name(self, val: UaString):
         self._session_name = val
         self._value.sessionName = val._val
 
     @client_nonce.setter
-    def client_nonce(self, val):
+    def client_nonce(self, val: UaByteString):
         self._client_nonce = val
         self._value.clientNonce = val._val
 
     @client_certificate.setter
-    def client_certificate(self, val):
+    def client_certificate(self, val: UaByteString):
         self._client_certificate = val
         self._value.clientCertificate = val._val
 
     @requested_session_timeout.setter
-    def requested_session_timeout(self, val):
+    def requested_session_timeout(self, val: UaDouble):
         self._requested_session_timeout = val
         self._value.requestedSessionTimeout = val._val
 
     @max_response_message_size.setter
-    def max_response_message_size(self, val):
+    def max_response_message_size(self, val: UaUInt32):
         self._max_response_message_size = val
         self._value.maxResponseMessageSize = val._val
 
@@ -12890,17 +12890,17 @@ class UaContentFilterElement(UaType):
             return self._filter_operands
 
     @filter_operator.setter
-    def filter_operator(self, val):
+    def filter_operator(self, val: UaFilterOperator):
         self._filter_operator = val
         self._value.filterOperator = val._val
 
     @filter_operands_size.setter
-    def filter_operands_size(self, val):
+    def filter_operands_size(self, val: SizeT):
         self._filter_operands_size = val
         self._value.filterOperandsSize = val._val
 
     @filter_operands.setter
-    def filter_operands(self, val):
+    def filter_operands(self, val: UaExtensionObject):
         self._filter_operands = val
         self._value.filterOperands = val._ptr
 
@@ -12975,27 +12975,27 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaBrowsePathResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -13072,27 +13072,27 @@ class UaBrowseResponse(UaType):
             return self._diagnostic_infos
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @results_size.setter
-    def results_size(self, val):
+    def results_size(self, val: SizeT):
         self._results_size = val
         self._value.resultsSize = val._val
 
     @results.setter
-    def results(self, val):
+    def results(self, val: UaBrowseResult):
         self._results = val
         self._value.results = val._ptr
 
     @diagnostic_infos_size.setter
-    def diagnostic_infos_size(self, val):
+    def diagnostic_infos_size(self, val: SizeT):
         self._diagnostic_infos_size = val
         self._value.diagnosticInfosSize = val._val
 
     @diagnostic_infos.setter
-    def diagnostic_infos(self, val):
+    def diagnostic_infos(self, val: UaDiagnosticInfo):
         self._diagnostic_infos = val
         self._value.diagnosticInfos = val._ptr
 
@@ -13232,62 +13232,62 @@ class UaCreateSessionResponse(UaType):
             return self._max_request_message_size
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @session_id.setter
-    def session_id(self, val):
+    def session_id(self, val: UaNodeId):
         self._session_id = val
         self._value.sessionId = val._val
 
     @authentication_token.setter
-    def authentication_token(self, val):
+    def authentication_token(self, val: UaNodeId):
         self._authentication_token = val
         self._value.authenticationToken = val._val
 
     @revised_session_timeout.setter
-    def revised_session_timeout(self, val):
+    def revised_session_timeout(self, val: UaDouble):
         self._revised_session_timeout = val
         self._value.revisedSessionTimeout = val._val
 
     @server_nonce.setter
-    def server_nonce(self, val):
+    def server_nonce(self, val: UaByteString):
         self._server_nonce = val
         self._value.serverNonce = val._val
 
     @server_certificate.setter
-    def server_certificate(self, val):
+    def server_certificate(self, val: UaByteString):
         self._server_certificate = val
         self._value.serverCertificate = val._val
 
     @server_endpoints_size.setter
-    def server_endpoints_size(self, val):
+    def server_endpoints_size(self, val: SizeT):
         self._server_endpoints_size = val
         self._value.serverEndpointsSize = val._val
 
     @server_endpoints.setter
-    def server_endpoints(self, val):
+    def server_endpoints(self, val: UaEndpointDescription):
         self._server_endpoints = val
         self._value.serverEndpoints = val._ptr
 
     @server_software_certificates_size.setter
-    def server_software_certificates_size(self, val):
+    def server_software_certificates_size(self, val: SizeT):
         self._server_software_certificates_size = val
         self._value.serverSoftwareCertificatesSize = val._val
 
     @server_software_certificates.setter
-    def server_software_certificates(self, val):
+    def server_software_certificates(self, val: UaSignedSoftwareCertificate):
         self._server_software_certificates = val
         self._value.serverSoftwareCertificates = val._ptr
 
     @server_signature.setter
-    def server_signature(self, val):
+    def server_signature(self, val: UaSignatureData):
         self._server_signature = val
         self._value.serverSignature = val._val
 
     @max_request_message_size.setter
-    def max_request_message_size(self, val):
+    def max_request_message_size(self, val: UaUInt32):
         self._max_request_message_size = val
         self._value.maxRequestMessageSize = val._val
 
@@ -13344,12 +13344,12 @@ class UaContentFilter(UaType):
             return self._elements
 
     @elements_size.setter
-    def elements_size(self, val):
+    def elements_size(self, val: SizeT):
         self._elements_size = val
         self._value.elementsSize = val._val
 
     @elements.setter
-    def elements(self, val):
+    def elements(self, val: UaContentFilterElement):
         self._elements = val
         self._value.elements = val._ptr
 
@@ -13405,17 +13405,17 @@ class UaGetEndpointsResponse(UaType):
             return self._endpoints
 
     @response_header.setter
-    def response_header(self, val):
+    def response_header(self, val: UaResponseHeader):
         self._response_header = val
         self._value.responseHeader = val._val
 
     @endpoints_size.setter
-    def endpoints_size(self, val):
+    def endpoints_size(self, val: SizeT):
         self._endpoints_size = val
         self._value.endpointsSize = val._val
 
     @endpoints.setter
-    def endpoints(self, val):
+    def endpoints(self, val: UaEndpointDescription):
         self._endpoints = val
         self._value.endpoints = val._ptr
 
@@ -13472,17 +13472,17 @@ class UaEventFilter(UaType):
             return self._where_clause
 
     @select_clauses_size.setter
-    def select_clauses_size(self, val):
+    def select_clauses_size(self, val: SizeT):
         self._select_clauses_size = val
         self._value.selectClausesSize = val._val
 
     @select_clauses.setter
-    def select_clauses(self, val):
+    def select_clauses(self, val: UaSimpleAttributeOperand):
         self._select_clauses = val
         self._value.selectClauses = val._ptr
 
     @where_clause.setter
-    def where_clause(self, val):
+    def where_clause(self, val: UaContentFilter):
         self._where_clause = val
         self._value.whereClause = val._val
 

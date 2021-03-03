@@ -3,13 +3,16 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
+from typing import Union, List
+
 from intermediateApi import ffi, lib
 from ua_common import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
+
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[bool, List[bool]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Boolean*"), is_pointer)
         else:
@@ -42,7 +45,7 @@ class UaBoolean(UaType):
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_SByte*"), is_pointer)
         else:
@@ -87,7 +90,7 @@ class UaSByte(UaType):
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Byte*"), is_pointer)
         else:
@@ -132,7 +135,7 @@ class UaByte(UaType):
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Int16*"), is_pointer)
         else:
@@ -177,7 +180,7 @@ class UaInt16(UaType):
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt16*"), is_pointer)
         else:
@@ -222,7 +225,7 @@ class UaUInt16(UaType):
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Int32*"), is_pointer)
         else:
@@ -267,7 +270,7 @@ class UaInt32(UaType):
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
         else:
@@ -312,7 +315,7 @@ class UaUInt32(UaType):
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Int64*"), is_pointer)
         else:
@@ -357,7 +360,7 @@ class UaInt64(UaType):
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt64*"), is_pointer)
         else:
@@ -402,7 +405,7 @@ class UaUInt64(UaType):
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[float, List[float]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Float*"), is_pointer)
         else:
@@ -447,7 +450,7 @@ class UaFloat(UaType):
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[float, List[float]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
@@ -999,7 +1002,7 @@ class UaStatusCode(UaType):
         (0x80B60000, "UA_STATUSCODE_BADSYNTAXERROR"),
         (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_StatusCode*"), is_pointer)
         else:
