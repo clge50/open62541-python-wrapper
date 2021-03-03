@@ -260,6 +260,56 @@ UaByteString = UaString
 UaXmlElement = UaString
 
 
+# +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
+class UaDateTime(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(ffi.new("UA_DateTime*"), is_pointer)
+        else:
+            if is_pointer:
+                super().__init__(val, is_pointer)
+            else:
+                super().__init__(ffi.new("UA_DateTime*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
+
+    def _set_value(self, val):
+        if self._is_pointer:
+            self._value = _ptr(val, "UA_DateTime")
+        else:
+            self._value[0] = ffi.cast("UA_DateTime", _val(val))
+
+    def __str__(self, n=0):
+        return "(UaDateTime): " + str(self._val) + "\n"
+
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
+    def to_struct(self):
+        return UaDateTimeStruct(lib.UA_DateTime_toStruct(self._val))
+
+    @staticmethod
+    def now():
+        return UaDateTime(lib.UA_DateTime_now())
+
+
 # +++++++++++++++++++ UaDateTimeStruct +++++++++++++++++++++++
 # TODO: Methods from types.h
 class UaDateTimeStruct(UaType):
@@ -419,6 +469,10 @@ class UaDateTimeStruct(UaType):
 
     def to_primitive(self):
         return UaDateTime(lib.UA_DateTime_fromStruct(self._val))
+
+    @staticmethod
+    def now():
+        return UaDateTime.now().to_struct()
 
 
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++

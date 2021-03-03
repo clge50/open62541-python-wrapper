@@ -33,7 +33,7 @@ void UA_LOG_ERROR(const UA_Logger *logger, UA_LogCategory category, const char *
 void UA_LOG_FATAL(const UA_Logger *logger, UA_LogCategory category, const char *msg, ...);
 
 //TODO: Check if its ok, produces warning
-UA_Logger *UA_Log_Stdout;
+extern const UA_Logger *UA_Log_Stdout;
 UA_Logger UA_Log_Stdout_withLevel(UA_LogLevel minlevel);
 //void UA_Log_Stdout_log(void *context, UA_LogLevel level, UA_LogCategory category, const char *msg, va_list *args);
 //problem with va_list, but function does not seem to be very important anyway
