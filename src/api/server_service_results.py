@@ -57,6 +57,6 @@ class DoubleResult:
         self.out_double = out_double
 
 class BrowseResultResult:
-    def __init__(self, status_code):ua_types.UaStatusCode, out_browse_result:ua_types:UaBrowseResult):
+    def __init__(self, status_code:ua_types.UaStatusCode, out_browse_result:ua_types.UaBrowseResult):
         self.status_code = status_code
         self.out_browse_result = out_browse_result

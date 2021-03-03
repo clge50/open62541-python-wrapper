@@ -216,25 +216,25 @@ class UaServer:
         return ServerServiceResults.UInt32Result(status_code, out_rank)
 
 
-    def read_array_dimensions(self, node_id:ua_types.ua_server):
+    def read_array_dimensions(self, node_id:ua_types.UaNodeId):
         out_dim = ffi.new("UA_Variant *")
         status_code = lib.UA_Server_readArrayDimensions(self.ua_server, node_id._val, out_dim)
         return ServerServiceResults.VariantResult(status_code, out_dim)
 
 
-    def read_access_level(self, node_id:ua_types.ua_server):
+    def read_access_level(self, node_id:ua_types.UaNodeId):
         out_level = ffi.new("UA_Byte *")
         status_code = lib.UA_Server_readAccessLevel(self.ua_server, node_id._val, out_level)
         return ServerServiceResults.ByteResult(status_code, out_level)
 
 
-    def read_minimum_sampling_interval(self, node_id:ua_types.ua_server):
+    def read_minimum_sampling_interval(self, node_id:ua_types.UaNodeId):
         out_interval = ffi.new("UA_Double *")
         status_code = lib.UA_Server_readMinimumSamplingInterval(self.ua_server, node_id._val, out_interval)
         return ServerServiceResults.DoubleResult(status_code, out_interval)
 
     
-    def read_executable(self, node_id:ua_types.ua_server):
+    def read_executable(self, node_id:ua_types.UaNodeId):
         out_exe = ffi.new("UA_Boolean *")
         status_code = lib.UA_Server_readExecutable(self.ua_server, node_id._val, out_exe)
         return ServerServiceResults.BooleanResult(status_code, out_exe)
@@ -477,7 +477,7 @@ class UaServer:
     condition_source:ua_types.UaNodeId, 
     remove_branch:ua_types.UaBoolean, 
     callback:ua_types.UaTwoStateVariableChangeCallback, 
-    callback_type:ua_types.UaTwoStateVariableCallbackType) #TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
+    callback_type:ua_types.UaTwoStateVariableCallbackType): #TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
 
         raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source, remove_branch, callback, callback_type)
         return ua_types.UaStatusCode(raw_result)
