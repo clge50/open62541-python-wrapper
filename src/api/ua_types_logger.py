@@ -26,7 +26,7 @@ class UaLogCategory(UaType):
         (5, "UA_LOGCATEGORY_USERLAND"),
         (6, "UA_LOGCATEGORY_SECURITYPOLICY")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_LogCategory*"), is_pointer)
         else:
@@ -62,7 +62,7 @@ class UaLogLevel(UaType):
         (4, "UA_LOGLEVEL_ERROR"),
         (5, "UA_LOGLEVEL_FATAL")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_LogLevel*"), is_pointer)
         else:
@@ -83,7 +83,7 @@ class UaLogLevel(UaType):
 
 # +++++++++++++++++++ UaLogger +++++++++++++++++++++++
 class UaLogger(UaType):
-    def __init__(self, log_level: UaLogLevel=None, val=lib.UA_Log_Stdout, is_pointer=False):
+    def __init__(self, log_level: UaLogLevel = None, val=lib.UA_Log_Stdout, is_pointer=False):
         if log_level is not None:
             val = lib.UA_Log_Stdout_withLevel(log_level._val)
         super().__init__(val=val, is_pointer=is_pointer)

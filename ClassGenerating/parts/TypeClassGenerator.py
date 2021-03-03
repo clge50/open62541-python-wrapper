@@ -113,7 +113,7 @@ class {to_python_class_name(struct_name)}(UaType):
 {(new_line * 2).join(map(
         lambda attr:
         tab + f"@{to_python_ident(attr)}.setter" + new_line +
-        tab + f"def {to_python_ident(attr)}(self, val):" + new_line +
+        tab + f"def {to_python_ident(attr)}(self, val: {to_python_class_name(attribute_to_type[attr][0])}):" + new_line +
         tab * 2 + f"self._{to_python_ident(attr)} = val" + new_line +
         (tab * 2 + f"self._value.{attr} = val._ptr"
          if attribute_to_type[attr][1] else
@@ -155,7 +155,7 @@ class {to_python_class_name(enum_name)}(UaType):
         f"{tab * 2}({ident_to_val[attr]}, {quote}{attr}{quote})",
         ident_to_val.keys()))}])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("{enum_name}*"), is_pointer)
         else:
@@ -192,6 +192,9 @@ def to_python_class_name(open62541_name: str):
     elif "char" in open62541_name:
         print(open62541_name)
         return "CString"
+    elif "void" in open62541_name:
+        print(open62541_name)
+        return "Void"
     else:
         return inflection.underscore(open62541_name)
 

@@ -2,11 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
+from typing import Any
 
 from intermediateApi import ffi, lib
 from ua_primitve_types import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
-
 
 # -------------------------------------------------------------
 # --------------------------- Enums ---------------------------
@@ -25,7 +25,7 @@ class UaNodeIdType(UaType):
         (4, "UA_NODEIDTYPE_GUID"),
         (5, "UA_NODEIDTYPE_BYTESTRING")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("enum UA_NodeIdType*"), is_pointer)
         else:
@@ -53,7 +53,7 @@ class UaVariantStorageType(UaType):
         (0, "UA_VARIANT_DATA"),
         (1, "UA_VARIANT_DATA_NODELETE")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_VariantStorageType*"), is_pointer)
         else:
@@ -87,7 +87,7 @@ class UaExtensionObjectEncoding(UaType):
         (3, "UA_EXTENSIONOBJECT_DECODED"),
         (4, "UA_EXTENSIONOBJECT_DECODED_NODELETE")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_ExtensionObjectEncoding*"), is_pointer)
         else:
@@ -173,7 +173,7 @@ class UaDataTypeKind(UaType):
         (29, "UA_DATATYPEKIND_UNION"),
         (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_DataTypeKind*"), is_pointer)
         else:
@@ -192,15 +192,16 @@ class UaDataTypeKind(UaType):
         return f"(UaDataTypeKind): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
+
 # -------------------------------------------------------------
 # -------------------------- Structs --------------------------
 # -------------------------------------------------------------
 
 # +++++++++++++++++++ UaString +++++++++++++++++++++++
 class UaString(UaType):
-    def __init__(self, p_val: str = "", val=ffi.new("UA_String*"), is_pointer=False):
-        if p_val != "":
-            val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(p_val, 'utf-8')))
+    def __init__(self, string: str = "", val=ffi.new("UA_String*"), is_pointer=False):
+        if string != "":
+            val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(string, 'utf-8')))
         super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:
@@ -262,11 +263,13 @@ UaXmlElement = UaString
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_DateTime*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_DateTime[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_DateTime*", _val(val)), is_pointer)
@@ -408,47 +411,47 @@ class UaDateTimeStruct(UaType):
             return self._year
 
     @nano_sec.setter
-    def nano_sec(self, val):
+    def nano_sec(self, val: UaUInt16):
         self._nano_sec = val
         self._value.nanoSec = val._val
 
     @micro_sec.setter
-    def micro_sec(self, val):
+    def micro_sec(self, val: UaUInt16):
         self._micro_sec = val
         self._value.microSec = val._val
 
     @milli_sec.setter
-    def milli_sec(self, val):
+    def milli_sec(self, val: UaUInt16):
         self._milli_sec = val
         self._value.milliSec = val._val
 
     @sec.setter
-    def sec(self, val):
+    def sec(self, val: UaUInt16):
         self._sec = val
         self._value.sec = val._val
 
     @min.setter
-    def min(self, val):
+    def min(self, val: UaUInt16):
         self._min = val
         self._value.min = val._val
 
     @hour.setter
-    def hour(self, val):
+    def hour(self, val: UaUInt16):
         self._hour = val
         self._value.hour = val._val
 
     @day.setter
-    def day(self, val):
+    def day(self, val: UaUInt16):
         self._day = val
         self._value.day = val._val
 
     @month.setter
-    def month(self, val):
+    def month(self, val: UaUInt16):
         self._month = val
         self._value.month = val._val
 
     @year.setter
-    def year(self, val):
+    def year(self, val: UaUInt16):
         self._year = val
         self._value.year = val._val
 
@@ -479,7 +482,7 @@ class UaDateTimeStruct(UaType):
 class UaGuid(UaType):
     NULL = lib.UA_GUID_NULL
 
-    def __init__(self, string="", val=ffi.new("UA_Guid*"), is_pointer=False):
+    def __init__(self, string: str = "", val=ffi.new("UA_Guid*"), is_pointer=False):
         if string != "":
             val = ffi.new("UA_Guid*", lib.UA_GUID(bytes(string, 'utf-8')))
             if val == UaGuid.NULL:
@@ -584,7 +587,11 @@ class UaNodeId(UaType):
 
     # TODO: refactor
     # TODO: Memory management
-    def __init__(self, ns_index=None, ident=None, is_pointer=False, val=ffi.new("UA_NodeId*")):
+    def __init__(self,
+                 ns_index: Union[int, UaUInt16] = None,
+                 ident: Union[int, UaUInt32, str, bytearray, UaString, UaGuid, UaByteString] = None,
+                 is_pointer=False,
+                 val=ffi.new("UA_NodeId*")):
         if ns_index is not None and ident is not None:
             if type(ns_index) is int:
                 if type(ident) is int:
@@ -721,7 +728,11 @@ class UaExpandedNodeId(UaType):
 
     # TODO: refactor
     # TODO: Memory management
-    def __init__(self, ns_index=None, ident=None, is_pointer=False, val=ffi.new("UA_ExpandedNodeId*")):
+    def __init__(self,
+                 ns_index: Union[int, UaUInt16] = None,
+                 ident: Union[int, UaUInt32, str, bytearray, UaString, UaGuid, UaByteString] = None,
+                 is_pointer=False,
+                 val=ffi.new("UA_ExpandedNodeId*")):
         if ns_index is not None and ident is not None:
             if type(ns_index) is int:
                 if type(ident) is int:
@@ -804,17 +815,17 @@ class UaExpandedNodeId(UaType):
             return self._server_index
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @namespace_uri.setter
-    def namespace_uri(self, val):
+    def namespace_uri(self, val: UaString):
         self._namespace_uri = val
         self._value.namespaceUri = val._val
 
     @server_index.setter
-    def server_index(self, val):
+    def server_index(self, val: UaUInt32):
         self._server_index = val
         self._value.serverIndex = val._val
 
@@ -854,7 +865,11 @@ class UaExpandedNodeId(UaType):
 
 # +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
 class UaQualifiedName(UaType):
-    def __init__(self, ns_index=None, string=None, val=ffi.new("UA_QualifiedName*"), is_pointer=False):
+    def __init__(self,
+                 ns_index: Union[int, UaUInt16] = None,
+                 string: Union[str, UaString] = None,
+                 val=ffi.new("UA_QualifiedName*"),
+                 is_pointer=False):
         # TODO: refactor
         # TODO: Memory management
         if ns_index is not None and string is not None:
@@ -908,12 +923,12 @@ class UaQualifiedName(UaType):
             return self._name
 
     @namespace_index.setter
-    def namespace_index(self, val):
+    def namespace_index(self, val: UaUInt16):
         self._namespace_index = val
         self._value.namespaceIndex = val._val
 
     @name.setter
-    def name(self, val):
+    def name(self, val: UaString):
         self._name = val
         self._value.name = val._val
 
@@ -939,7 +954,11 @@ class UaQualifiedName(UaType):
 class UaLocalizedText(UaType):
     # TODO: refactor
     # TODO: Memory management
-    def __init__(self, locale=None, text=None, val=ffi.new("UA_LocalizedText*"), is_pointer=False):
+    def __init__(self,
+                 locale: Union[str, UaString] = None,
+                 text: Union[str, UaString] = None,
+                 val=ffi.new("UA_LocalizedText*"),
+                 is_pointer=False):
         if locale is not None and text is not None:
             if type(locale) is str:
                 if type(text) is str:
@@ -992,12 +1011,12 @@ class UaLocalizedText(UaType):
             return self._text
 
     @locale.setter
-    def locale(self, val):
+    def locale(self, val: UaString):
         self._locale = val
         self._value.locale = val._val
 
     @text.setter
-    def text(self, val):
+    def text(self, val: UaString):
         self._text = val
         self._value.text = val._val
 
@@ -1044,12 +1063,12 @@ class UaNumericRangeDimension(UaType):
             return self._max
 
     @min.setter
-    def min(self, val):
+    def min(self, val: UaUInt32):
         self._min = val
         self._value.min = val._val
 
     @max.setter
-    def max(self, val):
+    def max(self, val: UaUInt32):
         self._max = val
         self._value.max = val._val
 
@@ -1095,15 +1114,15 @@ class UaNumericRange(UaType):
         else:
             return self._dimensions
 
-    # @dimensions_size.setter
-    # def dimensions_size(self, val):
-    #     self._dimensions_size = val
-    #     self._value.dimensionsSize = val._val
-    #
-    # @dimensions.setter
-    # def dimensions(self, val):
-    #     self._dimensions = val
-    #     self._value.dimensions = val._ptr
+    @dimensions_size.setter
+    def dimensions_size(self, val: SizeT):
+        self._dimensions_size = val
+        self._value.dimensionsSize = val._val
+
+    @dimensions.setter
+    def dimensions(self, val: UaNumericRangeDimension):
+        self._dimensions = val
+        self._value.dimensions = val._ptr
 
     def __str__(self, n=0):
         if self._null:
@@ -1184,32 +1203,32 @@ class UaVariant(UaType):
             return self._array_dimensions
 
     @type.setter
-    def type(self, val):
+    def type(self, val: 'UaDataType'):
         self._type = val
         self._value.type = val._ptr
 
     @storage_type.setter
-    def storage_type(self, val):
+    def storage_type(self, val: UaVariantStorageType):
         self._storage_type = val
         self._value.storageType = val._val
 
     @array_length.setter
-    def array_length(self, val):
+    def array_length(self, val: SizeT):
         self._array_length = val
         self._value.arrayLength = val._val
 
     @data.setter
-    def data(self, val):
+    def data(self, val: Void):
         self._data = val
         self._value.data = val._ptr
 
     @array_dimensions_size.setter
-    def array_dimensions_size(self, val):
+    def array_dimensions_size(self, val: SizeT):
         self._array_dimensions_size = val
         self._value.arrayDimensionsSize = val._val
 
     @array_dimensions.setter
-    def array_dimensions(self, val):
+    def array_dimensions(self, val: UaUInt32):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
@@ -1231,10 +1250,10 @@ class UaVariant(UaType):
     def is_scalar(self):
         return lib.UA_Variant_isScalar(self._ptr)
 
-    def has_scalar_type(self, data_type):
+    def has_scalar_type(self, data_type: 'UaDataType'):
         return lib.UA_Variant_hasScalarType(self._ptr, data_type._ptr)
 
-    def has_array_type(self, data_type):
+    def has_array_type(self, data_type: 'UaDataType'):
         return lib.UA_Variant_hasArrayType(self._ptr, data_type._ptr)
 
     # TODO: memory management
@@ -1247,13 +1266,12 @@ class UaVariant(UaType):
         self._array_dimensions._value = self._value.arrayDimensions
 
     # data is the python object matching the data_type or an void ptr
-    def set_scalar(self, data, data_type):
+    def set_scalar(self, data: Any, data_type: 'UaDataType'):
         self.__mem_protect = data._ptr
         lib.UA_Variant_setScalar(self._ptr, self.__mem_protect, data_type._ptr)
         self._set_attributes()
 
-
-    def set_array(self, array, size, data_type):
+    def set_array(self, array: Any, size: Union[int, SizeT], data_type: 'UaDataType'):
         if type(size) is int:
             size = SizeT(size)
         if type(size) is not SizeT:
@@ -1266,7 +1284,7 @@ class UaVariant(UaType):
         else:
             raise Exception(f"An Error occured - {str(status_code)}")
 
-    def copy_range_to(self, variant, num_range: UaNumericRange):
+    def copy_range_to(self, variant: 'UaVariant', num_range: UaNumericRange):
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copyRange(self._ptr, variant._ptr, num_range._val)
         status_code = UaStatusCode(status_code)
@@ -1275,7 +1293,7 @@ class UaVariant(UaType):
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
-    def copy(self, variant):
+    def copy(self, variant: 'UaVariant'):
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copy(self._ptr, variant._ptr)
         status_code = UaStatusCode(status_code)
@@ -1284,7 +1302,7 @@ class UaVariant(UaType):
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
-    def set_range_copy(self, array, size, num_range: UaNumericRange):
+    def set_range_copy(self, array: Any, size: Union[int, SizeT], num_range: UaNumericRange):
         if size is int:
             size = SizeT(size)
         elif size is not SizeT:
@@ -1874,35 +1892,35 @@ class UaDataTypeMember(UaType):
         else:
             return self._member_name
 
-    # @member_type_index.setter
-    # def member_type_index(self, val):
-    #     self._member_type_index = val
-    #     self._value.memberTypeIndex = val._val
-    #
-    # @padding.setter
-    # def padding(self, val):
-    #     self._padding = val
-    #     self._value.padding = val._val
-    #
-    # @namespace_zero.setter
-    # def namespace_zero(self, val):
-    #     self._namespace_zero = val
-    #     self._value.namespaceZero = val._val
-    #
-    # @is_array.setter
-    # def is_array(self, val):
-    #     self._is_array = val
-    #     self._value.isArray = val._val
-    #
-    # @is_optional.setter
-    # def is_optional(self, val):
-    #     self._is_optional = val
-    #     self._value.isOptional = val._val
-    #
-    # @member_name.setter
-    # def member_name(self, val):
-    #     self._member_name = val
-    #     self._value.memberName = val._ptr
+    @member_type_index.setter
+    def member_type_index(self, val: UaUInt16):
+        self._member_type_index = val
+        self._value.memberTypeIndex = val._val
+
+    @padding.setter
+    def padding(self, val: UaByte):
+        self._padding = val
+        self._value.padding = val._val
+
+    @namespace_zero.setter
+    def namespace_zero(self, val: UaBoolean):
+        self._namespace_zero = val
+        self._value.namespaceZero = val._val
+
+    @is_array.setter
+    def is_array(self, val: UaBoolean):
+        self._is_array = val
+        self._value.isArray = val._val
+
+    @is_optional.setter
+    def is_optional(self, val: UaBoolean):
+        self._is_optional = val
+        self._value.isOptional = val._val
+
+    @member_name.setter
+    def member_name(self, val: CString):
+        self._member_name = val
+        self._value.memberName = val._ptr
 
     def __str__(self, n=0):
         if self._null:
@@ -1919,7 +1937,6 @@ class UaDataTypeMember(UaType):
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
 class UaDataType(UaType):
-
     def __init__(self, val=ffi.new("UA_DataType*"), is_pointer=False):
         super().__init__(val=val, is_pointer=is_pointer)
 
@@ -2023,55 +2040,55 @@ class UaDataType(UaType):
         else:
             return self._type_name
 
-    # @type_id.setter
-    # def type_id(self, val):
-    #     self._type_id = val
-    #     self._value.typeId = val._val
-    #
-    # @binary_encoding_id.setter
-    # def binary_encoding_id(self, val):
-    #     self._binary_encoding_id = val
-    #     self._value.binaryEncodingId = val._val
-    #
-    # @mem_size.setter
-    # def mem_size(self, val):
-    #     self._mem_size = val
-    #     self._value.memSize = val._val
-    #
-    # @type_index.setter
-    # def type_index(self, val):
-    #     self._type_index = val
-    #     self._value.typeIndex = val._val
-    #
-    # @type_kind.setter
-    # def type_kind(self, val):
-    #     self._type_kind = val
-    #     self._value.typeKind = val._val
-    #
-    # @pointer_free.setter
-    # def pointer_free(self, val):
-    #     self._pointer_free = val
-    #     self._value.pointerFree = val._val
-    #
-    # @overlayable.setter
-    # def overlayable(self, val):
-    #     self._overlayable = val
-    #     self._value.overlayable = val._val
-    #
-    # @members_size.setter
-    # def members_size(self, val):
-    #     self._members_size = val
-    #     self._value.membersSize = val._val
-    #
-    # @members.setter
-    # def members(self, val):
-    #     self._members = val
-    #     self._value.members = val._ptr
-    #
-    # @type_name.setter
-    # def type_name(self, val):
-    #     self._type_name = val
-    #     self._value.typeName = val._ptr
+    @type_id.setter
+    def type_id(self, val: UaNodeId):
+        self._type_id = val
+        self._value.typeId = val._val
+
+    @binary_encoding_id.setter
+    def binary_encoding_id(self, val: UaNodeId):
+        self._binary_encoding_id = val
+        self._value.binaryEncodingId = val._val
+
+    @mem_size.setter
+    def mem_size(self, val: UaUInt16):
+        self._mem_size = val
+        self._value.memSize = val._val
+
+    @type_index.setter
+    def type_index(self, val: UaUInt16):
+        self._type_index = val
+        self._value.typeIndex = val._val
+
+    @type_kind.setter
+    def type_kind(self, val: UaUInt32):
+        self._type_kind = val
+        self._value.typeKind = val._val
+
+    @pointer_free.setter
+    def pointer_free(self, val: UaUInt32):
+        self._pointer_free = val
+        self._value.pointerFree = val._val
+
+    @overlayable.setter
+    def overlayable(self, val: UaUInt32):
+        self._overlayable = val
+        self._value.overlayable = val._val
+
+    @members_size.setter
+    def members_size(self, val: UaUInt32):
+        self._members_size = val
+        self._value.membersSize = val._val
+
+    @members.setter
+    def members(self, val: UaDataTypeMember):
+        self._members = val
+        self._value.members = val._ptr
+
+    @type_name.setter
+    def type_name(self, val: CString):
+        self._type_name = val
+        self._value.typeName = val._ptr
 
     def __str__(self, n=0):
         if self._null:
@@ -2106,8 +2123,6 @@ class UaDataType(UaType):
     #TODO: handling difficult, cast to something?
     def new_array(self, size: SizeT):
         return Void(val=lib.UA_Array_new(size._val, self._ptr))
-
-
 
 
 # +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
@@ -2152,20 +2167,20 @@ class UaDataTypeArray(UaType):
         else:
             return self._types
 
-    # @next.setter
-    # def next(self, val):
-    #     self._next = val
-    #     self._value.next = val._ptr
-    #
-    # @types_size.setter
-    # def types_size(self, val):
-    #     self._types_size = val
-    #     self._value.typesSize = val._val
-    #
-    # @types.setter
-    # def types(self, val):
-    #     self._types = val
-    #     self._value.types = val._ptr
+    @next.setter
+    def next(self, val: 'UaDataTypeArray'):
+        self._next = val
+        self._value.next = val._ptr
+
+    @types_size.setter
+    def types_size(self, val: SizeT):
+        self._types_size = val
+        self._value.typesSize = val._val
+
+    @types.setter
+    def types(self, val: UaDataType):
+        self._types = val
+        self._value.types = val._ptr
 
     def __str__(self, n=0):
         if self._null:

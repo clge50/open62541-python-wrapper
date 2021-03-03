@@ -7,6 +7,7 @@ from intermediateApi import ffi, lib
 from c_types import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
+
 # -------------------------------------------------------------
 # --------------------------- Enums ---------------------------
 # -------------------------------------------------------------
@@ -70,7 +71,7 @@ class UaAttributeId(UaType):
         (26, "UA_ATTRIBUTEID_ACCESSRESTRICTIONS"),
         (27, "UA_ATTRIBUTEID_ACCESSLEVELEX")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_AttributeId*"), is_pointer)
         else:
@@ -102,7 +103,7 @@ class UaRuleHandling(UaType):
         (2, "UA_RULEHANDLING_WARN"),
         (3, "UA_RULEHANDLING_ACCEPT")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_RuleHandling*"), is_pointer)
         else:
@@ -132,7 +133,7 @@ class UaOrder(UaType):
         (0, "UA_ORDER_EQ"),
         (1, "UA_ORDER_MORE")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Order*"), is_pointer)
         else:
@@ -172,7 +173,7 @@ class UaSecureChannelState(UaType):
         (6, "UA_SECURECHANNELSTATE_OPEN"),
         (7, "UA_SECURECHANNELSTATE_CLOSING")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_SecureChannelState*"), is_pointer)
         else:
@@ -208,7 +209,7 @@ class UaSessionState(UaType):
         (4, "UA_SESSIONSTATE_ACTIVATED"),
         (5, "UA_SESSIONSTATE_CLOSING")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_SessionState*"), is_pointer)
         else:
@@ -230,7 +231,6 @@ class UaSessionState(UaType):
 # -------------------------------------------------------------
 # -------------------------- Structs --------------------------
 # -------------------------------------------------------------
-
 
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
@@ -293,27 +293,27 @@ class UaNetworkStatistics(UaType):
             return self._connection_abort_count
 
     @current_connection_count.setter
-    def current_connection_count(self, val):
+    def current_connection_count(self, val: SizeT):
         self._current_connection_count = val
         self._value.currentConnectionCount = val._val
 
     @cumulated_connection_count.setter
-    def cumulated_connection_count(self, val):
+    def cumulated_connection_count(self, val: SizeT):
         self._cumulated_connection_count = val
         self._value.cumulatedConnectionCount = val._val
 
     @rejected_connection_count.setter
-    def rejected_connection_count(self, val):
+    def rejected_connection_count(self, val: SizeT):
         self._rejected_connection_count = val
         self._value.rejectedConnectionCount = val._val
 
     @connection_timeout_count.setter
-    def connection_timeout_count(self, val):
+    def connection_timeout_count(self, val: SizeT):
         self._connection_timeout_count = val
         self._value.connectionTimeoutCount = val._val
 
     @connection_abort_count.setter
-    def connection_abort_count(self, val):
+    def connection_abort_count(self, val: SizeT):
         self._connection_abort_count = val
         self._value.connectionAbortCount = val._val
 
@@ -399,32 +399,32 @@ class UaSecureChannelStatistics(UaType):
             return self._channel_purge_count
 
     @current_channel_count.setter
-    def current_channel_count(self, val):
+    def current_channel_count(self, val: SizeT):
         self._current_channel_count = val
         self._value.currentChannelCount = val._val
 
     @cumulated_channel_count.setter
-    def cumulated_channel_count(self, val):
+    def cumulated_channel_count(self, val: SizeT):
         self._cumulated_channel_count = val
         self._value.cumulatedChannelCount = val._val
 
     @rejected_channel_count.setter
-    def rejected_channel_count(self, val):
+    def rejected_channel_count(self, val: SizeT):
         self._rejected_channel_count = val
         self._value.rejectedChannelCount = val._val
 
     @channel_timeout_count.setter
-    def channel_timeout_count(self, val):
+    def channel_timeout_count(self, val: SizeT):
         self._channel_timeout_count = val
         self._value.channelTimeoutCount = val._val
 
     @channel_abort_count.setter
-    def channel_abort_count(self, val):
+    def channel_abort_count(self, val: SizeT):
         self._channel_abort_count = val
         self._value.channelAbortCount = val._val
 
     @channel_purge_count.setter
-    def channel_purge_count(self, val):
+    def channel_purge_count(self, val: SizeT):
         self._channel_purge_count = val
         self._value.channelPurgeCount = val._val
 
@@ -439,4 +439,3 @@ class UaSecureChannelStatistics(UaType):
                 "\t" * (n + 1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n + 1) +
                 "\t" * (n + 1) + "channel_abort_count" + self._channel_abort_count.__str__(n + 1) +
                 "\t" * (n + 1) + "channel_purge_count" + self._channel_purge_count.__str__(n + 1) + "\n")
-
