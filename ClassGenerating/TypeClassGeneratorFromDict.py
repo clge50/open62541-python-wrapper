@@ -138,6 +138,8 @@ def to_python_class_name(open62541_name: str):
         return inflection.underscore(open62541_name)
 
 
+# !!!! Please save your dicts here, so if the generator functions change we can generate the classes again. !!!!
+
 # Example
 # typedef struct {
 #     UA_ExampleTypeA *attributeNameA;

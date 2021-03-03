@@ -53,6 +53,17 @@ data = ffi.cast("UA_Double[9]", v3._data._value)
 data = ffi.unpack(data, 9)
 print(data)
 
+a = UaSByte(13)
+b = UaSByte(3)
+c = UaDouble(3.0)
+print(c < b)
+print(a <= b)
+print(c == b)
+print(a < b)
+print(c < b)
+
+print(c.value)
+
 
 
 

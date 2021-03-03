@@ -33,6 +33,10 @@ class {to_python_class_name(prim_name)}(UaType):
             else:
                 super().__init__(ffi.new("{prim_name}*", _val(val)), is_pointer)
 
+    @property
+    def value(self):
+        return int(self._val)
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "{prim_name}")
@@ -41,6 +45,24 @@ class {to_python_class_name(prim_name)}(UaType):
 
     def __str__(self, n=0):
         return "({to_python_class_name(prim_name)}): " + str(self._val) + "\\n"
+
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
 
 
 """

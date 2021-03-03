@@ -872,7 +872,7 @@ class UaDataValue(UaType):
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
-            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_value = UaVariant(val=val.value, is_pointer=False)
             self._source_timestamp = UaDateTime(val=val.sourceTimestamp, is_pointer=False)
             self._server_timestamp = UaDateTime(val=val.serverTimestamp, is_pointer=False)
             self._source_picoseconds = UaUInt16(val=val.sourcePicoseconds, is_pointer=False)
@@ -892,7 +892,7 @@ class UaDataValue(UaType):
             self._value[0] = _val(val)
 
         if not _is_null(val):
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
             self._source_timestamp._value[0] = _val(val.sourceTimestamp)
             self._server_timestamp._value[0] = _val(val.serverTimestamp)
             self._source_picoseconds._value[0] = _val(val.sourcePicoseconds)
@@ -906,11 +906,11 @@ class UaDataValue(UaType):
             self._has_server_picoseconds._value[0] = _val(val.hasServerPicoseconds)
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @property
     def source_timestamp(self):
@@ -989,9 +989,9 @@ class UaDataValue(UaType):
         else:
             return self._has_server_picoseconds
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     @source_timestamp.setter
@@ -1054,7 +1054,7 @@ class UaDataValue(UaType):
             return "(UaDataValue) : NULL\n"
         
         return ("(UaDataValue) :\n" +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) +
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
                 "\t"*(n+1) + "source_timestamp" + self._source_timestamp.__str__(n+1) +
                 "\t"*(n+1) + "server_timestamp" + self._server_timestamp.__str__(n+1) +
                 "\t"*(n+1) + "source_picoseconds" + self._source_picoseconds.__str__(n+1) +

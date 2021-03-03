@@ -832,7 +832,7 @@ class UaXVType(UaType):
         
         if not self._null:
             self._x = UaDouble(val=val.x, is_pointer=False)
-            self._value = UaFloat(val=val.value, is_pointer=False)
+            self._data_value = UaFloat(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -842,7 +842,7 @@ class UaXVType(UaType):
 
         if not _is_null(val):
             self._x._value[0] = _val(val.x)
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
 
     @property
     def x(self):
@@ -852,20 +852,20 @@ class UaXVType(UaType):
             return self._x
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @x.setter
     def x(self, val):
         self._x = val
         self._value.x = val._val
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     def __str__(self, n=0):
@@ -874,7 +874,7 @@ class UaXVType(UaType):
         
         return ("(UaXVType) :\n" +
                 "\t"*(n+1) + "x" + self._x.__str__(n+1) +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) + "\n")
 
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
@@ -925,7 +925,7 @@ class UaVariableAttributes(UaType):
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
             self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
             self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_value = UaVariant(val=val.value, is_pointer=False)
             self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
             self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
             self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
@@ -947,7 +947,7 @@ class UaVariableAttributes(UaType):
             self._description._value[0] = _val(val.description)
             self._write_mask._value[0] = _val(val.writeMask)
             self._user_write_mask._value[0] = _val(val.userWriteMask)
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
             self._data_type._value[0] = _val(val.dataType)
             self._value_rank._value[0] = _val(val.valueRank)
             self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
@@ -993,11 +993,11 @@ class UaVariableAttributes(UaType):
             return self._user_write_mask
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @property
     def data_type(self):
@@ -1080,9 +1080,9 @@ class UaVariableAttributes(UaType):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     @data_type.setter
@@ -1135,7 +1135,7 @@ class UaVariableAttributes(UaType):
                 "\t"*(n+1) + "description" + self._description.__str__(n+1) +
                 "\t"*(n+1) + "write_mask" + self._write_mask.__str__(n+1) +
                 "\t"*(n+1) + "user_write_mask" + self._user_write_mask.__str__(n+1) +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) +
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
                 "\t"*(n+1) + "data_type" + self._data_type.__str__(n+1) +
                 "\t"*(n+1) + "value_rank" + self._value_rank.__str__(n+1) +
                 "\t"*(n+1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n+1) +
@@ -1152,7 +1152,7 @@ class UaEnumValueType(UaType):
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
-            self._value = UaInt64(val=val.value, is_pointer=False)
+            self._data_value = UaInt64(val=val.value, is_pointer=False)
             self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
@@ -1163,16 +1163,16 @@ class UaEnumValueType(UaType):
             self._value[0] = _val(val)
 
         if not _is_null(val):
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
             self._display_name._value[0] = _val(val.displayName)
             self._description._value[0] = _val(val.description)
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @property
     def display_name(self):
@@ -1188,9 +1188,9 @@ class UaEnumValueType(UaType):
         else:
             return self._description
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     @display_name.setter
@@ -1208,7 +1208,7 @@ class UaEnumValueType(UaType):
             return "(UaEnumValueType) : NULL\n"
         
         return ("(UaEnumValueType) :\n" +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) +
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
                 "\t"*(n+1) + "description" + self._description.__str__(n+1) + "\n")
 
@@ -1764,7 +1764,7 @@ class UaLiteralOperand(UaType):
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
-            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_value = UaVariant(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1773,18 +1773,18 @@ class UaLiteralOperand(UaType):
             self._value[0] = _val(val)
 
         if not _is_null(val):
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     def __str__(self, n=0):
@@ -1792,7 +1792,7 @@ class UaLiteralOperand(UaType):
             return "(UaLiteralOperand) : NULL\n"
         
         return ("(UaLiteralOperand) :\n" +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) + "\n")
 
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
@@ -1891,7 +1891,7 @@ class UaMonitoredItemNotification(UaType):
         
         if not self._null:
             self._client_handle = UaUInt32(val=val.clientHandle, is_pointer=False)
-            self._value = UaDataValue(val=val.value, is_pointer=False)
+            self._data_value = UaDataValue(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1901,7 +1901,7 @@ class UaMonitoredItemNotification(UaType):
 
         if not _is_null(val):
             self._client_handle._value[0] = _val(val.clientHandle)
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
 
     @property
     def client_handle(self):
@@ -1911,20 +1911,20 @@ class UaMonitoredItemNotification(UaType):
             return self._client_handle
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @client_handle.setter
     def client_handle(self, val):
         self._client_handle = val
         self._value.clientHandle = val._val
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     def __str__(self, n=0):
@@ -1933,7 +1933,7 @@ class UaMonitoredItemNotification(UaType):
         
         return ("(UaMonitoredItemNotification) :\n" +
                 "\t"*(n+1) + "client_handle" + self._client_handle.__str__(n+1) +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) + "\n")
 
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
@@ -2412,7 +2412,7 @@ class UaEnumField(UaType):
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
-            self._value = UaInt64(val=val.value, is_pointer=False)
+            self._data_value = UaInt64(val=val.value, is_pointer=False)
             self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
             self._name = UaString(val=val.name, is_pointer=False)
@@ -2424,17 +2424,17 @@ class UaEnumField(UaType):
             self._value[0] = _val(val)
 
         if not _is_null(val):
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
             self._display_name._value[0] = _val(val.displayName)
             self._description._value[0] = _val(val.description)
             self._name._value[0] = _val(val.name)
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @property
     def display_name(self):
@@ -2457,9 +2457,9 @@ class UaEnumField(UaType):
         else:
             return self._name
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     @display_name.setter
@@ -2482,7 +2482,7 @@ class UaEnumField(UaType):
             return "(UaEnumField) : NULL\n"
         
         return ("(UaEnumField) :\n" +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) +
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
                 "\t"*(n+1) + "display_name" + self._display_name.__str__(n+1) +
                 "\t"*(n+1) + "description" + self._description.__str__(n+1) +
                 "\t"*(n+1) + "name" + self._name.__str__(n+1) + "\n")
@@ -2499,7 +2499,7 @@ class UaVariableTypeAttributes(UaType):
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
             self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
             self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
-            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_value = UaVariant(val=val.value, is_pointer=False)
             self._data_type = UaNodeId(val=val.dataType, is_pointer=False)
             self._value_rank = UaInt32(val=val.valueRank, is_pointer=False)
             self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
@@ -2518,7 +2518,7 @@ class UaVariableTypeAttributes(UaType):
             self._description._value[0] = _val(val.description)
             self._write_mask._value[0] = _val(val.writeMask)
             self._user_write_mask._value[0] = _val(val.userWriteMask)
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
             self._data_type._value[0] = _val(val.dataType)
             self._value_rank._value[0] = _val(val.valueRank)
             self._array_dimensions_size._value[0] = _val(val.arrayDimensionsSize)
@@ -2561,11 +2561,11 @@ class UaVariableTypeAttributes(UaType):
             return self._user_write_mask
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @property
     def data_type(self):
@@ -2627,9 +2627,9 @@ class UaVariableTypeAttributes(UaType):
         self._user_write_mask = val
         self._value.userWriteMask = val._val
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     @data_type.setter
@@ -2667,7 +2667,7 @@ class UaVariableTypeAttributes(UaType):
                 "\t"*(n+1) + "description" + self._description.__str__(n+1) +
                 "\t"*(n+1) + "write_mask" + self._write_mask.__str__(n+1) +
                 "\t"*(n+1) + "user_write_mask" + self._user_write_mask.__str__(n+1) +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) +
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
                 "\t"*(n+1) + "data_type" + self._data_type.__str__(n+1) +
                 "\t"*(n+1) + "value_rank" + self._value_rank.__str__(n+1) +
                 "\t"*(n+1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n+1) +
@@ -5137,7 +5137,7 @@ class UaWriteValue(UaType):
             self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
             self._attribute_id = UaUInt32(val=val.attributeId, is_pointer=False)
             self._index_range = UaString(val=val.indexRange, is_pointer=False)
-            self._value = UaDataValue(val=val.value, is_pointer=False)
+            self._data_value = UaDataValue(val=val.value, is_pointer=False)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -5149,7 +5149,7 @@ class UaWriteValue(UaType):
             self._node_id._value[0] = _val(val.nodeId)
             self._attribute_id._value[0] = _val(val.attributeId)
             self._index_range._value[0] = _val(val.indexRange)
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
 
     @property
     def node_id(self):
@@ -5173,11 +5173,11 @@ class UaWriteValue(UaType):
             return self._index_range
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @node_id.setter
     def node_id(self, val):
@@ -5194,9 +5194,9 @@ class UaWriteValue(UaType):
         self._index_range = val
         self._value.indexRange = val._val
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val):
+        self._data_value = val
         self._value.value = val._val
 
     def __str__(self, n=0):
@@ -5207,7 +5207,7 @@ class UaWriteValue(UaType):
                 "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
                 "\t"*(n+1) + "attribute_id" + self._attribute_id.__str__(n+1) +
                 "\t"*(n+1) + "index_range" + self._index_range.__str__(n+1) +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) + "\n")
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) + "\n")
 
 
 # +++++++++++++++++++ UaDataTypeAttributes +++++++++++++++++++++++
