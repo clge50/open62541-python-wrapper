@@ -119,7 +119,7 @@ def generate_api():
                            libraries=['open62541'])
 
     ffi_builder.cdef(cffi_input)
-    os.mkdir("build")
+    #os.mkdir("build")
     copytree(dirname + r"/src/api", dirname + r"/build/open62541")
     os.chdir(dirname + r"/build/open62541/")
     ffi_builder.compile(verbose=True)
