@@ -1,7 +1,4 @@
-import sys
-sys.path.append("../build/open62541")
 from ua import *
-
 
 a = UaSByte(13)
 b = UaSByte(3)
@@ -24,15 +21,3 @@ print(string)
 
 now = UaDateTimeStruct.now()
 print(now)
-
-
-
-
-
-
-
-
-
-
-
-
