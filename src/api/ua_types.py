@@ -18,7 +18,7 @@ class UaClientConfig(UaType):
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)
-            self._logger = UaSimpleAttributeOperand(val=val.logger, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=False)
             self._timeout = UaUInt32(val=val.timeout, is_pointer=False)
             self._client_description = UaUInt32(val=val.clientDescription, is_pointer=False)
             self._user_identity_token = UaUserIdentityToken(val=val.userIdentityToken, is_pointer=False)
@@ -226,17 +226,6 @@ class UaClientConfig(UaType):
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1) + "\n")
-
-
-
-
-        return ("(UaEventFilter) :\n" +
-                "\t" * (n + 1) + "select_clauses_size" + self._select_clauses_size.__str__(n + 1) +
-                "\t" * (n + 1) + "select_clauses" + self._select_clauses.__str__(n + 1) +
-                "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1) + "\n")
-
-
-
 
 
 #++++++++++++++++++++ protos +++++++++++++++++++++++

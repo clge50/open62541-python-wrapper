@@ -18,11 +18,10 @@ class UaServer:
             self.ua_server = lib.UA_Server_new()
             self.set_default_config()
         else:
-            self.ua_server = lib.UA_Server_newWithConfig(config)
+            self.ua_server = lib.UA_Server_newWithConfig(config._ptr)
 
-    
-    def run( self, running:ua_types.UaBoolean):
-        raw_result = lib.UA_Server_run( self.ua_server, running)
+    def run(self, running: ua_types.UaBoolean):
+        raw_result = lib.UA_Server_run(self.ua_server, running._ptr)
         return ua_types.UaStatusCode(val=raw_result)
 
    

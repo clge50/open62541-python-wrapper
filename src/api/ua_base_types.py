@@ -245,13 +245,14 @@ class UaString(UaType):
     def equal_ignore_case(self, ua_string):
         return lib.UA_String_equal_ignorecase(self._ptr, ua_string._ptr)
 
-    def to_string(self):
+    @property
+    def value(self):
         if self._null:
             return "NULL"
         return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val).decode("utf-8")
 
     def __str__(self, n=0):
-        return "(UaString): " + self.to_string() + "\n"
+        return "(UaString): " + self.value + "\n"
 
 
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
@@ -460,15 +461,9 @@ class UaDateTimeStruct(UaType):
             return "(UaDateTimeStruct) : NULL\n"
 
         return ("(UaDateTimeStruct) :\n" +
-                "\t" * (n + 1) + "nano_sec" + self._nano_sec.__str__(n + 1) +
-                "\t" * (n + 1) + "micro_sec" + self._micro_sec.__str__(n + 1) +
-                "\t" * (n + 1) + "milli_sec" + self._milli_sec.__str__(n + 1) +
-                "\t" * (n + 1) + "sec" + self._sec.__str__(n + 1) +
-                "\t" * (n + 1) + "min" + self._min.__str__(n + 1) +
-                "\t" * (n + 1) + "hour" + self._hour.__str__(n + 1) +
-                "\t" * (n + 1) + "day" + self._day.__str__(n + 1) +
-                "\t" * (n + 1) + "month" + self._month.__str__(n + 1) +
-                "\t" * (n + 1) + "year" + self._year.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + f"{self._year}-{self._month:02d}-{self._day:02d} " +
+                f"{self._hour:02d}:{self._min:02d}:{self._sec:02d}." +
+                f"{self._milli_sec:03d}.{self._micro_sec:03d}.{self._nano_sec:03d}\n")
 
     def to_primitive(self):
         return UaDateTime(lib.UA_DateTime_fromStruct(self._val))
@@ -1136,6 +1131,7 @@ class UaNumericRange(UaType):
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
     def __init__(self, val=ffi.new("UA_Variant*"), is_pointer=False):
+        lib.UA_Variant_init(_ptr(val))
         super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:

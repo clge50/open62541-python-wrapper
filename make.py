@@ -49,7 +49,7 @@ def generate_node_ids():
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if
                  line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
-        lines = list(map(lambda l: "\t" + re.sub(r"[a-zA-Z0]*?_[a-zA-Z0]*?_", "", l.split()[0]) +
+        lines = list(map(lambda l: "\t" + l.split()[0].replace("UA_NS0ID_", "") +
                                    " = UaNodeId(0, " + l.split()[1] + ")\n", lines))
         lines.insert(0, "class NS0ID:\n")
         lines.insert(0, "from ua_types import UaNodeId\n")

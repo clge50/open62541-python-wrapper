@@ -46,7 +46,7 @@ class UaClientConfig(UaType):
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)
-            self._logger = UaSimpleAttributeOperand(val=val.logger, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=False)
             self._timeout = UaUInt32(val=val.timeout, is_pointer=False)
             self._client_description = UaUInt32(val=val.clientDescription, is_pointer=False)
             self._user_identity_token = UaUserIdentityToken(val=val.userIdentityToken, is_pointer=False)
@@ -253,7 +253,34 @@ class UaClientConfig(UaType):
                 &#34;\t&#34; * (n + 1) + &#34;requested_session_timeout&#34; + self._requested_session_timeout.__str__(n + 1) +
                 &#34;\t&#34; * (n + 1) + &#34;connectivity_check_interval&#34; + self._connectivity_check_interval.__str__(n + 1) +
                 &#34;\t&#34; * (n + 1) + &#34;connectivity_check_interval&#34; + self._connectivity_check_interval.__str__(n + 1) +
-                &#34;\t&#34; * (n + 1) + &#34;custom_data_types&#34; + self._custom_data_types.__str__(n + 1) + &#34;\n&#34;)</code></pre>
+                &#34;\t&#34; * (n + 1) + &#34;custom_data_types&#34; + self._custom_data_types.__str__(n + 1) + &#34;\n&#34;)
+
+
+#++++++++++++++++++++ protos +++++++++++++++++++++++
+
+class UaValueCallback(UaType):
+    def __init__(self):
+        return None
+
+class UaValueBackend(UaType):
+    def __init__(self):
+        return None
+
+class UaDataSource(UaType):
+    def __init__(self):
+        return None
+
+class UaNodeTypeLifecycle(UaType):
+    def __init__(self):
+        return None
+
+class UaTwoStateVariableCallbackType(UaType):
+    def __init__(self):
+        return None
+
+class UaTwoStateVariableChangeCallback(UaType):
+    def __init__(self):
+        return None</code></pre>
 </details>
 </section>
 <section>
@@ -284,7 +311,7 @@ class UaClientConfig(UaType):
 
         if not self._null:
             self._client_context = Void(val=val.clientContext, is_pointer=True)
-            self._logger = UaSimpleAttributeOperand(val=val.logger, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=False)
             self._timeout = UaUInt32(val=val.timeout, is_pointer=False)
             self._client_description = UaUInt32(val=val.clientDescription, is_pointer=False)
             self._user_identity_token = UaUserIdentityToken(val=val.userIdentityToken, is_pointer=False)
@@ -696,6 +723,114 @@ def user_token_policy(self):
 </dd>
 </dl>
 </dd>
+<dt id="open62541.ua_types.UaDataSource"><code class="flex name class">
+<span>class <span class="ident">UaDataSource</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UaDataSource(UaType):
+    def __init__(self):
+        return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>ua_types_parent.UaType</li>
+</ul>
+</dd>
+<dt id="open62541.ua_types.UaNodeTypeLifecycle"><code class="flex name class">
+<span>class <span class="ident">UaNodeTypeLifecycle</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UaNodeTypeLifecycle(UaType):
+    def __init__(self):
+        return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>ua_types_parent.UaType</li>
+</ul>
+</dd>
+<dt id="open62541.ua_types.UaTwoStateVariableCallbackType"><code class="flex name class">
+<span>class <span class="ident">UaTwoStateVariableCallbackType</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UaTwoStateVariableCallbackType(UaType):
+    def __init__(self):
+        return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>ua_types_parent.UaType</li>
+</ul>
+</dd>
+<dt id="open62541.ua_types.UaTwoStateVariableChangeCallback"><code class="flex name class">
+<span>class <span class="ident">UaTwoStateVariableChangeCallback</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UaTwoStateVariableChangeCallback(UaType):
+    def __init__(self):
+        return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>ua_types_parent.UaType</li>
+</ul>
+</dd>
+<dt id="open62541.ua_types.UaValueBackend"><code class="flex name class">
+<span>class <span class="ident">UaValueBackend</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UaValueBackend(UaType):
+    def __init__(self):
+        return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>ua_types_parent.UaType</li>
+</ul>
+</dd>
+<dt id="open62541.ua_types.UaValueCallback"><code class="flex name class">
+<span>class <span class="ident">UaValueCallback</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UaValueCallback(UaType):
+    def __init__(self):
+        return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>ua_types_parent.UaType</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -729,6 +864,24 @@ def user_token_policy(self):
 <li><code><a title="open62541.ua_types.UaClientConfig.user_identity_token" href="#open62541.ua_types.UaClientConfig.user_identity_token">user_identity_token</a></code></li>
 <li><code><a title="open62541.ua_types.UaClientConfig.user_token_policy" href="#open62541.ua_types.UaClientConfig.user_token_policy">user_token_policy</a></code></li>
 </ul>
+</li>
+<li>
+<h4><code><a title="open62541.ua_types.UaDataSource" href="#open62541.ua_types.UaDataSource">UaDataSource</a></code></h4>
+</li>
+<li>
+<h4><code><a title="open62541.ua_types.UaNodeTypeLifecycle" href="#open62541.ua_types.UaNodeTypeLifecycle">UaNodeTypeLifecycle</a></code></h4>
+</li>
+<li>
+<h4><code><a title="open62541.ua_types.UaTwoStateVariableCallbackType" href="#open62541.ua_types.UaTwoStateVariableCallbackType">UaTwoStateVariableCallbackType</a></code></h4>
+</li>
+<li>
+<h4><code><a title="open62541.ua_types.UaTwoStateVariableChangeCallback" href="#open62541.ua_types.UaTwoStateVariableChangeCallback">UaTwoStateVariableChangeCallback</a></code></h4>
+</li>
+<li>
+<h4><code><a title="open62541.ua_types.UaValueBackend" href="#open62541.ua_types.UaValueBackend">UaValueBackend</a></code></h4>
+</li>
+<li>
+<h4><code><a title="open62541.ua_types.UaValueCallback" href="#open62541.ua_types.UaValueCallback">UaValueCallback</a></code></h4>
 </li>
 </ul>
 </li>
