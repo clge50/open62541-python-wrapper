@@ -1,30 +1,28 @@
-import sys
+from ua import *
 
-sys.path.append("../build/open62541")
-import clientApi
-from ua_types import *
-from intermediateApi import ffi, lib
+logger = UaLogger()
+logger.error(UaLogCategory(0), "eine nachticht %s")
 
 x = UaStatusCode(0x80000000)
 print(x.is_bad())
 
-client = clientApi.UaClient()
+client = UaClient()
 retval = client.connect("opc.tcp://127.0.0.1:4840/")
 
 # configuring attribute
-attr = clientApi.DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
-myInteger = UaInt32(42)
+# attr = clientApi.DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
+# myInteger = UaInt32(42)
 # UA_Variant_setScalar(&attr.value, &myInteger, &UA_TYPES[UA_TYPES_INT32]);
-attr.description = UaLocalizedText("en-US", "hello world!")
-attr.displayName = UaLocalizedText("en-US", "Just to be sure")
+# attr.description = UaLocalizedText("en-US", "hello world!")
+# attr.displayName = UaLocalizedText("en-US", "Just to be sure")
 # attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
 
 # adding node
 my_integer_node_id = UaNodeId(1, "the answer")
 my_integer_name = UaQualifiedName(1, "the.answer")
-parent_node_id = UaNodeId(0, UaNodeId.UA_NS0ID_OBJECTSFOLDER)
-parent_reference_node_id = UaNodeId(0, UaNodeId.UA_NS0ID_ORGANIZES)
-variable_type = UaNodeId(0, UaNodeId.UA_NS0ID_BASEDATAVARIABLETYPE)
+parent_node_id = NS0ID.OBJECTSFOLDER
+parent_reference_node_id = NS0ID.ORGANIZES
+variable_type = NS0ID.BASEDATAVARIABLETYPE
 
 parent_node_read_result = client.read_node_id_attribute(parent_reference_node_id)
 print(f"read_node_id_attribute UaStatuscode was: {str(parent_node_read_result.status_code)}")

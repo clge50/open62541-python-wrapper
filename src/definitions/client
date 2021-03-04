@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 //types
 typedef struct {
     void *clientContext;
@@ -11,12 +15,15 @@ typedef struct {
     UA_UserTokenPolicy userTokenPolicy;
     UA_UInt32 secureChannelLifeTime;
     UA_UInt32 requestedSessionTimeout;
-    UA_ConnectionConfig localConnectionConfig;
     UA_UInt32 connectivityCheckInterval;
     const UA_DataTypeArray *customDataTypes;
+
+    // TODO: Types that are neither built in types nor automatically generated as well as associated fields
+    // nor seemed to be absolutely crucial for early iterations have not been made available yet.
+    /*
+    UA_ConnectionConfig localConnectionConfig;
     size_t securityPoliciesSize;
-    /* TODO */
-    /* UA_SecurityPolicy *securityPolicies;
+    UA_SecurityPolicy *securityPolicies;
     UA_CertificateVerification certificateVerification;
     UA_ConnectClientConnection initConnectionFunc;
 
@@ -28,9 +35,7 @@ typedef struct {
                           UA_SessionState sessionState,
                           UA_StatusCode connectStatus);
     void (*inactivityCallback)(UA_Client *client);
-    */
 
-/* pub/sub
     UA_UInt16 outStandingPublishRequests;
 
     void (*subscriptionInactivityCallback)(UA_Client *client,
@@ -69,6 +74,7 @@ typedef void (*UA_ClientCallback)(UA_Client *client, void *data);
 
 // callback function pointer implementations
 extern "Python" void python_wrapper_UA_ClientAsyncServiceCallback(UA_Client *client, void *userdata, UA_UInt32 requestId, void *response);
+extern "Python" void python_wrapper_UA_ClientCallback(UA_Client *client, void *data);
 
 // utils
 UA_ClientConfig * UA_Client_getConfig(UA_Client *client);

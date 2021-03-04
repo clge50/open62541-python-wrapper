@@ -4,10 +4,16 @@ class UaBoolean(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Boolean*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Boolean[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Boolean*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -18,6 +24,24 @@ class UaBoolean(UaType):
     def __str__(self, n=0):
         return "(UaBoolean): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
@@ -25,10 +49,16 @@ class UaSByte(UaType):
         if val is None:
             super().__init__(ffi.new("UA_SByte*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_SByte[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_SByte*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -39,6 +69,24 @@ class UaSByte(UaType):
     def __str__(self, n=0):
         return "(UaSByte): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
@@ -46,10 +94,16 @@ class UaByte(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Byte*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Byte[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Byte*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -60,6 +114,24 @@ class UaByte(UaType):
     def __str__(self, n=0):
         return "(UaByte): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
@@ -67,10 +139,16 @@ class UaInt16(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Int16*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Int16[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Int16*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -81,6 +159,24 @@ class UaInt16(UaType):
     def __str__(self, n=0):
         return "(UaInt16): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
@@ -88,10 +184,16 @@ class UaUInt16(UaType):
         if val is None:
             super().__init__(ffi.new("UA_UInt16*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_UInt16[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_UInt16*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -102,6 +204,24 @@ class UaUInt16(UaType):
     def __str__(self, n=0):
         return "(UaUInt16): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
@@ -109,10 +229,16 @@ class UaInt32(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Int32*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Int32[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Int32*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -123,6 +249,24 @@ class UaInt32(UaType):
     def __str__(self, n=0):
         return "(UaInt32): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
@@ -130,10 +274,16 @@ class UaUInt32(UaType):
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_UInt32[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_UInt32*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -144,6 +294,24 @@ class UaUInt32(UaType):
     def __str__(self, n=0):
         return "(UaUInt32): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
@@ -151,10 +319,16 @@ class UaInt64(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Int64*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Int64[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Int64*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -165,6 +339,24 @@ class UaInt64(UaType):
     def __str__(self, n=0):
         return "(UaInt64): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
@@ -172,10 +364,16 @@ class UaUInt64(UaType):
         if val is None:
             super().__init__(ffi.new("UA_UInt64*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_UInt64[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_UInt64*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -186,6 +384,24 @@ class UaUInt64(UaType):
     def __str__(self, n=0):
         return "(UaUInt64): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
@@ -193,10 +409,16 @@ class UaFloat(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Float*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Float[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Float*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -207,6 +429,24 @@ class UaFloat(UaType):
     def __str__(self, n=0):
         return "(UaFloat): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
@@ -214,10 +454,16 @@ class UaDouble(UaType):
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_Double[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Double*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -228,6 +474,24 @@ class UaDouble(UaType):
     def __str__(self, n=0):
         return "(UaDouble): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
@@ -235,10 +499,16 @@ class UaStatusCode(UaType):
         if val is None:
             super().__init__(ffi.new("UA_StatusCode*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_StatusCode[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_StatusCode*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -249,6 +519,24 @@ class UaStatusCode(UaType):
     def __str__(self, n=0):
         return "(UaStatusCode): " + str(self._val) + "\n"
 
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
+
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
@@ -256,10 +544,16 @@ class UaDateTime(UaType):
         if val is None:
             super().__init__(ffi.new("UA_DateTime*"), is_pointer)
         else:
-            if is_pointer:
+            if type(val) is list:
+                super().__init__(ffi.new("UA_DateTime[]", val), True)
+            elif is_pointer:
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_DateTime*", _val(val)), is_pointer)
+
+    @property
+    def value(self):
+        return int(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -269,5 +563,23 @@ class UaDateTime(UaType):
 
     def __str__(self, n=0):
         return "(UaDateTime): " + str(self._val) + "\n"
+
+    def __eq__(self, other):
+        return self._val == other._val
+
+    def __ne__(self, other):
+        return self._val != other._val
+
+    def __gt__(self, other):
+        return self._val > other._val
+
+    def __lt__(self, other):
+        return self._val < other._val
+
+    def __ge__(self, other):
+        return self._val >= other._val
+
+    def __le__(self, other):
+        return self._val <= other._val
 
 

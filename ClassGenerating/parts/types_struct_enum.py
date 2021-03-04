@@ -16,7 +16,7 @@ class UaNodeIdType(UaType):
         (4, "UA_NODEIDTYPE_GUID"),
         (5, "UA_NODEIDTYPE_BYTESTRING")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_NodeIdType*"), is_pointer)
         else:
@@ -44,7 +44,7 @@ class UaVariantStorageType(UaType):
         (0, "UA_VARIANT_DATA"),
         (1, "UA_VARIANT_DATA_NODELETE")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_VariantStorageType*"), is_pointer)
         else:
@@ -78,7 +78,7 @@ class UaExtensionObjectEncoding(UaType):
         (3, "UA_EXTENSIONOBJECT_DECODED"),
         (4, "UA_EXTENSIONOBJECT_DECODED_NODELETE")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_ExtensionObjectEncoding*"), is_pointer)
         else:
@@ -164,7 +164,7 @@ class UaDataTypeKind(UaType):
         (29, "UA_DATATYPEKIND_UNION"),
         (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: int = None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_DataTypeKind*"), is_pointer)
         else:
@@ -222,12 +222,12 @@ class UaString(UaType):
             return self._data
 
     @length.setter
-    def length(self, val):
+    def length(self, val: SizeT):
         self._length = val
         self._value.length = val._val
 
     @data.setter
-    def data(self, val):
+    def data(self, val: UaByte):
         self._data = val
         self._value.data = val._ptr
 
@@ -337,47 +337,47 @@ class UaDateTimeStruct(UaType):
             return self._year
 
     @nano_sec.setter
-    def nano_sec(self, val):
+    def nano_sec(self, val: UaUInt16):
         self._nano_sec = val
         self._value.nanoSec = val._val
 
     @micro_sec.setter
-    def micro_sec(self, val):
+    def micro_sec(self, val: UaUInt16):
         self._micro_sec = val
         self._value.microSec = val._val
 
     @milli_sec.setter
-    def milli_sec(self, val):
+    def milli_sec(self, val: UaUInt16):
         self._milli_sec = val
         self._value.milliSec = val._val
 
     @sec.setter
-    def sec(self, val):
+    def sec(self, val: UaUInt16):
         self._sec = val
         self._value.sec = val._val
 
     @min.setter
-    def min(self, val):
+    def min(self, val: UaUInt16):
         self._min = val
         self._value.min = val._val
 
     @hour.setter
-    def hour(self, val):
+    def hour(self, val: UaUInt16):
         self._hour = val
         self._value.hour = val._val
 
     @day.setter
-    def day(self, val):
+    def day(self, val: UaUInt16):
         self._day = val
         self._value.day = val._val
 
     @month.setter
-    def month(self, val):
+    def month(self, val: UaUInt16):
         self._month = val
         self._value.month = val._val
 
     @year.setter
-    def year(self, val):
+    def year(self, val: UaUInt16):
         self._year = val
         self._value.year = val._val
 
@@ -449,22 +449,22 @@ class UaGuid(UaType):
             return self._data4
 
     @data1.setter
-    def data1(self, val):
+    def data1(self, val: UaUInt32):
         self._data1 = val
         self._value.data1 = val._val
 
     @data2.setter
-    def data2(self, val):
+    def data2(self, val: UaUInt16):
         self._data2 = val
         self._value.data2 = val._val
 
     @data3.setter
-    def data3(self, val):
+    def data3(self, val: UaUInt16):
         self._data3 = val
         self._value.data3 = val._val
 
     @data4.setter
-    def data4(self, val):
+    def data4(self, val: UaByte):
         self._data4 = val
         self._value.data4 = val._ptr
 
@@ -522,17 +522,17 @@ class UaExpandedNodeId(UaType):
             return self._server_index
 
     @node_id.setter
-    def node_id(self, val):
+    def node_id(self, val: UaNodeId):
         self._node_id = val
         self._value.nodeId = val._val
 
     @namespace_uri.setter
-    def namespace_uri(self, val):
+    def namespace_uri(self, val: UaString):
         self._namespace_uri = val
         self._value.namespaceUri = val._val
 
     @server_index.setter
-    def server_index(self, val):
+    def server_index(self, val: UaUInt32):
         self._server_index = val
         self._value.serverIndex = val._val
 
@@ -580,12 +580,12 @@ class UaQualifiedName(UaType):
             return self._name
 
     @namespace_index.setter
-    def namespace_index(self, val):
+    def namespace_index(self, val: UaUInt16):
         self._namespace_index = val
         self._value.namespaceIndex = val._val
 
     @name.setter
-    def name(self, val):
+    def name(self, val: UaString):
         self._name = val
         self._value.name = val._val
 
@@ -632,12 +632,12 @@ class UaLocalizedText(UaType):
             return self._text
 
     @locale.setter
-    def locale(self, val):
+    def locale(self, val: UaString):
         self._locale = val
         self._value.locale = val._val
 
     @text.setter
-    def text(self, val):
+    def text(self, val: UaString):
         self._text = val
         self._value.text = val._val
 
@@ -684,12 +684,12 @@ class UaNumericRangeDimension(UaType):
             return self._max
 
     @min.setter
-    def min(self, val):
+    def min(self, val: UaUInt32):
         self._min = val
         self._value.min = val._val
 
     @max.setter
-    def max(self, val):
+    def max(self, val: UaUInt32):
         self._max = val
         self._value.max = val._val
 
@@ -736,12 +736,12 @@ class UaNumericRange(UaType):
             return self._dimensions
 
     @dimensions_size.setter
-    def dimensions_size(self, val):
+    def dimensions_size(self, val: SizeT):
         self._dimensions_size = val
         self._value.dimensionsSize = val._val
 
     @dimensions.setter
-    def dimensions(self, val):
+    def dimensions(self, val: UaNumericRangeDimension):
         self._dimensions = val
         self._value.dimensions = val._ptr
 
@@ -824,32 +824,32 @@ class UaVariant(UaType):
             return self._array_dimensions
 
     @type.setter
-    def type(self, val):
+    def type(self, val: UaDataType):
         self._type = val
         self._value.type = val._ptr
 
     @storage_type.setter
-    def storage_type(self, val):
+    def storage_type(self, val: UaVariantStorageType):
         self._storage_type = val
         self._value.storageType = val._val
 
     @array_length.setter
-    def array_length(self, val):
+    def array_length(self, val: SizeT):
         self._array_length = val
         self._value.arrayLength = val._val
 
     @data.setter
-    def data(self, val):
+    def data(self, val: void):
         self._data = val
         self._value.data = val._ptr
 
     @array_dimensions_size.setter
-    def array_dimensions_size(self, val):
+    def array_dimensions_size(self, val: SizeT):
         self._array_dimensions_size = val
         self._value.arrayDimensionsSize = val._val
 
     @array_dimensions.setter
-    def array_dimensions(self, val):
+    def array_dimensions(self, val: UaUInt32):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
@@ -872,7 +872,7 @@ class UaDataValue(UaType):
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
-            self._value = UaVariant(val=val.value, is_pointer=False)
+            self._data_value = UaVariant(val=val.value, is_pointer=False)
             self._source_timestamp = UaDateTime(val=val.sourceTimestamp, is_pointer=False)
             self._server_timestamp = UaDateTime(val=val.serverTimestamp, is_pointer=False)
             self._source_picoseconds = UaUInt16(val=val.sourcePicoseconds, is_pointer=False)
@@ -892,7 +892,7 @@ class UaDataValue(UaType):
             self._value[0] = _val(val)
 
         if not _is_null(val):
-            self._value._value[0] = _val(val.value)
+            self._data_value._value[0] = _val(val.value)
             self._source_timestamp._value[0] = _val(val.sourceTimestamp)
             self._server_timestamp._value[0] = _val(val.serverTimestamp)
             self._source_picoseconds._value[0] = _val(val.sourcePicoseconds)
@@ -906,11 +906,11 @@ class UaDataValue(UaType):
             self._has_server_picoseconds._value[0] = _val(val.hasServerPicoseconds)
 
     @property
-    def value(self):
+    def data_value(self):
         if self._null:
             return None
         else:
-            return self._value
+            return self._data_value
 
     @property
     def source_timestamp(self):
@@ -989,63 +989,63 @@ class UaDataValue(UaType):
         else:
             return self._has_server_picoseconds
 
-    @value.setter
-    def value(self, val):
-        self._value = val
+    @data_value.setter
+    def data_value(self, val: UaVariant):
+        self._data_value = val
         self._value.value = val._val
 
     @source_timestamp.setter
-    def source_timestamp(self, val):
+    def source_timestamp(self, val: UaDateTime):
         self._source_timestamp = val
         self._value.sourceTimestamp = val._val
 
     @server_timestamp.setter
-    def server_timestamp(self, val):
+    def server_timestamp(self, val: UaDateTime):
         self._server_timestamp = val
         self._value.serverTimestamp = val._val
 
     @source_picoseconds.setter
-    def source_picoseconds(self, val):
+    def source_picoseconds(self, val: UaUInt16):
         self._source_picoseconds = val
         self._value.sourcePicoseconds = val._val
 
     @server_picoseconds.setter
-    def server_picoseconds(self, val):
+    def server_picoseconds(self, val: UaUInt16):
         self._server_picoseconds = val
         self._value.serverPicoseconds = val._val
 
     @status.setter
-    def status(self, val):
+    def status(self, val: UaStatusCode):
         self._status = val
         self._value.status = val._val
 
     @has_value.setter
-    def has_value(self, val):
+    def has_value(self, val: UaBoolean):
         self._has_value = val
         self._value.hasValue = val._val
 
     @has_status.setter
-    def has_status(self, val):
+    def has_status(self, val: UaBoolean):
         self._has_status = val
         self._value.hasStatus = val._val
 
     @has_source_timestamp.setter
-    def has_source_timestamp(self, val):
+    def has_source_timestamp(self, val: UaBoolean):
         self._has_source_timestamp = val
         self._value.hasSourceTimestamp = val._val
 
     @has_server_timestamp.setter
-    def has_server_timestamp(self, val):
+    def has_server_timestamp(self, val: UaBoolean):
         self._has_server_timestamp = val
         self._value.hasServerTimestamp = val._val
 
     @has_source_picoseconds.setter
-    def has_source_picoseconds(self, val):
+    def has_source_picoseconds(self, val: UaBoolean):
         self._has_source_picoseconds = val
         self._value.hasSourcePicoseconds = val._val
 
     @has_server_picoseconds.setter
-    def has_server_picoseconds(self, val):
+    def has_server_picoseconds(self, val: UaBoolean):
         self._has_server_picoseconds = val
         self._value.hasServerPicoseconds = val._val
 
@@ -1054,7 +1054,7 @@ class UaDataValue(UaType):
             return "(UaDataValue) : NULL\n"
         
         return ("(UaDataValue) :\n" +
-                "\t"*(n+1) + "value" + self._value.__str__(n+1) +
+                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
                 "\t"*(n+1) + "source_timestamp" + self._source_timestamp.__str__(n+1) +
                 "\t"*(n+1) + "server_timestamp" + self._server_timestamp.__str__(n+1) +
                 "\t"*(n+1) + "source_picoseconds" + self._source_picoseconds.__str__(n+1) +
@@ -1210,72 +1210,72 @@ class UaDiagnosticInfo(UaType):
             return self._inner_diagnostic_info
 
     @has_symbolic_id.setter
-    def has_symbolic_id(self, val):
+    def has_symbolic_id(self, val: UaBoolean):
         self._has_symbolic_id = val
         self._value.hasSymbolicId = val._val
 
     @has_namespace_uri.setter
-    def has_namespace_uri(self, val):
+    def has_namespace_uri(self, val: UaBoolean):
         self._has_namespace_uri = val
         self._value.hasNamespaceUri = val._val
 
     @has_localized_text.setter
-    def has_localized_text(self, val):
+    def has_localized_text(self, val: UaBoolean):
         self._has_localized_text = val
         self._value.hasLocalizedText = val._val
 
     @has_locale.setter
-    def has_locale(self, val):
+    def has_locale(self, val: UaBoolean):
         self._has_locale = val
         self._value.hasLocale = val._val
 
     @has_additional_info.setter
-    def has_additional_info(self, val):
+    def has_additional_info(self, val: UaBoolean):
         self._has_additional_info = val
         self._value.hasAdditionalInfo = val._val
 
     @has_inner_status_code.setter
-    def has_inner_status_code(self, val):
+    def has_inner_status_code(self, val: UaBoolean):
         self._has_inner_status_code = val
         self._value.hasInnerStatusCode = val._val
 
     @has_inner_diagnostic_info.setter
-    def has_inner_diagnostic_info(self, val):
+    def has_inner_diagnostic_info(self, val: UaBoolean):
         self._has_inner_diagnostic_info = val
         self._value.hasInnerDiagnosticInfo = val._val
 
     @symbolic_id.setter
-    def symbolic_id(self, val):
+    def symbolic_id(self, val: UaInt32):
         self._symbolic_id = val
         self._value.symbolicId = val._val
 
     @namespace_uri.setter
-    def namespace_uri(self, val):
+    def namespace_uri(self, val: UaInt32):
         self._namespace_uri = val
         self._value.namespaceUri = val._val
 
     @localized_text.setter
-    def localized_text(self, val):
+    def localized_text(self, val: UaInt32):
         self._localized_text = val
         self._value.localizedText = val._val
 
     @locale.setter
-    def locale(self, val):
+    def locale(self, val: UaInt32):
         self._locale = val
         self._value.locale = val._val
 
     @additional_info.setter
-    def additional_info(self, val):
+    def additional_info(self, val: UaString):
         self._additional_info = val
         self._value.additionalInfo = val._val
 
     @inner_status_code.setter
-    def inner_status_code(self, val):
+    def inner_status_code(self, val: UaStatusCode):
         self._inner_status_code = val
         self._value.innerStatusCode = val._val
 
     @inner_diagnostic_info.setter
-    def inner_diagnostic_info(self, val):
+    def inner_diagnostic_info(self, val: UaDiagnosticInfo):
         self._inner_diagnostic_info = val
         self._value.innerDiagnosticInfo = val._ptr
 
@@ -1370,32 +1370,32 @@ class UaDataTypeMember(UaType):
             return self._member_name
 
     @member_type_index.setter
-    def member_type_index(self, val):
+    def member_type_index(self, val: UaUInt16):
         self._member_type_index = val
         self._value.memberTypeIndex = val._val
 
     @padding.setter
-    def padding(self, val):
+    def padding(self, val: UaByte):
         self._padding = val
         self._value.padding = val._val
 
     @namespace_zero.setter
-    def namespace_zero(self, val):
+    def namespace_zero(self, val: UaBoolean):
         self._namespace_zero = val
         self._value.namespaceZero = val._val
 
     @is_array.setter
-    def is_array(self, val):
+    def is_array(self, val: UaBoolean):
         self._is_array = val
         self._value.isArray = val._val
 
     @is_optional.setter
-    def is_optional(self, val):
+    def is_optional(self, val: UaBoolean):
         self._is_optional = val
         self._value.isOptional = val._val
 
     @member_name.setter
-    def member_name(self, val):
+    def member_name(self, val: CString):
         self._member_name = val
         self._value.memberName = val._ptr
 
@@ -1518,52 +1518,52 @@ class UaDataType(UaType):
             return self._type_name
 
     @type_id.setter
-    def type_id(self, val):
+    def type_id(self, val: UaNodeId):
         self._type_id = val
         self._value.typeId = val._val
 
     @binary_encoding_id.setter
-    def binary_encoding_id(self, val):
+    def binary_encoding_id(self, val: UaNodeId):
         self._binary_encoding_id = val
         self._value.binaryEncodingId = val._val
 
     @mem_size.setter
-    def mem_size(self, val):
+    def mem_size(self, val: UaUInt16):
         self._mem_size = val
         self._value.memSize = val._val
 
     @type_index.setter
-    def type_index(self, val):
+    def type_index(self, val: UaUInt16):
         self._type_index = val
         self._value.typeIndex = val._val
 
     @type_kind.setter
-    def type_kind(self, val):
+    def type_kind(self, val: UaUInt32):
         self._type_kind = val
         self._value.typeKind = val._val
 
     @pointer_free.setter
-    def pointer_free(self, val):
+    def pointer_free(self, val: UaUInt32):
         self._pointer_free = val
         self._value.pointerFree = val._val
 
     @overlayable.setter
-    def overlayable(self, val):
+    def overlayable(self, val: UaUInt32):
         self._overlayable = val
         self._value.overlayable = val._val
 
     @members_size.setter
-    def members_size(self, val):
+    def members_size(self, val: UaUInt32):
         self._members_size = val
         self._value.membersSize = val._val
 
     @members.setter
-    def members(self, val):
+    def members(self, val: UaDataTypeMember):
         self._members = val
         self._value.members = val._ptr
 
     @type_name.setter
-    def type_name(self, val):
+    def type_name(self, val: CString):
         self._type_name = val
         self._value.typeName = val._ptr
 
@@ -1627,17 +1627,17 @@ class UaDataTypeArray(UaType):
             return self._types
 
     @next.setter
-    def next(self, val):
+    def next(self, val: UaDataTypeArray):
         self._next = val
         self._value.next = val._ptr
 
     @types_size.setter
-    def types_size(self, val):
+    def types_size(self, val: SizeT):
         self._types_size = val
         self._value.typesSize = val._val
 
     @types.setter
-    def types(self, val):
+    def types(self, val: UaDataType):
         self._types = val
         self._value.types = val._ptr
 
@@ -1649,5 +1649,4 @@ class UaDataTypeArray(UaType):
                 "\t"*(n+1) + "next" + self._next.__str__(n+1) +
                 "\t"*(n+1) + "types_size" + self._types_size.__str__(n+1) +
                 "\t"*(n+1) + "types" + self._types.__str__(n+1) + "\n")
-
 
