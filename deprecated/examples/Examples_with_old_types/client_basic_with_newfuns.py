@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("../build/open62541")
+sys.path.append("../../../build/open62541")
 import clientApi
 from ua_types import UaNodeId, UaQualifiedName, UaString
 from intermediateApi import ffi, lib

@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("../build/open62541")
+sys.path.append("../../../build/open62541")
 import clientApi
 
 from intermediateApi import ffi, lib
