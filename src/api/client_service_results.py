@@ -39,13 +39,13 @@ class ReadDescriptionAttributeResult:
 
 
 class ReadWriteMaskAttributeResult:
-    def __init__(self, status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaByte):
+    def __init__(self, status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaUInt32):
         self.status_code = status_code
         self.out_write_mask = out_write_mask
 
 
 class ReadUserWriteMaskAttributeResult:
-    def __init__(self, status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaByte):
+    def __init__(self, status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaUInt32):
         self.status_code = status_code
         self.out_user_write_mask = out_user_write_mask
 

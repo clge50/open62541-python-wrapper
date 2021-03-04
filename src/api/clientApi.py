@@ -688,7 +688,7 @@ class UaClient:
         return ua_types.UaStatusCode(val=status_code)
 
     def run_iterate(self, timeout: ua_types.UaUInt32):
-        status_code = lib.UA_Client_run_iterate(self.ua_client, timeout)
+        status_code = lib.UA_Client_run_iterate(self.ua_client, timeout._val)
         return ua_types.UaStatusCode(val=status_code)
 
     #    def find_servers_on_network(self, server_url, starting_record_id, max_records_to_return,
