@@ -67,13 +67,13 @@ class ReadDescriptionAttributeResult:
 
 
 class ReadWriteMaskAttributeResult:
-    def __init__(self, status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaByte):
+    def __init__(self, status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaUInt32):
         self.status_code = status_code
         self.out_write_mask = out_write_mask
 
 
 class ReadUserWriteMaskAttributeResult:
-    def __init__(self, status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaByte):
+    def __init__(self, status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaUInt32):
         self.status_code = status_code
         self.out_user_write_mask = out_user_write_mask
 
@@ -550,7 +550,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadUserWriteMaskAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadUserWriteMaskAttributeResult</span></span>
-<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_user_write_mask: ua_primitve_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_user_write_mask: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -559,7 +559,7 @@ class AsyncResponse:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ReadUserWriteMaskAttributeResult:
-    def __init__(self, status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaByte):
+    def __init__(self, status_code: ua_types.UaStatusCode, out_user_write_mask: ua_types.UaUInt32):
         self.status_code = status_code
         self.out_user_write_mask = out_user_write_mask</code></pre>
 </details>
@@ -598,7 +598,7 @@ class AsyncResponse:
 </dd>
 <dt id="open62541.client_service_results.ReadWriteMaskAttributeResult"><code class="flex name class">
 <span>class <span class="ident">ReadWriteMaskAttributeResult</span></span>
-<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_write_mask: ua_primitve_types.UaByte)</span>
+<span>(</span><span>status_code: ua_primitve_types.UaStatusCode, out_write_mask: ua_primitve_types.UaUInt32)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -607,7 +607,7 @@ class AsyncResponse:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ReadWriteMaskAttributeResult:
-    def __init__(self, status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaByte):
+    def __init__(self, status_code: ua_types.UaStatusCode, out_write_mask: ua_types.UaUInt32):
         self.status_code = status_code
         self.out_write_mask = out_write_mask</code></pre>
 </details>
