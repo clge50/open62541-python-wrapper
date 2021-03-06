@@ -25,7 +25,7 @@ parent_node_read_result = client.read_node_id_attribute(parent_reference_node_id
 print(f"read_node_id_attribute UaStatuscode was: {str(parent_node_read_result.status_code)}")
 print(f"read_node_id_attribute read node id: {str(parent_node_read_result.out_node_id)}")
 
-add_variable_node_result = client.add_variable_node(UaNodeId(val=UaNodeId.NULL), parent_node_id,
+add_variable_node_result = client.add_variable_node(parent_node_id,
                                                     parent_reference_node_id, browse_name,
                                                     variable_type)
 

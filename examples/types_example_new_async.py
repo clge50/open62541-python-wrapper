@@ -35,8 +35,7 @@ time.sleep(2)
 client.run_iterate(UaUInt32(1))
 print("parent node read status code: " + str(parent_node_read_result.status_code))
 
-add_variable_node_result = client.add_variable_node_async(my_integer_node_id,
-                                                          parent_node_id,
+add_variable_node_result = client.add_variable_node_async(parent_node_id,
                                                           parent_reference_node_id,
                                                           my_integer_name,
                                                           variable_type,
