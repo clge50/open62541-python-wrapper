@@ -34,7 +34,10 @@ class UaBoolean(UaType):
             self._value[0] = ffi.cast("UA_Boolean", _val(val))
 
     def __str__(self, n=0):
-        return "(UaBoolean): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaBoolean) : NULL\n"
+        else:
+            return "(UaBoolean): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -67,7 +70,10 @@ class UaSByte(UaType):
             self._value[0] = ffi.cast("UA_SByte", _val(val))
 
     def __str__(self, n=0):
-        return "(UaSByte): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaSByte) : NULL\n"
+        else:
+            return "(UaSByte): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -112,7 +118,10 @@ class UaByte(UaType):
             self._value[0] = ffi.cast("UA_Byte", _val(val))
 
     def __str__(self, n=0):
-        return "(UaByte): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaSByte) : NULL\n"
+        else:
+            return "(UaByte): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -157,7 +166,10 @@ class UaInt16(UaType):
             self._value[0] = ffi.cast("UA_Int16", _val(val))
 
     def __str__(self, n=0):
-        return "(UaInt16): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaInt16) : NULL\n"
+        else:
+            return "(UaInt16): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -202,7 +214,10 @@ class UaUInt16(UaType):
             self._value[0] = ffi.cast("UA_UInt16", _val(val))
 
     def __str__(self, n=0):
-        return "(UaUInt16): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaUInt16) : NULL\n"
+        else:
+            return "(UaUInt16): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -247,7 +262,10 @@ class UaInt32(UaType):
             self._value[0] = ffi.cast("UA_Int32", _val(val))
 
     def __str__(self, n=0):
-        return "(UaInt32): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaInt32) : NULL\n"
+        else:
+            return "(UaInt32): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -292,7 +310,10 @@ class UaUInt32(UaType):
             self._value[0] = ffi.cast("UA_UInt32", _val(val))
 
     def __str__(self, n=0):
-        return "(UaUInt32): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaUInt32) : NULL\n"
+        else:
+            return "(UaUInt32): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -337,7 +358,10 @@ class UaInt64(UaType):
             self._value[0] = ffi.cast("UA_Int64", _val(val))
 
     def __str__(self, n=0):
-        return "(UaInt64): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaInt64) : NULL\n"
+        else:
+            return "(UaInt64): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -382,7 +406,10 @@ class UaUInt64(UaType):
             self._value[0] = ffi.cast("UA_UInt64", _val(val))
 
     def __str__(self, n=0):
-        return "(UaUInt64): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaUInt64) : NULL\n"
+        else:
+            return "(UaUInt64): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -427,7 +454,10 @@ class UaFloat(UaType):
             self._value[0] = ffi.cast("UA_Float", _val(val))
 
     def __str__(self, n=0):
-        return "(UaFloat): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaFloat) : NULL\n"
+        else:
+            return "(UaFloat): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -472,7 +502,10 @@ class UaDouble(UaType):
             self._value[0] = ffi.cast("UA_Double", _val(val))
 
     def __str__(self, n=0):
-        return "(UaDouble): " + str(self._val) + "\n"
+        if self._null:
+            return "(UaDouble) : NULL\n"
+        else:
+            return "(UaDouble): " + str(self._val) + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -1024,7 +1057,10 @@ class UaStatusCode(UaType):
             self._value[0] = ffi.cast("UA_StatusCode", _val(val))
 
     def __str__(self, n=0):
-        return "(UaStatusCode): " + UaStatusCode.val_to_string[self._val] + "\n"
+        if self._null:
+            return "(UaStatusCode) : NULL\n"
+        else:
+            return "(UaStatusCode): " + UaStatusCode.val_to_string[self._val] + "\n"
 
     def __eq__(self, other):
         return self._val == other._val
@@ -1049,4 +1085,3 @@ class UaStatusCode(UaType):
 
     def is_good(self):
         return not lib.UA_StatusCode_isBad(self._val)
-

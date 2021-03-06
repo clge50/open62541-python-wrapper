@@ -26,7 +26,10 @@ class Void(UaType):
         return ffi.from_handle(self._ptr)
 
     def __str__(self, n=0):
-        return "(Void): " + str(self.data) + "\n"
+        if self._null:
+            return "(Void): NULL\n"
+        else:
+            return "(Void): " + str(self.data) + "\n"
 
 
 # +++++++++++++++++++ SizeT +++++++++++++++++++++++
