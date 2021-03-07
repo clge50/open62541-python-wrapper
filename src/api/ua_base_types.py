@@ -732,7 +732,7 @@ class UaNodeId(UaType):
         return ("(UaNodeId) :\n" +
                 "\t" * (n + 1) + "namespace_index" + self._namespace_index.__str__(n + 1) +
                 "\t" * (n + 1) + "identifier_type" + self._identifier_type.__str__(n + 1) +
-                "\t" * (n + 1) + "identifier" + self._identifier.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "identifier" + self._identifier.__str__(n + 1))
 
     def __eq__(self, other):
         return lib.UA_NodeId_equal(self._ptr, other._ptr)
@@ -864,7 +864,7 @@ class UaExpandedNodeId(UaType):
         return ("(UaExpandedNodeId) :\n" +
                 "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
                 "\t" * (n + 1) + "namespace_uri" + self._namespace_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "server_index" + self._server_index.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "server_index" + self._server_index.__str__(n + 1))
 
     def is_local(self):
         return lib.UA_ExpandedNodeId_isLocal(self._ptr)
@@ -971,7 +971,7 @@ class UaQualifiedName(UaType):
 
         return ("(UaQualifiedName) :\n" +
                 "\t" * (n + 1) + "namespace_index" + self._namespace_index.__str__(n + 1) +
-                "\t" * (n + 1) + "name" + self._name.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "name" + self._name.__str__(n + 1))
 
     def is_null(self):
         return lib.UA_QualifiedName_isNull(self._ptr)
@@ -1064,7 +1064,7 @@ class UaLocalizedText(UaType):
 
         return ("(UaLocalizedText) :\n" +
                 "\t" * (n + 1) + "locale" + self._locale.__str__(n + 1) +
-                "\t" * (n + 1) + "text" + self._text.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "text" + self._text.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
@@ -1122,7 +1122,7 @@ class UaNumericRangeDimension(UaType):
 
         return ("(UaNumericRangeDimension) :\n" +
                 "\t" * (n + 1) + "min" + self._min.__str__(n + 1) +
-                "\t" * (n + 1) + "max" + self._max.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "max" + self._max.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
@@ -1179,7 +1179,7 @@ class UaNumericRange(UaType):
 
         return ("(UaNumericRange) :\n" +
                 "\t" * (n + 1) + "dimensions_size" + self._dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "dimensions" + self._dimensions.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "dimensions" + self._dimensions.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
@@ -1300,7 +1300,7 @@ class UaVariant(UaType):
                 "\t" * (n + 1) + "array_length" + self._array_length.__str__(n + 1) +
                 "\t" * (n + 1) + "data" + self._data.__str__(n + 1) +
                 "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1))
 
     def is_empty(self):
         return lib.UA_Variant_isEmpty(self._ptr)
@@ -1577,7 +1577,7 @@ class UaDataValue(UaType):
                 "\t" * (n + 1) + "has_source_timestamp" + self._has_source_timestamp.__str__(n + 1) +
                 "\t" * (n + 1) + "has_server_timestamp" + self._has_server_timestamp.__str__(n + 1) +
                 "\t" * (n + 1) + "has_source_picoseconds" + self._has_source_picoseconds.__str__(n + 1) +
-                "\t" * (n + 1) + "has_server_picoseconds" + self._has_server_picoseconds.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "has_server_picoseconds" + self._has_server_picoseconds.__str__(n + 1))
 
 
 class UaExtensionObject(UaType):
@@ -1654,7 +1654,7 @@ class UaExtensionObject(UaType):
         return ("(UaExtensionObject) :\n" +
                 "\t" * (n + 1) + "encoding" + self._encoding.__str__(n + 1) +
                 "\t" * (n + 1) + "type" + self._type.__str__(n + 1) +
-                "\t" * (n + 1) + "data" + self._data.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "data" + self._data.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
@@ -1893,7 +1893,7 @@ class UaDiagnosticInfo(UaType):
                 "\t" * (n + 1) + "locale" + self._locale.__str__(n + 1) +
                 "\t" * (n + 1) + "additional_info" + self._additional_info.__str__(n + 1) +
                 "\t" * (n + 1) + "inner_status_code" + self._inner_status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "inner_diagnostic_info" + self._inner_diagnostic_info.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "inner_diagnostic_info" + self._inner_diagnostic_info.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
@@ -2011,7 +2011,7 @@ class UaDataTypeMember(UaType):
                 "\t" * (n + 1) + "namespace_zero" + self._namespace_zero.__str__(n + 1) +
                 "\t" * (n + 1) + "is_array" + self._is_array.__str__(n + 1) +
                 "\t" * (n + 1) + "is_optional" + self._is_optional.__str__(n + 1) +
-                "\t" * (n + 1) + "member_name" + self._member_name.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "member_name" + self._member_name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
@@ -2189,7 +2189,7 @@ class UaDataType(UaType):
                 "\t" * (n + 1) + "overlayable" + self._overlayable.__str__(n + 1) +
                 "\t" * (n + 1) + "members_size" + self._members_size.__str__(n + 1) +
                 "\t" * (n + 1) + "members" + self._members.__str__(n + 1) +
-                "\t" * (n + 1) + "type_name" + self._type_name.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "type_name" + self._type_name.__str__(n + 1))
 
     def is_numeric(self):
         return lib.UA_DataType_isNumeric(self._ptr)
@@ -2280,7 +2280,7 @@ class UaDataTypeArray(UaType):
         return ("(UaDataTypeArray) :\n" +
                 "\t" * (n + 1) + "next" + self._next.__str__(n + 1) +
                 "\t" * (n + 1) + "types_size" + self._types_size.__str__(n + 1) +
-                "\t" * (n + 1) + "types" + self._types.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "types" + self._types.__str__(n + 1))
 
 
 class Randomize:

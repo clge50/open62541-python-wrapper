@@ -129,11 +129,11 @@ class {to_python_class_name(struct_name)}(UaType):
         if self._null:
             return "({to_python_class_name(struct_name)}) : NULL\\n"
         
-        return ("({to_python_class_name(struct_name)}) :\\n" +
+        return ("({to_python_class_name(struct_name)}) :\\n"
 {new_line.join(map(
         lambda attr:
-        tab * 4 + f"{quote}{backslash}t{quote}*(n+1) + {quote}{to_python_ident(attr)}{quote} + self._{to_python_ident(attr)}.__str__(n+1) +",
-        attribute_to_type.keys()))} "\\n")
+        tab * 4 + "+ " + f"{quote}{backslash}t{quote}*(n+1) + {quote}{to_python_ident(attr)}{quote} + self._{to_python_ident(attr)}.__str__(n+1)",
+        attribute_to_type.keys()))})
 
 
 """

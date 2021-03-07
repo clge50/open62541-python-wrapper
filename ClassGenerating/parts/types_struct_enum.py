@@ -248,9 +248,9 @@ class UaString(UaType):
         if self._null:
             return "(UaString) : NULL\n"
         
-        return ("(UaString) :\n" +
-                "\t"*(n+1) + "length" + self._length.__str__(n+1) +
-                "\t"*(n+1) + "data" + self._data.__str__(n+1) + "\n")
+        return ("(UaString) :\n"
+                + "\t"*(n+1) + "length" + self._length.__str__(n+1)
+                + "\t"*(n+1) + "data" + self._data.__str__(n+1))
 
 
 # +++++++++++++++++++ UaDateTimeStruct +++++++++++++++++++++++
@@ -403,16 +403,16 @@ class UaDateTimeStruct(UaType):
         if self._null:
             return "(UaDateTimeStruct) : NULL\n"
         
-        return ("(UaDateTimeStruct) :\n" +
-                "\t"*(n+1) + "nano_sec" + self._nano_sec.__str__(n+1) +
-                "\t"*(n+1) + "micro_sec" + self._micro_sec.__str__(n+1) +
-                "\t"*(n+1) + "milli_sec" + self._milli_sec.__str__(n+1) +
-                "\t"*(n+1) + "sec" + self._sec.__str__(n+1) +
-                "\t"*(n+1) + "min" + self._min.__str__(n+1) +
-                "\t"*(n+1) + "hour" + self._hour.__str__(n+1) +
-                "\t"*(n+1) + "day" + self._day.__str__(n+1) +
-                "\t"*(n+1) + "month" + self._month.__str__(n+1) +
-                "\t"*(n+1) + "year" + self._year.__str__(n+1) + "\n")
+        return ("(UaDateTimeStruct) :\n"
+                + "\t"*(n+1) + "nano_sec" + self._nano_sec.__str__(n+1)
+                + "\t"*(n+1) + "micro_sec" + self._micro_sec.__str__(n+1)
+                + "\t"*(n+1) + "milli_sec" + self._milli_sec.__str__(n+1)
+                + "\t"*(n+1) + "sec" + self._sec.__str__(n+1)
+                + "\t"*(n+1) + "min" + self._min.__str__(n+1)
+                + "\t"*(n+1) + "hour" + self._hour.__str__(n+1)
+                + "\t"*(n+1) + "day" + self._day.__str__(n+1)
+                + "\t"*(n+1) + "month" + self._month.__str__(n+1)
+                + "\t"*(n+1) + "year" + self._year.__str__(n+1))
 
 
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++
@@ -495,11 +495,11 @@ class UaGuid(UaType):
         if self._null:
             return "(UaGuid) : NULL\n"
         
-        return ("(UaGuid) :\n" +
-                "\t"*(n+1) + "data1" + self._data1.__str__(n+1) +
-                "\t"*(n+1) + "data2" + self._data2.__str__(n+1) +
-                "\t"*(n+1) + "data3" + self._data3.__str__(n+1) +
-                "\t"*(n+1) + "data4" + self._data4.__str__(n+1) + "\n")
+        return ("(UaGuid) :\n"
+                + "\t"*(n+1) + "data1" + self._data1.__str__(n+1)
+                + "\t"*(n+1) + "data2" + self._data2.__str__(n+1)
+                + "\t"*(n+1) + "data3" + self._data3.__str__(n+1)
+                + "\t"*(n+1) + "data4" + self._data4.__str__(n+1))
 
 
 # +++++++++++++++++++ UaExpandedNodeId +++++++++++++++++++++++
@@ -568,10 +568,10 @@ class UaExpandedNodeId(UaType):
         if self._null:
             return "(UaExpandedNodeId) : NULL\n"
         
-        return ("(UaExpandedNodeId) :\n" +
-                "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1) +
-                "\t"*(n+1) + "namespace_uri" + self._namespace_uri.__str__(n+1) +
-                "\t"*(n+1) + "server_index" + self._server_index.__str__(n+1) + "\n")
+        return ("(UaExpandedNodeId) :\n"
+                + "\t"*(n+1) + "node_id" + self._node_id.__str__(n+1)
+                + "\t"*(n+1) + "namespace_uri" + self._namespace_uri.__str__(n+1)
+                + "\t"*(n+1) + "server_index" + self._server_index.__str__(n+1))
 
 
 # +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
@@ -626,9 +626,9 @@ class UaQualifiedName(UaType):
         if self._null:
             return "(UaQualifiedName) : NULL\n"
         
-        return ("(UaQualifiedName) :\n" +
-                "\t"*(n+1) + "namespace_index" + self._namespace_index.__str__(n+1) +
-                "\t"*(n+1) + "name" + self._name.__str__(n+1) + "\n")
+        return ("(UaQualifiedName) :\n"
+                + "\t"*(n+1) + "namespace_index" + self._namespace_index.__str__(n+1)
+                + "\t"*(n+1) + "name" + self._name.__str__(n+1))
 
 
 # +++++++++++++++++++ UaLocalizedText +++++++++++++++++++++++
@@ -683,9 +683,9 @@ class UaLocalizedText(UaType):
         if self._null:
             return "(UaLocalizedText) : NULL\n"
         
-        return ("(UaLocalizedText) :\n" +
-                "\t"*(n+1) + "locale" + self._locale.__str__(n+1) +
-                "\t"*(n+1) + "text" + self._text.__str__(n+1) + "\n")
+        return ("(UaLocalizedText) :\n"
+                + "\t"*(n+1) + "locale" + self._locale.__str__(n+1)
+                + "\t"*(n+1) + "text" + self._text.__str__(n+1))
 
 
 # +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
@@ -740,9 +740,9 @@ class UaNumericRangeDimension(UaType):
         if self._null:
             return "(UaNumericRangeDimension) : NULL\n"
         
-        return ("(UaNumericRangeDimension) :\n" +
-                "\t"*(n+1) + "min" + self._min.__str__(n+1) +
-                "\t"*(n+1) + "max" + self._max.__str__(n+1) + "\n")
+        return ("(UaNumericRangeDimension) :\n"
+                + "\t"*(n+1) + "min" + self._min.__str__(n+1)
+                + "\t"*(n+1) + "max" + self._max.__str__(n+1))
 
 
 # +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
@@ -797,9 +797,9 @@ class UaNumericRange(UaType):
         if self._null:
             return "(UaNumericRange) : NULL\n"
         
-        return ("(UaNumericRange) :\n" +
-                "\t"*(n+1) + "dimensions_size" + self._dimensions_size.__str__(n+1) +
-                "\t"*(n+1) + "dimensions" + self._dimensions.__str__(n+1) + "\n")
+        return ("(UaNumericRange) :\n"
+                + "\t"*(n+1) + "dimensions_size" + self._dimensions_size.__str__(n+1)
+                + "\t"*(n+1) + "dimensions" + self._dimensions.__str__(n+1))
 
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
@@ -910,13 +910,13 @@ class UaVariant(UaType):
         if self._null:
             return "(UaVariant) : NULL\n"
         
-        return ("(UaVariant) :\n" +
-                "\t"*(n+1) + "type" + self._type.__str__(n+1) +
-                "\t"*(n+1) + "storage_type" + self._storage_type.__str__(n+1) +
-                "\t"*(n+1) + "array_length" + self._array_length.__str__(n+1) +
-                "\t"*(n+1) + "data" + self._data.__str__(n+1) +
-                "\t"*(n+1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n+1) +
-                "\t"*(n+1) + "array_dimensions" + self._array_dimensions.__str__(n+1) + "\n")
+        return ("(UaVariant) :\n"
+                + "\t"*(n+1) + "type" + self._type.__str__(n+1)
+                + "\t"*(n+1) + "storage_type" + self._storage_type.__str__(n+1)
+                + "\t"*(n+1) + "array_length" + self._array_length.__str__(n+1)
+                + "\t"*(n+1) + "data" + self._data.__str__(n+1)
+                + "\t"*(n+1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n+1)
+                + "\t"*(n+1) + "array_dimensions" + self._array_dimensions.__str__(n+1))
 
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
@@ -1111,19 +1111,19 @@ class UaDataValue(UaType):
         if self._null:
             return "(UaDataValue) : NULL\n"
         
-        return ("(UaDataValue) :\n" +
-                "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1) +
-                "\t"*(n+1) + "source_timestamp" + self._source_timestamp.__str__(n+1) +
-                "\t"*(n+1) + "server_timestamp" + self._server_timestamp.__str__(n+1) +
-                "\t"*(n+1) + "source_picoseconds" + self._source_picoseconds.__str__(n+1) +
-                "\t"*(n+1) + "server_picoseconds" + self._server_picoseconds.__str__(n+1) +
-                "\t"*(n+1) + "status" + self._status.__str__(n+1) +
-                "\t"*(n+1) + "has_value" + self._has_value.__str__(n+1) +
-                "\t"*(n+1) + "has_status" + self._has_status.__str__(n+1) +
-                "\t"*(n+1) + "has_source_timestamp" + self._has_source_timestamp.__str__(n+1) +
-                "\t"*(n+1) + "has_server_timestamp" + self._has_server_timestamp.__str__(n+1) +
-                "\t"*(n+1) + "has_source_picoseconds" + self._has_source_picoseconds.__str__(n+1) +
-                "\t"*(n+1) + "has_server_picoseconds" + self._has_server_picoseconds.__str__(n+1) + "\n")
+        return ("(UaDataValue) :\n"
+                + "\t"*(n+1) + "data_value" + self._data_value.__str__(n+1)
+                + "\t"*(n+1) + "source_timestamp" + self._source_timestamp.__str__(n+1)
+                + "\t"*(n+1) + "server_timestamp" + self._server_timestamp.__str__(n+1)
+                + "\t"*(n+1) + "source_picoseconds" + self._source_picoseconds.__str__(n+1)
+                + "\t"*(n+1) + "server_picoseconds" + self._server_picoseconds.__str__(n+1)
+                + "\t"*(n+1) + "status" + self._status.__str__(n+1)
+                + "\t"*(n+1) + "has_value" + self._has_value.__str__(n+1)
+                + "\t"*(n+1) + "has_status" + self._has_status.__str__(n+1)
+                + "\t"*(n+1) + "has_source_timestamp" + self._has_source_timestamp.__str__(n+1)
+                + "\t"*(n+1) + "has_server_timestamp" + self._has_server_timestamp.__str__(n+1)
+                + "\t"*(n+1) + "has_source_picoseconds" + self._has_source_picoseconds.__str__(n+1)
+                + "\t"*(n+1) + "has_server_picoseconds" + self._has_server_picoseconds.__str__(n+1))
 
 
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
@@ -1346,21 +1346,21 @@ class UaDiagnosticInfo(UaType):
         if self._null:
             return "(UaDiagnosticInfo) : NULL\n"
         
-        return ("(UaDiagnosticInfo) :\n" +
-                "\t"*(n+1) + "has_symbolic_id" + self._has_symbolic_id.__str__(n+1) +
-                "\t"*(n+1) + "has_namespace_uri" + self._has_namespace_uri.__str__(n+1) +
-                "\t"*(n+1) + "has_localized_text" + self._has_localized_text.__str__(n+1) +
-                "\t"*(n+1) + "has_locale" + self._has_locale.__str__(n+1) +
-                "\t"*(n+1) + "has_additional_info" + self._has_additional_info.__str__(n+1) +
-                "\t"*(n+1) + "has_inner_status_code" + self._has_inner_status_code.__str__(n+1) +
-                "\t"*(n+1) + "has_inner_diagnostic_info" + self._has_inner_diagnostic_info.__str__(n+1) +
-                "\t"*(n+1) + "symbolic_id" + self._symbolic_id.__str__(n+1) +
-                "\t"*(n+1) + "namespace_uri" + self._namespace_uri.__str__(n+1) +
-                "\t"*(n+1) + "localized_text" + self._localized_text.__str__(n+1) +
-                "\t"*(n+1) + "locale" + self._locale.__str__(n+1) +
-                "\t"*(n+1) + "additional_info" + self._additional_info.__str__(n+1) +
-                "\t"*(n+1) + "inner_status_code" + self._inner_status_code.__str__(n+1) +
-                "\t"*(n+1) + "inner_diagnostic_info" + self._inner_diagnostic_info.__str__(n+1) + "\n")
+        return ("(UaDiagnosticInfo) :\n"
+                + "\t"*(n+1) + "has_symbolic_id" + self._has_symbolic_id.__str__(n+1)
+                + "\t"*(n+1) + "has_namespace_uri" + self._has_namespace_uri.__str__(n+1)
+                + "\t"*(n+1) + "has_localized_text" + self._has_localized_text.__str__(n+1)
+                + "\t"*(n+1) + "has_locale" + self._has_locale.__str__(n+1)
+                + "\t"*(n+1) + "has_additional_info" + self._has_additional_info.__str__(n+1)
+                + "\t"*(n+1) + "has_inner_status_code" + self._has_inner_status_code.__str__(n+1)
+                + "\t"*(n+1) + "has_inner_diagnostic_info" + self._has_inner_diagnostic_info.__str__(n+1)
+                + "\t"*(n+1) + "symbolic_id" + self._symbolic_id.__str__(n+1)
+                + "\t"*(n+1) + "namespace_uri" + self._namespace_uri.__str__(n+1)
+                + "\t"*(n+1) + "localized_text" + self._localized_text.__str__(n+1)
+                + "\t"*(n+1) + "locale" + self._locale.__str__(n+1)
+                + "\t"*(n+1) + "additional_info" + self._additional_info.__str__(n+1)
+                + "\t"*(n+1) + "inner_status_code" + self._inner_status_code.__str__(n+1)
+                + "\t"*(n+1) + "inner_diagnostic_info" + self._inner_diagnostic_info.__str__(n+1))
 
 
 # +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
@@ -1471,13 +1471,13 @@ class UaDataTypeMember(UaType):
         if self._null:
             return "(UaDataTypeMember) : NULL\n"
         
-        return ("(UaDataTypeMember) :\n" +
-                "\t"*(n+1) + "member_type_index" + self._member_type_index.__str__(n+1) +
-                "\t"*(n+1) + "padding" + self._padding.__str__(n+1) +
-                "\t"*(n+1) + "namespace_zero" + self._namespace_zero.__str__(n+1) +
-                "\t"*(n+1) + "is_array" + self._is_array.__str__(n+1) +
-                "\t"*(n+1) + "is_optional" + self._is_optional.__str__(n+1) +
-                "\t"*(n+1) + "member_name" + self._member_name.__str__(n+1) + "\n")
+        return ("(UaDataTypeMember) :\n"
+                + "\t"*(n+1) + "member_type_index" + self._member_type_index.__str__(n+1)
+                + "\t"*(n+1) + "padding" + self._padding.__str__(n+1)
+                + "\t"*(n+1) + "namespace_zero" + self._namespace_zero.__str__(n+1)
+                + "\t"*(n+1) + "is_array" + self._is_array.__str__(n+1)
+                + "\t"*(n+1) + "is_optional" + self._is_optional.__str__(n+1)
+                + "\t"*(n+1) + "member_name" + self._member_name.__str__(n+1))
 
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
@@ -1644,17 +1644,17 @@ class UaDataType(UaType):
         if self._null:
             return "(UaDataType) : NULL\n"
         
-        return ("(UaDataType) :\n" +
-                "\t"*(n+1) + "type_id" + self._type_id.__str__(n+1) +
-                "\t"*(n+1) + "binary_encoding_id" + self._binary_encoding_id.__str__(n+1) +
-                "\t"*(n+1) + "mem_size" + self._mem_size.__str__(n+1) +
-                "\t"*(n+1) + "type_index" + self._type_index.__str__(n+1) +
-                "\t"*(n+1) + "type_kind" + self._type_kind.__str__(n+1) +
-                "\t"*(n+1) + "pointer_free" + self._pointer_free.__str__(n+1) +
-                "\t"*(n+1) + "overlayable" + self._overlayable.__str__(n+1) +
-                "\t"*(n+1) + "members_size" + self._members_size.__str__(n+1) +
-                "\t"*(n+1) + "members" + self._members.__str__(n+1) +
-                "\t"*(n+1) + "type_name" + self._type_name.__str__(n+1) + "\n")
+        return ("(UaDataType) :\n"
+                + "\t"*(n+1) + "type_id" + self._type_id.__str__(n+1)
+                + "\t"*(n+1) + "binary_encoding_id" + self._binary_encoding_id.__str__(n+1)
+                + "\t"*(n+1) + "mem_size" + self._mem_size.__str__(n+1)
+                + "\t"*(n+1) + "type_index" + self._type_index.__str__(n+1)
+                + "\t"*(n+1) + "type_kind" + self._type_kind.__str__(n+1)
+                + "\t"*(n+1) + "pointer_free" + self._pointer_free.__str__(n+1)
+                + "\t"*(n+1) + "overlayable" + self._overlayable.__str__(n+1)
+                + "\t"*(n+1) + "members_size" + self._members_size.__str__(n+1)
+                + "\t"*(n+1) + "members" + self._members.__str__(n+1)
+                + "\t"*(n+1) + "type_name" + self._type_name.__str__(n+1))
 
 
 # +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
@@ -1723,9 +1723,9 @@ class UaDataTypeArray(UaType):
         if self._null:
             return "(UaDataTypeArray) : NULL\n"
         
-        return ("(UaDataTypeArray) :\n" +
-                "\t"*(n+1) + "next" + self._next.__str__(n+1) +
-                "\t"*(n+1) + "types_size" + self._types_size.__str__(n+1) +
-                "\t"*(n+1) + "types" + self._types.__str__(n+1) + "\n")
+        return ("(UaDataTypeArray) :\n"
+                + "\t"*(n+1) + "next" + self._next.__str__(n+1)
+                + "\t"*(n+1) + "types_size" + self._types_size.__str__(n+1)
+                + "\t"*(n+1) + "types" + self._types.__str__(n+1))
 
 

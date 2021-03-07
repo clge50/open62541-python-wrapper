@@ -230,7 +230,7 @@ class UaClientConfig(UaType):
                 "\t" * (n + 1) + "requested_session_timeout" + self._requested_session_timeout.__str__(n + 1) +
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1))
 
 
 #++++++++++++++++++++ protos +++++++++++++++++++++++

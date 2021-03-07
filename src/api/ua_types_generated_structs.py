@@ -137,7 +137,7 @@ class UaViewAttributes(UaType):
                 "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1) +
-                "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaXVType +++++++++++++++++++++++
@@ -194,7 +194,7 @@ class UaXVType(UaType):
 
         return ("(UaXVType) :\n" +
                 "\t" * (n + 1) + "x" + self._x.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
@@ -236,7 +236,7 @@ class UaElementOperand(UaType):
             return "(UaElementOperand) : NULL\n"
 
         return ("(UaElementOperand) :\n" +
-                "\t" * (n + 1) + "index" + self._index.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "index" + self._index.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaVariableAttributes +++++++++++++++++++++++
@@ -473,7 +473,7 @@ class UaVariableAttributes(UaType):
                 "\t" * (n + 1) + "access_level" + self._access_level.__str__(n + 1) +
                 "\t" * (n + 1) + "user_access_level" + self._user_access_level.__str__(n + 1) +
                 "\t" * (n + 1) + "minimum_sampling_interval" + self._minimum_sampling_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "historizing" + self._historizing.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "historizing" + self._historizing.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEnumValueType +++++++++++++++++++++++
@@ -545,7 +545,7 @@ class UaEnumValueType(UaType):
         return ("(UaEnumValueType) :\n" +
                 "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) +
                 "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventFieldList +++++++++++++++++++++++
@@ -617,7 +617,7 @@ class UaEventFieldList(UaType):
         return ("(UaEventFieldList) :\n" +
                 "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1) +
                 "\t" * (n + 1) + "event_fields_size" + self._event_fields_size.__str__(n + 1) +
-                "\t" * (n + 1) + "event_fields" + self._event_fields.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "event_fields" + self._event_fields.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemCreateResult +++++++++++++++++++++++
@@ -719,7 +719,7 @@ class UaMonitoredItemCreateResult(UaType):
                 "\t" * (n + 1) + "monitored_item_id" + self._monitored_item_id.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_queue_size" + self._revised_queue_size.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEUInformation +++++++++++++++++++++++
@@ -806,7 +806,7 @@ class UaEUInformation(UaType):
                 "\t" * (n + 1) + "namespace_uri" + self._namespace_uri.__str__(n + 1) +
                 "\t" * (n + 1) + "unit_id" + self._unit_id.__str__(n + 1) +
                 "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaServerDiagnosticsSummaryDataType +++++++++++++++++++++++
@@ -1015,7 +1015,7 @@ class UaServerDiagnosticsSummaryDataType(UaType):
                 "\t" * (n + 1) + "publishing_interval_count" + self._publishing_interval_count.__str__(n + 1) +
                 "\t" * (n + 1) + "security_rejected_requests_count" + self._security_rejected_requests_count.__str__(
                     n + 1) +
-                "\t" * (n + 1) + "rejected_requests_count" + self._rejected_requests_count.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "rejected_requests_count" + self._rejected_requests_count.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilterElementResult +++++++++++++++++++++++
@@ -1117,7 +1117,7 @@ class UaContentFilterElementResult(UaType):
                 "\t" * (n + 1) + "operand_status_codes_size" + self._operand_status_codes_size.__str__(n + 1) +
                 "\t" * (n + 1) + "operand_status_codes" + self._operand_status_codes.__str__(n + 1) +
                 "\t" * (n + 1) + "operand_diagnostic_infos_size" + self._operand_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "operand_diagnostic_infos" + self._operand_diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "operand_diagnostic_infos" + self._operand_diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaLiteralOperand +++++++++++++++++++++++
@@ -1159,7 +1159,7 @@ class UaLiteralOperand(UaType):
             return "(UaLiteralOperand) : NULL\n"
 
         return ("(UaLiteralOperand) :\n" +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
@@ -1201,7 +1201,7 @@ class UaUserIdentityToken(UaType):
             return "(UaUserIdentityToken) : NULL\n"
 
         return ("(UaUserIdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaX509IdentityToken +++++++++++++++++++++++
@@ -1258,7 +1258,7 @@ class UaX509IdentityToken(UaType):
 
         return ("(UaX509IdentityToken) :\n" +
                 "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
-                "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemNotification +++++++++++++++++++++++
@@ -1315,7 +1315,7 @@ class UaMonitoredItemNotification(UaType):
 
         return ("(UaMonitoredItemNotification) :\n" +
                 "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
@@ -1447,7 +1447,7 @@ class UaResponseHeader(UaType):
                 "\t" * (n + 1) + "service_diagnostics" + self._service_diagnostics.__str__(n + 1) +
                 "\t" * (n + 1) + "string_table_size" + self._string_table_size.__str__(n + 1) +
                 "\t" * (n + 1) + "string_table" + self._string_table.__str__(n + 1) +
-                "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSignatureData +++++++++++++++++++++++
@@ -1504,7 +1504,7 @@ class UaSignatureData(UaType):
 
         return ("(UaSignatureData) :\n" +
                 "\t" * (n + 1) + "algorithm" + self._algorithm.__str__(n + 1) +
-                "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifySubscriptionResponse +++++++++++++++++++++++
@@ -1592,7 +1592,7 @@ class UaModifySubscriptionResponse(UaType):
                 "\t" * (n + 1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_lifetime_count" + self._revised_lifetime_count.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_max_keep_alive_count" + self._revised_max_keep_alive_count.__str__(
-                    n + 1) + "\n")
+                    n + 1))
 
 
 # +++++++++++++++++++ UaNodeAttributes +++++++++++++++++++++++
@@ -1694,7 +1694,7 @@ class UaNodeAttributes(UaType):
                 "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
                 "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
                 "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaActivateSessionResponse +++++++++++++++++++++++
@@ -1811,7 +1811,7 @@ class UaActivateSessionResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEnumField +++++++++++++++++++++++
@@ -1898,7 +1898,7 @@ class UaEnumField(UaType):
                 "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) +
                 "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
                 "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "name" + self._name.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "name" + self._name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaVariableTypeAttributes +++++++++++++++++++++++
@@ -2090,7 +2090,7 @@ class UaVariableTypeAttributes(UaType):
                 "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1) +
                 "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
                 "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallMethodResult +++++++++++++++++++++++
@@ -2227,7 +2227,7 @@ class UaCallMethodResult(UaType):
                 "\t" * (n + 1) + "input_argument_diagnostic_infos" + self._input_argument_diagnostic_infos.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "output_arguments_size" + self._output_arguments_size.__str__(n + 1) +
-                "\t" * (n + 1) + "output_arguments" + self._output_arguments.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "output_arguments" + self._output_arguments.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetMonitoringModeResponse +++++++++++++++++++++++
@@ -2329,7 +2329,7 @@ class UaSetMonitoringModeResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRequestHeader +++++++++++++++++++++++
@@ -2461,7 +2461,7 @@ class UaRequestHeader(UaType):
                 "\t" * (n + 1) + "return_diagnostics" + self._return_diagnostics.__str__(n + 1) +
                 "\t" * (n + 1) + "audit_entry_id" + self._audit_entry_id.__str__(n + 1) +
                 "\t" * (n + 1) + "timeout_hint" + self._timeout_hint.__str__(n + 1) +
-                "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemModifyResult +++++++++++++++++++++++
@@ -2548,7 +2548,7 @@ class UaMonitoredItemModifyResult(UaType):
                 "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_queue_size" + self._revised_queue_size.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSecureChannelRequest +++++++++++++++++++++++
@@ -2590,7 +2590,7 @@ class UaCloseSecureChannelRequest(UaType):
             return "(UaCloseSecureChannelRequest) : NULL\n"
 
         return ("(UaCloseSecureChannelRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaNotificationMessage +++++++++++++++++++++++
@@ -2677,7 +2677,7 @@ class UaNotificationMessage(UaType):
                 "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1) +
                 "\t" * (n + 1) + "publish_time" + self._publish_time.__str__(n + 1) +
                 "\t" * (n + 1) + "notification_data_size" + self._notification_data_size.__str__(n + 1) +
-                "\t" * (n + 1) + "notification_data" + self._notification_data.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "notification_data" + self._notification_data.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSubscriptionResponse +++++++++++++++++++++++
@@ -2780,7 +2780,7 @@ class UaCreateSubscriptionResponse(UaType):
                 "\t" * (n + 1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_lifetime_count" + self._revised_lifetime_count.__str__(n + 1) +
                 "\t" * (n + 1) + "revised_max_keep_alive_count" + self._revised_max_keep_alive_count.__str__(
-                    n + 1) + "\n")
+                    n + 1))
 
 
 # +++++++++++++++++++ UaEnumDefinition +++++++++++++++++++++++
@@ -2837,7 +2837,7 @@ class UaEnumDefinition(UaType):
 
         return ("(UaEnumDefinition) :\n" +
                 "\t" * (n + 1) + "fields_size" + self._fields_size.__str__(n + 1) +
-                "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallMethodRequest +++++++++++++++++++++++
@@ -2924,7 +2924,7 @@ class UaCallMethodRequest(UaType):
                 "\t" * (n + 1) + "object_id" + self._object_id.__str__(n + 1) +
                 "\t" * (n + 1) + "method_id" + self._method_id.__str__(n + 1) +
                 "\t" * (n + 1) + "input_arguments_size" + self._input_arguments_size.__str__(n + 1) +
-                "\t" * (n + 1) + "input_arguments" + self._input_arguments.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "input_arguments" + self._input_arguments.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReadResponse +++++++++++++++++++++++
@@ -3026,7 +3026,7 @@ class UaReadResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaObjectTypeAttributes +++++++++++++++++++++++
@@ -3143,7 +3143,7 @@ class UaObjectTypeAttributes(UaType):
                 "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
                 "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSessionResponse +++++++++++++++++++++++
@@ -3185,7 +3185,7 @@ class UaCloseSessionResponse(UaType):
             return "(UaCloseSessionResponse) : NULL\n"
 
         return ("(UaCloseSessionResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetPublishingModeRequest +++++++++++++++++++++++
@@ -3272,7 +3272,7 @@ class UaSetPublishingModeRequest(UaType):
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "publishing_enabled" + self._publishing_enabled.__str__(n + 1) +
                 "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaIssuedIdentityToken +++++++++++++++++++++++
@@ -3344,7 +3344,7 @@ class UaIssuedIdentityToken(UaType):
         return ("(UaIssuedIdentityToken) :\n" +
                 "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
                 "\t" * (n + 1) + "token_data" + self._token_data.__str__(n + 1) +
-                "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsResponse +++++++++++++++++++++++
@@ -3446,7 +3446,7 @@ class UaDeleteMonitoredItemsResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseNextRequest +++++++++++++++++++++++
@@ -3533,7 +3533,7 @@ class UaBrowseNextRequest(UaType):
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "release_continuation_points" + self._release_continuation_points.__str__(n + 1) +
                 "\t" * (n + 1) + "continuation_points_size" + self._continuation_points_size.__str__(n + 1) +
-                "\t" * (n + 1) + "continuation_points" + self._continuation_points.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "continuation_points" + self._continuation_points.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifySubscriptionRequest +++++++++++++++++++++++
@@ -3666,7 +3666,7 @@ class UaModifySubscriptionRequest(UaType):
                 "\t" * (n + 1) + "requested_max_keep_alive_count" + self._requested_max_keep_alive_count.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "max_notifications_per_publish" + self._max_notifications_per_publish.__str__(n + 1) +
-                "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseDescription +++++++++++++++++++++++
@@ -3783,7 +3783,7 @@ class UaBrowseDescription(UaType):
                 "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
                 "\t" * (n + 1) + "include_subtypes" + self._include_subtypes.__str__(n + 1) +
                 "\t" * (n + 1) + "node_class_mask" + self._node_class_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "result_mask" + self._result_mask.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "result_mask" + self._result_mask.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSignedSoftwareCertificate +++++++++++++++++++++++
@@ -3840,7 +3840,7 @@ class UaSignedSoftwareCertificate(UaType):
 
         return ("(UaSignedSoftwareCertificate) :\n" +
                 "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1) +
-                "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowsePathTarget +++++++++++++++++++++++
@@ -3897,7 +3897,7 @@ class UaBrowsePathTarget(UaType):
 
         return ("(UaBrowsePathTarget) :\n" +
                 "\t" * (n + 1) + "target_id" + self._target_id.__str__(n + 1) +
-                "\t" * (n + 1) + "remaining_path_index" + self._remaining_path_index.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "remaining_path_index" + self._remaining_path_index.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaWriteResponse +++++++++++++++++++++++
@@ -3999,7 +3999,7 @@ class UaWriteResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesResult +++++++++++++++++++++++
@@ -4056,7 +4056,7 @@ class UaAddNodesResult(UaType):
 
         return ("(UaAddNodesResult) :\n" +
                 "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "added_node_id" + self._added_node_id.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "added_node_id" + self._added_node_id.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddReferencesItem +++++++++++++++++++++++
@@ -4173,7 +4173,7 @@ class UaAddReferencesItem(UaType):
                 "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1) +
                 "\t" * (n + 1) + "target_server_uri" + self._target_server_uri.__str__(n + 1) +
                 "\t" * (n + 1) + "target_node_id" + self._target_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "target_node_class" + self._target_node_class.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "target_node_class" + self._target_node_class.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesResponse +++++++++++++++++++++++
@@ -4275,7 +4275,7 @@ class UaDeleteReferencesResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRelativePathElement +++++++++++++++++++++++
@@ -4362,7 +4362,7 @@ class UaRelativePathElement(UaType):
                 "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
                 "\t" * (n + 1) + "is_inverse" + self._is_inverse.__str__(n + 1) +
                 "\t" * (n + 1) + "include_subtypes" + self._include_subtypes.__str__(n + 1) +
-                "\t" * (n + 1) + "target_name" + self._target_name.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "target_name" + self._target_name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSubscriptionAcknowledgement +++++++++++++++++++++++
@@ -4419,7 +4419,7 @@ class UaSubscriptionAcknowledgement(UaType):
 
         return ("(UaSubscriptionAcknowledgement) :\n" +
                 "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTransferResult +++++++++++++++++++++++
@@ -4492,7 +4492,7 @@ class UaTransferResult(UaType):
                 "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
                 "\t" * (n + 1) + "available_sequence_numbers_size" + self._available_sequence_numbers_size.__str__(
                     n + 1) +
-                "\t" * (n + 1) + "available_sequence_numbers" + self._available_sequence_numbers.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "available_sequence_numbers" + self._available_sequence_numbers.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateMonitoredItemsResponse +++++++++++++++++++++++
@@ -4594,7 +4594,7 @@ class UaCreateMonitoredItemsResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesItem +++++++++++++++++++++++
@@ -4696,7 +4696,7 @@ class UaDeleteReferencesItem(UaType):
                 "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
                 "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1) +
                 "\t" * (n + 1) + "target_node_id" + self._target_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "delete_bidirectional" + self._delete_bidirectional.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "delete_bidirectional" + self._delete_bidirectional.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaWriteValue +++++++++++++++++++++++
@@ -4783,7 +4783,7 @@ class UaWriteValue(UaType):
                 "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
                 "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
                 "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataTypeAttributes +++++++++++++++++++++++
@@ -4900,7 +4900,7 @@ class UaDataTypeAttributes(UaType):
                 "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
                 "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTransferSubscriptionsResponse +++++++++++++++++++++++
@@ -5002,7 +5002,7 @@ class UaTransferSubscriptionsResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddReferencesResponse +++++++++++++++++++++++
@@ -5104,7 +5104,7 @@ class UaAddReferencesResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBuildInfo +++++++++++++++++++++++
@@ -5221,7 +5221,7 @@ class UaBuildInfo(UaType):
                 "\t" * (n + 1) + "product_name" + self._product_name.__str__(n + 1) +
                 "\t" * (n + 1) + "software_version" + self._software_version.__str__(n + 1) +
                 "\t" * (n + 1) + "build_number" + self._build_number.__str__(n + 1) +
-                "\t" * (n + 1) + "build_date" + self._build_date.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "build_date" + self._build_date.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoringParameters +++++++++++++++++++++++
@@ -5323,7 +5323,7 @@ class UaMonitoringParameters(UaType):
                 "\t" * (n + 1) + "sampling_interval" + self._sampling_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "filter" + self._filter.__str__(n + 1) +
                 "\t" * (n + 1) + "queue_size" + self._queue_size.__str__(n + 1) +
-                "\t" * (n + 1) + "discard_oldest" + self._discard_oldest.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "discard_oldest" + self._discard_oldest.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDoubleComplexNumberType +++++++++++++++++++++++
@@ -5380,7 +5380,7 @@ class UaDoubleComplexNumberType(UaType):
 
         return ("(UaDoubleComplexNumberType) :\n" +
                 "\t" * (n + 1) + "real" + self._real.__str__(n + 1) +
-                "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteNodesItem +++++++++++++++++++++++
@@ -5437,7 +5437,7 @@ class UaDeleteNodesItem(UaType):
 
         return ("(UaDeleteNodesItem) :\n" +
                 "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "delete_target_references" + self._delete_target_references.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "delete_target_references" + self._delete_target_references.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReadValueId +++++++++++++++++++++++
@@ -5524,7 +5524,7 @@ class UaReadValueId(UaType):
                 "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
                 "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
                 "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1) +
-                "\t" * (n + 1) + "data_encoding" + self._data_encoding.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "data_encoding" + self._data_encoding.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallRequest +++++++++++++++++++++++
@@ -5596,7 +5596,7 @@ class UaCallRequest(UaType):
         return ("(UaCallRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "methods_to_call_size" + self._methods_to_call_size.__str__(n + 1) +
-                "\t" * (n + 1) + "methods_to_call" + self._methods_to_call.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "methods_to_call" + self._methods_to_call.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRelativePath +++++++++++++++++++++++
@@ -5653,7 +5653,7 @@ class UaRelativePath(UaType):
 
         return ("(UaRelativePath) :\n" +
                 "\t" * (n + 1) + "elements_size" + self._elements_size.__str__(n + 1) +
-                "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteNodesRequest +++++++++++++++++++++++
@@ -5725,7 +5725,7 @@ class UaDeleteNodesRequest(UaType):
         return ("(UaDeleteNodesRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "nodes_to_delete_size" + self._nodes_to_delete_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_delete" + self._nodes_to_delete.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_delete" + self._nodes_to_delete.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemModifyRequest +++++++++++++++++++++++
@@ -5782,7 +5782,7 @@ class UaMonitoredItemModifyRequest(UaType):
 
         return ("(UaMonitoredItemModifyRequest) :\n" +
                 "\t" * (n + 1) + "monitored_item_id" + self._monitored_item_id.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAggregateConfiguration +++++++++++++++++++++++
@@ -5885,7 +5885,7 @@ class UaAggregateConfiguration(UaType):
                 "\t" * (n + 1) + "treat_uncertain_as_bad" + self._treat_uncertain_as_bad.__str__(n + 1) +
                 "\t" * (n + 1) + "percent_data_bad" + self._percent_data_bad.__str__(n + 1) +
                 "\t" * (n + 1) + "percent_data_good" + self._percent_data_good.__str__(n + 1) +
-                "\t" * (n + 1) + "use_sloped_extrapolation" + self._use_sloped_extrapolation.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "use_sloped_extrapolation" + self._use_sloped_extrapolation.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUnregisterNodesResponse +++++++++++++++++++++++
@@ -5927,7 +5927,7 @@ class UaUnregisterNodesResponse(UaType):
             return "(UaUnregisterNodesResponse) : NULL\n"
 
         return ("(UaUnregisterNodesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilterResult +++++++++++++++++++++++
@@ -6014,7 +6014,7 @@ class UaContentFilterResult(UaType):
                 "\t" * (n + 1) + "element_results_size" + self._element_results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "element_results" + self._element_results.__str__(n + 1) +
                 "\t" * (n + 1) + "element_diagnostic_infos_size" + self._element_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "element_diagnostic_infos" + self._element_diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "element_diagnostic_infos" + self._element_diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUserTokenPolicy +++++++++++++++++++++++
@@ -6116,7 +6116,7 @@ class UaUserTokenPolicy(UaType):
                 "\t" * (n + 1) + "token_type" + self._token_type.__str__(n + 1) +
                 "\t" * (n + 1) + "issued_token_type" + self._issued_token_type.__str__(n + 1) +
                 "\t" * (n + 1) + "issuer_endpoint_url" + self._issuer_endpoint_url.__str__(n + 1) +
-                "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsRequest +++++++++++++++++++++++
@@ -6203,7 +6203,7 @@ class UaDeleteMonitoredItemsRequest(UaType):
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
                 "\t" * (n + 1) + "monitored_item_ids_size" + self._monitored_item_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetMonitoringModeRequest +++++++++++++++++++++++
@@ -6305,7 +6305,7 @@ class UaSetMonitoringModeRequest(UaType):
                 "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
                 "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1) +
                 "\t" * (n + 1) + "monitored_item_ids_size" + self._monitored_item_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReferenceTypeAttributes +++++++++++++++++++++++
@@ -6452,7 +6452,7 @@ class UaReferenceTypeAttributes(UaType):
                 "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1) +
                 "\t" * (n + 1) + "symmetric" + self._symmetric.__str__(n + 1) +
-                "\t" * (n + 1) + "inverse_name" + self._inverse_name.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "inverse_name" + self._inverse_name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaGetEndpointsRequest +++++++++++++++++++++++
@@ -6569,7 +6569,7 @@ class UaGetEndpointsRequest(UaType):
                 "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1) +
                 "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1) +
                 "\t" * (n + 1) + "profile_uris_size" + self._profile_uris_size.__str__(n + 1) +
-                "\t" * (n + 1) + "profile_uris" + self._profile_uris.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "profile_uris" + self._profile_uris.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSecureChannelResponse +++++++++++++++++++++++
@@ -6611,7 +6611,7 @@ class UaCloseSecureChannelResponse(UaType):
             return "(UaCloseSecureChannelResponse) : NULL\n"
 
         return ("(UaCloseSecureChannelResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaViewDescription +++++++++++++++++++++++
@@ -6683,7 +6683,7 @@ class UaViewDescription(UaType):
         return ("(UaViewDescription) :\n" +
                 "\t" * (n + 1) + "view_id" + self._view_id.__str__(n + 1) +
                 "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "view_version" + self._view_version.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "view_version" + self._view_version.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetPublishingModeResponse +++++++++++++++++++++++
@@ -6785,7 +6785,7 @@ class UaSetPublishingModeResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaStatusChangeNotification +++++++++++++++++++++++
@@ -6842,7 +6842,7 @@ class UaStatusChangeNotification(UaType):
 
         return ("(UaStatusChangeNotification) :\n" +
                 "\t" * (n + 1) + "status" + self._status.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_info" + self._diagnostic_info.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_info" + self._diagnostic_info.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaStructureField +++++++++++++++++++++++
@@ -6989,7 +6989,7 @@ class UaStructureField(UaType):
                 "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
                 "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
                 "\t" * (n + 1) + "max_string_length" + self._max_string_length.__str__(n + 1) +
-                "\t" * (n + 1) + "is_optional" + self._is_optional.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "is_optional" + self._is_optional.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventFilterResult +++++++++++++++++++++++
@@ -7095,7 +7095,7 @@ class UaEventFilterResult(UaType):
                     n + 1) +
                 "\t" * (n + 1) + "select_clause_diagnostic_infos" + self._select_clause_diagnostic_infos.__str__(
                     n + 1) +
-                "\t" * (n + 1) + "where_clause_result" + self._where_clause_result.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "where_clause_result" + self._where_clause_result.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemCreateRequest +++++++++++++++++++++++
@@ -7167,7 +7167,7 @@ class UaMonitoredItemCreateRequest(UaType):
         return ("(UaMonitoredItemCreateRequest) :\n" +
                 "\t" * (n + 1) + "item_to_monitor" + self._item_to_monitor.__str__(n + 1) +
                 "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaComplexNumberType +++++++++++++++++++++++
@@ -7224,7 +7224,7 @@ class UaComplexNumberType(UaType):
 
         return ("(UaComplexNumberType) :\n" +
                 "\t" * (n + 1) + "real" + self._real.__str__(n + 1) +
-                "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRange +++++++++++++++++++++++
@@ -7281,7 +7281,7 @@ class UaRange(UaType):
 
         return ("(UaRange) :\n" +
                 "\t" * (n + 1) + "low" + self._low.__str__(n + 1) +
-                "\t" * (n + 1) + "high" + self._high.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "high" + self._high.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataChangeNotification +++++++++++++++++++++++
@@ -7368,7 +7368,7 @@ class UaDataChangeNotification(UaType):
                 "\t" * (n + 1) + "monitored_items_size" + self._monitored_items_size.__str__(n + 1) +
                 "\t" * (n + 1) + "monitored_items" + self._monitored_items.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaArgument +++++++++++++++++++++++
@@ -7485,7 +7485,7 @@ class UaArgument(UaType):
                 "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1) +
                 "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
                 "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTransferSubscriptionsRequest +++++++++++++++++++++++
@@ -7572,7 +7572,7 @@ class UaTransferSubscriptionsRequest(UaType):
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1) +
                 "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1) +
-                "\t" * (n + 1) + "send_initial_values" + self._send_initial_values.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "send_initial_values" + self._send_initial_values.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaChannelSecurityToken +++++++++++++++++++++++
@@ -7659,7 +7659,7 @@ class UaChannelSecurityToken(UaType):
                 "\t" * (n + 1) + "channel_id" + self._channel_id.__str__(n + 1) +
                 "\t" * (n + 1) + "token_id" + self._token_id.__str__(n + 1) +
                 "\t" * (n + 1) + "created_at" + self._created_at.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_lifetime" + self._revised_lifetime.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "revised_lifetime" + self._revised_lifetime.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventNotificationList +++++++++++++++++++++++
@@ -7716,7 +7716,7 @@ class UaEventNotificationList(UaType):
 
         return ("(UaEventNotificationList) :\n" +
                 "\t" * (n + 1) + "events_size" + self._events_size.__str__(n + 1) +
-                "\t" * (n + 1) + "events" + self._events.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "events" + self._events.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAnonymousIdentityToken +++++++++++++++++++++++
@@ -7758,7 +7758,7 @@ class UaAnonymousIdentityToken(UaType):
             return "(UaAnonymousIdentityToken) : NULL\n"
 
         return ("(UaAnonymousIdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAggregateFilter +++++++++++++++++++++++
@@ -7845,7 +7845,7 @@ class UaAggregateFilter(UaType):
                 "\t" * (n + 1) + "start_time" + self._start_time.__str__(n + 1) +
                 "\t" * (n + 1) + "aggregate_type" + self._aggregate_type.__str__(n + 1) +
                 "\t" * (n + 1) + "processing_interval" + self._processing_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "aggregate_configuration" + self._aggregate_configuration.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "aggregate_configuration" + self._aggregate_configuration.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRepublishResponse +++++++++++++++++++++++
@@ -7902,7 +7902,7 @@ class UaRepublishResponse(UaType):
 
         return ("(UaRepublishResponse) :\n" +
                 "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "notification_message" + self._notification_message.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "notification_message" + self._notification_message.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteSubscriptionsResponse +++++++++++++++++++++++
@@ -8004,7 +8004,7 @@ class UaDeleteSubscriptionsResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRegisterNodesRequest +++++++++++++++++++++++
@@ -8076,7 +8076,7 @@ class UaRegisterNodesRequest(UaType):
         return ("(UaRegisterNodesRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "nodes_to_register_size" + self._nodes_to_register_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_register" + self._nodes_to_register.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_register" + self._nodes_to_register.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaStructureDefinition +++++++++++++++++++++++
@@ -8178,7 +8178,7 @@ class UaStructureDefinition(UaType):
                 "\t" * (n + 1) + "base_data_type" + self._base_data_type.__str__(n + 1) +
                 "\t" * (n + 1) + "structure_type" + self._structure_type.__str__(n + 1) +
                 "\t" * (n + 1) + "fields_size" + self._fields_size.__str__(n + 1) +
-                "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMethodAttributes +++++++++++++++++++++++
@@ -8310,7 +8310,7 @@ class UaMethodAttributes(UaType):
                 "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "executable" + self._executable.__str__(n + 1) +
-                "\t" * (n + 1) + "user_executable" + self._user_executable.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "user_executable" + self._user_executable.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUserNameIdentityToken +++++++++++++++++++++++
@@ -8397,7 +8397,7 @@ class UaUserNameIdentityToken(UaType):
                 "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
                 "\t" * (n + 1) + "user_name" + self._user_name.__str__(n + 1) +
                 "\t" * (n + 1) + "password" + self._password.__str__(n + 1) +
-                "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUnregisterNodesRequest +++++++++++++++++++++++
@@ -8469,7 +8469,7 @@ class UaUnregisterNodesRequest(UaType):
         return ("(UaUnregisterNodesRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "nodes_to_unregister_size" + self._nodes_to_unregister_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_unregister" + self._nodes_to_unregister.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_unregister" + self._nodes_to_unregister.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaOpenSecureChannelResponse +++++++++++++++++++++++
@@ -8556,7 +8556,7 @@ class UaOpenSecureChannelResponse(UaType):
                 "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
                 "\t" * (n + 1) + "server_protocol_version" + self._server_protocol_version.__str__(n + 1) +
                 "\t" * (n + 1) + "security_token" + self._security_token.__str__(n + 1) +
-                "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetTriggeringResponse +++++++++++++++++++++++
@@ -8718,7 +8718,7 @@ class UaSetTriggeringResponse(UaType):
                 "\t" * (n + 1) + "remove_results_size" + self._remove_results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "remove_results" + self._remove_results.__str__(n + 1) +
                 "\t" * (n + 1) + "remove_diagnostic_infos_size" + self._remove_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "remove_diagnostic_infos" + self._remove_diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "remove_diagnostic_infos" + self._remove_diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSimpleAttributeOperand +++++++++++++++++++++++
@@ -8820,7 +8820,7 @@ class UaSimpleAttributeOperand(UaType):
                 "\t" * (n + 1) + "browse_path_size" + self._browse_path_size.__str__(n + 1) +
                 "\t" * (n + 1) + "browse_path" + self._browse_path.__str__(n + 1) +
                 "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
-                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRepublishRequest +++++++++++++++++++++++
@@ -8892,7 +8892,7 @@ class UaRepublishRequest(UaType):
         return ("(UaRepublishRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "retransmit_sequence_number" + self._retransmit_sequence_number.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "retransmit_sequence_number" + self._retransmit_sequence_number.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRegisterNodesResponse +++++++++++++++++++++++
@@ -8964,7 +8964,7 @@ class UaRegisterNodesResponse(UaType):
         return ("(UaRegisterNodesResponse) :\n" +
                 "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
                 "\t" * (n + 1) + "registered_node_ids_size" + self._registered_node_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "registered_node_ids" + self._registered_node_ids.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "registered_node_ids" + self._registered_node_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifyMonitoredItemsResponse +++++++++++++++++++++++
@@ -9066,7 +9066,7 @@ class UaModifyMonitoredItemsResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteSubscriptionsRequest +++++++++++++++++++++++
@@ -9138,7 +9138,7 @@ class UaDeleteSubscriptionsRequest(UaType):
         return ("(UaDeleteSubscriptionsRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowsePath +++++++++++++++++++++++
@@ -9195,7 +9195,7 @@ class UaBrowsePath(UaType):
 
         return ("(UaBrowsePath) :\n" +
                 "\t" * (n + 1) + "starting_node" + self._starting_node.__str__(n + 1) +
-                "\t" * (n + 1) + "relative_path" + self._relative_path.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "relative_path" + self._relative_path.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaObjectAttributes +++++++++++++++++++++++
@@ -9312,7 +9312,7 @@ class UaObjectAttributes(UaType):
                 "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
                 "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
                 "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaPublishRequest +++++++++++++++++++++++
@@ -9388,7 +9388,7 @@ class UaPublishRequest(UaType):
                             n + 1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "subscription_acknowledgements" + self._subscription_acknowledgements.__str__(
-                    n + 1) + "\n")
+                    n + 1))
 
 
 # +++++++++++++++++++ UaFindServersRequest +++++++++++++++++++++++
@@ -9505,7 +9505,7 @@ class UaFindServersRequest(UaType):
                 "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1) +
                 "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1) +
                 "\t" * (n + 1) + "server_uris_size" + self._server_uris_size.__str__(n + 1) +
-                "\t" * (n + 1) + "server_uris" + self._server_uris.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "server_uris" + self._server_uris.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReferenceDescription +++++++++++++++++++++++
@@ -9637,7 +9637,7 @@ class UaReferenceDescription(UaType):
                 "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1) +
                 "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
                 "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1) +
-                "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSubscriptionRequest +++++++++++++++++++++++
@@ -9770,7 +9770,7 @@ class UaCreateSubscriptionRequest(UaType):
                     n + 1) +
                 "\t" * (n + 1) + "max_notifications_per_publish" + self._max_notifications_per_publish.__str__(n + 1) +
                 "\t" * (n + 1) + "publishing_enabled" + self._publishing_enabled.__str__(n + 1) +
-                "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallResponse +++++++++++++++++++++++
@@ -9872,7 +9872,7 @@ class UaCallResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteNodesResponse +++++++++++++++++++++++
@@ -9974,7 +9974,7 @@ class UaDeleteNodesResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifyMonitoredItemsRequest +++++++++++++++++++++++
@@ -10076,7 +10076,7 @@ class UaModifyMonitoredItemsRequest(UaType):
                 "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
                 "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1) +
                 "\t" * (n + 1) + "items_to_modify_size" + self._items_to_modify_size.__str__(n + 1) +
-                "\t" * (n + 1) + "items_to_modify" + self._items_to_modify.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "items_to_modify" + self._items_to_modify.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaServiceFault +++++++++++++++++++++++
@@ -10118,7 +10118,7 @@ class UaServiceFault(UaType):
             return "(UaServiceFault) : NULL\n"
 
         return ("(UaServiceFault) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaPublishResponse +++++++++++++++++++++++
@@ -10296,7 +10296,7 @@ class UaPublishResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateMonitoredItemsRequest +++++++++++++++++++++++
@@ -10398,7 +10398,7 @@ class UaCreateMonitoredItemsRequest(UaType):
                 "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
                 "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1) +
                 "\t" * (n + 1) + "items_to_create_size" + self._items_to_create_size.__str__(n + 1) +
-                "\t" * (n + 1) + "items_to_create" + self._items_to_create.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "items_to_create" + self._items_to_create.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaOpenSecureChannelRequest +++++++++++++++++++++++
@@ -10515,7 +10515,7 @@ class UaOpenSecureChannelRequest(UaType):
                 "\t" * (n + 1) + "request_type" + self._request_type.__str__(n + 1) +
                 "\t" * (n + 1) + "security_mode" + self._security_mode.__str__(n + 1) +
                 "\t" * (n + 1) + "client_nonce" + self._client_nonce.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_lifetime" + self._requested_lifetime.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "requested_lifetime" + self._requested_lifetime.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSessionRequest +++++++++++++++++++++++
@@ -10572,7 +10572,7 @@ class UaCloseSessionRequest(UaType):
 
         return ("(UaCloseSessionRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "delete_subscriptions" + self._delete_subscriptions.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "delete_subscriptions" + self._delete_subscriptions.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetTriggeringRequest +++++++++++++++++++++++
@@ -10704,7 +10704,7 @@ class UaSetTriggeringRequest(UaType):
                 "\t" * (n + 1) + "links_to_add_size" + self._links_to_add_size.__str__(n + 1) +
                 "\t" * (n + 1) + "links_to_add" + self._links_to_add.__str__(n + 1) +
                 "\t" * (n + 1) + "links_to_remove_size" + self._links_to_remove_size.__str__(n + 1) +
-                "\t" * (n + 1) + "links_to_remove" + self._links_to_remove.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "links_to_remove" + self._links_to_remove.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseResult +++++++++++++++++++++++
@@ -10791,7 +10791,7 @@ class UaBrowseResult(UaType):
                 "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
                 "\t" * (n + 1) + "continuation_point" + self._continuation_point.__str__(n + 1) +
                 "\t" * (n + 1) + "references_size" + self._references_size.__str__(n + 1) +
-                "\t" * (n + 1) + "references" + self._references.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "references" + self._references.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddReferencesRequest +++++++++++++++++++++++
@@ -10863,7 +10863,7 @@ class UaAddReferencesRequest(UaType):
         return ("(UaAddReferencesRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "references_to_add_size" + self._references_to_add_size.__str__(n + 1) +
-                "\t" * (n + 1) + "references_to_add" + self._references_to_add.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "references_to_add" + self._references_to_add.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesItem +++++++++++++++++++++++
@@ -10995,7 +10995,7 @@ class UaAddNodesItem(UaType):
                 "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1) +
                 "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1) +
                 "\t" * (n + 1) + "node_attributes" + self._node_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaServerStatusDataType +++++++++++++++++++++++
@@ -11112,7 +11112,7 @@ class UaServerStatusDataType(UaType):
                 "\t" * (n + 1) + "state" + self._state.__str__(n + 1) +
                 "\t" * (n + 1) + "build_info" + self._build_info.__str__(n + 1) +
                 "\t" * (n + 1) + "seconds_till_shutdown" + self._seconds_till_shutdown.__str__(n + 1) +
-                "\t" * (n + 1) + "shutdown_reason" + self._shutdown_reason.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "shutdown_reason" + self._shutdown_reason.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseNextResponse +++++++++++++++++++++++
@@ -11214,7 +11214,7 @@ class UaBrowseNextResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAxisInformation +++++++++++++++++++++++
@@ -11331,7 +11331,7 @@ class UaAxisInformation(UaType):
                 "\t" * (n + 1) + "title" + self._title.__str__(n + 1) +
                 "\t" * (n + 1) + "axis_scale_type" + self._axis_scale_type.__str__(n + 1) +
                 "\t" * (n + 1) + "axis_steps_size" + self._axis_steps_size.__str__(n + 1) +
-                "\t" * (n + 1) + "axis_steps" + self._axis_steps.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "axis_steps" + self._axis_steps.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaApplicationDescription +++++++++++++++++++++++
@@ -11478,7 +11478,7 @@ class UaApplicationDescription(UaType):
                 "\t" * (n + 1) + "gateway_server_uri" + self._gateway_server_uri.__str__(n + 1) +
                 "\t" * (n + 1) + "discovery_profile_uri" + self._discovery_profile_uri.__str__(n + 1) +
                 "\t" * (n + 1) + "discovery_urls_size" + self._discovery_urls_size.__str__(n + 1) +
-                "\t" * (n + 1) + "discovery_urls" + self._discovery_urls.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "discovery_urls" + self._discovery_urls.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReadRequest +++++++++++++++++++++++
@@ -11580,7 +11580,7 @@ class UaReadRequest(UaType):
                 "\t" * (n + 1) + "max_age" + self._max_age.__str__(n + 1) +
                 "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1) +
                 "\t" * (n + 1) + "nodes_to_read_size" + self._nodes_to_read_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_read" + self._nodes_to_read.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_read" + self._nodes_to_read.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaActivateSessionRequest +++++++++++++++++++++++
@@ -11729,7 +11729,7 @@ class UaActivateSessionRequest(UaType):
                 "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1) +
                 "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1) +
                 "\t" * (n + 1) + "user_identity_token" + self._user_identity_token.__str__(n + 1) +
-                "\t" * (n + 1) + "user_token_signature" + self._user_token_signature.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "user_token_signature" + self._user_token_signature.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowsePathResult +++++++++++++++++++++++
@@ -11801,7 +11801,7 @@ class UaBrowsePathResult(UaType):
         return ("(UaBrowsePathResult) :\n" +
                 "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
                 "\t" * (n + 1) + "targets_size" + self._targets_size.__str__(n + 1) +
-                "\t" * (n + 1) + "targets" + self._targets.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "targets" + self._targets.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesRequest +++++++++++++++++++++++
@@ -11873,7 +11873,7 @@ class UaAddNodesRequest(UaType):
         return ("(UaAddNodesRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "nodes_to_add_size" + self._nodes_to_add_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_add" + self._nodes_to_add.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_add" + self._nodes_to_add.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseRequest +++++++++++++++++++++++
@@ -11976,7 +11976,7 @@ class UaBrowseRequest(UaType):
                 "\t" * (n + 1) + "requested_max_references_per_node" + self._requested_max_references_per_node.__str__(
                     n + 1) +
                 "\t" * (n + 1) + "nodes_to_browse_size" + self._nodes_to_browse_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_browse" + self._nodes_to_browse.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_browse" + self._nodes_to_browse.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaWriteRequest +++++++++++++++++++++++
@@ -12048,7 +12048,7 @@ class UaWriteRequest(UaType):
         return ("(UaWriteRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "nodes_to_write_size" + self._nodes_to_write_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_write" + self._nodes_to_write.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "nodes_to_write" + self._nodes_to_write.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesResponse +++++++++++++++++++++++
@@ -12150,7 +12150,7 @@ class UaAddNodesResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAttributeOperand +++++++++++++++++++++++
@@ -12252,7 +12252,7 @@ class UaAttributeOperand(UaType):
                 "\t" * (n + 1) + "alias" + self._alias.__str__(n + 1) +
                 "\t" * (n + 1) + "browse_path" + self._browse_path.__str__(n + 1) +
                 "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
-                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataChangeFilter +++++++++++++++++++++++
@@ -12324,7 +12324,7 @@ class UaDataChangeFilter(UaType):
         return ("(UaDataChangeFilter) :\n" +
                 "\t" * (n + 1) + "trigger" + self._trigger.__str__(n + 1) +
                 "\t" * (n + 1) + "deadband_type" + self._deadband_type.__str__(n + 1) +
-                "\t" * (n + 1) + "deadband_value" + self._deadband_value.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "deadband_value" + self._deadband_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEndpointDescription +++++++++++++++++++++++
@@ -12486,7 +12486,7 @@ class UaEndpointDescription(UaType):
                 "\t" * (n + 1) + "user_identity_tokens_size" + self._user_identity_tokens_size.__str__(n + 1) +
                 "\t" * (n + 1) + "user_identity_tokens" + self._user_identity_tokens.__str__(n + 1) +
                 "\t" * (n + 1) + "transport_profile_uri" + self._transport_profile_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "security_level" + self._security_level.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "security_level" + self._security_level.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesRequest +++++++++++++++++++++++
@@ -12558,7 +12558,7 @@ class UaDeleteReferencesRequest(UaType):
         return ("(UaDeleteReferencesRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "references_to_delete_size" + self._references_to_delete_size.__str__(n + 1) +
-                "\t" * (n + 1) + "references_to_delete" + self._references_to_delete.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "references_to_delete" + self._references_to_delete.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsRequest +++++++++++++++++++++++
@@ -12630,7 +12630,7 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
         return ("(UaTranslateBrowsePathsToNodeIdsRequest) :\n" +
                 "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
                 "\t" * (n + 1) + "browse_paths_size" + self._browse_paths_size.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_paths" + self._browse_paths.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "browse_paths" + self._browse_paths.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaFindServersResponse +++++++++++++++++++++++
@@ -12702,7 +12702,7 @@ class UaFindServersResponse(UaType):
         return ("(UaFindServersResponse) :\n" +
                 "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
                 "\t" * (n + 1) + "servers_size" + self._servers_size.__str__(n + 1) +
-                "\t" * (n + 1) + "servers" + self._servers.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "servers" + self._servers.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSessionRequest +++++++++++++++++++++++
@@ -12864,7 +12864,7 @@ class UaCreateSessionRequest(UaType):
                 "\t" * (n + 1) + "client_nonce" + self._client_nonce.__str__(n + 1) +
                 "\t" * (n + 1) + "client_certificate" + self._client_certificate.__str__(n + 1) +
                 "\t" * (n + 1) + "requested_session_timeout" + self._requested_session_timeout.__str__(n + 1) +
-                "\t" * (n + 1) + "max_response_message_size" + self._max_response_message_size.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "max_response_message_size" + self._max_response_message_size.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilterElement +++++++++++++++++++++++
@@ -12936,7 +12936,7 @@ class UaContentFilterElement(UaType):
         return ("(UaContentFilterElement) :\n" +
                 "\t" * (n + 1) + "filter_operator" + self._filter_operator.__str__(n + 1) +
                 "\t" * (n + 1) + "filter_operands_size" + self._filter_operands_size.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_operands" + self._filter_operands.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "filter_operands" + self._filter_operands.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsResponse +++++++++++++++++++++++
@@ -13038,7 +13038,7 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseResponse +++++++++++++++++++++++
@@ -13140,7 +13140,7 @@ class UaBrowseResponse(UaType):
                 "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
                 "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
                 "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSessionResponse +++++++++++++++++++++++
@@ -13349,7 +13349,7 @@ class UaCreateSessionResponse(UaType):
                     n + 1) +
                 "\t" * (n + 1) + "server_software_certificates" + self._server_software_certificates.__str__(n + 1) +
                 "\t" * (n + 1) + "server_signature" + self._server_signature.__str__(n + 1) +
-                "\t" * (n + 1) + "max_request_message_size" + self._max_request_message_size.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "max_request_message_size" + self._max_request_message_size.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilter +++++++++++++++++++++++
@@ -13406,7 +13406,7 @@ class UaContentFilter(UaType):
 
         return ("(UaContentFilter) :\n" +
                 "\t" * (n + 1) + "elements_size" + self._elements_size.__str__(n + 1) +
-                "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaGetEndpointsResponse +++++++++++++++++++++++
@@ -13478,7 +13478,7 @@ class UaGetEndpointsResponse(UaType):
         return ("(UaGetEndpointsResponse) :\n" +
                 "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
                 "\t" * (n + 1) + "endpoints_size" + self._endpoints_size.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoints" + self._endpoints.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "endpoints" + self._endpoints.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventFilter +++++++++++++++++++++++
@@ -13550,4 +13550,4 @@ class UaEventFilter(UaType):
         return ("(UaEventFilter) :\n" +
                 "\t" * (n + 1) + "select_clauses_size" + self._select_clauses_size.__str__(n + 1) +
                 "\t" * (n + 1) + "select_clauses" + self._select_clauses.__str__(n + 1) +
-                "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1))

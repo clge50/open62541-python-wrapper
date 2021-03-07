@@ -328,12 +328,12 @@ class UaNetworkStatistics(UaType):
         if self._null:
             return "(UaNetworkStatistics) : NULL\n"
         
-        return ("(UaNetworkStatistics) :\n" +
-                "\t"*(n+1) + "current_connection_count" + self._current_connection_count.__str__(n+1) +
-                "\t"*(n+1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n+1) +
-                "\t"*(n+1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n+1) +
-                "\t"*(n+1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n+1) +
-                "\t"*(n+1) + "connection_abort_count" + self._connection_abort_count.__str__(n+1) + "\n")
+        return ("(UaNetworkStatistics) :\n"
+                + "\t"*(n+1) + "current_connection_count" + self._current_connection_count.__str__(n+1)
+                + "\t"*(n+1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n+1)
+                + "\t"*(n+1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n+1)
+                + "\t"*(n+1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n+1)
+                + "\t"*(n+1) + "connection_abort_count" + self._connection_abort_count.__str__(n+1))
 
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
@@ -444,12 +444,12 @@ class UaSecureChannelStatistics(UaType):
         if self._null:
             return "(UaSecureChannelStatistics) : NULL\n"
         
-        return ("(UaSecureChannelStatistics) :\n" +
-                "\t"*(n+1) + "current_channel_count" + self._current_channel_count.__str__(n+1) +
-                "\t"*(n+1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n+1) +
-                "\t"*(n+1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n+1) +
-                "\t"*(n+1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n+1) +
-                "\t"*(n+1) + "channel_abort_count" + self._channel_abort_count.__str__(n+1) +
-                "\t"*(n+1) + "channel_purge_count" + self._channel_purge_count.__str__(n+1) + "\n")
+        return ("(UaSecureChannelStatistics) :\n"
+                + "\t"*(n+1) + "current_channel_count" + self._current_channel_count.__str__(n+1)
+                + "\t"*(n+1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n+1)
+                + "\t"*(n+1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n+1)
+                + "\t"*(n+1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n+1)
+                + "\t"*(n+1) + "channel_abort_count" + self._channel_abort_count.__str__(n+1)
+                + "\t"*(n+1) + "channel_purge_count" + self._channel_purge_count.__str__(n+1))
 
 
