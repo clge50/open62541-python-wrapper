@@ -499,10 +499,15 @@ class UaFloat(UaType):
 
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
+# TODO: Array handling for all other types
 class UaDouble(UaType):
-    def __init__(self, val: Union[Void, float, List[float]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, float, List[float]] = None,  size: int = None, is_pointer=False):
         if type(val) is Void:
-            val = ffi.cast("UA_Double*", val._ptr)
+            if size is None:
+                val = ffi.cast("UA_Double*", val._ptr)
+            else:
+                val = ffi.cast(f"UA_Double[{size}]", val._ptr)
+                is_pointer = True
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
@@ -512,10 +517,13 @@ class UaDouble(UaType):
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Double*", _val(val)), is_pointer)
+        self._size = size
 
     @property
     def value(self):
-        return float(self._val)
+        if self._size is None:
+            return float(self._val)
+        return ffi.unpack(self._ptr, self._size)
 
     def _set_value(self, val):
         if self._is_pointer:
