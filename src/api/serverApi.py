@@ -20,46 +20,46 @@ class _Callback:
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_DataSourceReadCallback(server, session_id, session_context, node_id, node_context,
-                                                 include_source, time_stamp, range, value):
+                                                 include_source_time_stamp, numeric_range, value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
         ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id, session_context, node_id,
                                                                       node_context,
-                                                                      include_source, time_stamp, range, value)
+                                                                      include_source_time_stamp, numeric_range, value)
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_DataSourceWriteCallback(server, session_id,
                                                   session_context, node_id,
-                                                  nodeContext, range,
+                                                  node_context, numeric_range,
                                                   value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
         ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id,
                                                                       session_context, node_id,
-                                                                      nodeContext, range,
+                                                                      node_context, numeric_range,
                                                                       value)
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ValueCallbackOnReadCallback(server, session_id,
                                                       session_context, node_id,
-                                                      node_context, range,
+                                                      node_context, numeric_range,
                                                       value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
         ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id,
                                                                       session_context, node_id,
-                                                                      node_context, range,
+                                                                      node_context, numeric_range,
                                                                       value)
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ValueCallbackOnWriteCallback(server, session_id,
                                                        session_context, node_id,
-                                                       node_context, range,
+                                                       node_context, numeric_range,
                                                        value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
         ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id,
                                                                       session_context, node_id,
-                                                                      node_context, range,
+                                                                      node_context, numeric_range,
                                                                       value)
 
 
@@ -479,7 +479,11 @@ class UaServer:
 
     def set_variable_node_value_callback(self, node_id: ua_types.UaNodeId,
                                          callback: ua_types.UaValueCallback):  # TODO: UA_ValueCallback IMPLEMENT AS UaType
+
+        _Callback.callbacks_dict[str(node_id)] = callback
+
         raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
+
         return ua_types.UaStatusCode(val=raw_result)
 
     def set_variable_node_value_backend(self, node_id: ua_types.UaNodeId,
