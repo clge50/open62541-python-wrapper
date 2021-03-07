@@ -263,26 +263,27 @@ class UaClientConfig(UaType):
 
 # ++++++++++++++++++++ protos +++++++++++++++++++++++
 
-class UaValueCallback():
+class UaValueCallback:
     def __init__(self, read_callback, write_callback):
         self.read_callback = read_callback
         self.write_callback = write_callback
 
 
-class UaValueBackend(UaType):
-    def __init__(self):
-        return None
+class UaValueBackend:
+    def __init__(self, backend_type, backend_external_value):
+        self.backend_type = backend_type
+        self.backend_external_value = backend_external_value
 
 
-class UaDataSource():
+class UaDataSource:
     def __init__(self, read_callback, write_callback):
         self.read_callback = read_callback
         self.write_callback = write_callback
 
 
-class UaNodeTypeLifecycle(UaType):
+class UaNodeTypeLifecycle():
     def __init__(self):
-        return None
+        pass
 
 
 class UaTwoStateVariableCallbackType(UaType):
@@ -750,7 +751,7 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaDataSource():
+<pre><code class="python">class UaDataSource:
     def __init__(self, read_callback, write_callback):
         self.read_callback = read_callback
         self.write_callback = write_callback</code></pre>
@@ -765,14 +766,10 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaNodeTypeLifecycle(UaType):
+<pre><code class="python">class UaNodeTypeLifecycle():
     def __init__(self):
-        return None</code></pre>
+        pass</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>ua_types_parent.UaType</li>
-</ul>
 </dd>
 <dt id="open62541.ua_types.UaTwoStateVariableCallbackType"><code class="flex name class">
 <span>class <span class="ident">UaTwoStateVariableCallbackType</span></span>
@@ -812,6 +809,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaValueBackend"><code class="flex name class">
 <span>class <span class="ident">UaValueBackend</span></span>
+<span>(</span><span>backend_type, backend_external_value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -819,14 +817,11 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaValueBackend(UaType):
-    def __init__(self):
-        return None</code></pre>
+<pre><code class="python">class UaValueBackend:
+    def __init__(self, backend_type, backend_external_value):
+        self.backend_type = backend_type
+        self.backend_external_value = backend_external_value</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>ua_types_parent.UaType</li>
-</ul>
 </dd>
 <dt id="open62541.ua_types.UaValueCallback"><code class="flex name class">
 <span>class <span class="ident">UaValueCallback</span></span>
@@ -838,7 +833,7 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaValueCallback():
+<pre><code class="python">class UaValueCallback:
     def __init__(self, read_callback, write_callback):
         self.read_callback = read_callback
         self.write_callback = write_callback</code></pre>

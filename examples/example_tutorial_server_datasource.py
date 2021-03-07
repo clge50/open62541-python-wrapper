@@ -1,5 +1,6 @@
 # Connecting a Variable with a Physical Process
 from ua import *
+from intermediateApi import ffi, lib
 
 
 def update_current_time(server: UaServer):
@@ -60,12 +61,31 @@ def write_current_time(server, session_id, session_context, node_id, node_contex
     return UaStatusCode.UA_STATUSCODE_BADINTERNALERROR
 
 
-def add_current_time_data_source_variable(server):
-    pass
+ua_data_value = UaDataValue()
 
 
-def add_current_time_external_data_source(server):
-    pass
+def add_current_time_data_source_variable(server: UaServer):
+    attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
+    attr.display_name = UaLocalizedText("en-US", "Current time - data source");
+    attr.access_level = UaByte(0x01 << 0 | 0x01 << 1)
+
+    current_node_id = UaNodeId(1, "current-time-datasource")
+    current_name = UaQualifiedName(1, "current-time-datasource")
+    parent_node_id = NS0ID.OBJECTSFOLDER
+    parent_reference_node_id = NS0ID.ORGANIZES
+    variable_type_node_id = NS0ID.BASEDATAVARIABLETYPE
+
+    time_data_source = UaDataSource(read_current_time, write_current_time)
+    server.add_data_source_variable_node(current_node_id, parent_node_id, parent_reference_node_id, current_name,
+                                         variable_type_node_id, time_data_source, attr)
+
+
+def add_current_time_external_data_source(server: UaServer):
+    current_node_id = UaNodeId(1, "current-time-external-source")
+    # todo: value backend not fully implemented/wrapped yet
+    value_backend = UaValueBackend(lib.UA_VALUEBACKENDTYPE_EXTERNAL, ua_data_value)
+
+    server.set_variable_node_value_backend(current_node_id, value_backend)
 
 
 def main():
@@ -73,9 +93,9 @@ def main():
 
     add_current_time_variable(server)
     add_value_callback_to_current_time_variable(server)
-    # add_current_time_data_source_variable(server)
+    add_current_time_data_source_variable(server)
 
-    # add_current_time_external_data_source(server)
+    add_current_time_external_data_source(server)
     retval = server.run(UaBoolean(True))
 
 

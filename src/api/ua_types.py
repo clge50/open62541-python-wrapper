@@ -235,26 +235,27 @@ class UaClientConfig(UaType):
 
 # ++++++++++++++++++++ protos +++++++++++++++++++++++
 
-class UaValueCallback():
+class UaValueCallback:
     def __init__(self, read_callback, write_callback):
         self.read_callback = read_callback
         self.write_callback = write_callback
 
 
-class UaValueBackend(UaType):
-    def __init__(self):
-        return None
+class UaValueBackend:
+    def __init__(self, backend_type, backend_external_value):
+        self.backend_type = backend_type
+        self.backend_external_value = backend_external_value
 
 
-class UaDataSource():
+class UaDataSource:
     def __init__(self, read_callback, write_callback):
         self.read_callback = read_callback
         self.write_callback = write_callback
 
 
-class UaNodeTypeLifecycle(UaType):
+class UaNodeTypeLifecycle():
     def __init__(self):
-        return None
+        pass
 
 
 class UaTwoStateVariableCallbackType(UaType):

@@ -11,12 +11,12 @@ typedef struct {
 } UA_DataSource;
 
 
-extern "Python" void python_wrapper_UA_DataSourceReadCallback(UA_Server *server, const UA_NodeId *sessionId,
+extern "Python" UA_StatusCode python_wrapper_UA_DataSourceReadCallback(UA_Server *server, const UA_NodeId *sessionId,
                           void *sessionContext, const UA_NodeId *nodeId,
                           void *nodeContext, UA_Boolean includeSourceTimeStamp,
                           const UA_NumericRange *range, UA_DataValue *value);
 
-extern "Python" void python_wrapper_UA_DataSourceWriteCallback(UA_Server *server, const UA_NodeId *sessionId,
+extern "Python" UA_StatusCode python_wrapper_UA_DataSourceWriteCallback(UA_Server *server, const UA_NodeId *sessionId,
                            void *sessionContext, const UA_NodeId *nodeId,
                            void *nodeContext, const UA_NumericRange *range,
                            const UA_DataValue *value);
@@ -42,3 +42,36 @@ extern "Python" void python_wrapper_UA_ValueCallbackOnWriteCallback(UA_Server *s
                    void *sessionContext, const UA_NodeId *nodeid,
                    void *nodeContext, const UA_NumericRange *range,
                    const UA_DataValue *value);
+
+typedef enum {
+    UA_VALUEBACKENDTYPE_NONE,
+    UA_VALUEBACKENDTYPE_INTERNAL,
+    UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK,
+    UA_VALUEBACKENDTYPE_EXTERNAL
+} UA_ValueBackendType;
+
+typedef struct {
+    UA_StatusCode (*notificationRead)(UA_Server *server, const UA_NodeId *sessionId,
+                                      void *sessionContext, const UA_NodeId *nodeid,
+                                      void *nodeContext, const UA_NumericRange *range);
+
+    UA_StatusCode (*userWrite)(UA_Server *server, const UA_NodeId *sessionId,
+                               void *sessionContext, const UA_NodeId *nodeId,
+                               void *nodeContext, const UA_NumericRange *range,
+                               const UA_DataValue *data);
+} UA_ExternalValueCallback;
+
+typedef struct {
+    UA_ValueBackendType backendType;
+    union {
+        struct {
+            UA_DataValue value;
+            UA_ValueCallback callback;
+        } internal;
+        UA_DataSource dataSource;
+        struct {
+            UA_DataValue **value;
+            UA_ExternalValueCallback callback;
+        } external;
+    } backend;
+} UA_ValueBackend;
