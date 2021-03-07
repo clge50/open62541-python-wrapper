@@ -51,7 +51,7 @@ def read_current_time(server, session_id, session_context, node_id, node_context
     now = UaDateTime.now()
     UaVariant.set_scalar(data_value.variant, now,
                          TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
-    data_value.has_variant = True
+    data_value.has_variant = UaBoolean(True)
     return UaStatusCode.UA_STATUSCODE_GOOD
 
 
