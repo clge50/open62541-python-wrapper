@@ -261,27 +261,34 @@ class UaClientConfig(UaType):
                 &#34;\t&#34; * (n + 1) + &#34;custom_data_types&#34; + self._custom_data_types.__str__(n + 1))
 
 
-#++++++++++++++++++++ protos +++++++++++++++++++++++
+# ++++++++++++++++++++ protos +++++++++++++++++++++++
 
-class UaValueCallback(UaType):
-    def __init__(self):
-        return None
+class UaValueCallback():
+    def __init__(self, read_callback, write_callback):
+        self.read_callback = read_callback
+        self.write_callback = write_callback
+
 
 class UaValueBackend(UaType):
     def __init__(self):
         return None
 
-class UaDataSource(UaType):
-    def __init__(self):
-        return None
+
+class UaDataSource():
+    def __init__(self, read_callback, write_callback):
+        self.read_callback = read_callback
+        self.write_callback = write_callback
+
 
 class UaNodeTypeLifecycle(UaType):
     def __init__(self):
         return None
 
+
 class UaTwoStateVariableCallbackType(UaType):
     def __init__(self):
         return None
+
 
 class UaTwoStateVariableChangeCallback(UaType):
     def __init__(self):
@@ -735,6 +742,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaDataSource"><code class="flex name class">
 <span>class <span class="ident">UaDataSource</span></span>
+<span>(</span><span>read_callback, write_callback)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -742,14 +750,11 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaDataSource(UaType):
-    def __init__(self):
-        return None</code></pre>
+<pre><code class="python">class UaDataSource():
+    def __init__(self, read_callback, write_callback):
+        self.read_callback = read_callback
+        self.write_callback = write_callback</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>ua_types_parent.UaType</li>
-</ul>
 </dd>
 <dt id="open62541.ua_types.UaNodeTypeLifecycle"><code class="flex name class">
 <span>class <span class="ident">UaNodeTypeLifecycle</span></span>
@@ -825,6 +830,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaValueCallback"><code class="flex name class">
 <span>class <span class="ident">UaValueCallback</span></span>
+<span>(</span><span>read_callback, write_callback)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -832,14 +838,11 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaValueCallback(UaType):
-    def __init__(self):
-        return None</code></pre>
+<pre><code class="python">class UaValueCallback():
+    def __init__(self, read_callback, write_callback):
+        self.read_callback = read_callback
+        self.write_callback = write_callback</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>ua_types_parent.UaType</li>
-</ul>
 </dd>
 </dl>
 </section>

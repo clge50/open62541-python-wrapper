@@ -233,27 +233,34 @@ class UaClientConfig(UaType):
                 "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1))
 
 
-#++++++++++++++++++++ protos +++++++++++++++++++++++
+# ++++++++++++++++++++ protos +++++++++++++++++++++++
 
-class UaValueCallback(UaType):
-    def __init__(self):
-        return None
+class UaValueCallback():
+    def __init__(self, read_callback, write_callback):
+        self.read_callback = read_callback
+        self.write_callback = write_callback
+
 
 class UaValueBackend(UaType):
     def __init__(self):
         return None
 
-class UaDataSource(UaType):
-    def __init__(self):
-        return None
+
+class UaDataSource():
+    def __init__(self, read_callback, write_callback):
+        self.read_callback = read_callback
+        self.write_callback = write_callback
+
 
 class UaNodeTypeLifecycle(UaType):
     def __init__(self):
         return None
 
+
 class UaTwoStateVariableCallbackType(UaType):
     def __init__(self):
         return None
+
 
 class UaTwoStateVariableChangeCallback(UaType):
     def __init__(self):

@@ -4,12 +4,6 @@
 
 UA_Server * UA_Server_new(void);
 
-
-typedef struct {
-    ...;
-} UA_DataSource;
-
-
 UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
 
 UA_StatusCode UA_Server_run_shutdown(UA_Server *server);

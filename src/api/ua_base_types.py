@@ -1504,65 +1504,65 @@ class UaDataValue(UaType):
         else:
             return self._has_server_picoseconds
 
-    # @variant.setter
-    # def variant(self, val):
-    #     self._variant = val
-    #     self._value.value = val._val
-    #
-    # @source_timestamp.setter
-    # def source_timestamp(self, val):
-    #     self._source_timestamp = val
-    #     self._value.sourceTimestamp = val._val
-    #
-    # @server_timestamp.setter
-    # def server_timestamp(self, val):
-    #     self._server_timestamp = val
-    #     self._value.serverTimestamp = val._val
-    #
-    # @source_picoseconds.setter
-    # def source_picoseconds(self, val):
-    #     self._source_picoseconds = val
-    #     self._value.sourcePicoseconds = val._val
-    #
-    # @server_picoseconds.setter
-    # def server_picoseconds(self, val):
-    #     self._server_picoseconds = val
-    #     self._value.serverPicoseconds = val._val
-    #
-    # @status.setter
-    # def status(self, val):
-    #     self._status = val
-    #     self._value.status = val._val
-    #
-    # @has_variant.setter
-    # def has_variant(self, val):
-    #     self._has_variant = val
-    #     self._value.hasValue = val._val
-    #
-    # @has_status.setter
-    # def has_status(self, val):
-    #     self._has_status = val
-    #     self._value.hasStatus = val._val
-    #
-    # @has_source_timestamp.setter
-    # def has_source_timestamp(self, val):
-    #     self._has_source_timestamp = val
-    #     self._value.hasSourceTimestamp = val._val
-    #
-    # @has_server_timestamp.setter
-    # def has_server_timestamp(self, val):
-    #     self._has_server_timestamp = val
-    #     self._value.hasServerTimestamp = val._val
-    #
-    # @has_source_picoseconds.setter
-    # def has_source_picoseconds(self, val):
-    #     self._has_source_picoseconds = val
-    #     self._value.hasSourcePicoseconds = val._val
-    #
-    # @has_server_picoseconds.setter
-    # def has_server_picoseconds(self, val):
-    #     self._has_server_picoseconds = val
-    #     self._value.hasServerPicoseconds = val._val
+    @variant.setter
+    def variant(self, val):
+        self._variant = val
+        self._value.value = val._val
+
+    @source_timestamp.setter
+    def source_timestamp(self, val):
+        self._source_timestamp = val
+        self._value.sourceTimestamp = val._val
+
+    @server_timestamp.setter
+    def server_timestamp(self, val):
+        self._server_timestamp = val
+        self._value.serverTimestamp = val._val
+
+    @source_picoseconds.setter
+    def source_picoseconds(self, val):
+        self._source_picoseconds = val
+        self._value.sourcePicoseconds = val._val
+
+    @server_picoseconds.setter
+    def server_picoseconds(self, val):
+        self._server_picoseconds = val
+        self._value.serverPicoseconds = val._val
+
+    @status.setter
+    def status(self, val):
+        self._status = val
+        self._value.status = val._val
+
+    @has_variant.setter
+    def has_variant(self, val):
+        self._has_variant = val
+        self._value.hasValue = val._val
+
+    @has_status.setter
+    def has_status(self, val):
+        self._has_status = val
+        self._value.hasStatus = val._val
+
+    @has_source_timestamp.setter
+    def has_source_timestamp(self, val):
+        self._has_source_timestamp = val
+        self._value.hasSourceTimestamp = val._val
+
+    @has_server_timestamp.setter
+    def has_server_timestamp(self, val):
+        self._has_server_timestamp = val
+        self._value.hasServerTimestamp = val._val
+
+    @has_source_picoseconds.setter
+    def has_source_picoseconds(self, val):
+        self._has_source_picoseconds = val
+        self._value.hasSourcePicoseconds = val._val
+
+    @has_server_picoseconds.setter
+    def has_server_picoseconds(self, val):
+        self._has_server_picoseconds = val
+        self._value.hasServerPicoseconds = val._val
 
     def __str__(self, n=0):
         if self._null:

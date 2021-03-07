@@ -6,8 +6,61 @@
 from intermediateApi import lib, ffi
 import server_service_results as ServerServiceResults
 import ua_types
+import typing
 
 VARIABLE_ATTRIBUTES_DEFAULT = ua_types.UaVariableAttributes(val=lib.UA_VariableAttributes_default)
+
+
+class _Callback:
+    """These static c type callback implementations are used to call the actual callback functions which have been
+    submitted by the open62541 user """
+
+    callbacks_dict: typing.Dict[str, any] = dict()
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_DataSourceReadCallback(server, session_id, session_context, node_id, node_context,
+                                                 include_source, time_stamp, range, value):
+        callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
+        ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id, session_context, node_id,
+                                                                      node_context,
+                                                                      include_source, time_stamp, range, value)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_DataSourceWriteCallback(server, session_id,
+                                                  session_context, node_id,
+                                                  nodeContext, range,
+                                                  value):
+        callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
+        ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id,
+                                                                      session_context, node_id,
+                                                                      nodeContext, range,
+                                                                      value)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ValueCallbackOnReadCallback(server, session_id,
+                                                      session_context, node_id,
+                                                      node_context, range,
+                                                      value):
+        callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
+        ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id,
+                                                                      session_context, node_id,
+                                                                      node_context, range,
+                                                                      value)
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ValueCallbackOnWriteCallback(server, session_id,
+                                                       session_context, node_id,
+                                                       node_context, range,
+                                                       value):
+        callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
+        ffi.from_handle(_Callback.callbacks_dict[callbacks_dict_key])(server, session_id,
+                                                                      session_context, node_id,
+                                                                      node_context, range,
+                                                                      value)
 
 
 class UaServer:
@@ -60,8 +113,8 @@ class UaServer:
         value._update()
         return ua_types.UaStatusCode(val=raw_result)
 
-    def write_value(self, node_id: ua_types.UaNodeId, value: ua_types.UaDataValue):
-        raw_result = lib.UA_Server_writeValue(self.ua_server, node_id, value)
+    def write_value(self, node_id: ua_types.UaNodeId, value: ua_types.UaVariant):
+        raw_result = lib.UA_Server_writeValue(self.ua_server, node_id._val, value._val)
         return ua_types.UaStatusCode(val=raw_result)
 
     def write_data_value(self, node_id: ua_types.UaNodeId, value: ua_types.UaDataValue):
@@ -260,9 +313,9 @@ class UaServer:
                                       reference_type_id: ua_types.UaNodeId,
                                       browse_name: ua_types.UaQualifiedName,
                                       type_definition: ua_types.UaNodeId,
-                                      data_source,
+                                      data_source: ua_types.UaDataSource,  # todo: create proper UaDataSource UaType
                                       attr: ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                                      node_context=None):  # TODO:UaDataSource is missing
+                                      node_context=None):
 
         out_node_id = ua_types.UaNodeId()
 
@@ -276,7 +329,10 @@ class UaServer:
                                                               parent_node_id._val, reference_type_id._val,
                                                               browse_name._val, type_definition._val, attr._val,
                                                               data_source._val, node_context, out_node_id._ptr)
+
         out_node_id._update()
+        _Callback.callbacks_dict[str(out_node_id)] = data_source
+
         return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code),
                                                  out_node_id)  # TODO: out_node not None?
 
