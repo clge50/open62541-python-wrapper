@@ -78,6 +78,8 @@ def generator_struct(struct_name: str, attribute_to_type: dict):
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
 class {to_python_class_name(struct_name)}(UaType):
     def __init__(self, val=ffi.new("{struct_name}*"), is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("{struct_name}*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
@@ -86,6 +88,9 @@ class {to_python_class_name(struct_name)}(UaType):
         tab * 3 + f"self._{to_python_ident(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
         attribute_to_type.keys()))}
 
+    def _update(self):
+        self.__init__(self._ptr)
+    
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "{struct_name}")
@@ -155,7 +160,9 @@ class {to_python_class_name(enum_name)}(UaType):
         f"{tab * 2}({ident_to_val[attr]}, {quote}{attr}{quote})",
         ident_to_val.keys()))}])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("{enum_name}*", val._ptr)
         if val is None:
             super().__init__(ffi.new("{enum_name}*"), is_pointer)
         else:
