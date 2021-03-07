@@ -427,6 +427,7 @@ class UaClient:
     def read_value_attribute(self, node_id: ua_types.UaNodeId):
         value = ua_types.UaVariant()
         status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id._val, value._ptr)
+        value.__init__(value._ptr)
         return ClientServiceResult.ReadValueAttributeResult(ua_types.UaStatusCode(val=status_code), value)
 
     def read_data_type_attribute(self, node_id: ua_types.UaNodeId):
@@ -1884,6 +1885,7 @@ class UaClient:
     def read_value_attribute(self, node_id: ua_types.UaNodeId):
         value = ua_types.UaVariant()
         status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id._val, value._ptr)
+        value.__init__(value._ptr)
         return ClientServiceResult.ReadValueAttributeResult(ua_types.UaStatusCode(val=status_code), value)
 
     def read_data_type_attribute(self, node_id: ua_types.UaNodeId):
@@ -4557,6 +4559,7 @@ class UaClient:
 <pre><code class="python">def read_value_attribute(self, node_id: ua_types.UaNodeId):
     value = ua_types.UaVariant()
     status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id._val, value._ptr)
+    value.__init__(value._ptr)
     return ClientServiceResult.ReadValueAttributeResult(ua_types.UaStatusCode(val=status_code), value)</code></pre>
 </details>
 </dd>

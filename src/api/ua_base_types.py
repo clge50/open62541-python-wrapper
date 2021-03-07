@@ -264,7 +264,9 @@ UaXmlElement = UaString
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[int, List[int], Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_DateTime*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_DateTime*"), is_pointer)
         else:
@@ -461,9 +463,9 @@ class UaDateTimeStruct(UaType):
             return "(UaDateTimeStruct) : NULL\n"
 
         return ("(UaDateTimeStruct) :\n" +
-                "\t" * (n + 1) + f"{self._year}-{self._month:02d}-{self._day:02d} " +
-                f"{self._hour:02d}:{self._min:02d}:{self._sec:02d}." +
-                f"{self._milli_sec:03d}.{self._micro_sec:03d}.{self._nano_sec:03d}\n")
+                "\t" * (n + 1) + f"{self._year.value}-{self._month.value:02d}-{self._day.value:02d} " +
+                f"{self._hour.value:02d}:{self._min.value:02d}:{self._sec.value:02d}." +
+                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}\n")
 
     def to_primitive(self):
         return UaDateTime(lib.UA_DateTime_fromStruct(self._val))
@@ -476,6 +478,8 @@ class UaDateTimeStruct(UaType):
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++
 class UaGuid(UaType):
     NULL = lib.UA_GUID_NULL
+
+    # random guid
 
     def __init__(self, string: str = "", val=ffi.new("UA_Guid*"), is_pointer=False):
         if string != "":
@@ -1130,8 +1134,11 @@ class UaNumericRange(UaType):
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
-    def __init__(self, val=ffi.new("UA_Variant*"), is_pointer=False):
-        lib.UA_Variant_init(_ptr(val))
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_Variant*")
+            lib.UA_Variant_init(_ptr(val))
+
         super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:
@@ -1303,8 +1310,8 @@ class UaVariant(UaType):
             size = SizeT(size)
         elif size is not SizeT:
             raise AttributeError(f"size={size} has to be int or SizeT")
-        # TODO: might cause memory problems
-        status_code = lib.UA_Variant_setRangeCopy(self._ptr, ffi.new_handle(array), size, num_range._val)
+        self.__mem_protect = array._ptr
+        status_code = lib.UA_Variant_setRangeCopy(self._ptr, self.__mem_protect, size, num_range._val)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
             self._set_attributes()
