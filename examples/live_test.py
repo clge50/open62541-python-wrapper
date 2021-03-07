@@ -1,9 +1,10 @@
 from ua import *
 
 client = UaClient()
+client.connect("opc.tcp://127.0.0.1:4840/")
 
-variable_node_id = UaNodeId(0, "abc")
-browse_name = UaQualifiedName(0, "fgh")
+variable_node_id = UaNodeId(1, "abc")
+browse_name = UaQualifiedName(1, "fgh")
 variable_attributes = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
 v3 = UaVariant()
 d = [1.1, 1.2, 1.3,
@@ -25,9 +26,17 @@ parent_node_read_result = client.read_node_id_attribute(parent_reference_node_id
 print(f"read_node_id_attribute UaStatuscode was: {str(parent_node_read_result.status_code)}")
 print(f"read_node_id_attribute read node id: {str(parent_node_read_result.out_node_id)}")
 
-add_variable_node_result = client.add_variable_node(UaNodeId(val=UaNodeId.NULL), parent_node_id,
+add_variable_node_result = client.add_variable_node(parent_node_id,
                                                     parent_reference_node_id, browse_name,
-                                                    variable_type)
+                                                    variable_type, attr=variable_attributes)
+print(add_variable_node_result.out_new_node_id)
+print(add_variable_node_result.status_code)
 
-result = client.read_value_attribute(add_variable_node_result.out_new_node_id)
+read_node_id_attribute_result = client.read_node_id_attribute(add_variable_node_result.out_new_node_id)
+print(f"read_node_id_attribute UaStatuscode was: {str(read_node_id_attribute_result.status_code)}")
+print(
+    f"myIntegerNodeId (string) read from server read_node_id_attribute: {str(read_node_id_attribute_result.out_node_id)}")
+
+result = client.read_value_attribute(read_node_id_attribute_result.out_node_id)
+print(f"read_value_attribute UaStatuscode was: {str(result.status_code)}")
 print(result.value)

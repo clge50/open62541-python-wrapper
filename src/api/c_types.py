@@ -23,10 +23,16 @@ class Void(UaType):
 
     @property
     def data(self):
-        return ffi.from_handle(self._ptr)
+        if type(self._ptr) is type(Void(ffi.NULL)._ptr):
+            return self._ptr
+        else:
+            return ffi.from_handle(self._ptr)
 
     def __str__(self, n=0):
-        return "(Void): " + str(self.data) + "\n"
+        if self._null:
+            return "(Void): NULL\n"
+        else:
+            return "(Void): " + str(self.data) + "\n"
 
 
 # +++++++++++++++++++ SizeT +++++++++++++++++++++++
