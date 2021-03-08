@@ -34,6 +34,7 @@
 from intermediateApi import ffi, lib
 from ua_types_logger import *
 from ua_types_parent import _ptr, _val, _is_null
+from typing import Callable
 
 
 # +++++++++++++++++++ UaClientConfig +++++++++++++++++++++++
@@ -261,27 +262,65 @@ class UaClientConfig(UaType):
                 &#34;\t&#34; * (n + 1) + &#34;custom_data_types&#34; + self._custom_data_types.__str__(n + 1))
 
 
-#++++++++++++++++++++ protos +++++++++++++++++++++++
+# ++++++++++++++++++++ protos +++++++++++++++++++++++
 
 class UaValueCallback(UaType):
-    def __init__(self):
-        return None
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 is_pointer=False):
+        super().__init__(val=ffi.new(&#34;UA_ValueCallback*&#34;), is_pointer=is_pointer)
+        self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+        self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
-class UaValueBackend(UaType):
-    def __init__(self):
-        return None
+    def __str__(self, n=0):
+        if self._null:
+            return &#34;(UA_ValueCallback) : NULL\n&#34;
+
+        return (&#34;(UA_ValueCallback) :\n&#34; +
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)
+
+
+class UaValueBackend:
+    def __init__(self, backend_type, backend_external_value):
+        self.backend_type = backend_type
+        self.backend_external_value = backend_external_value
+
 
 class UaDataSource(UaType):
-    def __init__(self):
-        return None
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 is_pointer=False):
+        super().__init__(val=ffi.new(&#34;UA_DataSource*&#34;), is_pointer=is_pointer)
+        self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
+        self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
-class UaNodeTypeLifecycle(UaType):
+    def __str__(self, n=0):
+        if self._null:
+            return &#34;(UA_DataSource) : NULL\n&#34;
+
+        return (&#34;(UA_DataSource) :\n&#34; +
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)
+
+
+class UaNodeTypeLifecycle():
     def __init__(self):
-        return None
+        pass
+
 
 class UaTwoStateVariableCallbackType(UaType):
     def __init__(self):
         return None
+
 
 class UaTwoStateVariableChangeCallback(UaType):
     def __init__(self):
@@ -735,6 +774,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaDataSource"><code class="flex name class">
 <span>class <span class="ident">UaDataSource</span></span>
+<span>(</span><span>read_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_primitve_types.UaBoolean, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], write_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], is_pointer=False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -743,8 +783,24 @@ def user_token_policy(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class UaDataSource(UaType):
-    def __init__(self):
-        return None</code></pre>
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 is_pointer=False):
+        super().__init__(val=ffi.new(&#34;UA_DataSource*&#34;), is_pointer=is_pointer)
+        self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
+        self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
+
+    def __str__(self, n=0):
+        if self._null:
+            return &#34;(UA_DataSource) : NULL\n&#34;
+
+        return (&#34;(UA_DataSource) :\n&#34; +
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -760,14 +816,10 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaNodeTypeLifecycle(UaType):
+<pre><code class="python">class UaNodeTypeLifecycle():
     def __init__(self):
-        return None</code></pre>
+        pass</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>ua_types_parent.UaType</li>
-</ul>
 </dd>
 <dt id="open62541.ua_types.UaTwoStateVariableCallbackType"><code class="flex name class">
 <span>class <span class="ident">UaTwoStateVariableCallbackType</span></span>
@@ -807,6 +859,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaValueBackend"><code class="flex name class">
 <span>class <span class="ident">UaValueBackend</span></span>
+<span>(</span><span>backend_type, backend_external_value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -814,17 +867,15 @@ def user_token_policy(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UaValueBackend(UaType):
-    def __init__(self):
-        return None</code></pre>
+<pre><code class="python">class UaValueBackend:
+    def __init__(self, backend_type, backend_external_value):
+        self.backend_type = backend_type
+        self.backend_external_value = backend_external_value</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>ua_types_parent.UaType</li>
-</ul>
 </dd>
 <dt id="open62541.ua_types.UaValueCallback"><code class="flex name class">
 <span>class <span class="ident">UaValueCallback</span></span>
+<span>(</span><span>read_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], write_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], is_pointer=False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -833,8 +884,24 @@ def user_token_policy(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class UaValueCallback(UaType):
-    def __init__(self):
-        return None</code></pre>
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 is_pointer=False):
+        super().__init__(val=ffi.new(&#34;UA_ValueCallback*&#34;), is_pointer=is_pointer)
+        self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+        self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
+
+    def __str__(self, n=0):
+        if self._null:
+            return &#34;(UA_ValueCallback) : NULL\n&#34;
+
+        return (&#34;(UA_ValueCallback) :\n&#34; +
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

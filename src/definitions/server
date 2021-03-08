@@ -4,12 +4,6 @@
 
 UA_Server * UA_Server_new(void);
 
-
-typedef struct {
-    ...;
-} UA_DataSource;
-
-
 UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
 
 UA_StatusCode UA_Server_run_shutdown(UA_Server *server);
@@ -85,3 +79,14 @@ UA_StatusCode UA_Server_readArrayDimensions(UA_Server *server, const UA_NodeId n
 UA_StatusCode UA_Server_readAccessLevel(UA_Server *server, const UA_NodeId nodeId, UA_Byte *outAccessLevel);
 UA_StatusCode UA_Server_readMinimumSamplingInterval(UA_Server *server, const UA_NodeId nodeId, UA_Double *outMinimumSamplingInterval);
 UA_StatusCode UA_Server_readExecutable(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outExecutable);
+
+UA_StatusCode UA_Server_setVariableNode_dataSource(UA_Server *server, const UA_NodeId nodeId,
+                                     const UA_DataSource dataSource);
+
+UA_StatusCode UA_Server_setVariableNode_valueCallback(UA_Server *server,
+                                        const UA_NodeId nodeId,
+                                        const UA_ValueCallback callback);
+
+UA_StatusCode UA_Server_setVariableNode_valueBackend(UA_Server *server,
+                                       const UA_NodeId nodeId,
+                                       const UA_ValueBackend valueBackend);

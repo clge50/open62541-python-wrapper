@@ -8,6 +8,7 @@ from intermediateApi import ffi, lib
 from ua_primitve_types import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
+
 # -------------------------------------------------------------
 # --------------------------- Enums ---------------------------
 # -------------------------------------------------------------
@@ -192,7 +193,6 @@ class UaDataTypeKind(UaType):
         return f"(UaDataTypeKind): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
-
 # -------------------------------------------------------------
 # -------------------------- Structs --------------------------
 # -------------------------------------------------------------
@@ -202,8 +202,10 @@ class UaString(UaType):
     def __init__(self, val: Union[str, Void] = None, is_pointer=False):
         if type(val) is Void:
             val = ffi.cast("UA_String*", val._ptr)
-        elif type(val) is str:
+        elif type(val) is str or type(val) is bytes:
             val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
+        elif type(val) is not None:
+            val = ffi.new("UA_String*", val)
         else:
             val = ffi.new("UA_String*")
 
@@ -611,7 +613,9 @@ class UaNodeId(UaType):
                  ns_index: Union[int, UaUInt16] = None,
                  ident: Union[int, UaUInt32, str, bytearray, UaString, UaGuid, UaByteString] = None,
                  is_pointer=False,
-                 val: Void = ffi.new("UA_NodeId*")):
+                 val: Void = None):
+        if val is None:
+            val = ffi.new("UA_NodeId*")
         if type(val) is Void:
             val = ffi.cast("UA_NodeId*", val._ptr)
         elif ns_index is not None and ident is not None:
@@ -1504,65 +1508,65 @@ class UaDataValue(UaType):
         else:
             return self._has_server_picoseconds
 
-    # @variant.setter
-    # def variant(self, val):
-    #     self._variant = val
-    #     self._value.value = val._val
-    #
-    # @source_timestamp.setter
-    # def source_timestamp(self, val):
-    #     self._source_timestamp = val
-    #     self._value.sourceTimestamp = val._val
-    #
-    # @server_timestamp.setter
-    # def server_timestamp(self, val):
-    #     self._server_timestamp = val
-    #     self._value.serverTimestamp = val._val
-    #
-    # @source_picoseconds.setter
-    # def source_picoseconds(self, val):
-    #     self._source_picoseconds = val
-    #     self._value.sourcePicoseconds = val._val
-    #
-    # @server_picoseconds.setter
-    # def server_picoseconds(self, val):
-    #     self._server_picoseconds = val
-    #     self._value.serverPicoseconds = val._val
-    #
-    # @status.setter
-    # def status(self, val):
-    #     self._status = val
-    #     self._value.status = val._val
-    #
-    # @has_variant.setter
-    # def has_variant(self, val):
-    #     self._has_variant = val
-    #     self._value.hasValue = val._val
-    #
-    # @has_status.setter
-    # def has_status(self, val):
-    #     self._has_status = val
-    #     self._value.hasStatus = val._val
-    #
-    # @has_source_timestamp.setter
-    # def has_source_timestamp(self, val):
-    #     self._has_source_timestamp = val
-    #     self._value.hasSourceTimestamp = val._val
-    #
-    # @has_server_timestamp.setter
-    # def has_server_timestamp(self, val):
-    #     self._has_server_timestamp = val
-    #     self._value.hasServerTimestamp = val._val
-    #
-    # @has_source_picoseconds.setter
-    # def has_source_picoseconds(self, val):
-    #     self._has_source_picoseconds = val
-    #     self._value.hasSourcePicoseconds = val._val
-    #
-    # @has_server_picoseconds.setter
-    # def has_server_picoseconds(self, val):
-    #     self._has_server_picoseconds = val
-    #     self._value.hasServerPicoseconds = val._val
+    @variant.setter
+    def variant(self, val):
+        self._variant = val
+        self._value.value = val._val
+
+    @source_timestamp.setter
+    def source_timestamp(self, val):
+        self._source_timestamp = val
+        self._value.sourceTimestamp = val._val
+
+    @server_timestamp.setter
+    def server_timestamp(self, val):
+        self._server_timestamp = val
+        self._value.serverTimestamp = val._val
+
+    @source_picoseconds.setter
+    def source_picoseconds(self, val):
+        self._source_picoseconds = val
+        self._value.sourcePicoseconds = val._val
+
+    @server_picoseconds.setter
+    def server_picoseconds(self, val):
+        self._server_picoseconds = val
+        self._value.serverPicoseconds = val._val
+
+    @status.setter
+    def status(self, val):
+        self._status = val
+        self._value.status = val._val
+
+    @has_variant.setter
+    def has_variant(self, val):
+        self._has_variant = val
+        self._value.hasValue = val._val
+
+    @has_status.setter
+    def has_status(self, val):
+        self._has_status = val
+        self._value.hasStatus = val._val
+
+    @has_source_timestamp.setter
+    def has_source_timestamp(self, val):
+        self._has_source_timestamp = val
+        self._value.hasSourceTimestamp = val._val
+
+    @has_server_timestamp.setter
+    def has_server_timestamp(self, val):
+        self._has_server_timestamp = val
+        self._value.hasServerTimestamp = val._val
+
+    @has_source_picoseconds.setter
+    def has_source_picoseconds(self, val):
+        self._has_source_picoseconds = val
+        self._value.hasSourcePicoseconds = val._val
+
+    @has_server_picoseconds.setter
+    def has_server_picoseconds(self, val):
+        self._has_server_picoseconds = val
+        self._value.hasServerPicoseconds = val._val
 
     def __str__(self, n=0):
         if self._null:
@@ -2208,7 +2212,7 @@ class UaDataType(UaType):
     def new_instance(self):
         return lib.UA_new(self._ptr)
 
-    #TODO: handling difficult, cast to something?
+    # TODO: handling difficult, cast to something?
     def new_array(self, size: SizeT):
         return Void(val=lib.UA_Array_new(size._val, self._ptr))
 
@@ -2294,4 +2298,3 @@ class Randomize:
     @staticmethod
     def ua_random_seed(seed: int):
         lib.UA_random_seed(ffi.cast("UA_UInt64*", seed))
-

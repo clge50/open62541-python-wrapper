@@ -6,6 +6,7 @@
 from intermediateApi import ffi, lib
 from ua_types_logger import *
 from ua_types_parent import _ptr, _val, _is_null
+from typing import Callable
 
 
 # +++++++++++++++++++ UaClientConfig +++++++++++++++++++++++
@@ -233,27 +234,65 @@ class UaClientConfig(UaType):
                 "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1))
 
 
-#++++++++++++++++++++ protos +++++++++++++++++++++++
+# ++++++++++++++++++++ protos +++++++++++++++++++++++
 
 class UaValueCallback(UaType):
-    def __init__(self):
-        return None
+    def __init__(self, read_callback: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 is_pointer=False):
+        super().__init__(val=ffi.new("UA_ValueCallback*"), is_pointer=is_pointer)
+        self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+        self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
-class UaValueBackend(UaType):
-    def __init__(self):
-        return None
+    def __str__(self, n=0):
+        if self._null:
+            return "(UA_ValueCallback) : NULL\n"
+
+        return ("(UA_ValueCallback) :\n" +
+                "\t" * (n + 1) + "read_callback" + str(self.read_callback) +
+                "\t" * (n + 1) + "write_callback" + str(self.write_callback) + "\n")
+
+
+class UaValueBackend:
+    def __init__(self, backend_type, backend_external_value):
+        self.backend_type = backend_type
+        self.backend_external_value = backend_external_value
+
 
 class UaDataSource(UaType):
-    def __init__(self):
-        return None
+    def __init__(self, read_callback: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 is_pointer=False):
+        super().__init__(val=ffi.new("UA_DataSource*"), is_pointer=is_pointer)
+        self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
+        self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
-class UaNodeTypeLifecycle(UaType):
+    def __str__(self, n=0):
+        if self._null:
+            return "(UA_DataSource) : NULL\n"
+
+        return ("(UA_DataSource) :\n" +
+                "\t" * (n + 1) + "read_callback" + str(self.read_callback) +
+                "\t" * (n + 1) + "write_callback" + str(self.write_callback) + "\n")
+
+
+class UaNodeTypeLifecycle():
     def __init__(self):
-        return None
+        pass
+
 
 class UaTwoStateVariableCallbackType(UaType):
     def __init__(self):
         return None
+
 
 class UaTwoStateVariableChangeCallback(UaType):
     def __init__(self):

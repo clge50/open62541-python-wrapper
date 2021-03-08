@@ -21,7 +21,7 @@ class DefaultAttributes:
     VIEW_ATTRIBUTES_DEFAULT = ua_types.UaViewAttributes(val=lib.UA_ViewAttributes_default)
 
 
-class _UaCallback:
+class _ClientCallback:
     """These static c type callback implementations are used to call the actual callback functions which have been
     submitted by the open62541 user """
 
@@ -213,8 +213,6 @@ class _UaCallback:
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
-        ua_client = UaClient()
-        ua_client.ua_client = client
         ua_client = UaClient()
         ua_client.ua_client = client
         ffi.from_handle(fun)(client, ua_types.UaUInt32(request_id), ua_types.UaAddNodesResponse(ar))
