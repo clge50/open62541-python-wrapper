@@ -265,26 +265,24 @@ class UaClientConfig(UaType):
 # ++++++++++++++++++++ protos +++++++++++++++++++++++
 
 class UaValueCallback(UaType):
-    def __init__(self, on_read: Callable[
-        # todo: type of first arg should be UaServer, not Any
-        [Any, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
-                 on_write: Callable[
-                     # todo: type of first arg should be UaServer, not Any
-                     [Any, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
                  is_pointer=False):
         super().__init__(val=ffi.new(&#34;UA_ValueCallback*&#34;), is_pointer=is_pointer)
-        self._value.onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
-        self._value.onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
-        self.on_read = on_read
-        self.on_write = on_write
+        self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+        self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
     def __str__(self, n=0):
         if self._null:
             return &#34;(UA_ValueCallback) : NULL\n&#34;
 
         return (&#34;(UA_ValueCallback) :\n&#34; +
-                &#34;\t&#34; * (n + 1) + &#34;on_read&#34; + str(self.on_read) +
-                &#34;\t&#34; * (n + 1) + &#34;on_write&#34; + str(self.on_write) + &#34;\n&#34;)
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)
 
 
 class UaValueBackend:
@@ -294,26 +292,24 @@ class UaValueBackend:
 
 
 class UaDataSource(UaType):
-    def __init__(self, read: Callable[
-        # todo: type of first arg should be UaServer, not Any
-        [Any, UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
-                 write: Callable[
-                     # todo: type of first arg should be UaServer, not Any
-                     [Any, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
                  is_pointer=False):
         super().__init__(val=ffi.new(&#34;UA_DataSource*&#34;), is_pointer=is_pointer)
-        self._value.onRead = lib.python_wrapper_UA_DataSourceReadCallback
-        self._value.onWrite = lib._Callback.python_wrapper_UA_DataSourceWriteCallback
-        self.read = read
-        self.write = write
+        self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
+        self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
     def __str__(self, n=0):
         if self._null:
             return &#34;(UA_DataSource) : NULL\n&#34;
 
         return (&#34;(UA_DataSource) :\n&#34; +
-                &#34;\t&#34; * (n + 1) + &#34;read&#34; + str(self.read) +
-                &#34;\t&#34; * (n + 1) + &#34;write&#34; + str(self.write) + &#34;\n&#34;)
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)
 
 
 class UaNodeTypeLifecycle():
@@ -778,7 +774,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaDataSource"><code class="flex name class">
 <span>class <span class="ident">UaDataSource</span></span>
-<span>(</span><span>read: Callable[[Any, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_primitve_types.UaBoolean, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], write: Callable[[Any, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], is_pointer=False)</span>
+<span>(</span><span>read_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_primitve_types.UaBoolean, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], write_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], is_pointer=False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -787,26 +783,24 @@ def user_token_policy(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class UaDataSource(UaType):
-    def __init__(self, read: Callable[
-        # todo: type of first arg should be UaServer, not Any
-        [Any, UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
-                 write: Callable[
-                     # todo: type of first arg should be UaServer, not Any
-                     [Any, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
                  is_pointer=False):
         super().__init__(val=ffi.new(&#34;UA_DataSource*&#34;), is_pointer=is_pointer)
-        self._value.onRead = lib.python_wrapper_UA_DataSourceReadCallback
-        self._value.onWrite = lib._Callback.python_wrapper_UA_DataSourceWriteCallback
-        self.read = read
-        self.write = write
+        self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
+        self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
     def __str__(self, n=0):
         if self._null:
             return &#34;(UA_DataSource) : NULL\n&#34;
 
         return (&#34;(UA_DataSource) :\n&#34; +
-                &#34;\t&#34; * (n + 1) + &#34;read&#34; + str(self.read) +
-                &#34;\t&#34; * (n + 1) + &#34;write&#34; + str(self.write) + &#34;\n&#34;)</code></pre>
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -881,7 +875,7 @@ def user_token_policy(self):
 </dd>
 <dt id="open62541.ua_types.UaValueCallback"><code class="flex name class">
 <span>class <span class="ident">UaValueCallback</span></span>
-<span>(</span><span>on_read: Callable[[Any, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], on_write: Callable[[Any, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], is_pointer=False)</span>
+<span>(</span><span>read_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], write_callback: Callable[[ForwardRef('UaServer'), ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNodeId, c_types.Void, ua_base_types.UaNumericRange, ua_base_types.UaDataValue], NoneType], is_pointer=False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -890,26 +884,24 @@ def user_token_policy(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class UaValueCallback(UaType):
-    def __init__(self, on_read: Callable[
-        # todo: type of first arg should be UaServer, not Any
-        [Any, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
-                 on_write: Callable[
-                     # todo: type of first arg should be UaServer, not Any
-                     [Any, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+    def __init__(self, read_callback: Callable[
+        [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
+                 write_callback: Callable[
+                     [&#39;UaServer&#39;, UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
                  is_pointer=False):
         super().__init__(val=ffi.new(&#34;UA_ValueCallback*&#34;), is_pointer=is_pointer)
-        self._value.onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
-        self._value.onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
-        self.on_read = on_read
-        self.on_write = on_write
+        self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+        self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+        self.read_callback = read_callback
+        self.write_callback = write_callback
 
     def __str__(self, n=0):
         if self._null:
             return &#34;(UA_ValueCallback) : NULL\n&#34;
 
         return (&#34;(UA_ValueCallback) :\n&#34; +
-                &#34;\t&#34; * (n + 1) + &#34;on_read&#34; + str(self.on_read) +
-                &#34;\t&#34; * (n + 1) + &#34;on_write&#34; + str(self.on_write) + &#34;\n&#34;)</code></pre>
+                &#34;\t&#34; * (n + 1) + &#34;read_callback&#34; + str(self.read_callback) +
+                &#34;\t&#34; * (n + 1) + &#34;write_callback&#34; + str(self.write_callback) + &#34;\n&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

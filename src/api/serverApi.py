@@ -330,17 +330,15 @@ class UaServer:
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
 
-        c_data_source = ffi.new("UA_DataSource*")
-        c_data_source.read = lib.python_wrapper_UA_DataSourceReadCallback
-        c_data_source.write = lib.python_wrapper_UA_DataSourceWriteCallback
-
         _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
 
         status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val,
                                                               parent_node_id._val, reference_type_id._val,
                                                               browse_name._val, type_definition._val, attr._val,
-                                                              c_data_source[0], node_context, out_node_id._ptr)
+                                                              data_source._val, node_context, out_node_id._ptr)
         out_node_id._update()
+
+        # todo: update dict entry with out node id
 
         return ServerServiceResults.NodeIdResult(ua_types.UaStatusCode(status_code),
                                                  out_node_id)  # TODO: out_node not None?
@@ -482,14 +480,16 @@ class UaServer:
     def set_variable_node_value_callback(self, node_id: ua_types.UaNodeId,
                                          callback: ua_types.UaValueCallback):  # TODO: UA_ValueCallback IMPLEMENT AS UaType
         _ServerCallback.callbacks_dict[str(node_id)] = callback
-
         raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
         return ua_types.UaStatusCode(val=raw_result)
 
     def set_variable_node_value_backend(self, node_id: ua_types.UaNodeId,
                                         callback: ua_types.UaValueBackend):  # TODO: UA_ValueBackend IMPLEMENT AS UaType
-        raw_result = lib.UA_Server_setVariableNode_valuebackend(self.ua_server, node_id._val, callback._val)
+        value_backend = ffi.new("UA_ValueBackend*")
+        value_backend.backendType = callback.backend_type
+        value_backend.backend.external.value = ffi.new("UA_DataValue**", callback.backend_external_value._ptr)
+        raw_result = lib.UA_Server_setVariableNode_valueBackend(self.ua_server, node_id._val, value_backend[0])
         return ua_types.UaStatusCode(val=raw_result)
 
     def create_condition(self,
