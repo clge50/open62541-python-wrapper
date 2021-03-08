@@ -35,7 +35,7 @@ class UaClientConfig(UaType):
             self._custom_data_types = UaDataTypeArray(val=val.customDataTypes, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
 
     def _set_value(self, val):
         if self._is_pointer:

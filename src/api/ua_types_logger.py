@@ -7,6 +7,7 @@ from intermediateApi import ffi, lib
 from ua_types_generated_structs import *
 from ua_types_parent import _ptr, _val
 
+
 # +++++++++++++++++++ UaLogCategory +++++++++++++++++++++++
 class UaLogCategory(UaType):
     UA_LOGCATEGORY_NETWORK = 0
@@ -35,7 +36,7 @@ class UaLogCategory(UaType):
             super().__init__(ffi.cast("UA_LogCategory", _val(val)), is_pointer)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
 
     def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
@@ -98,7 +99,7 @@ class UaLogger(UaType):
         super().__init__(val=val, is_pointer=is_pointer)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -107,7 +108,7 @@ class UaLogger(UaType):
             self._value[0] = _val(val)
 
     def __str__(self, n=0):
-        return "\t"*n + str(self._val)
+        return "\t" * n + str(self._val)
 
     def trace(self, category: UaLogCategory, msg: str):
         lib.UA_LOG_TRACE(self._ptr, category._val, CString(msg)._ptr)
