@@ -18,10 +18,6 @@ def _is_null(val):
     return "NULL" in re.sub(r"'.*?'", "", str(val))
 
 
-def _get_c_type(val):
-    c_type = str(val).split("'")[1]
-    return re.sub(r"[^A-Za-z1-9_ ]", "", c_type, re.ASCII).strip()
-
 # if val is a primitive type, then _ptr returns a pointer to a COPY of the value!!!
 def _ptr(val, c_type=""):
     if c_type == "":
@@ -70,13 +66,3 @@ class UaType:
 
     def __str__(self, n=0):
         return str(self._val)
-
-
-# class UaList(list, UaType):
-#     def __init__(self, val, size):
-#         UaType.__init__(self, val, True)
-#         list.__init__(self, )
-#
-#     def of(lst: list):
-
-

@@ -185,10 +185,16 @@ class {to_python_class_name(enum_name)}(UaType):
 """
     return class_str
 
+
+def strip_enum_ident(attr: str):
+    "_".join(attr.split("_")[1:])
+
+
 def to_python_ident(attr: str):
     if attr == "value":
         return "data_value"
     return inflection.underscore(attr)
+
 
 def to_python_class_name(open62541_name: str):
     if open62541_name[0:3] == "UA_":

@@ -213,9 +213,6 @@ class UaString(UaType):
             self._length = SizeT(val=val.length, is_pointer=False)
             self._data = UaByte(val=val.data, is_pointer=True)
 
-    def _update(self):
-        self.__init__(self._ptr)
-
     # TODO: Rather make new UaString?
     #   -> not sure where the pointer is directed and if there is enough memory for evtually more bytes than befor
     #   -> memory management for alloced memory from UA_String_fromChars
