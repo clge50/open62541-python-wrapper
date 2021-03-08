@@ -147,6 +147,15 @@ class UaByte(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __or__(self, other):
+        return UaByte(self._val | other._val)
+
+    def __and__(self, other):
+        return UaByte(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaByte(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
@@ -346,6 +355,15 @@ class UaUInt32(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __or__(self, other):
+        return UaUInt32(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt32(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt32(self._val ^ other._val)
 
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++

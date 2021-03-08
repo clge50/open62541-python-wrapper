@@ -1,0 +1,8 @@
+class UaValueRanks:
+    SCALAR_OR_ONE_DIMENSION = -3
+    ANY = -2
+    SCALAR = -1
+    ONE_OR_MORE_DIMENSIONS = 0
+    ONE_DIMENSION = 1
+    TWO_DIMENSIONS = 2
+    THREE_DIMENSIONS = 3
