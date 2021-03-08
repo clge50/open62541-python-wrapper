@@ -11,7 +11,7 @@ import typing
 VARIABLE_ATTRIBUTES_DEFAULT = ua_types.UaVariableAttributes(val=lib.UA_VariableAttributes_default)
 
 
-class _Callback:
+class _ServerCallback:
     """These static c type callback implementations are used to call the actual callback functions which have been
     submitted by the open62541 user """
 
@@ -22,14 +22,14 @@ class _Callback:
     def python_wrapper_UA_DataSourceReadCallback(server, session_id, session_context, node_id, node_context,
                                                  include_source_time_stamp, numeric_range, value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
-        return _Callback.callbacks_dict[callbacks_dict_key].read_callback(server, session_id,
-                                                                          # todo: wrap params
-                                                                          session_context,
-                                                                          node_id,
-                                                                          node_context,
-                                                                          include_source_time_stamp,
-                                                                          numeric_range,
-                                                                          ua_types.UaDataValue(value))
+        return _ServerCallback.callbacks_dict[callbacks_dict_key].read_callback(server, session_id,
+                                                                                # todo: wrap params
+                                                                                session_context,
+                                                                                node_id,
+                                                                                node_context,
+                                                                                include_source_time_stamp,
+                                                                                numeric_range,
+                                                                                ua_types.UaDataValue(value))
 
     @staticmethod
     @ffi.def_extern()
@@ -38,11 +38,11 @@ class _Callback:
                                                   node_context, numeric_range,
                                                   value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
-        return _Callback.callbacks_dict[callbacks_dict_key].write_callback(server, session_id,
-                                                                           # todo: wrap params
-                                                                           session_context, node_id,
-                                                                           node_context, numeric_range,
-                                                                           value)
+        return _ServerCallback.callbacks_dict[callbacks_dict_key].write_callback(server, session_id,
+                                                                                 # todo: wrap params
+                                                                                 session_context, node_id,
+                                                                                 node_context, numeric_range,
+                                                                                 value)
 
     @staticmethod
     @ffi.def_extern()
@@ -51,11 +51,11 @@ class _Callback:
                                                       node_context, numeric_range,
                                                       value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
-        _Callback.callbacks_dict[callbacks_dict_key].read_callback(server, session_id,
-                                                                   # todo: wrap params
-                                                                   session_context, node_id,
-                                                                   node_context, numeric_range,
-                                                                   value)
+        _ServerCallback.callbacks_dict[callbacks_dict_key].read_callback(server, session_id,
+                                                                         # todo: wrap params
+                                                                         session_context, node_id,
+                                                                         node_context, numeric_range,
+                                                                         value)
 
     @staticmethod
     @ffi.def_extern()
@@ -64,11 +64,11 @@ class _Callback:
                                                        node_context, numeric_range,
                                                        value):
         callbacks_dict_key = str(ua_types.UaNodeId(val=node_id))
-        _Callback.callbacks_dict[callbacks_dict_key].write_callback(server, session_id,
-                                                                    # todo: wrap params
-                                                                    session_context, node_id,
-                                                                    node_context, numeric_range,
-                                                                    value)
+        _ServerCallback.callbacks_dict[callbacks_dict_key].write_callback(server, session_id,
+                                                                          # todo: wrap params
+                                                                          session_context, node_id,
+                                                                          node_context, numeric_range,
+                                                                          value)
 
 
 class UaServer:
@@ -334,7 +334,7 @@ class UaServer:
         c_data_source.read = lib.python_wrapper_UA_DataSourceReadCallback
         c_data_source.write = lib.python_wrapper_UA_DataSourceWriteCallback
 
-        _Callback.callbacks_dict[str(requested_new_node_id)] = data_source
+        _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
 
         status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val,
                                                               parent_node_id._val, reference_type_id._val,
@@ -481,8 +481,7 @@ class UaServer:
 
     def set_variable_node_value_callback(self, node_id: ua_types.UaNodeId,
                                          callback: ua_types.UaValueCallback):  # TODO: UA_ValueCallback IMPLEMENT AS UaType
-
-        _Callback.callbacks_dict[str(node_id)] = callback
+        _ServerCallback.callbacks_dict[str(node_id)] = callback
 
         raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
