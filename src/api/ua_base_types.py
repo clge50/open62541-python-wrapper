@@ -613,7 +613,9 @@ class UaNodeId(UaType):
                  ns_index: Union[int, UaUInt16] = None,
                  ident: Union[int, UaUInt32, str, bytearray, UaString, UaGuid, UaByteString] = None,
                  is_pointer=False,
-                 val: Void = ffi.new("UA_NodeId*")):
+                 val: Void = None):
+        if val is None:
+            val = ffi.new("UA_NodeId*")
         if type(val) is Void:
             val = ffi.cast("UA_NodeId*", val._ptr)
         elif ns_index is not None and ident is not None:

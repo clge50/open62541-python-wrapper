@@ -349,15 +349,21 @@ class UaServer:
                                       reference_type_id: ua_types.UaNodeId,
                                       browse_name: ua_types.UaQualifiedName,
                                       type_definition: ua_types.UaNodeId,
-                                      data_source: ua_types.UaDataSource,  # todo: create proper UaDataSource UaType
-                                      attr: ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                                      node_context=ffi.NULL):
+                                      data_source: ua_types.UaDataSource,
+                                      attr: ua_types.UaVariableAttributes = None,
+                                      node_context=None):
 
         out_node_id = ua_types.UaNodeId()
 
-        if node_context is not ffi.NULL:
-            node_context = ffi.new_handle(node_context)
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
+        if node_context is not None:
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        # todo: requested_new_node_id currently mustn&#39;t be NULL or this doesn&#39;t work
         _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
 
         status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val,
@@ -402,14 +408,19 @@ class UaServer:
                           reference_type_id: ua_types.UaNodeId,
                           browse_name: ua_types.UaQualifiedName,
                           type_definition: ua_types.UaNodeId,
-                          attr=VARIABLE_ATTRIBUTES_DEFAULT,
-                          node_context=ffi.NULL):
+                          attr=None,
+                          node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, type_definition._val,
@@ -423,14 +434,19 @@ class UaServer:
                                reference_type_id: ua_types.UaNodeId,
                                browse_name: ua_types.UaQualifiedName,
                                type_definition: ua_types.UaNodeId,
-                               attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                               node_context=ffi.NULL):
+                               attr: ua_types.UaNodeAttributes = None,
+                               node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                         reference_type_id._val, browse_name._val, type_definition._val,
@@ -444,14 +460,19 @@ class UaServer:
                         reference_type_id: ua_types.UaNodeId,
                         browse_name: ua_types.UaQualifiedName,
                         type_definition: ua_types.UaNodeId,
-                        attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                        node_context=ffi.NULL):
+                        attr: ua_types.UaNodeAttributes = None,
+                        node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
@@ -465,14 +486,19 @@ class UaServer:
                              reference_type_id: ua_types.UaNodeId,
                              browse_name: ua_types.UaQualifiedName,
                              type_definition: ua_types.UaNodeId,
-                             attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                             node_context=ffi.NULL):
+                             attr: ua_types.UaNodeAttributes = None,
+                             node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, type_definition._val,
@@ -840,15 +866,21 @@ class UaServer:
                                       reference_type_id: ua_types.UaNodeId,
                                       browse_name: ua_types.UaQualifiedName,
                                       type_definition: ua_types.UaNodeId,
-                                      data_source: ua_types.UaDataSource,  # todo: create proper UaDataSource UaType
-                                      attr: ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                                      node_context=ffi.NULL):
+                                      data_source: ua_types.UaDataSource,
+                                      attr: ua_types.UaVariableAttributes = None,
+                                      node_context=None):
 
         out_node_id = ua_types.UaNodeId()
 
-        if node_context is not ffi.NULL:
-            node_context = ffi.new_handle(node_context)
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
+        if node_context is not None:
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        # todo: requested_new_node_id currently mustn&#39;t be NULL or this doesn&#39;t work
         _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
 
         status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val,
@@ -893,14 +925,19 @@ class UaServer:
                           reference_type_id: ua_types.UaNodeId,
                           browse_name: ua_types.UaQualifiedName,
                           type_definition: ua_types.UaNodeId,
-                          attr=VARIABLE_ATTRIBUTES_DEFAULT,
-                          node_context=ffi.NULL):
+                          attr=None,
+                          node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, type_definition._val,
@@ -914,14 +951,19 @@ class UaServer:
                                reference_type_id: ua_types.UaNodeId,
                                browse_name: ua_types.UaQualifiedName,
                                type_definition: ua_types.UaNodeId,
-                               attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                               node_context=ffi.NULL):
+                               attr: ua_types.UaNodeAttributes = None,
+                               node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                         reference_type_id._val, browse_name._val, type_definition._val,
@@ -935,14 +977,19 @@ class UaServer:
                         reference_type_id: ua_types.UaNodeId,
                         browse_name: ua_types.UaQualifiedName,
                         type_definition: ua_types.UaNodeId,
-                        attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                        node_context=ffi.NULL):
+                        attr: ua_types.UaNodeAttributes = None,
+                        node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
@@ -956,14 +1003,19 @@ class UaServer:
                              reference_type_id: ua_types.UaNodeId,
                              browse_name: ua_types.UaQualifiedName,
                              type_definition: ua_types.UaNodeId,
-                             attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                             node_context=ffi.NULL):
+                             attr: ua_types.UaNodeAttributes = None,
+                             node_context=None):
+
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_node_id = ua_types.UaNodeId()
 
         # TODO: test
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
 
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, type_definition._val,
@@ -1064,7 +1116,7 @@ class UaServer:
 <h3>Methods</h3>
 <dl>
 <dt id="open62541.serverApi.UaServer.add_data_source_variable_node"><code class="name flex">
-<span>def <span class="ident">add_data_source_variable_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, data_source: ua_types.UaDataSource, attr: ua_types_generated_structs.UaVariableAttributes = &lt;ua_types_generated_structs.UaVariableAttributes object&gt;, node_context=&lt;cdata &#x27;void *&#x27; NULL&gt;)</span>
+<span>def <span class="ident">add_data_source_variable_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, data_source: ua_types.UaDataSource, attr: ua_types_generated_structs.UaVariableAttributes = None, node_context=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1078,15 +1130,21 @@ class UaServer:
                                   reference_type_id: ua_types.UaNodeId,
                                   browse_name: ua_types.UaQualifiedName,
                                   type_definition: ua_types.UaNodeId,
-                                  data_source: ua_types.UaDataSource,  # todo: create proper UaDataSource UaType
-                                  attr: ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                                  node_context=ffi.NULL):
+                                  data_source: ua_types.UaDataSource,
+                                  attr: ua_types.UaVariableAttributes = None,
+                                  node_context=None):
 
     out_node_id = ua_types.UaNodeId()
 
-    if node_context is not ffi.NULL:
-        node_context = ffi.new_handle(node_context)
+    if attr is None:
+        attr = VARIABLE_ATTRIBUTES_DEFAULT
 
+    if node_context is not None:
+        node_context = ffi.new_handle(node_context)
+    else:
+        node_context = ffi.NULL
+
+    # todo: requested_new_node_id currently mustn&#39;t be NULL or this doesn&#39;t work
     _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
 
     status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val,
@@ -1102,7 +1160,7 @@ class UaServer:
 </details>
 </dd>
 <dt id="open62541.serverApi.UaServer.add_object_node"><code class="name flex">
-<span>def <span class="ident">add_object_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaNodeAttributes = &lt;ua_types_generated_structs.UaVariableAttributes object&gt;, node_context=&lt;cdata &#x27;void *&#x27; NULL&gt;)</span>
+<span>def <span class="ident">add_object_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaNodeAttributes = None, node_context=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1116,14 +1174,19 @@ class UaServer:
                     reference_type_id: ua_types.UaNodeId,
                     browse_name: ua_types.UaQualifiedName,
                     type_definition: ua_types.UaNodeId,
-                    attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                    node_context=ffi.NULL):
+                    attr: ua_types.UaNodeAttributes = None,
+                    node_context=None):
+
+    if attr is None:
+        attr = VARIABLE_ATTRIBUTES_DEFAULT
 
     out_node_id = ua_types.UaNodeId()
 
     # TODO: test
     if node_context is not None:
         node_context = ffi.new_handle(node_context)
+    else:
+        node_context = ffi.NULL
 
     status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                               reference_type_id._val, browse_name._val, type_definition._val,
@@ -1133,7 +1196,7 @@ class UaServer:
 </details>
 </dd>
 <dt id="open62541.serverApi.UaServer.add_object_type_node"><code class="name flex">
-<span>def <span class="ident">add_object_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaNodeAttributes = &lt;ua_types_generated_structs.UaVariableAttributes object&gt;, node_context=&lt;cdata &#x27;void *&#x27; NULL&gt;)</span>
+<span>def <span class="ident">add_object_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaNodeAttributes = None, node_context=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1147,14 +1210,19 @@ class UaServer:
                          reference_type_id: ua_types.UaNodeId,
                          browse_name: ua_types.UaQualifiedName,
                          type_definition: ua_types.UaNodeId,
-                         attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                         node_context=ffi.NULL):
+                         attr: ua_types.UaNodeAttributes = None,
+                         node_context=None):
+
+    if attr is None:
+        attr = VARIABLE_ATTRIBUTES_DEFAULT
 
     out_node_id = ua_types.UaNodeId()
 
     # TODO: test
     if node_context is not None:
         node_context = ffi.new_handle(node_context)
+    else:
+        node_context = ffi.NULL
 
     status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
@@ -1185,7 +1253,7 @@ class UaServer:
 </details>
 </dd>
 <dt id="open62541.serverApi.UaServer.add_variable_node"><code class="name flex">
-<span>def <span class="ident">add_variable_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr=&lt;ua_types_generated_structs.UaVariableAttributes object&gt;, node_context=&lt;cdata &#x27;void *&#x27; NULL&gt;)</span>
+<span>def <span class="ident">add_variable_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr=None, node_context=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1199,14 +1267,19 @@ class UaServer:
                       reference_type_id: ua_types.UaNodeId,
                       browse_name: ua_types.UaQualifiedName,
                       type_definition: ua_types.UaNodeId,
-                      attr=VARIABLE_ATTRIBUTES_DEFAULT,
-                      node_context=ffi.NULL):
+                      attr=None,
+                      node_context=None):
+
+    if attr is None:
+        attr = VARIABLE_ATTRIBUTES_DEFAULT
 
     out_node_id = ua_types.UaNodeId()
 
     # TODO: test
     if node_context is not ffi.NULL:
         node_context = ffi.new_handle(node_context)
+    else:
+        node_context = ffi.NULL
 
     status_code = lib.UA_Server_addVariableNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                 reference_type_id._val, browse_name._val, type_definition._val,
@@ -1216,7 +1289,7 @@ class UaServer:
 </details>
 </dd>
 <dt id="open62541.serverApi.UaServer.add_variable_type_node"><code class="name flex">
-<span>def <span class="ident">add_variable_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaNodeAttributes = &lt;ua_types_generated_structs.UaVariableAttributes object&gt;, node_context=&lt;cdata &#x27;void *&#x27; NULL&gt;)</span>
+<span>def <span class="ident">add_variable_type_node</span></span>(<span>self, requested_new_node_id: ua_base_types.UaNodeId, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, attr: ua_types_generated_structs.UaNodeAttributes = None, node_context=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1230,14 +1303,19 @@ class UaServer:
                            reference_type_id: ua_types.UaNodeId,
                            browse_name: ua_types.UaQualifiedName,
                            type_definition: ua_types.UaNodeId,
-                           attr: ua_types.UaNodeAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
-                           node_context=ffi.NULL):
+                           attr: ua_types.UaNodeAttributes = None,
+                           node_context=None):
+
+    if attr is None:
+        attr = VARIABLE_ATTRIBUTES_DEFAULT
 
     out_node_id = ua_types.UaNodeId()
 
     # TODO: test
     if node_context is not ffi.NULL:
         node_context = ffi.new_handle(node_context)
+    else:
+        node_context = ffi.NULL
 
     status_code = lib.UA_Server_addVariableTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, type_definition._val,
