@@ -1594,7 +1594,8 @@ class UaExtensionObject(UaType):
             else:
                 raise ValueError(f"Encoding does not exist.")
 
-    # TODO: might cause trouble since at _value[0] might not be enough memory for an other encoding type
+        # TODO: might cause trouble since at _value[0] might not be enough memory for an other encoding type
+
     def _update(self):
         self.__init__(val=self._ptr)
 
