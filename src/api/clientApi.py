@@ -325,33 +325,39 @@ class UaClient:
         out_data_type = ua_types.UaDataType
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id._ptr, attribute_id._val, out._ptr,
                                                     out_data_type._ptr)
+        out_data_type._update()
         return ClientServiceResult.ReadAttributeResult(ua_types.UaStatusCode(val=status_code), out, out_data_type)
 
     def read_node_id_attribute(self, node_id: ua_types.UaNodeId):
         out_node_id = ua_types.UaNodeId()
         status_code = lib.UA_Client_readNodeIdAttribute(self.ua_client, node_id._val, out_node_id._ptr)
+        out_node_id._update()
         return ClientServiceResult.ReadNodeIdAttributeResult(ua_types.UaStatusCode(val=status_code), out_node_id)
 
     def read_node_class_attribute(self, node_id: ua_types.UaNodeId):
         out_node_class = ua_types.UaNodeClass()
         status_code = lib.UA_Client_readNodeClassAttribute(self.ua_client, node_id._val, out_node_class._ptr)
+        out_node_class._update()
         return ClientServiceResult.ReadNodeClassAttributeResult(ua_types.UaStatusCode(val=status_code), out_node_class)
 
     def read_browse_name_attribute(self, node_id: ua_types.UaNodeId):
         out_browse_name = ua_types.UaQualifiedName()
         status_code = lib.UA_Client_readBrowseNameAttribute(self.ua_client, node_id._val, out_browse_name._ptr)
+        out_browse_name._update()
         return ClientServiceResult.ReadBrowseNameAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                  out_browse_name)
 
     def read_display_name_attribute(self, node_id: ua_types.UaNodeId):
         out_display_name = ua_types.UaLocalizedText()
         status_code = lib.UA_Client_readDisplayNameAttribute(self.ua_client, node_id._val, out_display_name._ptr)
+        out_display_name._update()
         return ClientServiceResult.ReadDisplayNameAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                   out_display_name)
 
     def read_description_attribute(self, node_id: ua_types.UaNodeId):
         out_description = ua_types.UaLocalizedText()
         status_code = lib.UA_Client_readDescriptionAttribute(self.ua_client, node_id._val, out_description._ptr)
+        out_description._update()
         return ClientServiceResult.ReadDescriptionAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                   out_description)
 
@@ -380,6 +386,7 @@ class UaClient:
     def read_inverse_name_attribute(self, node_id: ua_types.UaNodeId):
         out_inverse_name = ua_types.UaLocalizedText()
         status_code = lib.UA_Client_readInverseNameAttribute(self.ua_client, node_id._val, out_inverse_name._ptr)
+        out_inverse_name._update()
         return ClientServiceResult.ReadInverseNameAttributeResult(ua_types.UaStatusCode(val=status_code),
                                                                   out_inverse_name)
 
@@ -399,12 +406,13 @@ class UaClient:
     def read_value_attribute(self, node_id: ua_types.UaNodeId):
         value = ua_types.UaVariant()
         status_code = lib.UA_Client_readValueAttribute(self.ua_client, node_id._val, value._ptr)
-        value.__init__(value._ptr)
+        value._update()
         return ClientServiceResult.ReadValueAttributeResult(ua_types.UaStatusCode(val=status_code), value)
 
     def read_data_type_attribute(self, node_id: ua_types.UaNodeId):
         out_data_type = ua_types.UaNodeId()
         status_code = lib.UA_Client_readDataTypeAttribute(self.ua_client, node_id._val, out_data_type._ptr)
+        out_data_type._update()
         return ClientServiceResult.ReadDataTypeAttribute(ua_types.UaStatusCode(val=status_code), out_data_type)
 
     def read_value_rank_attribute(self, node_id: ua_types.UaNodeId):
@@ -458,6 +466,7 @@ class UaClient:
 
     def write_node_id_attribute(self, node_id: ua_types.UaNodeId, new_node_id: ua_types.UaNodeId):
         status_code = lib.UA_Client_writeNodeIdAttribute(self.ua_client, node_id._val, new_node_id._ptr)
+        new_node_id._update()
         return ua_types.UaStatusCode(val=status_code)
 
     def write_node_class_attribute(self, node_id: ua_types.UaNodeId, new_node_class: ua_types.UaNodeClass):
@@ -593,6 +602,7 @@ class UaClient:
                                                     reference_type_id._val, browse_name._val, type_definition._val,
                                                     attr._val,
                                                     out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_variable_type_node(self, parent_node_id: ua_types.UaNodeId,
@@ -603,6 +613,7 @@ class UaClient:
         status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                         reference_type_id._val, browse_name._val, attr._val,
                                                         out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_object_node(self, parent_node_id: ua_types.UaNodeId,
@@ -615,6 +626,7 @@ class UaClient:
                                                   reference_type_id._val, browse_name._val, type_definition._val,
                                                   attr._val,
                                                   out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_object_type_node(self, parent_node_id: ua_types.UaNodeId,
@@ -625,6 +637,7 @@ class UaClient:
         status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, attr._val,
                                                       out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_view_node(self, parent_node_id: ua_types.UaNodeId,
@@ -635,6 +648,7 @@ class UaClient:
         status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                 reference_type_id._val, browse_name._val, attr._val,
                                                 out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_reference_type_node(self, parent_node_id: ua_types.UaNodeId,
@@ -647,6 +661,7 @@ class UaClient:
                                                          parent_node_id._val,
                                                          reference_type_id._val, browse_name._val, attr._val,
                                                          out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_data_type_node(self, parent_node_id: ua_types.UaNodeId,
@@ -657,6 +672,7 @@ class UaClient:
         status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, attr._val,
                                                     out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     def add_method_node(self, parent_node_id: ua_types.UaNodeId,
@@ -667,6 +683,7 @@ class UaClient:
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, attr._val,
                                                   out_new_node_id._ptr)
+        out_new_node_id._update()
         return ClientServiceResult.AddNodeResult(ua_types.UaStatusCode(val=status_code), out_new_node_id)
 
     # utils
