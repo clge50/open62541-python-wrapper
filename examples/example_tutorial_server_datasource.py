@@ -1,4 +1,8 @@
 # Connecting a Variable with a Physical Process
+import signal
+import sys
+
+sys.path.append("../build/open62541")
 from ua import *
 from intermediateApi import ffi, lib
 
@@ -49,8 +53,7 @@ def add_value_callback_to_current_time_variable(server: UaServer):
 def read_current_time(server, session_id, session_context, node_id, node_context, source_time_stamp, numeric_range,
                       data_value: UaDataValue):
     now = UaDateTime.now()
-    data_value.variant.set_scalar(now,
-                                  TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
+    data_value.variant.set_scalar(now, TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
     data_value.has_variant = UaBoolean(True)
     return UaStatusCode.UA_STATUSCODE_GOOD
 
@@ -88,15 +91,30 @@ def add_current_time_external_data_source(server: UaServer):
     server.set_variable_node_value_backend(current_node_id, value_backend)
 
 
+class Main:
+    running = UaBoolean(True)
+
+
+def stopHandler():
+    logger = UaLogger()
+    logger.info(UaLogCategory.UA_LOGCATEGORY_SERVER, "received ctrl-c")
+    Main.running = UaBoolean(False)
+
+
 def main():
+    signal.signal(signal.SIGINT, stopHandler)
     server = UaServer()
 
     add_current_time_variable(server)
     add_value_callback_to_current_time_variable(server)
     add_current_time_data_source_variable(server)
 
-    # add_current_time_external_data_source(server)
-    retval = server.run(UaBoolean(True))
+    add_current_time_external_data_source(server)
+    retval = server.run(Main.running)
+    if retval is UaStatusCode.UA_STATUSCODE_GOOD:
+        return 0
+    else:
+        return 1
 
 
 if __name__ == "__main__":

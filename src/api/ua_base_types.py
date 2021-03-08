@@ -1321,20 +1321,10 @@ class UaVariant(UaType):
     def has_array_type(self, data_type: 'UaDataType'):
         return lib.UA_Variant_hasArrayType(self._ptr, data_type._ptr)
 
-    # TODO: memory management
-    def _set_attributes(self):
-        self._type._value = self._value.type
-        self._storage_type._value = self._value.storageType
-        self._array_length._value = self._value.arrayLength
-        self._data._value = self._ptr.data
-        self._array_dimensions_size._value = self._value.arrayDimensionsSize
-        self._array_dimensions._value = self._value.arrayDimensions
-
     # data is the python object matching the data_type or an void ptr
     def set_scalar(self, data: Any, data_type: 'UaDataType'):
         self.__mem_protect = data._ptr
-        lib.UA_Variant_setScalar(self._ptr, self.__mem_protect, data_type._ptr)
-        # self._set_attributes()
+        lib.UA_Variant_setScalarCopy(self._ptr, self.__mem_protect, data_type._ptr)
         self._update()
 
     def set_array(self, array: Any, size: Union[int, SizeT], data_type: 'UaDataType'):
@@ -1346,7 +1336,7 @@ class UaVariant(UaType):
         status_code = lib.UA_Variant_setArray(self._ptr, self.__mem_protect, size._val, data_type._ptr)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
-            self._set_attributes()
+            self._update()
         else:
             raise Exception(f"An Error occured - {str(status_code)}")
 
@@ -1355,7 +1345,7 @@ class UaVariant(UaType):
         status_code = lib.UA_Variant_copyRange(self._ptr, variant._ptr, num_range._val)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
-            self._set_attributes()
+            self._update()
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
@@ -1364,7 +1354,7 @@ class UaVariant(UaType):
         status_code = lib.UA_Variant_copy(self._ptr, variant._ptr)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
-            self._set_attributes()
+            self._update()
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
@@ -1377,7 +1367,7 @@ class UaVariant(UaType):
         status_code = lib.UA_Variant_setRangeCopy(self._ptr, self.__mem_protect, size, num_range._val)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
-            self._set_attributes()
+            self._update()
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
