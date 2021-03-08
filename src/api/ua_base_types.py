@@ -8,6 +8,7 @@ from intermediateApi import ffi, lib
 from ua_primitve_types import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
+
 # -------------------------------------------------------------
 # --------------------------- Enums ---------------------------
 # -------------------------------------------------------------
@@ -192,7 +193,6 @@ class UaDataTypeKind(UaType):
         return f"(UaDataTypeKind): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
-
 # -------------------------------------------------------------
 # -------------------------- Structs --------------------------
 # -------------------------------------------------------------
@@ -202,8 +202,10 @@ class UaString(UaType):
     def __init__(self, val: Union[str, Void] = None, is_pointer=False):
         if type(val) is Void:
             val = ffi.cast("UA_String*", val._ptr)
-        elif type(val) is str:
+        elif type(val) is str or type(val) is bytes:
             val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
+        elif type(val) is not None:
+            val = ffi.new("UA_String*", val)
         else:
             val = ffi.new("UA_String*")
 
@@ -2208,7 +2210,7 @@ class UaDataType(UaType):
     def new_instance(self):
         return lib.UA_new(self._ptr)
 
-    #TODO: handling difficult, cast to something?
+    # TODO: handling difficult, cast to something?
     def new_array(self, size: SizeT):
         return Void(val=lib.UA_Array_new(size._val, self._ptr))
 
@@ -2294,4 +2296,3 @@ class Randomize:
     @staticmethod
     def ua_random_seed(seed: int):
         lib.UA_random_seed(ffi.cast("UA_UInt64*", seed))
-
