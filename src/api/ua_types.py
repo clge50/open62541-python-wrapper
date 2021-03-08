@@ -11,6 +11,8 @@ from ua_types_parent import _ptr, _val, _is_null
 # +++++++++++++++++++ UaClientConfig +++++++++++++++++++++++
 class UaClientConfig(UaType):
     def __init__(self, val=None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_ClientConfig*", val._ptr)
         if val is None:
             val = ffi.new("UA_ClientConfig*")
             lib.UA_ClientConfig_setDefault(val)
@@ -30,6 +32,9 @@ class UaClientConfig(UaType):
             self._requested_session_timeout = UaUInt32(val=val.requestedSessionTimeout, is_pointer=False)
             self._connectivity_check_interval = UaUInt32(val=val.connectivityCheckInterval, is_pointer=False)
             self._custom_data_types = UaDataTypeArray(val=val.customDataTypes, is_pointer=True)
+
+    def _update(self):
+        self.__init__(self._ptr)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -225,7 +230,7 @@ class UaClientConfig(UaType):
                 "\t" * (n + 1) + "requested_session_timeout" + self._requested_session_timeout.__str__(n + 1) +
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
                 "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1))
 
 
 #++++++++++++++++++++ protos +++++++++++++++++++++++

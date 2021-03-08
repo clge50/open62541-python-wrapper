@@ -18,13 +18,18 @@ def generator_struct(struct_name: str, attribute_to_type: dict):
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
 class {to_python_class_name(struct_name)}(UaType):
     def __init__(self, val=ffi.new("{struct_name}*"), is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("{struct_name}*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
-        
+
         if not self._null:
 {new_line.join(map(
         lambda attr:
         tab * 3 + f"self._{to_python_ident(attr)} = {to_python_class_name(attribute_to_type[attr][0])}(val=val.{attr}, is_pointer={attribute_to_type[attr][1]})",
         attribute_to_type.keys()))}
+
+    def _update(self):
+        self.__init__(self._ptr)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -53,7 +58,7 @@ class {to_python_class_name(struct_name)}(UaType):
 {(new_line * 2).join(map(
         lambda attr:
         tab + f"@{to_python_ident(attr)}.setter" + new_line +
-        tab + f"def {to_python_ident(attr)}(self, val):" + new_line +
+        tab + f"def {to_python_ident(attr)}(self, val: {to_python_class_name(attribute_to_type[attr][0])}):" + new_line +
         tab * 2 + f"self._{to_python_ident(attr)} = val" + new_line +
         (tab * 2 + f"self._value.{attr} = val._ptr"
          if attribute_to_type[attr][1] else
@@ -63,18 +68,19 @@ class {to_python_class_name(struct_name)}(UaType):
     def __str__(self, n=0):
         if self._null:
             return "({to_python_class_name(struct_name)}) : NULL\\n"
-        
-        return ("({to_python_class_name(struct_name)}) :\\n" +
+
+        return ("({to_python_class_name(struct_name)}) :\\n"
 {new_line.join(map(
         lambda attr:
-        tab * 4 + f"{quote}{backslash}t{quote}*(n+1) + {quote}{to_python_ident(attr)}{quote} + self._{to_python_ident(attr)}.__str__(n+1) +",
-        attribute_to_type.keys()))} "\\n")
+        tab * 4 + "+ " + f"{quote}{backslash}t{quote}*(n+1) + {quote}{to_python_ident(attr)}{quote} + self._{to_python_ident(attr)}.__str__(n+1)",
+        attribute_to_type.keys()))})
 
 
 """
     return class_str
 
 
+# TODO: default 0 -> rigth behavior?
 def generator_enum(enum_name: str, ident_to_val: dict):
     tab = "    "
     new_line = "\n"
@@ -95,7 +101,9 @@ class {to_python_class_name(enum_name)}(UaType):
         f"{tab * 2}({ident_to_val[attr]}, {quote}{attr}{quote})",
         ident_to_val.keys()))}])
 
-    def __init__(self, val=None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("{enum_name}*", val._ptr)
         if val is None:
             super().__init__(ffi.new("{enum_name}*"), is_pointer)
         else:

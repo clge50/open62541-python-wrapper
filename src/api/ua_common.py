@@ -244,6 +244,9 @@ class UaNetworkStatistics(UaType):
             self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=False)
             self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
 
+    def _update(self):
+        self.__init__(self._ptr)
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_NetworkStatistics")
@@ -326,7 +329,7 @@ class UaNetworkStatistics(UaType):
                 "\t" * (n + 1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n + 1) +
                 "\t" * (n + 1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n + 1) +
                 "\t" * (n + 1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n + 1) +
-                "\t" * (n + 1) + "connection_abort_count" + self._connection_abort_count.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "connection_abort_count" + self._connection_abort_count.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
@@ -341,6 +344,9 @@ class UaSecureChannelStatistics(UaType):
             self._channel_timeout_count = SizeT(val=val.channelTimeoutCount, is_pointer=False)
             self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=False)
             self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
+
+    def _update(self):
+        self.__init__(self._ptr)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -438,4 +444,4 @@ class UaSecureChannelStatistics(UaType):
                 "\t" * (n + 1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n + 1) +
                 "\t" * (n + 1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n + 1) +
                 "\t" * (n + 1) + "channel_abort_count" + self._channel_abort_count.__str__(n + 1) +
-                "\t" * (n + 1) + "channel_purge_count" + self._channel_purge_count.__str__(n + 1) + "\n")
+                "\t" * (n + 1) + "channel_purge_count" + self._channel_purge_count.__str__(n + 1))

@@ -38,6 +38,8 @@ class Void(UaType):
 # +++++++++++++++++++ SizeT +++++++++++++++++++++++
 class SizeT(UaType):
     def __init__(self, val=None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("size_t*", val._ptr)
         if val is None:
             super().__init__(ffi.new("size_t*"), is_pointer)
         else:
@@ -59,6 +61,8 @@ class SizeT(UaType):
 # +++++++++++++++++++ CString +++++++++++++++++++++++
 class CString(UaType):
     def __init__(self, p_val: str = "", is_pointer=True, val=None):
+        if type(val) is Void:
+            val = ffi.cast("char[]", val._ptr)
         p_val = bytes(p_val, "utf-8")
         if val is None:
             super().__init__(ffi.new("char[]", p_val), is_pointer)
@@ -71,17 +75,13 @@ class CString(UaType):
                 self._p_value = ffi.string(val)
 
     @property
-    def p_value(self):
+    def value(self):
         return self._p_value
 
-    @p_value.setter
-    def p_value(self, val: bytes):
+    @value.setter
+    def value(self, val: bytes):
         self._p_value = val
         self._value = ffi.new("char[]", self._p_value)
 
-    def _set_value(self, val):
-        self.__value = val
-        self._p_value = ffi.string(val)
-
     def __str__(self, n=0):
-        return "(CString): " + str(self._p_value) + "\n"
+        return "(CString): " + str(self.value) + "\n"

@@ -23,7 +23,9 @@ class UaMessageSecurityMode(UaType):
         (3, "UA_MESSAGESECURITYMODE_SIGNANDENCRYPT"),
         (2147483647, "__UA_MESSAGESECURITYMODE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_MessageSecurityMode*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_MessageSecurityMode*"), is_pointer)
         else:
@@ -55,7 +57,9 @@ class UaStructureType(UaType):
         (2, "UA_STRUCTURETYPE_UNION"),
         (2147483647, "__UA_STRUCTURETYPE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_StructureType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_StructureType*"), is_pointer)
         else:
@@ -87,7 +91,9 @@ class UaMonitoringMode(UaType):
         (2, "UA_MONITORINGMODE_REPORTING"),
         (2147483647, "__UA_MONITORINGMODE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_MonitoringMode*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_MonitoringMode*"), is_pointer)
         else:
@@ -133,7 +139,9 @@ class UaBrowseResultMask(UaType):
         (60, "UA_BROWSERESULTMASK_TARGETINFO"),
         (2147483647, "__UA_BROWSERESULTMASK_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_BrowseResultMask*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_BrowseResultMask*"), is_pointer)
         else:
@@ -165,7 +173,9 @@ class UaAxisScaleEnumeration(UaType):
         (2, "UA_AXISSCALEENUMERATION_LN"),
         (2147483647, "__UA_AXISSCALEENUMERATION_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_AxisScaleEnumeration*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_AxisScaleEnumeration*"), is_pointer)
         else:
@@ -199,7 +209,9 @@ class UaBrowseDirection(UaType):
         (3, "UA_BROWSEDIRECTION_INVALID"),
         (2147483647, "__UA_BROWSEDIRECTION_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_BrowseDirection*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_BrowseDirection*"), is_pointer)
         else:
@@ -235,7 +247,9 @@ class UaTimestampsToReturn(UaType):
         (4, "UA_TIMESTAMPSTORETURN_INVALID"),
         (2147483647, "__UA_TIMESTAMPSTORETURN_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_TimestampsToReturn*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_TimestampsToReturn*"), is_pointer)
         else:
@@ -279,7 +293,9 @@ class UaNodeClass(UaType):
         (128, "UA_NODECLASS_VIEW"),
         (2147483647, "__UA_NODECLASS_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_NodeClass*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_NodeClass*"), is_pointer)
         else:
@@ -309,7 +325,9 @@ class UaSecurityTokenRequestType(UaType):
         (1, "UA_SECURITYTOKENREQUESTTYPE_RENEW"),
         (2147483647, "__UA_SECURITYTOKENREQUESTTYPE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SecurityTokenRequestType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SecurityTokenRequestType*"), is_pointer)
         else:
@@ -343,7 +361,9 @@ class UaApplicationType(UaType):
         (3, "UA_APPLICATIONTYPE_DISCOVERYSERVER"),
         (2147483647, "__UA_APPLICATIONTYPE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_ApplicationType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_ApplicationType*"), is_pointer)
         else:
@@ -375,7 +395,9 @@ class UaDeadbandType(UaType):
         (2, "UA_DEADBANDTYPE_PERCENT"),
         (2147483647, "__UA_DEADBANDTYPE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_DeadbandType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_DeadbandType*"), is_pointer)
         else:
@@ -407,7 +429,9 @@ class UaDataChangeTrigger(UaType):
         (2, "UA_DATACHANGETRIGGER_STATUSVALUETIMESTAMP"),
         (2147483647, "__UA_DATACHANGETRIGGER_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_DataChangeTrigger*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_DataChangeTrigger*"), is_pointer)
         else:
@@ -441,7 +465,9 @@ class UaUserTokenType(UaType):
         (3, "UA_USERTOKENTYPE_ISSUEDTOKEN"),
         (2147483647, "__UA_USERTOKENTYPE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_UserTokenType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UserTokenType*"), is_pointer)
         else:
@@ -537,7 +563,9 @@ class UaNodeAttributesMask(UaType):
         (26501356, "UA_NODEATTRIBUTESMASK_VIEW"),
         (2147483647, "__UA_NODEATTRIBUTESMASK_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_NodeAttributesMask*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_NodeAttributesMask*"), is_pointer)
         else:
@@ -579,7 +607,9 @@ class UaServerState(UaType):
         (7, "UA_SERVERSTATE_UNKNOWN"),
         (2147483647, "__UA_SERVERSTATE_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_ServerState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_ServerState*"), is_pointer)
         else:
@@ -641,7 +671,9 @@ class UaFilterOperator(UaType):
         (17, "UA_FILTEROPERATOR_BITWISEOR"),
         (2147483647, "__UA_FILTEROPERATOR_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_FilterOperator*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_FilterOperator*"), is_pointer)
         else:
@@ -679,7 +711,9 @@ class UaRedundancySupport(UaType):
         (5, "UA_REDUNDANCYSUPPORT_HOTANDMIRRORED"),
         (2147483647, "__UA_REDUNDANCYSUPPORT_FORCE32BIT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_RedundancySupport*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_RedundancySupport*"), is_pointer)
         else:

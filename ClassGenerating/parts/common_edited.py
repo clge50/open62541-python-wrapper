@@ -62,7 +62,9 @@ class UaAttributeId(UaType):
         (26, "UA_ATTRIBUTEID_ACCESSRESTRICTIONS"),
         (27, "UA_ATTRIBUTEID_ACCESSLEVELEX")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_AttributeId*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_AttributeId*"), is_pointer)
         else:
@@ -94,7 +96,9 @@ class UaRuleHandling(UaType):
         (2, "UA_RULEHANDLING_WARN"),
         (3, "UA_RULEHANDLING_ACCEPT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_RuleHandling*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_RuleHandling*"), is_pointer)
         else:
@@ -124,7 +128,9 @@ class UaOrder(UaType):
         (0, "UA_ORDER_EQ"),
         (1, "UA_ORDER_MORE")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Order*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Order*"), is_pointer)
         else:
@@ -164,7 +170,9 @@ class UaSecureChannelState(UaType):
         (6, "UA_SECURECHANNELSTATE_OPEN"),
         (7, "UA_SECURECHANNELSTATE_CLOSING")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SecureChannelState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SecureChannelState*"), is_pointer)
         else:
@@ -200,7 +208,9 @@ class UaSessionState(UaType):
         (4, "UA_SESSIONSTATE_ACTIVATED"),
         (5, "UA_SESSIONSTATE_CLOSING")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SessionState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SessionState*"), is_pointer)
         else:
@@ -227,6 +237,8 @@ class UaSessionState(UaType):
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
     def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_NetworkStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
@@ -236,6 +248,9 @@ class UaNetworkStatistics(UaType):
             self._connection_timeout_count = SizeT(val=val.connectionTimeoutCount, is_pointer=False)
             self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
 
+    def _update(self):
+        self.__init__(self._ptr)
+    
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_NetworkStatistics")
@@ -313,17 +328,19 @@ class UaNetworkStatistics(UaType):
         if self._null:
             return "(UaNetworkStatistics) : NULL\n"
         
-        return ("(UaNetworkStatistics) :\n" +
-                "\t"*(n+1) + "current_connection_count" + self._current_connection_count.__str__(n+1) +
-                "\t"*(n+1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n+1) +
-                "\t"*(n+1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n+1) +
-                "\t"*(n+1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n+1) +
-                "\t"*(n+1) + "connection_abort_count" + self._connection_abort_count.__str__(n+1) + "\n")
+        return ("(UaNetworkStatistics) :\n"
+                + "\t"*(n+1) + "current_connection_count" + self._current_connection_count.__str__(n+1)
+                + "\t"*(n+1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n+1)
+                + "\t"*(n+1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n+1)
+                + "\t"*(n+1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n+1)
+                + "\t"*(n+1) + "connection_abort_count" + self._connection_abort_count.__str__(n+1))
 
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
 class UaSecureChannelStatistics(UaType):
     def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SecureChannelStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
         if not self._null:
@@ -334,6 +351,9 @@ class UaSecureChannelStatistics(UaType):
             self._channel_abort_count = SizeT(val=val.channelAbortCount, is_pointer=False)
             self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
 
+    def _update(self):
+        self.__init__(self._ptr)
+    
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_SecureChannelStatistics")
@@ -424,12 +444,12 @@ class UaSecureChannelStatistics(UaType):
         if self._null:
             return "(UaSecureChannelStatistics) : NULL\n"
         
-        return ("(UaSecureChannelStatistics) :\n" +
-                "\t"*(n+1) + "current_channel_count" + self._current_channel_count.__str__(n+1) +
-                "\t"*(n+1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n+1) +
-                "\t"*(n+1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n+1) +
-                "\t"*(n+1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n+1) +
-                "\t"*(n+1) + "channel_abort_count" + self._channel_abort_count.__str__(n+1) +
-                "\t"*(n+1) + "channel_purge_count" + self._channel_purge_count.__str__(n+1) + "\n")
+        return ("(UaSecureChannelStatistics) :\n"
+                + "\t"*(n+1) + "current_channel_count" + self._current_channel_count.__str__(n+1)
+                + "\t"*(n+1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n+1)
+                + "\t"*(n+1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n+1)
+                + "\t"*(n+1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n+1)
+                + "\t"*(n+1) + "channel_abort_count" + self._channel_abort_count.__str__(n+1)
+                + "\t"*(n+1) + "channel_purge_count" + self._channel_purge_count.__str__(n+1))
 
 

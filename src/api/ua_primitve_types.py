@@ -12,7 +12,9 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
-    def __init__(self, val: Union[bool, List[bool]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, bool, List[bool]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Boolean*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Boolean*"), is_pointer)
         else:
@@ -48,7 +50,9 @@ class UaBoolean(UaType):
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SByte*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SByte*"), is_pointer)
         else:
@@ -96,7 +100,9 @@ class UaSByte(UaType):
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Byte*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Byte*"), is_pointer)
         else:
@@ -144,7 +150,9 @@ class UaByte(UaType):
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Int16*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Int16*"), is_pointer)
         else:
@@ -192,7 +200,9 @@ class UaInt16(UaType):
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_UInt16*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt16*"), is_pointer)
         else:
@@ -240,7 +250,9 @@ class UaUInt16(UaType):
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Int32*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Int32*"), is_pointer)
         else:
@@ -288,7 +300,9 @@ class UaInt32(UaType):
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_UInt32*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
         else:
@@ -336,7 +350,9 @@ class UaUInt32(UaType):
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Int64*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Int64*"), is_pointer)
         else:
@@ -384,7 +400,9 @@ class UaInt64(UaType):
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_UInt64*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt64*"), is_pointer)
         else:
@@ -432,7 +450,9 @@ class UaUInt64(UaType):
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
-    def __init__(self, val: Union[float, List[float]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, float, List[float]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Float*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Float*"), is_pointer)
         else:
@@ -479,8 +499,15 @@ class UaFloat(UaType):
 
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
+# TODO: Array handling for all other types
 class UaDouble(UaType):
-    def __init__(self, val: Union[float, List[float]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, float, List[float]] = None,  size: int = None, is_pointer=False):
+        if type(val) is Void:
+            if size is None:
+                val = ffi.cast("UA_Double*", val._ptr)
+            else:
+                val = ffi.cast(f"UA_Double[{size}]", val._ptr)
+                is_pointer = True
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
@@ -490,10 +517,13 @@ class UaDouble(UaType):
                 super().__init__(val, is_pointer)
             else:
                 super().__init__(ffi.new("UA_Double*", _val(val)), is_pointer)
+        self._size = size
 
     @property
     def value(self):
-        return float(self._val)
+        if self._size is None:
+            return float(self._val)
+        return ffi.unpack(self._ptr, self._size)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -1035,7 +1065,9 @@ class UaStatusCode(UaType):
         (0x80B60000, "UA_STATUSCODE_BADSYNTAXERROR"),
         (0x80B70000, "UA_STATUSCODE_BADMAXCONNECTIONSREACHED")])
 
-    def __init__(self, val: Union[int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_StatusCode*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_StatusCode*"), is_pointer)
         else:

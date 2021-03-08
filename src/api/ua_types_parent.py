@@ -36,11 +36,12 @@ def _ptr(val, c_type=""):
             return ffi.new(c_type + "*", val)
 
 
-def _val(val):
-    if _is_ptr(val):
-        return val[0]
-    else:
+def _val(val, c_type=""):
+    if not _is_ptr(val):
         return val
+    if c_type != "":
+        return ffi.cast(c_type+"*", val)[0]
+    return val[0]
 
 
 # _value should always be a pointer

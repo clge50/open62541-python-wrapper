@@ -15,4 +15,4 @@ print(ret_val)
 if variant.has_scalar_type(TYPES.DATETIME):
     now = UaDateTime(variant.data)
 
-UaLogger().info(UaLogCategory.UA_LOGCATEGORY_USERLAND, "date is "+str(now.to_struct()))
+UaLogger().info(UaLogCategory(UaLogCategory.UA_LOGCATEGORY_USERLAND), "date is "+str(now.to_struct()))
