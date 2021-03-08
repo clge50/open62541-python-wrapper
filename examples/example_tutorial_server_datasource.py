@@ -34,7 +34,7 @@ def before_read_time(server, session_id, session_context, node_id, node_context,
     update_current_time(server)
 
 
-def after_write_time(server, sessionId, session_context, node_id, node_context, numeric_range, data):
+def after_write_time(server, session_id, session_context, node_id, node_context, numeric_range, data):
     logger = UaLogger()
     logger.info(UaLogCategory.UA_LOGCATEGORY_USERLAND, "The variable was updated")
 
@@ -66,7 +66,7 @@ ua_data_value = UaDataValue()
 
 def add_current_time_data_source_variable(server: UaServer):
     attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
-    attr.display_name = UaLocalizedText("en-US", "Current time - data source");
+    attr.display_name = UaLocalizedText("en-US", "Current time - data source")
     attr.access_level = UaByte(0x01 << 0 | 0x01 << 1)
 
     current_node_id = UaNodeId(1, "current-time-datasource")
@@ -95,7 +95,7 @@ def main():
     add_value_callback_to_current_time_variable(server)
     add_current_time_data_source_variable(server)
 
-    add_current_time_external_data_source(server)
+    # add_current_time_external_data_source(server)
     retval = server.run(UaBoolean(True))
 
 

@@ -322,7 +322,8 @@ class UaServer:
                                       browse_name: ua_types.UaQualifiedName,
                                       type_definition: ua_types.UaNodeId,
                                       data_source: ua_types.UaDataSource,  # todo: create proper UaDataSource UaType
-                                      attr: ua_types.UaVariableAttributes = VARIABLE_ATTRIBUTES_DEFAULT,
+                                      attr: ua_types.UaVariableAttributes = ua_types.UaVariableAttributes(
+                                          val=VARIABLE_ATTRIBUTES_DEFAULT),
                                       node_context=ffi.NULL):
 
         out_node_id = ua_types.UaNodeId()
