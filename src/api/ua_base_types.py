@@ -1334,7 +1334,8 @@ class UaVariant(UaType):
     def set_scalar(self, data: Any, data_type: 'UaDataType'):
         self.__mem_protect = data._ptr
         lib.UA_Variant_setScalar(self._ptr, self.__mem_protect, data_type._ptr)
-        self._set_attributes()
+        # self._set_attributes()
+        self._update()
 
     def set_array(self, array: Any, size: Union[int, SizeT], data_type: 'UaDataType'):
         if type(size) is int:
@@ -1404,7 +1405,7 @@ class UaDataValue(UaType):
             self._has_server_picoseconds = UaBoolean(val=val.hasServerPicoseconds, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
 
     def _set_value(self, val):
         if self._is_pointer:

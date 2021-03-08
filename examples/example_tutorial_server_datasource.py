@@ -49,8 +49,8 @@ def add_value_callback_to_current_time_variable(server: UaServer):
 def read_current_time(server, session_id, session_context, node_id, node_context, source_time_stamp, numeric_range,
                       data_value: UaDataValue):
     now = UaDateTime.now()
-    UaVariant.set_scalar(data_value.variant, now,
-                         TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
+    data_value.variant.set_scalar(now,
+                                  TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
     data_value.has_variant = UaBoolean(True)
     return UaStatusCode.UA_STATUSCODE_GOOD
 
@@ -59,9 +59,6 @@ def write_current_time(server, session_id, session_context, node_id, node_contex
     logger = UaLogger()
     logger.info(UaLogCategory.UA_LOGCATEGORY_USERLAND, "Changing the system time is not implemented")
     return UaStatusCode.UA_STATUSCODE_BADINTERNALERROR
-
-
-ua_data_value = UaDataValue()
 
 
 def add_current_time_data_source_variable(server: UaServer):
@@ -80,10 +77,13 @@ def add_current_time_data_source_variable(server: UaServer):
                                          variable_type_node_id, time_data_source, attr)
 
 
+external_value = UaDataValue()
+
+
 def add_current_time_external_data_source(server: UaServer):
     current_node_id = UaNodeId(1, "current-time-external-source")
     # todo: value backend not fully implemented/wrapped yet
-    value_backend = UaValueBackend(lib.UA_VALUEBACKENDTYPE_EXTERNAL, ua_data_value)
+    value_backend = UaValueBackend(lib.UA_VALUEBACKENDTYPE_EXTERNAL, external_value)
 
     server.set_variable_node_value_backend(current_node_id, value_backend)
 
