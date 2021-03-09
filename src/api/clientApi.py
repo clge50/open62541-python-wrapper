@@ -294,7 +294,7 @@ class UaClient:
     # also needs generic result class object as result
     def __read_attribute(self, node_id: UaNodeId, attribute_id: UaNodeId):
         out = Void()
-        out_data_type = UaDataType
+        out_data_type = UaDataType()
         status_code = lib.__UA_Client_readAttribute(self.ua_client, node_id._ptr, attribute_id._val, out._ptr,
                                                     out_data_type._ptr)
         out_data_type._update()
@@ -309,7 +309,6 @@ class UaClient:
     def read_node_class_attribute(self, node_id: UaNodeId):
         out_node_class = UaNodeClass()
         status_code = lib.UA_Client_readNodeClassAttribute(self.ua_client, node_id._val, out_node_class._ptr)
-        out_node_class._update()
         return ClientServiceResult.ReadNodeClassAttributeResult(UaStatusCode(val=status_code), out_node_class)
 
     def read_browse_name_attribute(self, node_id: UaNodeId):

@@ -215,7 +215,6 @@ class UaServer:
     def read_node_class(self, node_id: UaNodeId):
         out_node_class = UaNodeClass()
         status_code = lib.UA_Server_readNodeClass(self.ua_server, node_id._val, out_node_class._ptr)
-        out_node_class._update()
         return ServerServiceResults.NodeClassResult(status_code, out_node_class._ptr)
 
     def read_browse_name(self, node_id: UaNodeId):
