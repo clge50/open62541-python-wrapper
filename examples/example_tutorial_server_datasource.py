@@ -1,8 +1,4 @@
 # Connecting a Variable with a Physical Process
-import signal
-import sys
-
-sys.path.append("../build/open62541")
 from ua import *
 from intermediateApi import ffi, lib
 
@@ -45,7 +41,9 @@ def after_write_time(server, session_id, session_context, node_id, node_context,
 
 def add_value_callback_to_current_time_variable(server: UaServer):
     current_node_id = UaNodeId(1, "current-time-value-callback")
-    callback = UaValueCallback(before_read_time, after_write_time)
+    callback = UaValueCallback()
+    callback.read_callback = before_read_time
+    callback.write_callback = after_write_time
     server.set_variable_node_value_callback(current_node_id, callback)
 
 
@@ -53,7 +51,8 @@ def add_value_callback_to_current_time_variable(server: UaServer):
 def read_current_time(server, session_id, session_context, node_id, node_context, source_time_stamp, numeric_range,
                       data_value: UaDataValue):
     now = UaDateTime.now()
-    data_value.variant.set_scalar(now, TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
+    UaVariant.set_scalar(data_value.variant, now,
+                         TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
     data_value.has_variant = UaBoolean(True)
     return UaStatusCode.UA_STATUSCODE_GOOD
 
@@ -64,10 +63,13 @@ def write_current_time(server, session_id, session_context, node_id, node_contex
     return UaStatusCode.UA_STATUSCODE_BADINTERNALERROR
 
 
+ua_data_value = UaDataValue()
+
+
 def add_current_time_data_source_variable(server: UaServer):
     attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
     attr.display_name = UaLocalizedText("en-US", "Current time - data source")
-    attr.access_level = UaByte(0x01 << 0 | 0x01 << 1)
+    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
 
     current_node_id = UaNodeId(1, "current-time-datasource")
     current_name = UaQualifiedName(1, "current-time-datasource")
@@ -75,34 +77,22 @@ def add_current_time_data_source_variable(server: UaServer):
     parent_reference_node_id = NS0ID.ORGANIZES
     variable_type_node_id = NS0ID.BASEDATAVARIABLETYPE
 
-    time_data_source = UaDataSource(read_current_time, write_current_time)
+    time_data_source = UaDataSource()
+    time_data_source.read_callback = read_current_time
+    time_data_source.write_callback = write_current_time
     server.add_data_source_variable_node(current_node_id, parent_node_id, parent_reference_node_id, current_name,
                                          variable_type_node_id, time_data_source, attr)
 
 
-external_value = UaDataValue()
-
-
 def add_current_time_external_data_source(server: UaServer):
     current_node_id = UaNodeId(1, "current-time-external-source")
-    # todo: value backend not fully implemented/wrapped yet
-    value_backend = UaValueBackend(lib.UA_VALUEBACKENDTYPE_EXTERNAL, external_value)
+    value_backend = UaValueBackend()
+    value_backend.set_external(ua_data_value)
 
     server.set_variable_node_value_backend(current_node_id, value_backend)
 
 
-class Main:
-    running = UaBoolean(True)
-
-
-def stopHandler():
-    logger = UaLogger()
-    logger.info(UaLogCategory.UA_LOGCATEGORY_SERVER, "received ctrl-c")
-    Main.running = UaBoolean(False)
-
-
 def main():
-    signal.signal(signal.SIGINT, stopHandler)
     server = UaServer()
 
     add_current_time_variable(server)
@@ -110,11 +100,7 @@ def main():
     add_current_time_data_source_variable(server)
 
     add_current_time_external_data_source(server)
-    retval = server.run(Main.running)
-    if retval is UaStatusCode.UA_STATUSCODE_GOOD:
-        return 0
-    else:
-        return 1
+    retval = server.run(UaBoolean(True))
 
 
 if __name__ == "__main__":

@@ -172,19 +172,14 @@ class_from_struct = generator_struct(
 # } UA_ExampleEnum;
 
 class_from_enum = generator_enum(
-    "UA_ExampleEnum",
+    "UA_ValueBackendType",
     {
-        "attributeNameA": 7,
-        "attributeNameB": 13,
-        "attributeNameC": 35
+        "UA_VALUEBACKENDTYPE_NONE": 0,
+        "UA_VALUEBACKENDTYPE_INTERNAL": 1,
+        "UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK": 2,
+        "UA_VALUEBACKENDTYPE_EXTERNAL": 3
     }
 )
 
 print(class_from_struct)
 print(class_from_enum)
-
-
-
-
-
-

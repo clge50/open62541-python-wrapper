@@ -492,7 +492,7 @@ class UaServer:
     #    return ServerServiceResults.AddMethodNodeResult(ua_types.UaStatusCode(status_code), output_arg_size, output_args, out_node)
 
     def set_node_type_lifecycle(self, node_id: ua_types.UaNodeId,
-                                lifecycle: ua_types.UaNodeTypeLifecycle):  # TODO: UA_NodeTypeLifecycle IMPLEMENT AS UaType
+                                lifecycle: ua_types.UaNodeTypeLifecycle):
         raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val, lifecycle._val)
         return ua_types.UaStatusCode(val=raw_result)
 
@@ -504,18 +504,15 @@ class UaServer:
         return ua_types.UaStatusCode(val=raw_result)
 
     def set_variable_node_value_callback(self, node_id: ua_types.UaNodeId,
-                                         callback: ua_types.UaValueCallback):  # TODO: UA_ValueCallback IMPLEMENT AS UaType
+                                         callback: ua_types.UaValueCallback):
         _ServerCallback.callbacks_dict[str(node_id)] = callback
         raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
         return ua_types.UaStatusCode(val=raw_result)
 
     def set_variable_node_value_backend(self, node_id: ua_types.UaNodeId,
-                                        callback: ua_types.UaValueBackend):  # TODO: UA_ValueBackend IMPLEMENT AS UaType
-        value_backend = ffi.new("UA_ValueBackend*")
-        value_backend.backendType = callback.backend_type
-        value_backend.backend.external.value = ffi.new("UA_DataValue**", callback.backend_external_value._ptr)
-        raw_result = lib.UA_Server_setVariableNode_valueBackend(self.ua_server, node_id._val, value_backend[0])
+                                        callback: ua_types.UaValueBackend):
+        raw_result = lib.UA_Server_setVariableNode_valueBackend(self.ua_server, node_id._val, callback._val)
         return ua_types.UaStatusCode(val=raw_result)
 
     def create_condition(self,
