@@ -236,7 +236,9 @@ class UaSessionState(UaType):
 
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
-    def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NetworkStatistics*")
         if type(val) is Void:
             val = ffi.cast("UA_NetworkStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -249,7 +251,7 @@ class UaNetworkStatistics(UaType):
             self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -338,7 +340,9 @@ class UaNetworkStatistics(UaType):
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
 class UaSecureChannelStatistics(UaType):
-    def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecureChannelStatistics*")
         if type(val) is Void:
             val = ffi.cast("UA_SecureChannelStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -352,7 +356,7 @@ class UaSecureChannelStatistics(UaType):
             self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:

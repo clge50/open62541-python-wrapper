@@ -1423,7 +1423,11 @@ class UaClient:
                                          [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                      requested_new_node_id: UaNodeId = UaNodeId(
                                          val=UaNodeId.NULL),
-                                     attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+                                     attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1444,7 +1448,11 @@ class UaClient:
                               type_definition: UaNodeId,
                               callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                              attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+                              attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1467,7 +1475,11 @@ class UaClient:
                                        [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                    requested_new_node_id: UaNodeId = UaNodeId(
                                        val=UaNodeId.NULL),
-                                   attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+                                   attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1487,7 +1499,10 @@ class UaClient:
                             reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                             callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                             requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                            attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+                            attr=None):
+        if attr is None:
+            attr = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1509,7 +1524,11 @@ class UaClient:
                                           [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                       requested_new_node_id: UaNodeId = UaNodeId(
                                           val=UaNodeId.NULL),
-                                      attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+                                      attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1530,7 +1549,11 @@ class UaClient:
                                  callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                  requested_new_node_id: UaNodeId = UaNodeId(
                                      val=UaNodeId.NULL),
-                                 attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+                                 attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1550,7 +1573,11 @@ class UaClient:
                               reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                               callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                              attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+                              attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -2898,7 +2925,11 @@ class UaClient:
                                          [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                      requested_new_node_id: UaNodeId = UaNodeId(
                                          val=UaNodeId.NULL),
-                                     attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+                                     attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -2919,7 +2950,11 @@ class UaClient:
                               type_definition: UaNodeId,
                               callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                              attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+                              attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -2942,7 +2977,11 @@ class UaClient:
                                        [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                    requested_new_node_id: UaNodeId = UaNodeId(
                                        val=UaNodeId.NULL),
-                                   attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+                                   attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -2962,7 +3001,10 @@ class UaClient:
                             reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                             callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                             requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                            attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+                            attr=None):
+        if attr is None:
+            attr = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -2984,7 +3026,11 @@ class UaClient:
                                           [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                       requested_new_node_id: UaNodeId = UaNodeId(
                                           val=UaNodeId.NULL),
-                                      attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+                                      attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -3005,7 +3051,11 @@ class UaClient:
                                  callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                  requested_new_node_id: UaNodeId = UaNodeId(
                                      val=UaNodeId.NULL),
-                                 attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+                                 attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -3025,7 +3075,11 @@ class UaClient:
                               reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                               callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                              attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+                              attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -3181,7 +3235,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_data_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_data_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaDataTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_data_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3194,7 +3248,11 @@ class UaClient:
                              callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                              requested_new_node_id: UaNodeId = UaNodeId(
                                  val=UaNodeId.NULL),
-                             attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+                             attr=None):
+
+    if attr is None:
+        attr = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)
@@ -3233,7 +3291,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_method_node_async"><code class="name flex">
-<span>def <span class="ident">add_method_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaMethodAttributes object&gt;)</span>
+<span>def <span class="ident">add_method_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3245,7 +3303,11 @@ class UaClient:
                           reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                           callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                           requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                          attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+                          attr=None):
+
+    if attr is None:
+        attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)
@@ -3286,7 +3348,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_node_async"><code class="name flex">
-<span>def <span class="ident">add_object_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaObjectAttributes object&gt;)</span>
+<span>def <span class="ident">add_object_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, type_definition: ua_base_types.UaNodeId, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3299,7 +3361,11 @@ class UaClient:
                           type_definition: UaNodeId,
                           callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                           requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                          attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+                          attr=None):
+
+    if attr is None:
+        attr = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)
@@ -3339,7 +3405,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_object_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_object_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaObjectTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_object_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3353,7 +3419,11 @@ class UaClient:
                                    [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                requested_new_node_id: UaNodeId = UaNodeId(
                                    val=UaNodeId.NULL),
-                               attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+                               attr=None):
+
+    if attr is None:
+        attr = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)
@@ -3413,7 +3483,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_reference_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_reference_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaReferenceTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_reference_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3427,7 +3497,11 @@ class UaClient:
                                       [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                   requested_new_node_id: UaNodeId = UaNodeId(
                                       val=UaNodeId.NULL),
-                                  attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+                                  attr=None):
+
+    if attr is None:
+        attr = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)
@@ -3561,7 +3635,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_variable_type_node_async"><code class="name flex">
-<span>def <span class="ident">add_variable_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaVariableTypeAttributes object&gt;)</span>
+<span>def <span class="ident">add_variable_type_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3575,7 +3649,11 @@ class UaClient:
                                      [&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                                  requested_new_node_id: UaNodeId = UaNodeId(
                                      val=UaNodeId.NULL),
-                                 attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+                                 attr=None):
+
+    if attr is None:
+        attr = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)
@@ -3614,7 +3692,7 @@ class UaClient:
 </details>
 </dd>
 <dt id="open62541.clientApi.UaClient.add_view_node_async"><code class="name flex">
-<span>def <span class="ident">add_view_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=&lt;ua_types_generated_structs.UaViewAttributes object&gt;)</span>
+<span>def <span class="ident">add_view_node_async</span></span>(<span>self, parent_node_id: ua_base_types.UaNodeId, reference_type_id: ua_base_types.UaNodeId, browse_name: ua_base_types.UaQualifiedName, callback: Callable[[ForwardRef('<a title="open62541.clientApi.UaClient" href="#open62541.clientApi.UaClient">UaClient</a>'), ua_primitve_types.UaUInt32, ua_types_generated_structs.UaAddNodesResponse], NoneType], requested_new_node_id: ua_base_types.UaNodeId = &lt;ua_base_types.UaNodeId object&gt;, attr=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3626,7 +3704,10 @@ class UaClient:
                         reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                         callback: Callable[[&#39;UaClient&#39;, UaUInt32, UaAddNodesResponse], None],
                         requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                        attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+                        attr=None):
+    if attr is None:
+        attr = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT
+
     out_new_node_id = UaNodeId()
     req_id = UaUInt32()
     _handle = ffi.new_handle(callback)

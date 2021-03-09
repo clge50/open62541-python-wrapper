@@ -77,7 +77,9 @@ def generator_struct(struct_name: str, attribute_to_type: dict):
 
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
 class {to_python_class_name(struct_name)}(UaType):
-    def __init__(self, val=ffi.new("{struct_name}*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("{struct_name}*")
         if type(val) is Void:
             val = ffi.cast("{struct_name}*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -89,7 +91,7 @@ class {to_python_class_name(struct_name)}(UaType):
         attribute_to_type.keys()))}
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -138,6 +140,7 @@ class {to_python_class_name(struct_name)}(UaType):
 
 """
     return class_str
+
 
 # TODO: default 0 -> rigth behavior?
 def generator_enum(enum_name: str, ident_to_val: dict):
@@ -316,5 +319,3 @@ generate_defs_primitive(["UA_Boolean",
                          "UA_Double",
                          "UA_StatusCode",
                          "UA_DateTime"])
-
-
