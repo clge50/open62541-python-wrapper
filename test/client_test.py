@@ -3,34 +3,31 @@ import threading
 import time
 
 sys.path.append("../build/open62541")
-import serverApi
-import clientApi
-import ua_types
-import type_ids
+from ua import *
 
 
 class TestClientApi:
     server = None
-    client: clientApi.UaClient = None
-    running = [True]
+    client: UaClient = None
+    running = UaBoolean(True)
     thread = None
     connect_status: ua_types.UaStatusCode = None
     parent_node_id: ua_types.UaNodeId = None
 
     def setup_method(self):
-        self.parent_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_OBJECTSFOLDER)
-        self.server = serverApi.UaServer()
-        self.thread = threading.Thread(target=self.server.run, args=self.running, daemon=True)
+        self.parent_node_id = NS0ID.OBJECTSFOLDER
+        self.server = UaServer()
+        self.thread = threading.Thread(target=self.server.run, args=[self.running], daemon=True)
         self.thread.start()
-        time.sleep(0.10)
+        time.sleep(0.20)
 
-        self.client = clientApi.UaClient()
+        self.client = UaClient()
         self.connect_status = self.client.connect("opc.tcp://127.0.0.1:4840/")
         ## retry if 0.10s was not long enough wait time
         # todo: find better solution to check if server is running
         if self.connect_status.is_bad():
             time.sleep(0.25)
-            self.client = clientApi.UaClient()
+            self.client = UaClient()
             self.connect_status = self.client.connect("opc.tcp://127.0.0.1:4840/")
 
     def teardown_method(self):
@@ -48,10 +45,10 @@ class TestClientApi:
         assert self.client.disconnect().is_good()
 
     def test_connect_secure_channel(self):
-        assert clientApi.UaClient().connect_secure_channel("opc.tcp://127.0.0.1:4840/").is_good()
+        assert UaClient().connect_secure_channel("opc.tcp://127.0.0.1:4840/").is_good()
 
     def test_disconnect_secure_channel(self):
-        client: clientApi.UaClient = clientApi.UaClient()
+        client: UaClient = UaClient()
         assert client.connect_secure_channel("opc.tcp://127.0.0.1:4840/").is_good()
         assert client.disconnect_secure_channel().is_good()
 
@@ -253,68 +250,74 @@ class TestClientApi:
     def test_add_variable_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        variable_type = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_BASEDATAVARIABLETYPE)
-        add_variable_node_result = self.client.add_variable_node(my_integer_node_id, self.parent_node_id,
+        parent_reference_node_id = NS0ID.ORGANIZES
+        variable_type = NS0ID.BASEDATAVARIABLETYPE
+        add_variable_node_result = self.client.add_variable_node(self.parent_node_id,
                                                                  parent_reference_node_id, my_integer_name,
-                                                                 variable_type)
+                                                                 variable_type, my_integer_node_id)
         assert add_variable_node_result.status_code.is_good()
 
     def test_add_variable_type_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        add_variable_type_node_result = self.client.add_variable_type_node(my_integer_node_id, self.parent_node_id,
-                                                                           parent_reference_node_id, my_integer_name)
+        parent_reference_node_id = NS0ID.ORGANIZES
+        add_variable_type_node_result = self.client.add_variable_type_node(self.parent_node_id,
+                                                                           parent_reference_node_id, my_integer_name,
+                                                                           my_integer_node_id)
         assert add_variable_type_node_result.status_code.is_bad()  # todo: fix
 
     def test_add_object_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
+        parent_reference_node_id = NS0ID.ORGANIZES
         type_definition = ua_types.UaNodeId(1, "test")
-        add_object_node_result = self.client.add_object_node(my_integer_node_id, self.parent_node_id,
-                                                             parent_reference_node_id, my_integer_name, type_definition)
+        add_object_node_result = self.client.add_object_node(self.parent_node_id,
+                                                             parent_reference_node_id, my_integer_name, type_definition,
+                                                             my_integer_node_id)
         assert add_object_node_result.status_code.is_bad()  # todo: fix
 
     def test_add_object_type_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        add_object_type_node_result = self.client.add_object_type_node(my_integer_node_id, self.parent_node_id,
-                                                                       parent_reference_node_id, my_integer_name)
+        parent_reference_node_id = NS0ID.ORGANIZES
+        add_object_type_node_result = self.client.add_object_type_node(self.parent_node_id,
+                                                                       parent_reference_node_id, my_integer_name,
+                                                                       my_integer_node_id)
         assert add_object_type_node_result.status_code.is_bad()  # todo: fix
 
     def test_add_view_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        add_view_node_result = self.client.add_view_node(my_integer_node_id, self.parent_node_id,
-                                                         parent_reference_node_id, my_integer_name)
+        parent_reference_node_id = NS0ID.ORGANIZES
+        add_view_node_result = self.client.add_view_node(self.parent_node_id, parent_reference_node_id, my_integer_name,
+                                                         my_integer_node_id)
         assert add_view_node_result.status_code.is_good()
 
     def test_add_reference_type_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        add_reference_type_node_result = self.client.add_reference_type_node(my_integer_node_id, self.parent_node_id,
-                                                                             parent_reference_node_id, my_integer_name)
+        parent_reference_node_id = NS0ID.ORGANIZES
+        add_reference_type_node_result = self.client.add_reference_type_node(self.parent_node_id,
+                                                                             parent_reference_node_id, my_integer_name,
+                                                                             my_integer_node_id)
         assert add_reference_type_node_result.status_code.is_bad()  # todo: fix
 
     def test_add_data_type_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        add_data_type_node_result = self.client.add_data_type_node(my_integer_node_id, self.parent_node_id,
-                                                                   parent_reference_node_id, my_integer_name)
+        parent_reference_node_id = NS0ID.ORGANIZES
+        add_data_type_node_result = self.client.add_data_type_node(self.parent_node_id,
+                                                                   parent_reference_node_id, my_integer_name,
+                                                                   my_integer_node_id)
         assert add_data_type_node_result.status_code.is_bad()  # todo: fix
 
     def test_add_method_node(self):
         my_integer_node_id = ua_types.UaNodeId(1, "the answer")
         my_integer_name = ua_types.UaQualifiedName(1, "the.answer")
-        parent_reference_node_id = ua_types.UaNodeId(0, ua_types.UaNodeId.UA_NS0ID_ORGANIZES)
-        add_method_node_result = self.client.add_method_node(my_integer_node_id, self.parent_node_id,
-                                                             parent_reference_node_id, my_integer_name)
+        parent_reference_node_id = NS0ID.ORGANIZES
+        add_method_node_result = self.client.add_method_node(self.parent_node_id,
+                                                             parent_reference_node_id, my_integer_name,
+                                                             my_integer_node_id)
         assert add_method_node_result.status_code.is_good()
 
     # utils test
@@ -332,10 +335,8 @@ class TestClientApi:
 
     def test_find_data_type(self):
         # todo: this doesn't work that way at all. just used to test typing for now
-        type_id = type_ids.TypeIds.UA_TYPES_INT32
-        node_id = ua_types.UaNodeId(0, type_id)
-        data_type = self.client.find_data_type(node_id)
-        assert data_type.type_name is not "hallo"
+        data_type = self.client.find_data_type(TYPES.INT32.type_id)
+        assert data_type.type_name != "hallo"
 
 # def test_get_endpoints(self):
 
