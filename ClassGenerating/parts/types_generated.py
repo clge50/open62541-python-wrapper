@@ -749,7 +749,7 @@ class UaViewAttributes(UaType):
             self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -876,7 +876,7 @@ class UaXVType(UaType):
             self._data_value = UaFloat(val=val.value, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -932,7 +932,7 @@ class UaElementOperand(UaType):
             self._index = UaUInt32(val=val.index, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -987,7 +987,7 @@ class UaVariableAttributes(UaType):
             self._historizing = UaBoolean(val=val.historizing, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1213,7 +1213,7 @@ class UaEnumValueType(UaType):
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1285,7 +1285,7 @@ class UaEventFieldList(UaType):
             self._event_fields = UaVariant(val=val.eventFields, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1359,7 +1359,7 @@ class UaMonitoredItemCreateResult(UaType):
             self._filter_result = UaExtensionObject(val=val.filterResult, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1460,7 +1460,7 @@ class UaEUInformation(UaType):
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1555,7 +1555,7 @@ class UaServerDiagnosticsSummaryDataType(UaType):
             self._rejected_requests_count = UaUInt32(val=val.rejectedRequestsCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1755,7 +1755,7 @@ class UaContentFilterElementResult(UaType):
             self._operand_diagnostic_infos = UaDiagnosticInfo(val=val.operandDiagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1853,7 +1853,7 @@ class UaLiteralOperand(UaType):
             self._data_value = UaVariant(val=val.value, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1895,7 +1895,7 @@ class UaUserIdentityToken(UaType):
             self._policy_id = UaString(val=val.policyId, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1938,7 +1938,7 @@ class UaX509IdentityToken(UaType):
             self._certificate_data = UaByteString(val=val.certificateData, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1995,7 +1995,7 @@ class UaMonitoredItemNotification(UaType):
             self._data_value = UaDataValue(val=val.value, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2057,7 +2057,7 @@ class UaResponseHeader(UaType):
             self._additional_header = UaExtensionObject(val=val.additionalHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2184,7 +2184,7 @@ class UaSignatureData(UaType):
             self._signature = UaByteString(val=val.signature, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2243,7 +2243,7 @@ class UaModifySubscriptionResponse(UaType):
             self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2331,7 +2331,7 @@ class UaNodeAttributes(UaType):
             self._user_write_mask = UaUInt32(val=val.userWriteMask, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2434,7 +2434,7 @@ class UaActivateSessionResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2549,7 +2549,7 @@ class UaEnumField(UaType):
             self._name = UaString(val=val.name, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2643,7 +2643,7 @@ class UaVariableTypeAttributes(UaType):
             self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2831,7 +2831,7 @@ class UaCallMethodResult(UaType):
             self._output_arguments = UaVariant(val=val.outputArguments, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -2961,7 +2961,7 @@ class UaSetMonitoringModeResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3065,7 +3065,7 @@ class UaRequestHeader(UaType):
             self._additional_header = UaExtensionObject(val=val.additionalHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3194,7 +3194,7 @@ class UaMonitoredItemModifyResult(UaType):
             self._filter_result = UaExtensionObject(val=val.filterResult, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3278,7 +3278,7 @@ class UaCloseSecureChannelRequest(UaType):
             self._request_header = UaRequestHeader(val=val.requestHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3323,7 +3323,7 @@ class UaNotificationMessage(UaType):
             self._notification_data = UaExtensionObject(val=val.notificationData, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3411,7 +3411,7 @@ class UaCreateSubscriptionResponse(UaType):
             self._revised_max_keep_alive_count = UaUInt32(val=val.revisedMaxKeepAliveCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3510,7 +3510,7 @@ class UaEnumDefinition(UaType):
             self._fields = UaEnumField(val=val.fields, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3569,7 +3569,7 @@ class UaCallMethodRequest(UaType):
             self._input_arguments = UaVariant(val=val.inputArguments, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3657,7 +3657,7 @@ class UaReadResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3760,7 +3760,7 @@ class UaObjectTypeAttributes(UaType):
             self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3872,7 +3872,7 @@ class UaCloseSessionResponse(UaType):
             self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -3917,7 +3917,7 @@ class UaSetPublishingModeRequest(UaType):
             self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4003,7 +4003,7 @@ class UaIssuedIdentityToken(UaType):
             self._encryption_algorithm = UaString(val=val.encryptionAlgorithm, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4077,7 +4077,7 @@ class UaDeleteMonitoredItemsResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4178,7 +4178,7 @@ class UaBrowseNextRequest(UaType):
             self._continuation_points = UaByteString(val=val.continuationPoints, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4268,7 +4268,7 @@ class UaModifySubscriptionRequest(UaType):
             self._priority = UaByte(val=val.priority, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4399,7 +4399,7 @@ class UaBrowseDescription(UaType):
             self._result_mask = UaUInt32(val=val.resultMask, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4512,7 +4512,7 @@ class UaSignedSoftwareCertificate(UaType):
             self._signature = UaByteString(val=val.signature, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4569,7 +4569,7 @@ class UaBrowsePathTarget(UaType):
             self._remaining_path_index = UaUInt32(val=val.remainingPathIndex, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4629,7 +4629,7 @@ class UaWriteResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4728,7 +4728,7 @@ class UaAddNodesResult(UaType):
             self._added_node_id = UaNodeId(val=val.addedNodeId, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4789,7 +4789,7 @@ class UaAddReferencesItem(UaType):
             self._target_node_class = UaNodeClass(val=val.targetNodeClass, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -4905,7 +4905,7 @@ class UaDeleteReferencesResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5006,7 +5006,7 @@ class UaRelativePathElement(UaType):
             self._target_name = UaQualifiedName(val=val.targetName, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5091,7 +5091,7 @@ class UaSubscriptionAcknowledgement(UaType):
             self._sequence_number = UaUInt32(val=val.sequenceNumber, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5149,7 +5149,7 @@ class UaTransferResult(UaType):
             self._available_sequence_numbers = UaUInt32(val=val.availableSequenceNumbers, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5223,7 +5223,7 @@ class UaCreateMonitoredItemsResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5325,7 +5325,7 @@ class UaDeleteReferencesItem(UaType):
             self._delete_bidirectional = UaBoolean(val=val.deleteBidirectional, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5426,7 +5426,7 @@ class UaWriteValue(UaType):
             self._data_value = UaDataValue(val=val.value, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5515,7 +5515,7 @@ class UaDataTypeAttributes(UaType):
             self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5631,7 +5631,7 @@ class UaTransferSubscriptionsResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5733,7 +5733,7 @@ class UaAddReferencesResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5836,7 +5836,7 @@ class UaBuildInfo(UaType):
             self._build_date = UaDateTime(val=val.buildDate, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -5952,7 +5952,7 @@ class UaMonitoringParameters(UaType):
             self._discard_oldest = UaBoolean(val=val.discardOldest, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6051,7 +6051,7 @@ class UaDoubleComplexNumberType(UaType):
             self._imaginary = UaDouble(val=val.imaginary, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6108,7 +6108,7 @@ class UaDeleteNodesItem(UaType):
             self._delete_target_references = UaBoolean(val=val.deleteTargetReferences, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6167,7 +6167,7 @@ class UaReadValueId(UaType):
             self._data_encoding = UaQualifiedName(val=val.dataEncoding, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6253,7 +6253,7 @@ class UaCallRequest(UaType):
             self._methods_to_call = UaCallMethodRequest(val=val.methodsToCall, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6324,7 +6324,7 @@ class UaRelativePath(UaType):
             self._elements = UaRelativePathElement(val=val.elements, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6382,7 +6382,7 @@ class UaDeleteNodesRequest(UaType):
             self._nodes_to_delete = UaDeleteNodesItem(val=val.nodesToDelete, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6453,7 +6453,7 @@ class UaMonitoredItemModifyRequest(UaType):
             self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6513,7 +6513,7 @@ class UaAggregateConfiguration(UaType):
             self._use_sloped_extrapolation = UaBoolean(val=val.useSlopedExtrapolation, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6611,7 +6611,7 @@ class UaUnregisterNodesResponse(UaType):
             self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6656,7 +6656,7 @@ class UaContentFilterResult(UaType):
             self._element_diagnostic_infos = UaDiagnosticInfo(val=val.elementDiagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6744,7 +6744,7 @@ class UaUserTokenPolicy(UaType):
             self._security_policy_uri = UaString(val=val.securityPolicyUri, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6845,7 +6845,7 @@ class UaDeleteMonitoredItemsRequest(UaType):
             self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -6933,7 +6933,7 @@ class UaSetMonitoringModeRequest(UaType):
             self._monitored_item_ids = UaUInt32(val=val.monitoredItemIds, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7038,7 +7038,7 @@ class UaReferenceTypeAttributes(UaType):
             self._inverse_name = UaLocalizedText(val=val.inverseName, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7183,7 +7183,7 @@ class UaGetEndpointsRequest(UaType):
             self._profile_uris = UaString(val=val.profileUris, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7295,7 +7295,7 @@ class UaCloseSecureChannelResponse(UaType):
             self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7339,7 +7339,7 @@ class UaViewDescription(UaType):
             self._view_version = UaUInt32(val=val.viewVersion, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7413,7 +7413,7 @@ class UaSetPublishingModeResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7512,7 +7512,7 @@ class UaStatusChangeNotification(UaType):
             self._diagnostic_info = UaDiagnosticInfo(val=val.diagnosticInfo, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7575,7 +7575,7 @@ class UaStructureField(UaType):
             self._is_optional = UaBoolean(val=val.isOptional, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7719,7 +7719,7 @@ class UaEventFilterResult(UaType):
             self._where_clause_result = UaContentFilterResult(val=val.whereClauseResult, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7819,7 +7819,7 @@ class UaMonitoredItemCreateRequest(UaType):
             self._requested_parameters = UaMonitoringParameters(val=val.requestedParameters, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7890,7 +7890,7 @@ class UaComplexNumberType(UaType):
             self._imaginary = UaFloat(val=val.imaginary, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -7947,7 +7947,7 @@ class UaRange(UaType):
             self._high = UaDouble(val=val.high, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8006,7 +8006,7 @@ class UaDataChangeNotification(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8095,7 +8095,7 @@ class UaArgument(UaType):
             self._description = UaLocalizedText(val=val.description, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8210,7 +8210,7 @@ class UaTransferSubscriptionsRequest(UaType):
             self._send_initial_values = UaBoolean(val=val.sendInitialValues, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8297,7 +8297,7 @@ class UaChannelSecurityToken(UaType):
             self._revised_lifetime = UaUInt32(val=val.revisedLifetime, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8382,7 +8382,7 @@ class UaEventNotificationList(UaType):
             self._events = UaEventFieldList(val=val.events, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8438,7 +8438,7 @@ class UaAnonymousIdentityToken(UaType):
             self._policy_id = UaString(val=val.policyId, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8483,7 +8483,7 @@ class UaAggregateFilter(UaType):
             self._aggregate_configuration = UaAggregateConfiguration(val=val.aggregateConfiguration, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8568,7 +8568,7 @@ class UaRepublishResponse(UaType):
             self._notification_message = UaNotificationMessage(val=val.notificationMessage, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8628,7 +8628,7 @@ class UaDeleteSubscriptionsResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8728,7 +8728,7 @@ class UaRegisterNodesRequest(UaType):
             self._nodes_to_register = UaNodeId(val=val.nodesToRegister, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8802,7 +8802,7 @@ class UaStructureDefinition(UaType):
             self._fields = UaStructureField(val=val.fields, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -8906,7 +8906,7 @@ class UaMethodAttributes(UaType):
             self._user_executable = UaBoolean(val=val.userExecutable, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9035,7 +9035,7 @@ class UaUserNameIdentityToken(UaType):
             self._encryption_algorithm = UaString(val=val.encryptionAlgorithm, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9121,7 +9121,7 @@ class UaUnregisterNodesRequest(UaType):
             self._nodes_to_unregister = UaNodeId(val=val.nodesToUnregister, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9194,7 +9194,7 @@ class UaOpenSecureChannelResponse(UaType):
             self._server_nonce = UaByteString(val=val.serverNonce, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9286,7 +9286,7 @@ class UaSetTriggeringResponse(UaType):
             self._remove_diagnostic_infos = UaDiagnosticInfo(val=val.removeDiagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9444,7 +9444,7 @@ class UaSimpleAttributeOperand(UaType):
             self._index_range = UaString(val=val.indexRange, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9544,7 +9544,7 @@ class UaRepublishRequest(UaType):
             self._retransmit_sequence_number = UaUInt32(val=val.retransmitSequenceNumber, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9616,7 +9616,7 @@ class UaRegisterNodesResponse(UaType):
             self._registered_node_ids = UaNodeId(val=val.registeredNodeIds, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9690,7 +9690,7 @@ class UaModifyMonitoredItemsResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9790,7 +9790,7 @@ class UaDeleteSubscriptionsRequest(UaType):
             self._subscription_ids = UaUInt32(val=val.subscriptionIds, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9861,7 +9861,7 @@ class UaBrowsePath(UaType):
             self._relative_path = UaRelativePath(val=val.relativePath, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -9922,7 +9922,7 @@ class UaObjectAttributes(UaType):
             self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10036,7 +10036,7 @@ class UaPublishRequest(UaType):
             self._subscription_acknowledgements = UaSubscriptionAcknowledgement(val=val.subscriptionAcknowledgements, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10111,7 +10111,7 @@ class UaFindServersRequest(UaType):
             self._server_uris = UaString(val=val.serverUris, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10229,7 +10229,7 @@ class UaReferenceDescription(UaType):
             self._type_definition = UaExpandedNodeId(val=val.typeDefinition, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10361,7 +10361,7 @@ class UaCreateSubscriptionRequest(UaType):
             self._priority = UaByte(val=val.priority, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10491,7 +10491,7 @@ class UaCallResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10593,7 +10593,7 @@ class UaDeleteNodesResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10695,7 +10695,7 @@ class UaModifyMonitoredItemsRequest(UaType):
             self._items_to_modify = UaMonitoredItemModifyRequest(val=val.itemsToModify, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10793,7 +10793,7 @@ class UaServiceFault(UaType):
             self._response_header = UaResponseHeader(val=val.responseHeader, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -10844,7 +10844,7 @@ class UaPublishResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11016,7 +11016,7 @@ class UaCreateMonitoredItemsRequest(UaType):
             self._items_to_create = UaMonitoredItemCreateRequest(val=val.itemsToCreate, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11119,7 +11119,7 @@ class UaOpenSecureChannelRequest(UaType):
             self._requested_lifetime = UaUInt32(val=val.requestedLifetime, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11232,7 +11232,7 @@ class UaCloseSessionRequest(UaType):
             self._delete_subscriptions = UaBoolean(val=val.deleteSubscriptions, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11294,7 +11294,7 @@ class UaSetTriggeringRequest(UaType):
             self._links_to_remove = UaUInt32(val=val.linksToRemove, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11423,7 +11423,7 @@ class UaBrowseResult(UaType):
             self._references = UaReferenceDescription(val=val.references, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11509,7 +11509,7 @@ class UaAddReferencesRequest(UaType):
             self._references_to_add = UaAddReferencesItem(val=val.referencesToAdd, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11585,7 +11585,7 @@ class UaAddNodesItem(UaType):
             self._type_definition = UaExpandedNodeId(val=val.typeDefinition, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11716,7 +11716,7 @@ class UaServerStatusDataType(UaType):
             self._shutdown_reason = UaLocalizedText(val=val.shutdownReason, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11832,7 +11832,7 @@ class UaBrowseNextResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -11935,7 +11935,7 @@ class UaAxisInformation(UaType):
             self._axis_steps = UaDouble(val=val.axisSteps, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12054,7 +12054,7 @@ class UaApplicationDescription(UaType):
             self._discovery_urls = UaString(val=val.discoveryUrls, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12198,7 +12198,7 @@ class UaReadRequest(UaType):
             self._nodes_to_read = UaReadValueId(val=val.nodesToRead, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12303,7 +12303,7 @@ class UaActivateSessionRequest(UaType):
             self._user_token_signature = UaSignatureData(val=val.userTokenSignature, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12445,7 +12445,7 @@ class UaBrowsePathResult(UaType):
             self._targets = UaBrowsePathTarget(val=val.targets, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12517,7 +12517,7 @@ class UaAddNodesRequest(UaType):
             self._nodes_to_add = UaAddNodesItem(val=val.nodesToAdd, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12591,7 +12591,7 @@ class UaBrowseRequest(UaType):
             self._nodes_to_browse = UaBrowseDescription(val=val.nodesToBrowse, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12691,7 +12691,7 @@ class UaWriteRequest(UaType):
             self._nodes_to_write = UaWriteValue(val=val.nodesToWrite, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12765,7 +12765,7 @@ class UaAddNodesResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12867,7 +12867,7 @@ class UaAttributeOperand(UaType):
             self._index_range = UaString(val=val.indexRange, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -12967,7 +12967,7 @@ class UaDataChangeFilter(UaType):
             self._deadband_value = UaDouble(val=val.deadbandValue, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13045,7 +13045,7 @@ class UaEndpointDescription(UaType):
             self._security_level = UaByte(val=val.securityLevel, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13201,7 +13201,7 @@ class UaDeleteReferencesRequest(UaType):
             self._references_to_delete = UaDeleteReferencesItem(val=val.referencesToDelete, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13273,7 +13273,7 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
             self._browse_paths = UaBrowsePath(val=val.browsePaths, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13345,7 +13345,7 @@ class UaFindServersResponse(UaType):
             self._servers = UaApplicationDescription(val=val.servers, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13423,7 +13423,7 @@ class UaCreateSessionRequest(UaType):
             self._max_response_message_size = UaUInt32(val=val.maxResponseMessageSize, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13579,7 +13579,7 @@ class UaContentFilterElement(UaType):
             self._filter_operands = UaExtensionObject(val=val.filterOperands, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13653,7 +13653,7 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13755,7 +13755,7 @@ class UaBrowseResponse(UaType):
             self._diagnostic_infos = UaDiagnosticInfo(val=val.diagnosticInfos, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -13864,7 +13864,7 @@ class UaCreateSessionResponse(UaType):
             self._max_request_message_size = UaUInt32(val=val.maxRequestMessageSize, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -14061,7 +14061,7 @@ class UaContentFilter(UaType):
             self._elements = UaContentFilterElement(val=val.elements, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -14119,7 +14119,7 @@ class UaGetEndpointsResponse(UaType):
             self._endpoints = UaEndpointDescription(val=val.endpoints, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -14191,7 +14191,7 @@ class UaEventFilter(UaType):
             self._where_clause = UaContentFilter(val=val.whereClause, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:

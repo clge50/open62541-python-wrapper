@@ -5,7 +5,7 @@
 
 from intermediateApi import ffi, lib
 from ua_types_logger import *
-from ua_types_parent import _ptr, _val, _is_null
+from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
 from typing import Callable
 
 
@@ -525,3 +525,6 @@ class UaTwoStateVariableCallbackType(UaType):
 class UaTwoStateVariableChangeCallback(UaType):
     def __init__(self):
         return None
+
+
+

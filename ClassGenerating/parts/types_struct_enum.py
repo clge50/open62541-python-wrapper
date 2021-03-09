@@ -208,7 +208,7 @@ class UaString(UaType):
             self._data = UaByte(val=val.data, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -272,7 +272,7 @@ class UaDateTimeStruct(UaType):
             self._year = UaUInt16(val=val.year, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -429,7 +429,7 @@ class UaGuid(UaType):
             self._data4 = UaByte(val=val.data4, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -515,7 +515,7 @@ class UaExpandedNodeId(UaType):
             self._server_index = UaUInt32(val=val.serverIndex, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -586,7 +586,7 @@ class UaQualifiedName(UaType):
             self._name = UaString(val=val.name, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -643,7 +643,7 @@ class UaLocalizedText(UaType):
             self._text = UaString(val=val.text, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -700,7 +700,7 @@ class UaNumericRangeDimension(UaType):
             self._max = UaUInt32(val=val.max, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -757,7 +757,7 @@ class UaNumericRange(UaType):
             self._dimensions = UaNumericRangeDimension(val=val.dimensions, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -818,7 +818,7 @@ class UaVariant(UaType):
             self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -941,7 +941,7 @@ class UaDataValue(UaType):
             self._has_server_picoseconds = UaBoolean(val=val.hasServerPicoseconds, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1150,7 +1150,7 @@ class UaDiagnosticInfo(UaType):
             self._inner_diagnostic_info = UaDiagnosticInfo(val=val.innerDiagnosticInfo, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1379,7 +1379,7 @@ class UaDataTypeMember(UaType):
             self._member_name = CString(val=val.memberName, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1500,7 +1500,7 @@ class UaDataType(UaType):
             self._type_name = CString(val=val.typeName, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -1670,7 +1670,7 @@ class UaDataTypeArray(UaType):
             self._types = UaDataType(val=val.types, is_pointer=True)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:

@@ -6,6 +6,8 @@
 import re
 from intermediateApi import ffi, lib
 
+x = ffi.new("UA_Int32[12]")
+x[9] = 3
 
 def _is_ptr(val):
     if "*" in str(val) or "[" in str(val):
@@ -70,13 +72,5 @@ class UaType:
 
     def __str__(self, n=0):
         return str(self._val)
-
-
-# class UaList(list, UaType):
-#     def __init__(self, val, size):
-#         UaType.__init__(self, val, True)
-#         list.__init__(self, )
-#
-#     def of(lst: list):
 
 

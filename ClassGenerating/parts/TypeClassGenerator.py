@@ -89,7 +89,7 @@ class {to_python_class_name(struct_name)}(UaType):
         attribute_to_type.keys()))}
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
