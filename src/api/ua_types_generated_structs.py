@@ -10,7 +10,9 @@ from ua_types_parent import _ptr, _val, _is_null
 
 # +++++++++++++++++++ UaViewAttributes +++++++++++++++++++++++
 class UaViewAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ViewAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ViewAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_ViewAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -142,7 +144,9 @@ class UaViewAttributes(UaType):
 
 # +++++++++++++++++++ UaXVType +++++++++++++++++++++++
 class UaXVType(UaType):
-    def __init__(self, val=ffi.new("UA_XVType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_XVType*")
         if type(val) is Void:
             val = ffi.cast("UA_XVType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -199,7 +203,9 @@ class UaXVType(UaType):
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
 class UaElementOperand(UaType):
-    def __init__(self, val=ffi.new("UA_ElementOperand*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ElementOperand*")
         if type(val) is Void:
             val = ffi.cast("UA_ElementOperand*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -241,7 +247,9 @@ class UaElementOperand(UaType):
 
 # +++++++++++++++++++ UaVariableAttributes +++++++++++++++++++++++
 class UaVariableAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_VariableAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_VariableAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_VariableAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -478,7 +486,9 @@ class UaVariableAttributes(UaType):
 
 # +++++++++++++++++++ UaEnumValueType +++++++++++++++++++++++
 class UaEnumValueType(UaType):
-    def __init__(self, val=ffi.new("UA_EnumValueType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EnumValueType*")
         if type(val) is Void:
             val = ffi.cast("UA_EnumValueType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -550,7 +560,9 @@ class UaEnumValueType(UaType):
 
 # +++++++++++++++++++ UaEventFieldList +++++++++++++++++++++++
 class UaEventFieldList(UaType):
-    def __init__(self, val=ffi.new("UA_EventFieldList*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EventFieldList*")
         if type(val) is Void:
             val = ffi.cast("UA_EventFieldList*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -622,7 +634,9 @@ class UaEventFieldList(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemCreateResult +++++++++++++++++++++++
 class UaMonitoredItemCreateResult(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemCreateResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemCreateResult*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemCreateResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -724,7 +738,9 @@ class UaMonitoredItemCreateResult(UaType):
 
 # +++++++++++++++++++ UaEUInformation +++++++++++++++++++++++
 class UaEUInformation(UaType):
-    def __init__(self, val=ffi.new("UA_EUInformation*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EUInformation*")
         if type(val) is Void:
             val = ffi.cast("UA_EUInformation*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -811,7 +827,9 @@ class UaEUInformation(UaType):
 
 # +++++++++++++++++++ UaServerDiagnosticsSummaryDataType +++++++++++++++++++++++
 class UaServerDiagnosticsSummaryDataType(UaType):
-    def __init__(self, val=ffi.new("UA_ServerDiagnosticsSummaryDataType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ServerDiagnosticsSummaryDataType*")
         if type(val) is Void:
             val = ffi.cast("UA_ServerDiagnosticsSummaryDataType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1020,7 +1038,9 @@ class UaServerDiagnosticsSummaryDataType(UaType):
 
 # +++++++++++++++++++ UaContentFilterElementResult +++++++++++++++++++++++
 class UaContentFilterElementResult(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterElementResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ContentFilterElementResult*")
         if type(val) is Void:
             val = ffi.cast("UA_ContentFilterElementResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1122,7 +1142,9 @@ class UaContentFilterElementResult(UaType):
 
 # +++++++++++++++++++ UaLiteralOperand +++++++++++++++++++++++
 class UaLiteralOperand(UaType):
-    def __init__(self, val=ffi.new("UA_LiteralOperand*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_LiteralOperand*")
         if type(val) is Void:
             val = ffi.cast("UA_LiteralOperand*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1164,7 +1186,9 @@ class UaLiteralOperand(UaType):
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
 class UaUserIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_UserIdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_UserIdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_UserIdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1206,7 +1230,9 @@ class UaUserIdentityToken(UaType):
 
 # +++++++++++++++++++ UaX509IdentityToken +++++++++++++++++++++++
 class UaX509IdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_X509IdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_X509IdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_X509IdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1263,7 +1289,9 @@ class UaX509IdentityToken(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemNotification +++++++++++++++++++++++
 class UaMonitoredItemNotification(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemNotification*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemNotification*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemNotification*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1320,7 +1348,9 @@ class UaMonitoredItemNotification(UaType):
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
 class UaResponseHeader(UaType):
-    def __init__(self, val=ffi.new("UA_ResponseHeader*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ResponseHeader*")
         if type(val) is Void:
             val = ffi.cast("UA_ResponseHeader*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1452,7 +1482,9 @@ class UaResponseHeader(UaType):
 
 # +++++++++++++++++++ UaSignatureData +++++++++++++++++++++++
 class UaSignatureData(UaType):
-    def __init__(self, val=ffi.new("UA_SignatureData*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SignatureData*")
         if type(val) is Void:
             val = ffi.cast("UA_SignatureData*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1509,7 +1541,9 @@ class UaSignatureData(UaType):
 
 # +++++++++++++++++++ UaModifySubscriptionResponse +++++++++++++++++++++++
 class UaModifySubscriptionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ModifySubscriptionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ModifySubscriptionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_ModifySubscriptionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1597,7 +1631,9 @@ class UaModifySubscriptionResponse(UaType):
 
 # +++++++++++++++++++ UaNodeAttributes +++++++++++++++++++++++
 class UaNodeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_NodeAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NodeAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_NodeAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1699,7 +1735,9 @@ class UaNodeAttributes(UaType):
 
 # +++++++++++++++++++ UaActivateSessionResponse +++++++++++++++++++++++
 class UaActivateSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ActivateSessionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ActivateSessionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_ActivateSessionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)

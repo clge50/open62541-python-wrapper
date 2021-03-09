@@ -1395,7 +1395,11 @@ class UaClient:
                                          ['UaClient', UaUInt32, UaAddNodesResponse], None],
                                      requested_new_node_id: UaNodeId = UaNodeId(
                                          val=UaNodeId.NULL),
-                                     attr=DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+                                     attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1416,7 +1420,11 @@ class UaClient:
                               type_definition: UaNodeId,
                               callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                              attr=DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+                              attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1439,7 +1447,11 @@ class UaClient:
                                        ['UaClient', UaUInt32, UaAddNodesResponse], None],
                                    requested_new_node_id: UaNodeId = UaNodeId(
                                        val=UaNodeId.NULL),
-                                   attr=DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+                                   attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1459,7 +1471,10 @@ class UaClient:
                             reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                             callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
                             requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                            attr=DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+                            attr=None):
+        if attr is None:
+            attr = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1481,7 +1496,11 @@ class UaClient:
                                           ['UaClient', UaUInt32, UaAddNodesResponse], None],
                                       requested_new_node_id: UaNodeId = UaNodeId(
                                           val=UaNodeId.NULL),
-                                      attr=DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+                                      attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1502,7 +1521,11 @@ class UaClient:
                                  callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
                                  requested_new_node_id: UaNodeId = UaNodeId(
                                      val=UaNodeId.NULL),
-                                 attr=DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+                                 attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1522,7 +1545,11 @@ class UaClient:
                               reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                               callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                              attr=DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+                              attr=None):
+
+        if attr is None:
+            attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
