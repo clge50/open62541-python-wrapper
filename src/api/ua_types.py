@@ -237,22 +237,53 @@ class UaClientConfig(UaType):
 # ++++++++++++++++++++ protos +++++++++++++++++++++++
 
 class UaValueCallback(UaType):
-    def __init__(self, read_callback: Callable[
-        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
-                 write_callback: Callable[
-                     ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None],
-                 is_pointer=False):
-        super().__init__(val=ffi.new("UA_ValueCallback*"), is_pointer=is_pointer)
-        self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
-        self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
-        self.read_callback = read_callback
-        self.write_callback = write_callback
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            super().__init__(val=ffi.new("UA_ValueCallback*"), is_pointer=is_pointer)
+            self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+            self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+            self.read_callback = lambda a, b, c, d, e, f, g: None
+            self.write_callback = lambda a, b, c, d, e, f, g: None
+            self._uses_python_read_callback = True
+            self._uses_python_write_callback = True
+        else:
+            super().__init__(val=val, is_pointer=is_pointer)
+            self.read_callback = None
+            self.write_callback = None
+            self._uses_python_read_callback = False
+            self._uses_python_write_callback = False
+
+    @property
+    def read_callback(self):
+        if self._null:
+            return None
+        return self.read_callback
+
+    @property
+    def write_callback(self):
+        if self._null:
+            return None
+        return self.write_callback
+
+    @read_callback.setter
+    def read_callback(self, read_callback: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None]):
+        self._read_callback = read_callback
+        self._value.onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
+        self._uses_python_read_callback = True
+
+    @write_callback.setter
+    def write_callback(self, write_callback: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None]):
+        self._write_callback = write_callback
+        self._value.onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
+        self._uses_python_write_callback = True
 
     def __str__(self, n=0):
         if self._null:
-            return "(UA_ValueCallback) : NULL\n"
+            return "(UaValueCallback): NULL\n"
 
-        return ("(UA_ValueCallback) :\n" +
+        return ("(UaValueCallback):\n" +
                 "\t" * (n + 1) + "read_callback" + str(self.read_callback) +
                 "\t" * (n + 1) + "write_callback" + str(self.write_callback) + "\n")
 
@@ -266,14 +297,19 @@ class UaValueBackend(UaType):
         if val.backendType is lib.UA_VALUEBACKENDTYPE_NONE:
             pass
         elif val.backendType is lib.UA_VALUEBACKENDTYPE_INTERNAL:
-            self._backend = tuple(UaDataValue(val=val.backend.internal.value),
-                                  UaValueCallback(val=val.backend.internal.callback))
+            self._data_value = UaDataValue(val=val.backend.internal.value)
+            self._callback = UaValueCallback(val=val.backend.internal.callback)
+            self._data_source = None
         elif val.backendType is lib.UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK:
-            self._backend = UaDataSource(val=val.backend.dataSource)
+            self._data_source = UaDataSource(val=val.backend.dataSource)
+            self._data_value = None
+            self._callback = None
         elif val.backendType is lib.UA_VALUEBACKENDTYPE_EXTERNAL:
-            self._backend = tuple(UaDataValue(val=val.backend.external.value[0], is_pointer=True),
-                                  # todo: val.backend.internal.value is **
-                                  UaExternalValueCallback(val=val.backend.external.callback))
+            self._data_value = UaDataValue(val=val.backend.external.value[0], is_pointer=True)
+            self._callback = UaExternalValueCallback(val=val.backend.external.callback)
+            self._data_source = None
+            # todo: val.backend.internal.value is **
+
         else:
             raise ValueError(f"Encoding does not exist.")
 
@@ -287,24 +323,143 @@ class UaValueBackend(UaType):
         return self._backend_type
 
     @property
-    def backend(self):
+    def data_value(self):
         if self._null:
             return None
-        return self._backend
+        return self._data_value
 
-    @backend_type.setter
-    def backend_type(self, val: UaValueBackendType):
-        val = Void(val)
+    @property
+    def callback(self):
+        if self._null:
+            return None
+        return self._callback
 
-    @backend.setter
-    def backend(self, val: Union[Internal, External]):
-        val = Void()
+    @property
+    def data_source(self):
+        if self._null:
+            return None
+        return self._data_source
+
+    def set_none(self):
+        self._value = ffi.new("UA_ValueBackend*")
+        self._value.backendType = lib.UA_VALUEBACKENDTYPE_NONE
+
+    def set_internal(self, data_value: UaDataValue, callback: UaValueCallback = None):
+        self._value = ffi.new("UA_ValueBackend*")
+        self._value.backendType = lib.UA_VALUEBACKENDTYPE_INTERNAL
+        self._data_value = data_value
+        self._value.backend.internal.value = data_value._val
+        self._callback = callback
+        self._data_source = None
+        if callback is not None:
+            self._value.backend.internal.callback = callback._val
+
+    def set_external(self, data_value: UaDataValue, callback: 'UaExternalValueCallback' = None):
+        self._value = ffi.new("UA_ValueBackend*")
+        self._value.backendType = lib.UA_VALUEBACKENDTYPE_EXTERNAL
+        self._data_value = data_value
+        self._value.backend.external.value = ffi.new("UA_DataValue **", data_value._ptr)
+        self._callback = callback
+        self._data_source = None
+        if callback is not None:
+            self._value.backend.external.callback = callback._val
+
+    def set_data_source(self, data_source: 'UaDataSource'):
+        self._value = ffi.new("UA_ValueBackend*")
+        self._value.backendType = lib.UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK
+        self._data_source = data_source
+        self._value.backend.dataSource = data_source._val
+        self._data_value = None
+        self._callback = None
+
+    # todo: check backend type and only print relevant fields
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaValueBackend): NULL\n"
+
+        return ("(UaValueBackend):\n" +
+                "\t" * (n + 1) + "backend_type" + str(self._backend_type) +
+                "\t" * (n + 1) + "data_value" + str(self._data_value) +
+                "\t" * (n + 1) + "callback" + str(self._callback) +
+                "\t" * (n + 1) + "data_source" + str(self._data_source) + "\n")
 
 
-class UaBackend(UaType):
+class UaExternalValueCallback(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
-            val = ffi.new()
+            super().__init__(val=ffi.new("UA_ExternalValueCallback*"), is_pointer=is_pointer)
+            # todo: create callbacks
+            self._value[0].onRead = lib.python_wrapper_UA_ExternalValueCallbackNotificationReadCallback
+            self._value[0].onWrite = lib.python_wrapper_UA_ExternalValueCallbackUserWriteCallback
+            self.read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
+            self.write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._uses_python_read_callback = True
+            self._uses_python_write_callback = True
+        else:
+            super().__init__(val=val, is_pointer=is_pointer)
+            self.read_callback = None
+            self.write_callback = None
+            self._uses_python_read_callback = False
+            self._uses_python_write_callback = False
+
+    @property
+    def read_callback(self):
+        if self._null:
+            return None
+        return self.read_callback
+
+    @property
+    def write_callback(self):
+        if self._null:
+            return None
+        return self.write_callback
+
+    @read_callback.setter
+    def read_callback(self, read_callback: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange], UaStatusCode]):
+        self._read_callback = read_callback
+        self._value.read = lib.python_wrapper_UA_ExternalValueCallbackNotificationReadCallback
+        self._uses_python_read_callback = True
+
+    @write_callback.setter
+    def write_callback(self, write_callback: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], UaStatusCode]):
+        self._write_callback = write_callback
+        self._value.write = lib.python_wrapper_UA_ExternalValueCallbackUserWriteCallback
+        self._uses_python_write_callback = True
+
+
+class UaValueBackendType(UaType):
+    UA_VALUEBACKENDTYPE_NONE = 0
+    UA_VALUEBACKENDTYPE_INTERNAL = 1
+    UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK = 2
+    UA_VALUEBACKENDTYPE_EXTERNAL = 3
+
+    val_to_string = dict([
+        (0, "UA_VALUEBACKENDTYPE_NONE"),
+        (1, "UA_VALUEBACKENDTYPE_INTERNAL"),
+        (2, "UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK"),
+        (3, "UA_VALUEBACKENDTYPE_EXTERNAL")])
+
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_ValueBackendType*", val._ptr)
+        if val is None:
+            super().__init__(ffi.new("UA_ValueBackendType*"), is_pointer)
+        else:
+            super().__init__(ffi.cast("UA_ValueBackendType", _val(val)), is_pointer)
+
+    def _set_value(self, val):
+        if _val(val) in self.val_to_string.keys():
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_ValueBackendType")
+            else:
+                self._value[0] = _val(val)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    def __str__(self, n=0):
+        return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 class UaDataSource(UaType):
@@ -315,8 +470,8 @@ class UaDataSource(UaType):
             self._uses_python_write_callback = True
             self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
             self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
-            self._read_callback = None
-            self._write_callback = None
+            self._read_callback = lambda a, b, c, d, e, f, g, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._write_callback = lambda a, b, c, d, e, f, g: UaStatusCode.UA_STATUSCODE_GOOD
         else:
             super().__init__(val=val, is_pointer=is_pointer)
             self._uses_python_read_callback = False
@@ -336,14 +491,14 @@ class UaDataSource(UaType):
 
     @read_callback.setter
     def read_callback(self, val: Callable[
-        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], None]):
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], UaStatusCode]):
         self._read_callback = val
         self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
         self._uses_python_read_callback = True
 
     @write_callback.setter
     def write_callback(self, val: Callable[
-        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None]):
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], UaStatusCode]):
         self._write_callback = val
         self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
         self._uses_python_write_callback = True

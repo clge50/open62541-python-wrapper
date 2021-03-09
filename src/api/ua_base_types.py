@@ -1334,7 +1334,7 @@ class UaVariant(UaType):
         if type(size) is not SizeT:
             raise AttributeError(f"size={size} has to be int or SizeT")
         self.__mem_protect = array._ptr
-        status_code = lib.UA_Variant_setArray(self._ptr, self.__mem_protect, size._val, data_type._ptr)
+        status_code = lib.UA_Variant_setArrayCopy(self._ptr, self.__mem_protect, size._val, data_type._ptr)
         status_code = UaStatusCode(status_code)
         if not status_code.is_bad():
             self._update()
