@@ -35,11 +35,11 @@ class UaBoolean(UaType):
         else:
             self._value[0] = ffi.cast("UA_Boolean", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaBoolean) : NULL\n"
+            return "(UaBoolean) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaBoolean): " + str(self._val) + "\n"
+            return "(UaBoolean): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -73,11 +73,11 @@ class UaSByte(UaType):
         else:
             self._value[0] = ffi.cast("UA_SByte", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSByte) : NULL\n"
+            return "(UaSByte) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaSByte): " + str(self._val) + "\n"
+            return "(UaSByte): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -123,11 +123,11 @@ class UaByte(UaType):
         else:
             self._value[0] = ffi.cast("UA_Byte", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSByte) : NULL\n"
+            return "(UaSByte) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaByte): " + str(self._val) + "\n"
+            return "(UaByte): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -182,11 +182,11 @@ class UaInt16(UaType):
         else:
             self._value[0] = ffi.cast("UA_Int16", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaInt16) : NULL\n"
+            return "(UaInt16) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaInt16): " + str(self._val) + "\n"
+            return "(UaInt16): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -232,11 +232,11 @@ class UaUInt16(UaType):
         else:
             self._value[0] = ffi.cast("UA_UInt16", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaUInt16) : NULL\n"
+            return "(UaUInt16) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaUInt16): " + str(self._val) + "\n"
+            return "(UaUInt16): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -282,11 +282,11 @@ class UaInt32(UaType):
         else:
             self._value[0] = ffi.cast("UA_Int32", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaInt32) : NULL\n"
+            return "(UaInt32) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaInt32): " + str(self._val) + "\n"
+            return "(UaInt32): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -309,22 +309,29 @@ class UaInt32(UaType):
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
-    def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
+    def __init__(self, val: Union[Void, float, List[float]] = None, size: int = None, is_pointer=False):
         if type(val) is Void:
-            val = ffi.cast("UA_UInt32*", val._ptr)
+            if size is None:
+                val = ffi.cast("UA_UInt32*", val._ptr)
+            else:
+                val = ffi.cast(f"UA_UInt32[{size}]", val._ptr)
+                is_pointer = True
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
         else:
             if type(val) is list:
                 super().__init__(ffi.new("UA_UInt32[]", val), True)
-            elif is_pointer:
-                super().__init__(val, is_pointer)
+            elif is_pointer or size is not None:
+                super().__init__(val, True)
             else:
                 super().__init__(ffi.new("UA_UInt32*", _val(val)), is_pointer)
+        self._size = size
 
     @property
     def value(self):
-        return int(self._val)
+        if self._size is None:
+            return int(self._val)
+        return ffi.unpack(self._ptr, self._size)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -332,11 +339,11 @@ class UaUInt32(UaType):
         else:
             self._value[0] = ffi.cast("UA_UInt32", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaUInt32) : NULL\n"
+            return "(UaUInt32) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaUInt32): " + str(self._val) + "\n"
+            return "(UaUInt32): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -391,11 +398,11 @@ class UaInt64(UaType):
         else:
             self._value[0] = ffi.cast("UA_Int64", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaInt64) : NULL\n"
+            return "(UaInt64) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaInt64): " + str(self._val) + "\n"
+            return "(UaInt64): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -441,11 +448,11 @@ class UaUInt64(UaType):
         else:
             self._value[0] = ffi.cast("UA_UInt64", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaUInt64) : NULL\n"
+            return "(UaUInt64) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaUInt64): " + str(self._val) + "\n"
+            return "(UaUInt64): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -491,11 +498,11 @@ class UaFloat(UaType):
         else:
             self._value[0] = ffi.cast("UA_Float", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaFloat) : NULL\n"
+            return "(UaFloat) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaFloat): " + str(self._val) + "\n"
+            return "(UaFloat): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -519,7 +526,7 @@ class UaFloat(UaType):
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 # TODO: Array handling for all other types
 class UaDouble(UaType):
-    def __init__(self, val: Union[Void, float, List[float]] = None,  size: int = None, is_pointer=False):
+    def __init__(self, val: Union[Void, float, List[float]] = None, size: int = None, is_pointer=False):
         if type(val) is Void:
             if size is None:
                 val = ffi.cast("UA_Double*", val._ptr)
@@ -549,11 +556,11 @@ class UaDouble(UaType):
         else:
             self._value[0] = ffi.cast("UA_Double", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaDouble) : NULL\n"
+            return "(UaDouble) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaDouble): " + str(self._val) + "\n"
+            return "(UaDouble): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -1106,11 +1113,11 @@ class UaStatusCode(UaType):
         else:
             self._value[0] = ffi.cast("UA_StatusCode", _val(val))
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaStatusCode) : NULL\n"
+            return "(UaStatusCode) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaStatusCode): " + UaStatusCode.val_to_string[self._val] + "\n"
+            return "(UaStatusCode): " + UaStatusCode.val_to_string[self._val] + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val

@@ -1207,6 +1207,7 @@ class UaVariant(UaType):
             self._data = Void(val=val.data, is_pointer=True)
             self._array_dimensions_size = SizeT(val=val.arrayDimensionsSize, is_pointer=False)
             self._array_dimensions = UaUInt32(val=val.arrayDimensions, is_pointer=True)
+            self._array_dimensions._size = self._array_dimensions_size._val
 
     def _update(self):
         self.__init__(val=self._ptr)
