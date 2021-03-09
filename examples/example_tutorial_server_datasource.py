@@ -69,7 +69,7 @@ ua_data_value = UaDataValue()
 def add_current_time_data_source_variable(server: UaServer):
     attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
     attr.display_name = UaLocalizedText("en-US", "Current time - data source")
-    attr.access_level = UaByte(0x01 << 0 | 0x01 << 1)
+    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
 
     current_node_id = UaNodeId(1, "current-time-datasource")
     current_name = UaQualifiedName(1, "current-time-datasource")

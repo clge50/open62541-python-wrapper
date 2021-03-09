@@ -386,7 +386,7 @@ class UaValueBackend(UaType):
         self._value = ffi.new(&#34;UA_ValueBackend*&#34;)
         self._value.backendType = lib.UA_VALUEBACKENDTYPE_EXTERNAL
         self._data_value = data_value
-        self._value.backend.external.value = data_value._val
+        self._value.backend.external.value = ffi.new(&#34;UA_DataValue **&#34;, data_value._ptr)
         self._callback = callback
         self._data_source = None
         if callback is not None:
@@ -1311,7 +1311,7 @@ def write_callback(self):
         self._value = ffi.new(&#34;UA_ValueBackend*&#34;)
         self._value.backendType = lib.UA_VALUEBACKENDTYPE_EXTERNAL
         self._data_value = data_value
-        self._value.backend.external.value = data_value._val
+        self._value.backend.external.value = ffi.new(&#34;UA_DataValue **&#34;, data_value._ptr)
         self._callback = callback
         self._data_source = None
         if callback is not None:
@@ -1432,7 +1432,7 @@ def data_value(self):
     self._value = ffi.new(&#34;UA_ValueBackend*&#34;)
     self._value.backendType = lib.UA_VALUEBACKENDTYPE_EXTERNAL
     self._data_value = data_value
-    self._value.backend.external.value = data_value._val
+    self._value.backend.external.value = ffi.new(&#34;UA_DataValue **&#34;, data_value._ptr)
     self._callback = callback
     self._data_source = None
     if callback is not None:
