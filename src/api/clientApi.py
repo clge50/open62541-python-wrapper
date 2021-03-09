@@ -30,213 +30,172 @@ class _ClientCallback:
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncTranslateCallback(client, fun, request_id, tr):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client,
+        ffi.from_handle(fun)(UaClient(val=client),
                              UaUInt32(val=request_id, is_pointer=False),
                              UaTranslateBrowsePathsToNodeIdsResponse(val=tr, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncBrowseCallback(client, fun, request_id, wr):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaBrowseResponse(val=wr, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback(client, fun, request_id, var):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(client,
+        ffi.from_handle(fun)(UaClient(val=client),
                              UaUInt32(val=request_id, is_pointer=False),
                              UaNodeId(val=var, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaNodeId(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaNodeId(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadDescriptionAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaLocalizedText(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadWriteMaskAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaUInt32(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaUInt32(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadUserWriteMaskAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaUInt32(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaUInt32(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadIsAbstractAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaBoolean(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBoolean(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadSymmetricAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaBoolean(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBoolean(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadInverseNameAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaLocalizedText(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadContainsNoLoopsAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaBoolean(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBoolean(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadEventNotifierAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaByte(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaByte(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadValueRankAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaInt32(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaInt32(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadAccessLevelAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaByte(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaByte(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadUserAccessLevelAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaByte(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaByte(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadExecutableAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaBoolean(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBoolean(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadUserExecutableAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaBoolean(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBoolean(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncCallCallback(client, fun, request_id, cr):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaCallResponse(val=cr, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadCallback(client, fun, request_id, rr):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaReadResponse(val=rr, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadValueAttributeCallback(client, fun, request_id, var):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaVariant(val=var, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaVariant(val=var, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadNodeClassAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaNodeClass(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadBrowseNameAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaQualifiedName(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadDisplayNameAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaLocalizedText(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadMinimumSamplingIntervalAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaDouble(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaDouble(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncReadHistorizingAttributeCallback(client, fun, request_id, out):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False), UaBoolean(val=out, is_pointer=True))
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBoolean(val=out, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncWriteCallback(client, fun, request_id, wr):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaWriteResponse(val=wr, is_pointer=True))
 
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncAddNodesCallback(client, fun, request_id, ar):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaAddNodesResponse(val=ar, is_pointer=True))
 
     # todo: response is void* --> Void --> handling is not good
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncServiceCallback(client, fun, request_id, response):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client, UaUInt32(val=request_id, is_pointer=False),
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              Void(val=response, is_pointer=False))
 
     @staticmethod
@@ -249,14 +208,14 @@ class _ClientCallback:
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientCallback(client, fun):
-        ua_client = UaClient()
-        ua_client.ua_client = client
-        ffi.from_handle(fun)(ua_client)
+        ffi.from_handle(fun)(UaClient(val=client))
 
 
 class UaClient:
-    def __init__(self, config: UaClientConfig = None):
-        if config is None:
+    def __init__(self, config: UaClientConfig = None, val=None):
+        if val is not None:
+            self.ua_client = val
+        elif config is None:
             self.ua_client = lib.UA_Client_new()
             self.set_default_config()
         else:
