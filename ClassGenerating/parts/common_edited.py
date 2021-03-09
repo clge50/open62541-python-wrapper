@@ -249,7 +249,7 @@ class UaNetworkStatistics(UaType):
             self._connection_abort_count = SizeT(val=val.connectionAbortCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:
@@ -352,7 +352,7 @@ class UaSecureChannelStatistics(UaType):
             self._channel_purge_count = SizeT(val=val.channelPurgeCount, is_pointer=False)
 
     def _update(self):
-        self.__init__(self._ptr)
+        self.__init__(val=self._ptr)
     
     def _set_value(self, val):
         if self._is_pointer:

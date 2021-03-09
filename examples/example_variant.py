@@ -11,10 +11,17 @@ v2 = UaVariant()
 v2.copy(v)
 
 v3 = UaVariant()
-d = [1.1, 1.2, 1.3,
+dr = [1.1, 1.2, 1.3,
      2.1, 2.2, 2.3,
      3.1, 3.2, 3.3]
-d = UaDouble(d)
+d = UaDouble(dr)
+
+x = ffi.cast("UA_Double*", ffi.new("UA_Double[]", dr))
+print(x[4])
+data = ffi.cast("UA_Double[9]", x)
+f = ffi.new("UA_Double**", data)
+f[0][4] = 42.0
+print(f[0][4])
 
 v3.set_array(d, SizeT(9), TYPES.DOUBLE)
 v3.array_dimensions = UaUInt32([3, 3])
@@ -22,6 +29,4 @@ v3.array_dimensions_size = SizeT(2)
 
 # Using ffi to test if the data is stored correctly
 print(v3.has_array_type(TYPES.DOUBLE))
-data = ffi.cast("UA_Double[9]", v3._data._value)
-data = ffi.unpack(data, 9)
-print(data)
+print(UaList(v3._data._value, 9, UaDouble).value)
