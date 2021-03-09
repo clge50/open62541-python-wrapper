@@ -22,9 +22,7 @@ class _ServerCallback:
     def python_wrapper_UA_DataSourceReadCallback(server, session_id, session_context, node_id, node_context,
                                                  include_source_time_stamp, numeric_range, value):
         callbacks_dict_key = str(UaNodeId(val=node_id))
-        wrapped_server = UaServer()
-        wrapped_server.ua_server = server
-        return _ServerCallback.callbacks_dict[callbacks_dict_key].read_callback(wrapped_server,
+        return _ServerCallback.callbacks_dict[callbacks_dict_key].read_callback(UaServer(val=server),
                                                                                 UaNodeId(val=session_id,
                                                                                          is_pointer=True),
                                                                                 Void(val=session_context,
@@ -44,9 +42,7 @@ class _ServerCallback:
                                                   node_context, numeric_range,
                                                   value):
         callbacks_dict_key = str(UaNodeId(val=node_id))
-        wrapped_server = UaServer()
-        wrapped_server.ua_server = server
-        return _ServerCallback.callbacks_dict[callbacks_dict_key].write_callback(wrapped_server,
+        return _ServerCallback.callbacks_dict[callbacks_dict_key].write_callback(UaServer(val=server),
                                                                                  UaNodeId(val=session_id,
                                                                                           is_pointer=True),
                                                                                  Void(val=session_context,
@@ -66,9 +62,7 @@ class _ServerCallback:
                                                       node_context, numeric_range,
                                                       value):
         callbacks_dict_key = str(UaNodeId(val=node_id))
-        wrapped_server = UaServer()
-        wrapped_server.ua_server = server
-        _ServerCallback.callbacks_dict[callbacks_dict_key].read_callback(wrapped_server,
+        _ServerCallback.callbacks_dict[callbacks_dict_key].read_callback(UaServer(val=server),
                                                                          UaNodeId(val=session_id, is_pointer=True),
                                                                          Void(val=session_context, is_pointer=True),
                                                                          UaNodeId(val=node_id, is_pointer=True),
@@ -84,9 +78,7 @@ class _ServerCallback:
                                                        node_context, numeric_range,
                                                        value):
         callbacks_dict_key = str(UaNodeId(val=node_id))
-        wrapped_server = UaServer()
-        wrapped_server.ua_server = server
-        _ServerCallback.callbacks_dict[callbacks_dict_key].write_callback(wrapped_server,
+        _ServerCallback.callbacks_dict[callbacks_dict_key].write_callback(UaServer(val=server),
                                                                           UaNodeId(val=session_id, is_pointer=True),
                                                                           Void(val=session_context, is_pointer=True),
                                                                           UaNodeId(val=node_id, is_pointer=True),
@@ -100,8 +92,10 @@ class _ServerCallback:
 
 class UaServer:
 
-    def __init__(self, config=None):
-        if config is None:
+    def __init__(self, config=None, val=None):
+        if val is not None:
+            self.ua_server = val
+        elif config is None:
             self.ua_server = lib.UA_Server_new()
             self.set_default_config()
         else:
@@ -221,7 +215,6 @@ class UaServer:
     def read_node_class(self, node_id: UaNodeId):
         out_node_class = UaNodeClass()
         status_code = lib.UA_Server_readNodeClass(self.ua_server, node_id._val, out_node_class._ptr)
-        out_node_class._update()
         return ServerServiceResults.NodeClassResult(status_code, out_node_class._ptr)
 
     def read_browse_name(self, node_id: UaNodeId):

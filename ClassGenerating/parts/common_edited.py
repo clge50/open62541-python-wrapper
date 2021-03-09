@@ -236,7 +236,9 @@ class UaSessionState(UaType):
 
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
-    def __init__(self, val=ffi.new("UA_NetworkStatistics*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NetworkStatistics*")
         if type(val) is Void:
             val = ffi.cast("UA_NetworkStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -338,7 +340,9 @@ class UaNetworkStatistics(UaType):
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
 class UaSecureChannelStatistics(UaType):
-    def __init__(self, val=ffi.new("UA_SecureChannelStatistics*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecureChannelStatistics*")
         if type(val) is Void:
             val = ffi.cast("UA_SecureChannelStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)

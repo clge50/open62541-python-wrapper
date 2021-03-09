@@ -10,7 +10,9 @@ from ua_types_parent import _ptr, _val, _is_null
 
 # +++++++++++++++++++ UaViewAttributes +++++++++++++++++++++++
 class UaViewAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ViewAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ViewAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_ViewAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -130,19 +132,21 @@ class UaViewAttributes(UaType):
         if self._null:
             return "(UaViewAttributes) : NULL\n"
 
-        return ("(UaViewAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1) +
-                "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
+        return ("(UaViewAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1)
+                + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaXVType +++++++++++++++++++++++
 class UaXVType(UaType):
-    def __init__(self, val=ffi.new("UA_XVType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_XVType*")
         if type(val) is Void:
             val = ffi.cast("UA_XVType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -192,14 +196,16 @@ class UaXVType(UaType):
         if self._null:
             return "(UaXVType) : NULL\n"
 
-        return ("(UaXVType) :\n" +
-                "\t" * (n + 1) + "x" + self._x.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
+        return ("(UaXVType) :\n"
+                + "\t" * (n + 1) + "x" + self._x.__str__(n + 1)
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
 class UaElementOperand(UaType):
-    def __init__(self, val=ffi.new("UA_ElementOperand*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ElementOperand*")
         if type(val) is Void:
             val = ffi.cast("UA_ElementOperand*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -235,13 +241,15 @@ class UaElementOperand(UaType):
         if self._null:
             return "(UaElementOperand) : NULL\n"
 
-        return ("(UaElementOperand) :\n" +
-                "\t" * (n + 1) + "index" + self._index.__str__(n + 1))
+        return ("(UaElementOperand) :\n"
+                + "\t" * (n + 1) + "index" + self._index.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaVariableAttributes +++++++++++++++++++++++
 class UaVariableAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_VariableAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_VariableAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_VariableAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -459,26 +467,28 @@ class UaVariableAttributes(UaType):
         if self._null:
             return "(UaVariableAttributes) : NULL\n"
 
-        return ("(UaVariableAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) +
-                "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1) +
-                "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
-                "\t" * (n + 1) + "access_level" + self._access_level.__str__(n + 1) +
-                "\t" * (n + 1) + "user_access_level" + self._user_access_level.__str__(n + 1) +
-                "\t" * (n + 1) + "minimum_sampling_interval" + self._minimum_sampling_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "historizing" + self._historizing.__str__(n + 1))
+        return ("(UaVariableAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1)
+                + "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1)
+                + "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1)
+                + "\t" * (n + 1) + "access_level" + self._access_level.__str__(n + 1)
+                + "\t" * (n + 1) + "user_access_level" + self._user_access_level.__str__(n + 1)
+                + "\t" * (n + 1) + "minimum_sampling_interval" + self._minimum_sampling_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "historizing" + self._historizing.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEnumValueType +++++++++++++++++++++++
 class UaEnumValueType(UaType):
-    def __init__(self, val=ffi.new("UA_EnumValueType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EnumValueType*")
         if type(val) is Void:
             val = ffi.cast("UA_EnumValueType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -542,15 +552,17 @@ class UaEnumValueType(UaType):
         if self._null:
             return "(UaEnumValueType) : NULL\n"
 
-        return ("(UaEnumValueType) :\n" +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
+        return ("(UaEnumValueType) :\n"
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventFieldList +++++++++++++++++++++++
 class UaEventFieldList(UaType):
-    def __init__(self, val=ffi.new("UA_EventFieldList*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EventFieldList*")
         if type(val) is Void:
             val = ffi.cast("UA_EventFieldList*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -614,15 +626,17 @@ class UaEventFieldList(UaType):
         if self._null:
             return "(UaEventFieldList) : NULL\n"
 
-        return ("(UaEventFieldList) :\n" +
-                "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1) +
-                "\t" * (n + 1) + "event_fields_size" + self._event_fields_size.__str__(n + 1) +
-                "\t" * (n + 1) + "event_fields" + self._event_fields.__str__(n + 1))
+        return ("(UaEventFieldList) :\n"
+                + "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1)
+                + "\t" * (n + 1) + "event_fields_size" + self._event_fields_size.__str__(n + 1)
+                + "\t" * (n + 1) + "event_fields" + self._event_fields.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemCreateResult +++++++++++++++++++++++
 class UaMonitoredItemCreateResult(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemCreateResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemCreateResult*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemCreateResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -714,17 +728,19 @@ class UaMonitoredItemCreateResult(UaType):
         if self._null:
             return "(UaMonitoredItemCreateResult) : NULL\n"
 
-        return ("(UaMonitoredItemCreateResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_id" + self._monitored_item_id.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_queue_size" + self._revised_queue_size.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1))
+        return ("(UaMonitoredItemCreateResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "monitored_item_id" + self._monitored_item_id.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_queue_size" + self._revised_queue_size.__str__(n + 1)
+                + "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEUInformation +++++++++++++++++++++++
 class UaEUInformation(UaType):
-    def __init__(self, val=ffi.new("UA_EUInformation*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EUInformation*")
         if type(val) is Void:
             val = ffi.cast("UA_EUInformation*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -802,16 +818,18 @@ class UaEUInformation(UaType):
         if self._null:
             return "(UaEUInformation) : NULL\n"
 
-        return ("(UaEUInformation) :\n" +
-                "\t" * (n + 1) + "namespace_uri" + self._namespace_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "unit_id" + self._unit_id.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
+        return ("(UaEUInformation) :\n"
+                + "\t" * (n + 1) + "namespace_uri" + self._namespace_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "unit_id" + self._unit_id.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaServerDiagnosticsSummaryDataType +++++++++++++++++++++++
 class UaServerDiagnosticsSummaryDataType(UaType):
-    def __init__(self, val=ffi.new("UA_ServerDiagnosticsSummaryDataType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ServerDiagnosticsSummaryDataType*")
         if type(val) is Void:
             val = ffi.cast("UA_ServerDiagnosticsSummaryDataType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1001,26 +1019,28 @@ class UaServerDiagnosticsSummaryDataType(UaType):
         if self._null:
             return "(UaServerDiagnosticsSummaryDataType) : NULL\n"
 
-        return ("(UaServerDiagnosticsSummaryDataType) :\n" +
-                "\t" * (n + 1) + "server_view_count" + self._server_view_count.__str__(n + 1) +
-                "\t" * (n + 1) + "current_session_count" + self._current_session_count.__str__(n + 1) +
-                "\t" * (n + 1) + "cumulated_session_count" + self._cumulated_session_count.__str__(n + 1) +
-                "\t" * (n + 1) + "security_rejected_session_count" + self._security_rejected_session_count.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "rejected_session_count" + self._rejected_session_count.__str__(n + 1) +
-                "\t" * (n + 1) + "session_timeout_count" + self._session_timeout_count.__str__(n + 1) +
-                "\t" * (n + 1) + "session_abort_count" + self._session_abort_count.__str__(n + 1) +
-                "\t" * (n + 1) + "current_subscription_count" + self._current_subscription_count.__str__(n + 1) +
-                "\t" * (n + 1) + "cumulated_subscription_count" + self._cumulated_subscription_count.__str__(n + 1) +
-                "\t" * (n + 1) + "publishing_interval_count" + self._publishing_interval_count.__str__(n + 1) +
-                "\t" * (n + 1) + "security_rejected_requests_count" + self._security_rejected_requests_count.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "rejected_requests_count" + self._rejected_requests_count.__str__(n + 1))
+        return ("(UaServerDiagnosticsSummaryDataType) :\n"
+                + "\t" * (n + 1) + "server_view_count" + self._server_view_count.__str__(n + 1)
+                + "\t" * (n + 1) + "current_session_count" + self._current_session_count.__str__(n + 1)
+                + "\t" * (n + 1) + "cumulated_session_count" + self._cumulated_session_count.__str__(n + 1)
+                + "\t" * (n + 1) + "security_rejected_session_count" + self._security_rejected_session_count.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "rejected_session_count" + self._rejected_session_count.__str__(n + 1)
+                + "\t" * (n + 1) + "session_timeout_count" + self._session_timeout_count.__str__(n + 1)
+                + "\t" * (n + 1) + "session_abort_count" + self._session_abort_count.__str__(n + 1)
+                + "\t" * (n + 1) + "current_subscription_count" + self._current_subscription_count.__str__(n + 1)
+                + "\t" * (n + 1) + "cumulated_subscription_count" + self._cumulated_subscription_count.__str__(n + 1)
+                + "\t" * (n + 1) + "publishing_interval_count" + self._publishing_interval_count.__str__(n + 1)
+                + "\t" * (n + 1) + "security_rejected_requests_count" + self._security_rejected_requests_count.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "rejected_requests_count" + self._rejected_requests_count.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilterElementResult +++++++++++++++++++++++
 class UaContentFilterElementResult(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterElementResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ContentFilterElementResult*")
         if type(val) is Void:
             val = ffi.cast("UA_ContentFilterElementResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1112,17 +1132,19 @@ class UaContentFilterElementResult(UaType):
         if self._null:
             return "(UaContentFilterElementResult) : NULL\n"
 
-        return ("(UaContentFilterElementResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "operand_status_codes_size" + self._operand_status_codes_size.__str__(n + 1) +
-                "\t" * (n + 1) + "operand_status_codes" + self._operand_status_codes.__str__(n + 1) +
-                "\t" * (n + 1) + "operand_diagnostic_infos_size" + self._operand_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "operand_diagnostic_infos" + self._operand_diagnostic_infos.__str__(n + 1))
+        return ("(UaContentFilterElementResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "operand_status_codes_size" + self._operand_status_codes_size.__str__(n + 1)
+                + "\t" * (n + 1) + "operand_status_codes" + self._operand_status_codes.__str__(n + 1)
+                + "\t" * (n + 1) + "operand_diagnostic_infos_size" + self._operand_diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "operand_diagnostic_infos" + self._operand_diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaLiteralOperand +++++++++++++++++++++++
 class UaLiteralOperand(UaType):
-    def __init__(self, val=ffi.new("UA_LiteralOperand*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_LiteralOperand*")
         if type(val) is Void:
             val = ffi.cast("UA_LiteralOperand*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1158,13 +1180,15 @@ class UaLiteralOperand(UaType):
         if self._null:
             return "(UaLiteralOperand) : NULL\n"
 
-        return ("(UaLiteralOperand) :\n" +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
+        return ("(UaLiteralOperand) :\n"
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
 class UaUserIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_UserIdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_UserIdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_UserIdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1200,13 +1224,15 @@ class UaUserIdentityToken(UaType):
         if self._null:
             return "(UaUserIdentityToken) : NULL\n"
 
-        return ("(UaUserIdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1))
+        return ("(UaUserIdentityToken) :\n"
+                + "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaX509IdentityToken +++++++++++++++++++++++
 class UaX509IdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_X509IdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_X509IdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_X509IdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1256,14 +1282,16 @@ class UaX509IdentityToken(UaType):
         if self._null:
             return "(UaX509IdentityToken) : NULL\n"
 
-        return ("(UaX509IdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
-                "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1))
+        return ("(UaX509IdentityToken) :\n"
+                + "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1)
+                + "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemNotification +++++++++++++++++++++++
 class UaMonitoredItemNotification(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemNotification*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemNotification*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemNotification*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1313,14 +1341,16 @@ class UaMonitoredItemNotification(UaType):
         if self._null:
             return "(UaMonitoredItemNotification) : NULL\n"
 
-        return ("(UaMonitoredItemNotification) :\n" +
-                "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
+        return ("(UaMonitoredItemNotification) :\n"
+                + "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1)
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
 class UaResponseHeader(UaType):
-    def __init__(self, val=ffi.new("UA_ResponseHeader*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ResponseHeader*")
         if type(val) is Void:
             val = ffi.cast("UA_ResponseHeader*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1440,19 +1470,21 @@ class UaResponseHeader(UaType):
         if self._null:
             return "(UaResponseHeader) : NULL\n"
 
-        return ("(UaResponseHeader) :\n" +
-                "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "request_handle" + self._request_handle.__str__(n + 1) +
-                "\t" * (n + 1) + "service_result" + self._service_result.__str__(n + 1) +
-                "\t" * (n + 1) + "service_diagnostics" + self._service_diagnostics.__str__(n + 1) +
-                "\t" * (n + 1) + "string_table_size" + self._string_table_size.__str__(n + 1) +
-                "\t" * (n + 1) + "string_table" + self._string_table.__str__(n + 1) +
-                "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1))
+        return ("(UaResponseHeader) :\n"
+                + "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1)
+                + "\t" * (n + 1) + "request_handle" + self._request_handle.__str__(n + 1)
+                + "\t" * (n + 1) + "service_result" + self._service_result.__str__(n + 1)
+                + "\t" * (n + 1) + "service_diagnostics" + self._service_diagnostics.__str__(n + 1)
+                + "\t" * (n + 1) + "string_table_size" + self._string_table_size.__str__(n + 1)
+                + "\t" * (n + 1) + "string_table" + self._string_table.__str__(n + 1)
+                + "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSignatureData +++++++++++++++++++++++
 class UaSignatureData(UaType):
-    def __init__(self, val=ffi.new("UA_SignatureData*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SignatureData*")
         if type(val) is Void:
             val = ffi.cast("UA_SignatureData*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1502,14 +1534,16 @@ class UaSignatureData(UaType):
         if self._null:
             return "(UaSignatureData) : NULL\n"
 
-        return ("(UaSignatureData) :\n" +
-                "\t" * (n + 1) + "algorithm" + self._algorithm.__str__(n + 1) +
-                "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1))
+        return ("(UaSignatureData) :\n"
+                + "\t" * (n + 1) + "algorithm" + self._algorithm.__str__(n + 1)
+                + "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifySubscriptionResponse +++++++++++++++++++++++
 class UaModifySubscriptionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ModifySubscriptionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ModifySubscriptionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_ModifySubscriptionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1587,17 +1621,18 @@ class UaModifySubscriptionResponse(UaType):
         if self._null:
             return "(UaModifySubscriptionResponse) : NULL\n"
 
-        return ("(UaModifySubscriptionResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_lifetime_count" + self._revised_lifetime_count.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_max_keep_alive_count" + self._revised_max_keep_alive_count.__str__(
-                    n + 1))
+        return ("(UaModifySubscriptionResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_lifetime_count" + self._revised_lifetime_count.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_max_keep_alive_count" + self._revised_max_keep_alive_count.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaNodeAttributes +++++++++++++++++++++++
 class UaNodeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_NodeAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NodeAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_NodeAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1689,17 +1724,19 @@ class UaNodeAttributes(UaType):
         if self._null:
             return "(UaNodeAttributes) : NULL\n"
 
-        return ("(UaNodeAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1))
+        return ("(UaNodeAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaActivateSessionResponse +++++++++++++++++++++++
 class UaActivateSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ActivateSessionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ActivateSessionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_ActivateSessionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1805,18 +1842,20 @@ class UaActivateSessionResponse(UaType):
         if self._null:
             return "(UaActivateSessionResponse) : NULL\n"
 
-        return ("(UaActivateSessionResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaActivateSessionResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEnumField +++++++++++++++++++++++
 class UaEnumField(UaType):
-    def __init__(self, val=ffi.new("UA_EnumField*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EnumField*")
         if type(val) is Void:
             val = ffi.cast("UA_EnumField*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1894,16 +1933,18 @@ class UaEnumField(UaType):
         if self._null:
             return "(UaEnumField) : NULL\n"
 
-        return ("(UaEnumField) :\n" +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "name" + self._name.__str__(n + 1))
+        return ("(UaEnumField) :\n"
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "name" + self._name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaVariableTypeAttributes +++++++++++++++++++++++
 class UaVariableTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_VariableTypeAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_VariableTypeAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_VariableTypeAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2079,23 +2120,25 @@ class UaVariableTypeAttributes(UaType):
         if self._null:
             return "(UaVariableTypeAttributes) : NULL\n"
 
-        return ("(UaVariableTypeAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1) +
-                "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1) +
-                "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
+        return ("(UaVariableTypeAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1)
+                + "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1)
+                + "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1)
+                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallMethodResult +++++++++++++++++++++++
 class UaCallMethodResult(UaType):
-    def __init__(self, val=ffi.new("UA_CallMethodResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CallMethodResult*")
         if type(val) is Void:
             val = ffi.cast("UA_CallMethodResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2217,22 +2260,24 @@ class UaCallMethodResult(UaType):
         if self._null:
             return "(UaCallMethodResult) : NULL\n"
 
-        return ("(UaCallMethodResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "input_argument_results_size" + self._input_argument_results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "input_argument_results" + self._input_argument_results.__str__(n + 1) +
-                "\t" * (
+        return ("(UaCallMethodResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "input_argument_results_size" + self._input_argument_results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "input_argument_results" + self._input_argument_results.__str__(n + 1)
+                + "\t" * (
                         n + 1) + "input_argument_diagnostic_infos_size" + self._input_argument_diagnostic_infos_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "input_argument_diagnostic_infos" + self._input_argument_diagnostic_infos.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "output_arguments_size" + self._output_arguments_size.__str__(n + 1) +
-                "\t" * (n + 1) + "output_arguments" + self._output_arguments.__str__(n + 1))
+                    n + 1)
+                + "\t" * (n + 1) + "input_argument_diagnostic_infos" + self._input_argument_diagnostic_infos.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "output_arguments_size" + self._output_arguments_size.__str__(n + 1)
+                + "\t" * (n + 1) + "output_arguments" + self._output_arguments.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetMonitoringModeResponse +++++++++++++++++++++++
 class UaSetMonitoringModeResponse(UaType):
-    def __init__(self, val=ffi.new("UA_SetMonitoringModeResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SetMonitoringModeResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_SetMonitoringModeResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2324,17 +2369,19 @@ class UaSetMonitoringModeResponse(UaType):
         if self._null:
             return "(UaSetMonitoringModeResponse) : NULL\n"
 
-        return ("(UaSetMonitoringModeResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaSetMonitoringModeResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRequestHeader +++++++++++++++++++++++
 class UaRequestHeader(UaType):
-    def __init__(self, val=ffi.new("UA_RequestHeader*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RequestHeader*")
         if type(val) is Void:
             val = ffi.cast("UA_RequestHeader*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2454,19 +2501,21 @@ class UaRequestHeader(UaType):
         if self._null:
             return "(UaRequestHeader) : NULL\n"
 
-        return ("(UaRequestHeader) :\n" +
-                "\t" * (n + 1) + "authentication_token" + self._authentication_token.__str__(n + 1) +
-                "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "request_handle" + self._request_handle.__str__(n + 1) +
-                "\t" * (n + 1) + "return_diagnostics" + self._return_diagnostics.__str__(n + 1) +
-                "\t" * (n + 1) + "audit_entry_id" + self._audit_entry_id.__str__(n + 1) +
-                "\t" * (n + 1) + "timeout_hint" + self._timeout_hint.__str__(n + 1) +
-                "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1))
+        return ("(UaRequestHeader) :\n"
+                + "\t" * (n + 1) + "authentication_token" + self._authentication_token.__str__(n + 1)
+                + "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1)
+                + "\t" * (n + 1) + "request_handle" + self._request_handle.__str__(n + 1)
+                + "\t" * (n + 1) + "return_diagnostics" + self._return_diagnostics.__str__(n + 1)
+                + "\t" * (n + 1) + "audit_entry_id" + self._audit_entry_id.__str__(n + 1)
+                + "\t" * (n + 1) + "timeout_hint" + self._timeout_hint.__str__(n + 1)
+                + "\t" * (n + 1) + "additional_header" + self._additional_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemModifyResult +++++++++++++++++++++++
 class UaMonitoredItemModifyResult(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemModifyResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemModifyResult*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemModifyResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2544,16 +2593,18 @@ class UaMonitoredItemModifyResult(UaType):
         if self._null:
             return "(UaMonitoredItemModifyResult) : NULL\n"
 
-        return ("(UaMonitoredItemModifyResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_queue_size" + self._revised_queue_size.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1))
+        return ("(UaMonitoredItemModifyResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_sampling_interval" + self._revised_sampling_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_queue_size" + self._revised_queue_size.__str__(n + 1)
+                + "\t" * (n + 1) + "filter_result" + self._filter_result.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSecureChannelRequest +++++++++++++++++++++++
 class UaCloseSecureChannelRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSecureChannelRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CloseSecureChannelRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CloseSecureChannelRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2589,13 +2640,15 @@ class UaCloseSecureChannelRequest(UaType):
         if self._null:
             return "(UaCloseSecureChannelRequest) : NULL\n"
 
-        return ("(UaCloseSecureChannelRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1))
+        return ("(UaCloseSecureChannelRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaNotificationMessage +++++++++++++++++++++++
 class UaNotificationMessage(UaType):
-    def __init__(self, val=ffi.new("UA_NotificationMessage*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NotificationMessage*")
         if type(val) is Void:
             val = ffi.cast("UA_NotificationMessage*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2673,16 +2726,18 @@ class UaNotificationMessage(UaType):
         if self._null:
             return "(UaNotificationMessage) : NULL\n"
 
-        return ("(UaNotificationMessage) :\n" +
-                "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1) +
-                "\t" * (n + 1) + "publish_time" + self._publish_time.__str__(n + 1) +
-                "\t" * (n + 1) + "notification_data_size" + self._notification_data_size.__str__(n + 1) +
-                "\t" * (n + 1) + "notification_data" + self._notification_data.__str__(n + 1))
+        return ("(UaNotificationMessage) :\n"
+                + "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1)
+                + "\t" * (n + 1) + "publish_time" + self._publish_time.__str__(n + 1)
+                + "\t" * (n + 1) + "notification_data_size" + self._notification_data_size.__str__(n + 1)
+                + "\t" * (n + 1) + "notification_data" + self._notification_data.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSubscriptionResponse +++++++++++++++++++++++
 class UaCreateSubscriptionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSubscriptionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CreateSubscriptionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_CreateSubscriptionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2774,18 +2829,19 @@ class UaCreateSubscriptionResponse(UaType):
         if self._null:
             return "(UaCreateSubscriptionResponse) : NULL\n"
 
-        return ("(UaCreateSubscriptionResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_lifetime_count" + self._revised_lifetime_count.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_max_keep_alive_count" + self._revised_max_keep_alive_count.__str__(
-                    n + 1))
+        return ("(UaCreateSubscriptionResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_publishing_interval" + self._revised_publishing_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_lifetime_count" + self._revised_lifetime_count.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_max_keep_alive_count" + self._revised_max_keep_alive_count.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEnumDefinition +++++++++++++++++++++++
 class UaEnumDefinition(UaType):
-    def __init__(self, val=ffi.new("UA_EnumDefinition*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EnumDefinition*")
         if type(val) is Void:
             val = ffi.cast("UA_EnumDefinition*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2835,14 +2891,16 @@ class UaEnumDefinition(UaType):
         if self._null:
             return "(UaEnumDefinition) : NULL\n"
 
-        return ("(UaEnumDefinition) :\n" +
-                "\t" * (n + 1) + "fields_size" + self._fields_size.__str__(n + 1) +
-                "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1))
+        return ("(UaEnumDefinition) :\n"
+                + "\t" * (n + 1) + "fields_size" + self._fields_size.__str__(n + 1)
+                + "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallMethodRequest +++++++++++++++++++++++
 class UaCallMethodRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CallMethodRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CallMethodRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CallMethodRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2920,16 +2978,18 @@ class UaCallMethodRequest(UaType):
         if self._null:
             return "(UaCallMethodRequest) : NULL\n"
 
-        return ("(UaCallMethodRequest) :\n" +
-                "\t" * (n + 1) + "object_id" + self._object_id.__str__(n + 1) +
-                "\t" * (n + 1) + "method_id" + self._method_id.__str__(n + 1) +
-                "\t" * (n + 1) + "input_arguments_size" + self._input_arguments_size.__str__(n + 1) +
-                "\t" * (n + 1) + "input_arguments" + self._input_arguments.__str__(n + 1))
+        return ("(UaCallMethodRequest) :\n"
+                + "\t" * (n + 1) + "object_id" + self._object_id.__str__(n + 1)
+                + "\t" * (n + 1) + "method_id" + self._method_id.__str__(n + 1)
+                + "\t" * (n + 1) + "input_arguments_size" + self._input_arguments_size.__str__(n + 1)
+                + "\t" * (n + 1) + "input_arguments" + self._input_arguments.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReadResponse +++++++++++++++++++++++
 class UaReadResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ReadResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ReadResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_ReadResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3021,17 +3081,19 @@ class UaReadResponse(UaType):
         if self._null:
             return "(UaReadResponse) : NULL\n"
 
-        return ("(UaReadResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaReadResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaObjectTypeAttributes +++++++++++++++++++++++
 class UaObjectTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ObjectTypeAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ObjectTypeAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_ObjectTypeAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3137,18 +3199,20 @@ class UaObjectTypeAttributes(UaType):
         if self._null:
             return "(UaObjectTypeAttributes) : NULL\n"
 
-        return ("(UaObjectTypeAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
+        return ("(UaObjectTypeAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSessionResponse +++++++++++++++++++++++
 class UaCloseSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSessionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CloseSessionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_CloseSessionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3184,13 +3248,15 @@ class UaCloseSessionResponse(UaType):
         if self._null:
             return "(UaCloseSessionResponse) : NULL\n"
 
-        return ("(UaCloseSessionResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
+        return ("(UaCloseSessionResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetPublishingModeRequest +++++++++++++++++++++++
 class UaSetPublishingModeRequest(UaType):
-    def __init__(self, val=ffi.new("UA_SetPublishingModeRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SetPublishingModeRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_SetPublishingModeRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3268,16 +3334,18 @@ class UaSetPublishingModeRequest(UaType):
         if self._null:
             return "(UaSetPublishingModeRequest) : NULL\n"
 
-        return ("(UaSetPublishingModeRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "publishing_enabled" + self._publishing_enabled.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1))
+        return ("(UaSetPublishingModeRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "publishing_enabled" + self._publishing_enabled.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaIssuedIdentityToken +++++++++++++++++++++++
 class UaIssuedIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_IssuedIdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_IssuedIdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_IssuedIdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3341,15 +3409,17 @@ class UaIssuedIdentityToken(UaType):
         if self._null:
             return "(UaIssuedIdentityToken) : NULL\n"
 
-        return ("(UaIssuedIdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
-                "\t" * (n + 1) + "token_data" + self._token_data.__str__(n + 1) +
-                "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1))
+        return ("(UaIssuedIdentityToken) :\n"
+                + "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1)
+                + "\t" * (n + 1) + "token_data" + self._token_data.__str__(n + 1)
+                + "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsResponse +++++++++++++++++++++++
 class UaDeleteMonitoredItemsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteMonitoredItemsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteMonitoredItemsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3441,17 +3511,19 @@ class UaDeleteMonitoredItemsResponse(UaType):
         if self._null:
             return "(UaDeleteMonitoredItemsResponse) : NULL\n"
 
-        return ("(UaDeleteMonitoredItemsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaDeleteMonitoredItemsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseNextRequest +++++++++++++++++++++++
 class UaBrowseNextRequest(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseNextRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowseNextRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowseNextRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3529,16 +3601,18 @@ class UaBrowseNextRequest(UaType):
         if self._null:
             return "(UaBrowseNextRequest) : NULL\n"
 
-        return ("(UaBrowseNextRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "release_continuation_points" + self._release_continuation_points.__str__(n + 1) +
-                "\t" * (n + 1) + "continuation_points_size" + self._continuation_points_size.__str__(n + 1) +
-                "\t" * (n + 1) + "continuation_points" + self._continuation_points.__str__(n + 1))
+        return ("(UaBrowseNextRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "release_continuation_points" + self._release_continuation_points.__str__(n + 1)
+                + "\t" * (n + 1) + "continuation_points_size" + self._continuation_points_size.__str__(n + 1)
+                + "\t" * (n + 1) + "continuation_points" + self._continuation_points.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifySubscriptionRequest +++++++++++++++++++++++
 class UaModifySubscriptionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ModifySubscriptionRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ModifySubscriptionRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_ModifySubscriptionRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3658,20 +3732,22 @@ class UaModifySubscriptionRequest(UaType):
         if self._null:
             return "(UaModifySubscriptionRequest) : NULL\n"
 
-        return ("(UaModifySubscriptionRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_publishing_interval" + self._requested_publishing_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_lifetime_count" + self._requested_lifetime_count.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_max_keep_alive_count" + self._requested_max_keep_alive_count.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "max_notifications_per_publish" + self._max_notifications_per_publish.__str__(n + 1) +
-                "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1))
+        return ("(UaModifySubscriptionRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_publishing_interval" + self._requested_publishing_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_lifetime_count" + self._requested_lifetime_count.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_max_keep_alive_count" + self._requested_max_keep_alive_count.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "max_notifications_per_publish" + self._max_notifications_per_publish.__str__(n + 1)
+                + "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseDescription +++++++++++++++++++++++
 class UaBrowseDescription(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseDescription*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowseDescription*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowseDescription*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3777,18 +3853,20 @@ class UaBrowseDescription(UaType):
         if self._null:
             return "(UaBrowseDescription) : NULL\n"
 
-        return ("(UaBrowseDescription) :\n" +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_direction" + self._browse_direction.__str__(n + 1) +
-                "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "include_subtypes" + self._include_subtypes.__str__(n + 1) +
-                "\t" * (n + 1) + "node_class_mask" + self._node_class_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "result_mask" + self._result_mask.__str__(n + 1))
+        return ("(UaBrowseDescription) :\n"
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_direction" + self._browse_direction.__str__(n + 1)
+                + "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1)
+                + "\t" * (n + 1) + "include_subtypes" + self._include_subtypes.__str__(n + 1)
+                + "\t" * (n + 1) + "node_class_mask" + self._node_class_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "result_mask" + self._result_mask.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSignedSoftwareCertificate +++++++++++++++++++++++
 class UaSignedSoftwareCertificate(UaType):
-    def __init__(self, val=ffi.new("UA_SignedSoftwareCertificate*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SignedSoftwareCertificate*")
         if type(val) is Void:
             val = ffi.cast("UA_SignedSoftwareCertificate*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3838,14 +3916,16 @@ class UaSignedSoftwareCertificate(UaType):
         if self._null:
             return "(UaSignedSoftwareCertificate) : NULL\n"
 
-        return ("(UaSignedSoftwareCertificate) :\n" +
-                "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1) +
-                "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1))
+        return ("(UaSignedSoftwareCertificate) :\n"
+                + "\t" * (n + 1) + "certificate_data" + self._certificate_data.__str__(n + 1)
+                + "\t" * (n + 1) + "signature" + self._signature.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowsePathTarget +++++++++++++++++++++++
 class UaBrowsePathTarget(UaType):
-    def __init__(self, val=ffi.new("UA_BrowsePathTarget*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowsePathTarget*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowsePathTarget*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3895,14 +3975,16 @@ class UaBrowsePathTarget(UaType):
         if self._null:
             return "(UaBrowsePathTarget) : NULL\n"
 
-        return ("(UaBrowsePathTarget) :\n" +
-                "\t" * (n + 1) + "target_id" + self._target_id.__str__(n + 1) +
-                "\t" * (n + 1) + "remaining_path_index" + self._remaining_path_index.__str__(n + 1))
+        return ("(UaBrowsePathTarget) :\n"
+                + "\t" * (n + 1) + "target_id" + self._target_id.__str__(n + 1)
+                + "\t" * (n + 1) + "remaining_path_index" + self._remaining_path_index.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaWriteResponse +++++++++++++++++++++++
 class UaWriteResponse(UaType):
-    def __init__(self, val=ffi.new("UA_WriteResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_WriteResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_WriteResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -3994,17 +4076,19 @@ class UaWriteResponse(UaType):
         if self._null:
             return "(UaWriteResponse) : NULL\n"
 
-        return ("(UaWriteResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaWriteResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesResult +++++++++++++++++++++++
 class UaAddNodesResult(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddNodesResult*")
         if type(val) is Void:
             val = ffi.cast("UA_AddNodesResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4054,14 +4138,16 @@ class UaAddNodesResult(UaType):
         if self._null:
             return "(UaAddNodesResult) : NULL\n"
 
-        return ("(UaAddNodesResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "added_node_id" + self._added_node_id.__str__(n + 1))
+        return ("(UaAddNodesResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "added_node_id" + self._added_node_id.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddReferencesItem +++++++++++++++++++++++
 class UaAddReferencesItem(UaType):
-    def __init__(self, val=ffi.new("UA_AddReferencesItem*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddReferencesItem*")
         if type(val) is Void:
             val = ffi.cast("UA_AddReferencesItem*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4167,18 +4253,20 @@ class UaAddReferencesItem(UaType):
         if self._null:
             return "(UaAddReferencesItem) : NULL\n"
 
-        return ("(UaAddReferencesItem) :\n" +
-                "\t" * (n + 1) + "source_node_id" + self._source_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1) +
-                "\t" * (n + 1) + "target_server_uri" + self._target_server_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "target_node_id" + self._target_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "target_node_class" + self._target_node_class.__str__(n + 1))
+        return ("(UaAddReferencesItem) :\n"
+                + "\t" * (n + 1) + "source_node_id" + self._source_node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1)
+                + "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1)
+                + "\t" * (n + 1) + "target_server_uri" + self._target_server_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "target_node_id" + self._target_node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "target_node_class" + self._target_node_class.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesResponse +++++++++++++++++++++++
 class UaDeleteReferencesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteReferencesResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteReferencesResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteReferencesResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4270,17 +4358,19 @@ class UaDeleteReferencesResponse(UaType):
         if self._null:
             return "(UaDeleteReferencesResponse) : NULL\n"
 
-        return ("(UaDeleteReferencesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaDeleteReferencesResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRelativePathElement +++++++++++++++++++++++
 class UaRelativePathElement(UaType):
-    def __init__(self, val=ffi.new("UA_RelativePathElement*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RelativePathElement*")
         if type(val) is Void:
             val = ffi.cast("UA_RelativePathElement*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4358,16 +4448,18 @@ class UaRelativePathElement(UaType):
         if self._null:
             return "(UaRelativePathElement) : NULL\n"
 
-        return ("(UaRelativePathElement) :\n" +
-                "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "is_inverse" + self._is_inverse.__str__(n + 1) +
-                "\t" * (n + 1) + "include_subtypes" + self._include_subtypes.__str__(n + 1) +
-                "\t" * (n + 1) + "target_name" + self._target_name.__str__(n + 1))
+        return ("(UaRelativePathElement) :\n"
+                + "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1)
+                + "\t" * (n + 1) + "is_inverse" + self._is_inverse.__str__(n + 1)
+                + "\t" * (n + 1) + "include_subtypes" + self._include_subtypes.__str__(n + 1)
+                + "\t" * (n + 1) + "target_name" + self._target_name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSubscriptionAcknowledgement +++++++++++++++++++++++
 class UaSubscriptionAcknowledgement(UaType):
-    def __init__(self, val=ffi.new("UA_SubscriptionAcknowledgement*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SubscriptionAcknowledgement*")
         if type(val) is Void:
             val = ffi.cast("UA_SubscriptionAcknowledgement*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4417,14 +4509,16 @@ class UaSubscriptionAcknowledgement(UaType):
         if self._null:
             return "(UaSubscriptionAcknowledgement) : NULL\n"
 
-        return ("(UaSubscriptionAcknowledgement) :\n" +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1))
+        return ("(UaSubscriptionAcknowledgement) :\n"
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "sequence_number" + self._sequence_number.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTransferResult +++++++++++++++++++++++
 class UaTransferResult(UaType):
-    def __init__(self, val=ffi.new("UA_TransferResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_TransferResult*")
         if type(val) is Void:
             val = ffi.cast("UA_TransferResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4488,16 +4582,18 @@ class UaTransferResult(UaType):
         if self._null:
             return "(UaTransferResult) : NULL\n"
 
-        return ("(UaTransferResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "available_sequence_numbers_size" + self._available_sequence_numbers_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "available_sequence_numbers" + self._available_sequence_numbers.__str__(n + 1))
+        return ("(UaTransferResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "available_sequence_numbers_size" + self._available_sequence_numbers_size.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "available_sequence_numbers" + self._available_sequence_numbers.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateMonitoredItemsResponse +++++++++++++++++++++++
 class UaCreateMonitoredItemsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CreateMonitoredItemsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CreateMonitoredItemsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_CreateMonitoredItemsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4589,17 +4685,19 @@ class UaCreateMonitoredItemsResponse(UaType):
         if self._null:
             return "(UaCreateMonitoredItemsResponse) : NULL\n"
 
-        return ("(UaCreateMonitoredItemsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaCreateMonitoredItemsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesItem +++++++++++++++++++++++
 class UaDeleteReferencesItem(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteReferencesItem*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteReferencesItem*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteReferencesItem*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4691,17 +4789,19 @@ class UaDeleteReferencesItem(UaType):
         if self._null:
             return "(UaDeleteReferencesItem) : NULL\n"
 
-        return ("(UaDeleteReferencesItem) :\n" +
-                "\t" * (n + 1) + "source_node_id" + self._source_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1) +
-                "\t" * (n + 1) + "target_node_id" + self._target_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "delete_bidirectional" + self._delete_bidirectional.__str__(n + 1))
+        return ("(UaDeleteReferencesItem) :\n"
+                + "\t" * (n + 1) + "source_node_id" + self._source_node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1)
+                + "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1)
+                + "\t" * (n + 1) + "target_node_id" + self._target_node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "delete_bidirectional" + self._delete_bidirectional.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaWriteValue +++++++++++++++++++++++
 class UaWriteValue(UaType):
-    def __init__(self, val=ffi.new("UA_WriteValue*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_WriteValue*")
         if type(val) is Void:
             val = ffi.cast("UA_WriteValue*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4779,16 +4879,18 @@ class UaWriteValue(UaType):
         if self._null:
             return "(UaWriteValue) : NULL\n"
 
-        return ("(UaWriteValue) :\n" +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
-                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1) +
-                "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
+        return ("(UaWriteValue) :\n"
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1)
+                + "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1)
+                + "\t" * (n + 1) + "data_value" + self._data_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataTypeAttributes +++++++++++++++++++++++
 class UaDataTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_DataTypeAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataTypeAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_DataTypeAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4894,18 +4996,20 @@ class UaDataTypeAttributes(UaType):
         if self._null:
             return "(UaDataTypeAttributes) : NULL\n"
 
-        return ("(UaDataTypeAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
+        return ("(UaDataTypeAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTransferSubscriptionsResponse +++++++++++++++++++++++
 class UaTransferSubscriptionsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_TransferSubscriptionsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_TransferSubscriptionsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_TransferSubscriptionsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -4997,17 +5101,19 @@ class UaTransferSubscriptionsResponse(UaType):
         if self._null:
             return "(UaTransferSubscriptionsResponse) : NULL\n"
 
-        return ("(UaTransferSubscriptionsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaTransferSubscriptionsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddReferencesResponse +++++++++++++++++++++++
 class UaAddReferencesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_AddReferencesResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddReferencesResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_AddReferencesResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5099,17 +5205,19 @@ class UaAddReferencesResponse(UaType):
         if self._null:
             return "(UaAddReferencesResponse) : NULL\n"
 
-        return ("(UaAddReferencesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaAddReferencesResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBuildInfo +++++++++++++++++++++++
 class UaBuildInfo(UaType):
-    def __init__(self, val=ffi.new("UA_BuildInfo*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BuildInfo*")
         if type(val) is Void:
             val = ffi.cast("UA_BuildInfo*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5215,18 +5323,20 @@ class UaBuildInfo(UaType):
         if self._null:
             return "(UaBuildInfo) : NULL\n"
 
-        return ("(UaBuildInfo) :\n" +
-                "\t" * (n + 1) + "product_uri" + self._product_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "manufacturer_name" + self._manufacturer_name.__str__(n + 1) +
-                "\t" * (n + 1) + "product_name" + self._product_name.__str__(n + 1) +
-                "\t" * (n + 1) + "software_version" + self._software_version.__str__(n + 1) +
-                "\t" * (n + 1) + "build_number" + self._build_number.__str__(n + 1) +
-                "\t" * (n + 1) + "build_date" + self._build_date.__str__(n + 1))
+        return ("(UaBuildInfo) :\n"
+                + "\t" * (n + 1) + "product_uri" + self._product_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "manufacturer_name" + self._manufacturer_name.__str__(n + 1)
+                + "\t" * (n + 1) + "product_name" + self._product_name.__str__(n + 1)
+                + "\t" * (n + 1) + "software_version" + self._software_version.__str__(n + 1)
+                + "\t" * (n + 1) + "build_number" + self._build_number.__str__(n + 1)
+                + "\t" * (n + 1) + "build_date" + self._build_date.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoringParameters +++++++++++++++++++++++
 class UaMonitoringParameters(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoringParameters*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoringParameters*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoringParameters*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5318,17 +5428,19 @@ class UaMonitoringParameters(UaType):
         if self._null:
             return "(UaMonitoringParameters) : NULL\n"
 
-        return ("(UaMonitoringParameters) :\n" +
-                "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1) +
-                "\t" * (n + 1) + "sampling_interval" + self._sampling_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "filter" + self._filter.__str__(n + 1) +
-                "\t" * (n + 1) + "queue_size" + self._queue_size.__str__(n + 1) +
-                "\t" * (n + 1) + "discard_oldest" + self._discard_oldest.__str__(n + 1))
+        return ("(UaMonitoringParameters) :\n"
+                + "\t" * (n + 1) + "client_handle" + self._client_handle.__str__(n + 1)
+                + "\t" * (n + 1) + "sampling_interval" + self._sampling_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "filter" + self._filter.__str__(n + 1)
+                + "\t" * (n + 1) + "queue_size" + self._queue_size.__str__(n + 1)
+                + "\t" * (n + 1) + "discard_oldest" + self._discard_oldest.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDoubleComplexNumberType +++++++++++++++++++++++
 class UaDoubleComplexNumberType(UaType):
-    def __init__(self, val=ffi.new("UA_DoubleComplexNumberType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DoubleComplexNumberType*")
         if type(val) is Void:
             val = ffi.cast("UA_DoubleComplexNumberType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5378,14 +5490,16 @@ class UaDoubleComplexNumberType(UaType):
         if self._null:
             return "(UaDoubleComplexNumberType) : NULL\n"
 
-        return ("(UaDoubleComplexNumberType) :\n" +
-                "\t" * (n + 1) + "real" + self._real.__str__(n + 1) +
-                "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1))
+        return ("(UaDoubleComplexNumberType) :\n"
+                + "\t" * (n + 1) + "real" + self._real.__str__(n + 1)
+                + "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteNodesItem +++++++++++++++++++++++
 class UaDeleteNodesItem(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteNodesItem*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteNodesItem*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteNodesItem*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5435,14 +5549,16 @@ class UaDeleteNodesItem(UaType):
         if self._null:
             return "(UaDeleteNodesItem) : NULL\n"
 
-        return ("(UaDeleteNodesItem) :\n" +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "delete_target_references" + self._delete_target_references.__str__(n + 1))
+        return ("(UaDeleteNodesItem) :\n"
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "delete_target_references" + self._delete_target_references.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReadValueId +++++++++++++++++++++++
 class UaReadValueId(UaType):
-    def __init__(self, val=ffi.new("UA_ReadValueId*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ReadValueId*")
         if type(val) is Void:
             val = ffi.cast("UA_ReadValueId*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5520,16 +5636,18 @@ class UaReadValueId(UaType):
         if self._null:
             return "(UaReadValueId) : NULL\n"
 
-        return ("(UaReadValueId) :\n" +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
-                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1) +
-                "\t" * (n + 1) + "data_encoding" + self._data_encoding.__str__(n + 1))
+        return ("(UaReadValueId) :\n"
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1)
+                + "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1)
+                + "\t" * (n + 1) + "data_encoding" + self._data_encoding.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallRequest +++++++++++++++++++++++
 class UaCallRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CallRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CallRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CallRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5593,15 +5711,17 @@ class UaCallRequest(UaType):
         if self._null:
             return "(UaCallRequest) : NULL\n"
 
-        return ("(UaCallRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "methods_to_call_size" + self._methods_to_call_size.__str__(n + 1) +
-                "\t" * (n + 1) + "methods_to_call" + self._methods_to_call.__str__(n + 1))
+        return ("(UaCallRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "methods_to_call_size" + self._methods_to_call_size.__str__(n + 1)
+                + "\t" * (n + 1) + "methods_to_call" + self._methods_to_call.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRelativePath +++++++++++++++++++++++
 class UaRelativePath(UaType):
-    def __init__(self, val=ffi.new("UA_RelativePath*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RelativePath*")
         if type(val) is Void:
             val = ffi.cast("UA_RelativePath*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5651,14 +5771,16 @@ class UaRelativePath(UaType):
         if self._null:
             return "(UaRelativePath) : NULL\n"
 
-        return ("(UaRelativePath) :\n" +
-                "\t" * (n + 1) + "elements_size" + self._elements_size.__str__(n + 1) +
-                "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1))
+        return ("(UaRelativePath) :\n"
+                + "\t" * (n + 1) + "elements_size" + self._elements_size.__str__(n + 1)
+                + "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteNodesRequest +++++++++++++++++++++++
 class UaDeleteNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteNodesRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteNodesRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteNodesRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5722,15 +5844,17 @@ class UaDeleteNodesRequest(UaType):
         if self._null:
             return "(UaDeleteNodesRequest) : NULL\n"
 
-        return ("(UaDeleteNodesRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_delete_size" + self._nodes_to_delete_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_delete" + self._nodes_to_delete.__str__(n + 1))
+        return ("(UaDeleteNodesRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_delete_size" + self._nodes_to_delete_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_delete" + self._nodes_to_delete.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemModifyRequest +++++++++++++++++++++++
 class UaMonitoredItemModifyRequest(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemModifyRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemModifyRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemModifyRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5780,14 +5904,16 @@ class UaMonitoredItemModifyRequest(UaType):
         if self._null:
             return "(UaMonitoredItemModifyRequest) : NULL\n"
 
-        return ("(UaMonitoredItemModifyRequest) :\n" +
-                "\t" * (n + 1) + "monitored_item_id" + self._monitored_item_id.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
+        return ("(UaMonitoredItemModifyRequest) :\n"
+                + "\t" * (n + 1) + "monitored_item_id" + self._monitored_item_id.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAggregateConfiguration +++++++++++++++++++++++
 class UaAggregateConfiguration(UaType):
-    def __init__(self, val=ffi.new("UA_AggregateConfiguration*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AggregateConfiguration*")
         if type(val) is Void:
             val = ffi.cast("UA_AggregateConfiguration*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5879,18 +6005,20 @@ class UaAggregateConfiguration(UaType):
         if self._null:
             return "(UaAggregateConfiguration) : NULL\n"
 
-        return ("(UaAggregateConfiguration) :\n" +
-                "\t" * (n + 1) + "use_server_capabilities_defaults" + self._use_server_capabilities_defaults.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "treat_uncertain_as_bad" + self._treat_uncertain_as_bad.__str__(n + 1) +
-                "\t" * (n + 1) + "percent_data_bad" + self._percent_data_bad.__str__(n + 1) +
-                "\t" * (n + 1) + "percent_data_good" + self._percent_data_good.__str__(n + 1) +
-                "\t" * (n + 1) + "use_sloped_extrapolation" + self._use_sloped_extrapolation.__str__(n + 1))
+        return ("(UaAggregateConfiguration) :\n"
+                + "\t" * (n + 1) + "use_server_capabilities_defaults" + self._use_server_capabilities_defaults.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "treat_uncertain_as_bad" + self._treat_uncertain_as_bad.__str__(n + 1)
+                + "\t" * (n + 1) + "percent_data_bad" + self._percent_data_bad.__str__(n + 1)
+                + "\t" * (n + 1) + "percent_data_good" + self._percent_data_good.__str__(n + 1)
+                + "\t" * (n + 1) + "use_sloped_extrapolation" + self._use_sloped_extrapolation.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUnregisterNodesResponse +++++++++++++++++++++++
 class UaUnregisterNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_UnregisterNodesResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_UnregisterNodesResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_UnregisterNodesResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -5926,13 +6054,15 @@ class UaUnregisterNodesResponse(UaType):
         if self._null:
             return "(UaUnregisterNodesResponse) : NULL\n"
 
-        return ("(UaUnregisterNodesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
+        return ("(UaUnregisterNodesResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilterResult +++++++++++++++++++++++
 class UaContentFilterResult(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ContentFilterResult*")
         if type(val) is Void:
             val = ffi.cast("UA_ContentFilterResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6010,16 +6140,18 @@ class UaContentFilterResult(UaType):
         if self._null:
             return "(UaContentFilterResult) : NULL\n"
 
-        return ("(UaContentFilterResult) :\n" +
-                "\t" * (n + 1) + "element_results_size" + self._element_results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "element_results" + self._element_results.__str__(n + 1) +
-                "\t" * (n + 1) + "element_diagnostic_infos_size" + self._element_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "element_diagnostic_infos" + self._element_diagnostic_infos.__str__(n + 1))
+        return ("(UaContentFilterResult) :\n"
+                + "\t" * (n + 1) + "element_results_size" + self._element_results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "element_results" + self._element_results.__str__(n + 1)
+                + "\t" * (n + 1) + "element_diagnostic_infos_size" + self._element_diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "element_diagnostic_infos" + self._element_diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUserTokenPolicy +++++++++++++++++++++++
 class UaUserTokenPolicy(UaType):
-    def __init__(self, val=ffi.new("UA_UserTokenPolicy*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_UserTokenPolicy*")
         if type(val) is Void:
             val = ffi.cast("UA_UserTokenPolicy*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6111,17 +6243,19 @@ class UaUserTokenPolicy(UaType):
         if self._null:
             return "(UaUserTokenPolicy) : NULL\n"
 
-        return ("(UaUserTokenPolicy) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
-                "\t" * (n + 1) + "token_type" + self._token_type.__str__(n + 1) +
-                "\t" * (n + 1) + "issued_token_type" + self._issued_token_type.__str__(n + 1) +
-                "\t" * (n + 1) + "issuer_endpoint_url" + self._issuer_endpoint_url.__str__(n + 1) +
-                "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1))
+        return ("(UaUserTokenPolicy) :\n"
+                + "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1)
+                + "\t" * (n + 1) + "token_type" + self._token_type.__str__(n + 1)
+                + "\t" * (n + 1) + "issued_token_type" + self._issued_token_type.__str__(n + 1)
+                + "\t" * (n + 1) + "issuer_endpoint_url" + self._issuer_endpoint_url.__str__(n + 1)
+                + "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsRequest +++++++++++++++++++++++
 class UaDeleteMonitoredItemsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteMonitoredItemsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteMonitoredItemsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteMonitoredItemsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6199,16 +6333,18 @@ class UaDeleteMonitoredItemsRequest(UaType):
         if self._null:
             return "(UaDeleteMonitoredItemsRequest) : NULL\n"
 
-        return ("(UaDeleteMonitoredItemsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_ids_size" + self._monitored_item_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1))
+        return ("(UaDeleteMonitoredItemsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "monitored_item_ids_size" + self._monitored_item_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetMonitoringModeRequest +++++++++++++++++++++++
 class UaSetMonitoringModeRequest(UaType):
-    def __init__(self, val=ffi.new("UA_SetMonitoringModeRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SetMonitoringModeRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_SetMonitoringModeRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6300,17 +6436,19 @@ class UaSetMonitoringModeRequest(UaType):
         if self._null:
             return "(UaSetMonitoringModeRequest) : NULL\n"
 
-        return ("(UaSetMonitoringModeRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_ids_size" + self._monitored_item_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1))
+        return ("(UaSetMonitoringModeRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1)
+                + "\t" * (n + 1) + "monitored_item_ids_size" + self._monitored_item_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "monitored_item_ids" + self._monitored_item_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReferenceTypeAttributes +++++++++++++++++++++++
 class UaReferenceTypeAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ReferenceTypeAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ReferenceTypeAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_ReferenceTypeAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6444,20 +6582,22 @@ class UaReferenceTypeAttributes(UaType):
         if self._null:
             return "(UaReferenceTypeAttributes) : NULL\n"
 
-        return ("(UaReferenceTypeAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1) +
-                "\t" * (n + 1) + "symmetric" + self._symmetric.__str__(n + 1) +
-                "\t" * (n + 1) + "inverse_name" + self._inverse_name.__str__(n + 1))
+        return ("(UaReferenceTypeAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1)
+                + "\t" * (n + 1) + "symmetric" + self._symmetric.__str__(n + 1)
+                + "\t" * (n + 1) + "inverse_name" + self._inverse_name.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaGetEndpointsRequest +++++++++++++++++++++++
 class UaGetEndpointsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_GetEndpointsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_GetEndpointsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_GetEndpointsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6563,18 +6703,20 @@ class UaGetEndpointsRequest(UaType):
         if self._null:
             return "(UaGetEndpointsRequest) : NULL\n"
 
-        return ("(UaGetEndpointsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1) +
-                "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1) +
-                "\t" * (n + 1) + "profile_uris_size" + self._profile_uris_size.__str__(n + 1) +
-                "\t" * (n + 1) + "profile_uris" + self._profile_uris.__str__(n + 1))
+        return ("(UaGetEndpointsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1)
+                + "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1)
+                + "\t" * (n + 1) + "profile_uris_size" + self._profile_uris_size.__str__(n + 1)
+                + "\t" * (n + 1) + "profile_uris" + self._profile_uris.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSecureChannelResponse +++++++++++++++++++++++
 class UaCloseSecureChannelResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSecureChannelResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CloseSecureChannelResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_CloseSecureChannelResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6610,13 +6752,15 @@ class UaCloseSecureChannelResponse(UaType):
         if self._null:
             return "(UaCloseSecureChannelResponse) : NULL\n"
 
-        return ("(UaCloseSecureChannelResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
+        return ("(UaCloseSecureChannelResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaViewDescription +++++++++++++++++++++++
 class UaViewDescription(UaType):
-    def __init__(self, val=ffi.new("UA_ViewDescription*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ViewDescription*")
         if type(val) is Void:
             val = ffi.cast("UA_ViewDescription*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6680,15 +6824,17 @@ class UaViewDescription(UaType):
         if self._null:
             return "(UaViewDescription) : NULL\n"
 
-        return ("(UaViewDescription) :\n" +
-                "\t" * (n + 1) + "view_id" + self._view_id.__str__(n + 1) +
-                "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "view_version" + self._view_version.__str__(n + 1))
+        return ("(UaViewDescription) :\n"
+                + "\t" * (n + 1) + "view_id" + self._view_id.__str__(n + 1)
+                + "\t" * (n + 1) + "timestamp" + self._timestamp.__str__(n + 1)
+                + "\t" * (n + 1) + "view_version" + self._view_version.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetPublishingModeResponse +++++++++++++++++++++++
 class UaSetPublishingModeResponse(UaType):
-    def __init__(self, val=ffi.new("UA_SetPublishingModeResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SetPublishingModeResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_SetPublishingModeResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6780,17 +6926,19 @@ class UaSetPublishingModeResponse(UaType):
         if self._null:
             return "(UaSetPublishingModeResponse) : NULL\n"
 
-        return ("(UaSetPublishingModeResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaSetPublishingModeResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaStatusChangeNotification +++++++++++++++++++++++
 class UaStatusChangeNotification(UaType):
-    def __init__(self, val=ffi.new("UA_StatusChangeNotification*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_StatusChangeNotification*")
         if type(val) is Void:
             val = ffi.cast("UA_StatusChangeNotification*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6840,14 +6988,16 @@ class UaStatusChangeNotification(UaType):
         if self._null:
             return "(UaStatusChangeNotification) : NULL\n"
 
-        return ("(UaStatusChangeNotification) :\n" +
-                "\t" * (n + 1) + "status" + self._status.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_info" + self._diagnostic_info.__str__(n + 1))
+        return ("(UaStatusChangeNotification) :\n"
+                + "\t" * (n + 1) + "status" + self._status.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_info" + self._diagnostic_info.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaStructureField +++++++++++++++++++++++
 class UaStructureField(UaType):
-    def __init__(self, val=ffi.new("UA_StructureField*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_StructureField*")
         if type(val) is Void:
             val = ffi.cast("UA_StructureField*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -6981,20 +7131,22 @@ class UaStructureField(UaType):
         if self._null:
             return "(UaStructureField) : NULL\n"
 
-        return ("(UaStructureField) :\n" +
-                "\t" * (n + 1) + "name" + self._name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1) +
-                "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
-                "\t" * (n + 1) + "max_string_length" + self._max_string_length.__str__(n + 1) +
-                "\t" * (n + 1) + "is_optional" + self._is_optional.__str__(n + 1))
+        return ("(UaStructureField) :\n"
+                + "\t" * (n + 1) + "name" + self._name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1)
+                + "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1)
+                + "\t" * (n + 1) + "max_string_length" + self._max_string_length.__str__(n + 1)
+                + "\t" * (n + 1) + "is_optional" + self._is_optional.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventFilterResult +++++++++++++++++++++++
 class UaEventFilterResult(UaType):
-    def __init__(self, val=ffi.new("UA_EventFilterResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EventFilterResult*")
         if type(val) is Void:
             val = ffi.cast("UA_EventFilterResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7087,20 +7239,22 @@ class UaEventFilterResult(UaType):
         if self._null:
             return "(UaEventFilterResult) : NULL\n"
 
-        return ("(UaEventFilterResult) :\n" +
-                "\t" * (n + 1) + "select_clause_results_size" + self._select_clause_results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "select_clause_results" + self._select_clause_results.__str__(n + 1) +
-                "\t" * (
+        return ("(UaEventFilterResult) :\n"
+                + "\t" * (n + 1) + "select_clause_results_size" + self._select_clause_results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "select_clause_results" + self._select_clause_results.__str__(n + 1)
+                + "\t" * (
                         n + 1) + "select_clause_diagnostic_infos_size" + self._select_clause_diagnostic_infos_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "select_clause_diagnostic_infos" + self._select_clause_diagnostic_infos.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "where_clause_result" + self._where_clause_result.__str__(n + 1))
+                    n + 1)
+                + "\t" * (n + 1) + "select_clause_diagnostic_infos" + self._select_clause_diagnostic_infos.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "where_clause_result" + self._where_clause_result.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMonitoredItemCreateRequest +++++++++++++++++++++++
 class UaMonitoredItemCreateRequest(UaType):
-    def __init__(self, val=ffi.new("UA_MonitoredItemCreateRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MonitoredItemCreateRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_MonitoredItemCreateRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7164,15 +7318,17 @@ class UaMonitoredItemCreateRequest(UaType):
         if self._null:
             return "(UaMonitoredItemCreateRequest) : NULL\n"
 
-        return ("(UaMonitoredItemCreateRequest) :\n" +
-                "\t" * (n + 1) + "item_to_monitor" + self._item_to_monitor.__str__(n + 1) +
-                "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
+        return ("(UaMonitoredItemCreateRequest) :\n"
+                + "\t" * (n + 1) + "item_to_monitor" + self._item_to_monitor.__str__(n + 1)
+                + "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaComplexNumberType +++++++++++++++++++++++
 class UaComplexNumberType(UaType):
-    def __init__(self, val=ffi.new("UA_ComplexNumberType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ComplexNumberType*")
         if type(val) is Void:
             val = ffi.cast("UA_ComplexNumberType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7222,14 +7378,16 @@ class UaComplexNumberType(UaType):
         if self._null:
             return "(UaComplexNumberType) : NULL\n"
 
-        return ("(UaComplexNumberType) :\n" +
-                "\t" * (n + 1) + "real" + self._real.__str__(n + 1) +
-                "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1))
+        return ("(UaComplexNumberType) :\n"
+                + "\t" * (n + 1) + "real" + self._real.__str__(n + 1)
+                + "\t" * (n + 1) + "imaginary" + self._imaginary.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRange +++++++++++++++++++++++
 class UaRange(UaType):
-    def __init__(self, val=ffi.new("UA_Range*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_Range*")
         if type(val) is Void:
             val = ffi.cast("UA_Range*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7279,14 +7437,16 @@ class UaRange(UaType):
         if self._null:
             return "(UaRange) : NULL\n"
 
-        return ("(UaRange) :\n" +
-                "\t" * (n + 1) + "low" + self._low.__str__(n + 1) +
-                "\t" * (n + 1) + "high" + self._high.__str__(n + 1))
+        return ("(UaRange) :\n"
+                + "\t" * (n + 1) + "low" + self._low.__str__(n + 1)
+                + "\t" * (n + 1) + "high" + self._high.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataChangeNotification +++++++++++++++++++++++
 class UaDataChangeNotification(UaType):
-    def __init__(self, val=ffi.new("UA_DataChangeNotification*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataChangeNotification*")
         if type(val) is Void:
             val = ffi.cast("UA_DataChangeNotification*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7364,16 +7524,18 @@ class UaDataChangeNotification(UaType):
         if self._null:
             return "(UaDataChangeNotification) : NULL\n"
 
-        return ("(UaDataChangeNotification) :\n" +
-                "\t" * (n + 1) + "monitored_items_size" + self._monitored_items_size.__str__(n + 1) +
-                "\t" * (n + 1) + "monitored_items" + self._monitored_items.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaDataChangeNotification) :\n"
+                + "\t" * (n + 1) + "monitored_items_size" + self._monitored_items_size.__str__(n + 1)
+                + "\t" * (n + 1) + "monitored_items" + self._monitored_items.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaArgument +++++++++++++++++++++++
 class UaArgument(UaType):
-    def __init__(self, val=ffi.new("UA_Argument*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_Argument*")
         if type(val) is Void:
             val = ffi.cast("UA_Argument*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7479,18 +7641,20 @@ class UaArgument(UaType):
         if self._null:
             return "(UaArgument) : NULL\n"
 
-        return ("(UaArgument) :\n" +
-                "\t" * (n + 1) + "name" + self._name.__str__(n + 1) +
-                "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1) +
-                "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
+        return ("(UaArgument) :\n"
+                + "\t" * (n + 1) + "name" + self._name.__str__(n + 1)
+                + "\t" * (n + 1) + "data_type" + self._data_type.__str__(n + 1)
+                + "\t" * (n + 1) + "value_rank" + self._value_rank.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1)
+                + "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTransferSubscriptionsRequest +++++++++++++++++++++++
 class UaTransferSubscriptionsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_TransferSubscriptionsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_TransferSubscriptionsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_TransferSubscriptionsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7568,16 +7732,18 @@ class UaTransferSubscriptionsRequest(UaType):
         if self._null:
             return "(UaTransferSubscriptionsRequest) : NULL\n"
 
-        return ("(UaTransferSubscriptionsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1) +
-                "\t" * (n + 1) + "send_initial_values" + self._send_initial_values.__str__(n + 1))
+        return ("(UaTransferSubscriptionsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1)
+                + "\t" * (n + 1) + "send_initial_values" + self._send_initial_values.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaChannelSecurityToken +++++++++++++++++++++++
 class UaChannelSecurityToken(UaType):
-    def __init__(self, val=ffi.new("UA_ChannelSecurityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ChannelSecurityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_ChannelSecurityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7655,16 +7821,18 @@ class UaChannelSecurityToken(UaType):
         if self._null:
             return "(UaChannelSecurityToken) : NULL\n"
 
-        return ("(UaChannelSecurityToken) :\n" +
-                "\t" * (n + 1) + "channel_id" + self._channel_id.__str__(n + 1) +
-                "\t" * (n + 1) + "token_id" + self._token_id.__str__(n + 1) +
-                "\t" * (n + 1) + "created_at" + self._created_at.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_lifetime" + self._revised_lifetime.__str__(n + 1))
+        return ("(UaChannelSecurityToken) :\n"
+                + "\t" * (n + 1) + "channel_id" + self._channel_id.__str__(n + 1)
+                + "\t" * (n + 1) + "token_id" + self._token_id.__str__(n + 1)
+                + "\t" * (n + 1) + "created_at" + self._created_at.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_lifetime" + self._revised_lifetime.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventNotificationList +++++++++++++++++++++++
 class UaEventNotificationList(UaType):
-    def __init__(self, val=ffi.new("UA_EventNotificationList*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EventNotificationList*")
         if type(val) is Void:
             val = ffi.cast("UA_EventNotificationList*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7714,14 +7882,16 @@ class UaEventNotificationList(UaType):
         if self._null:
             return "(UaEventNotificationList) : NULL\n"
 
-        return ("(UaEventNotificationList) :\n" +
-                "\t" * (n + 1) + "events_size" + self._events_size.__str__(n + 1) +
-                "\t" * (n + 1) + "events" + self._events.__str__(n + 1))
+        return ("(UaEventNotificationList) :\n"
+                + "\t" * (n + 1) + "events_size" + self._events_size.__str__(n + 1)
+                + "\t" * (n + 1) + "events" + self._events.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAnonymousIdentityToken +++++++++++++++++++++++
 class UaAnonymousIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_AnonymousIdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AnonymousIdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_AnonymousIdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7757,13 +7927,15 @@ class UaAnonymousIdentityToken(UaType):
         if self._null:
             return "(UaAnonymousIdentityToken) : NULL\n"
 
-        return ("(UaAnonymousIdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1))
+        return ("(UaAnonymousIdentityToken) :\n"
+                + "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAggregateFilter +++++++++++++++++++++++
 class UaAggregateFilter(UaType):
-    def __init__(self, val=ffi.new("UA_AggregateFilter*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AggregateFilter*")
         if type(val) is Void:
             val = ffi.cast("UA_AggregateFilter*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7841,16 +8013,18 @@ class UaAggregateFilter(UaType):
         if self._null:
             return "(UaAggregateFilter) : NULL\n"
 
-        return ("(UaAggregateFilter) :\n" +
-                "\t" * (n + 1) + "start_time" + self._start_time.__str__(n + 1) +
-                "\t" * (n + 1) + "aggregate_type" + self._aggregate_type.__str__(n + 1) +
-                "\t" * (n + 1) + "processing_interval" + self._processing_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "aggregate_configuration" + self._aggregate_configuration.__str__(n + 1))
+        return ("(UaAggregateFilter) :\n"
+                + "\t" * (n + 1) + "start_time" + self._start_time.__str__(n + 1)
+                + "\t" * (n + 1) + "aggregate_type" + self._aggregate_type.__str__(n + 1)
+                + "\t" * (n + 1) + "processing_interval" + self._processing_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "aggregate_configuration" + self._aggregate_configuration.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRepublishResponse +++++++++++++++++++++++
 class UaRepublishResponse(UaType):
-    def __init__(self, val=ffi.new("UA_RepublishResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RepublishResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_RepublishResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7900,14 +8074,16 @@ class UaRepublishResponse(UaType):
         if self._null:
             return "(UaRepublishResponse) : NULL\n"
 
-        return ("(UaRepublishResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "notification_message" + self._notification_message.__str__(n + 1))
+        return ("(UaRepublishResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "notification_message" + self._notification_message.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteSubscriptionsResponse +++++++++++++++++++++++
 class UaDeleteSubscriptionsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteSubscriptionsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteSubscriptionsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteSubscriptionsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -7999,17 +8175,19 @@ class UaDeleteSubscriptionsResponse(UaType):
         if self._null:
             return "(UaDeleteSubscriptionsResponse) : NULL\n"
 
-        return ("(UaDeleteSubscriptionsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaDeleteSubscriptionsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRegisterNodesRequest +++++++++++++++++++++++
 class UaRegisterNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_RegisterNodesRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RegisterNodesRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_RegisterNodesRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8073,15 +8251,17 @@ class UaRegisterNodesRequest(UaType):
         if self._null:
             return "(UaRegisterNodesRequest) : NULL\n"
 
-        return ("(UaRegisterNodesRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_register_size" + self._nodes_to_register_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_register" + self._nodes_to_register.__str__(n + 1))
+        return ("(UaRegisterNodesRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_register_size" + self._nodes_to_register_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_register" + self._nodes_to_register.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaStructureDefinition +++++++++++++++++++++++
 class UaStructureDefinition(UaType):
-    def __init__(self, val=ffi.new("UA_StructureDefinition*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_StructureDefinition*")
         if type(val) is Void:
             val = ffi.cast("UA_StructureDefinition*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8173,17 +8353,19 @@ class UaStructureDefinition(UaType):
         if self._null:
             return "(UaStructureDefinition) : NULL\n"
 
-        return ("(UaStructureDefinition) :\n" +
-                "\t" * (n + 1) + "default_encoding_id" + self._default_encoding_id.__str__(n + 1) +
-                "\t" * (n + 1) + "base_data_type" + self._base_data_type.__str__(n + 1) +
-                "\t" * (n + 1) + "structure_type" + self._structure_type.__str__(n + 1) +
-                "\t" * (n + 1) + "fields_size" + self._fields_size.__str__(n + 1) +
-                "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1))
+        return ("(UaStructureDefinition) :\n"
+                + "\t" * (n + 1) + "default_encoding_id" + self._default_encoding_id.__str__(n + 1)
+                + "\t" * (n + 1) + "base_data_type" + self._base_data_type.__str__(n + 1)
+                + "\t" * (n + 1) + "structure_type" + self._structure_type.__str__(n + 1)
+                + "\t" * (n + 1) + "fields_size" + self._fields_size.__str__(n + 1)
+                + "\t" * (n + 1) + "fields" + self._fields.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaMethodAttributes +++++++++++++++++++++++
 class UaMethodAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_MethodAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MethodAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_MethodAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8303,19 +8485,21 @@ class UaMethodAttributes(UaType):
         if self._null:
             return "(UaMethodAttributes) : NULL\n"
 
-        return ("(UaMethodAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "executable" + self._executable.__str__(n + 1) +
-                "\t" * (n + 1) + "user_executable" + self._user_executable.__str__(n + 1))
+        return ("(UaMethodAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "executable" + self._executable.__str__(n + 1)
+                + "\t" * (n + 1) + "user_executable" + self._user_executable.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUserNameIdentityToken +++++++++++++++++++++++
 class UaUserNameIdentityToken(UaType):
-    def __init__(self, val=ffi.new("UA_UserNameIdentityToken*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_UserNameIdentityToken*")
         if type(val) is Void:
             val = ffi.cast("UA_UserNameIdentityToken*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8393,16 +8577,18 @@ class UaUserNameIdentityToken(UaType):
         if self._null:
             return "(UaUserNameIdentityToken) : NULL\n"
 
-        return ("(UaUserNameIdentityToken) :\n" +
-                "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1) +
-                "\t" * (n + 1) + "user_name" + self._user_name.__str__(n + 1) +
-                "\t" * (n + 1) + "password" + self._password.__str__(n + 1) +
-                "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1))
+        return ("(UaUserNameIdentityToken) :\n"
+                + "\t" * (n + 1) + "policy_id" + self._policy_id.__str__(n + 1)
+                + "\t" * (n + 1) + "user_name" + self._user_name.__str__(n + 1)
+                + "\t" * (n + 1) + "password" + self._password.__str__(n + 1)
+                + "\t" * (n + 1) + "encryption_algorithm" + self._encryption_algorithm.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaUnregisterNodesRequest +++++++++++++++++++++++
 class UaUnregisterNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_UnregisterNodesRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_UnregisterNodesRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_UnregisterNodesRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8466,15 +8652,17 @@ class UaUnregisterNodesRequest(UaType):
         if self._null:
             return "(UaUnregisterNodesRequest) : NULL\n"
 
-        return ("(UaUnregisterNodesRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_unregister_size" + self._nodes_to_unregister_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_unregister" + self._nodes_to_unregister.__str__(n + 1))
+        return ("(UaUnregisterNodesRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_unregister_size" + self._nodes_to_unregister_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_unregister" + self._nodes_to_unregister.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaOpenSecureChannelResponse +++++++++++++++++++++++
 class UaOpenSecureChannelResponse(UaType):
-    def __init__(self, val=ffi.new("UA_OpenSecureChannelResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_OpenSecureChannelResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_OpenSecureChannelResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8552,16 +8740,18 @@ class UaOpenSecureChannelResponse(UaType):
         if self._null:
             return "(UaOpenSecureChannelResponse) : NULL\n"
 
-        return ("(UaOpenSecureChannelResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "server_protocol_version" + self._server_protocol_version.__str__(n + 1) +
-                "\t" * (n + 1) + "security_token" + self._security_token.__str__(n + 1) +
-                "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1))
+        return ("(UaOpenSecureChannelResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "server_protocol_version" + self._server_protocol_version.__str__(n + 1)
+                + "\t" * (n + 1) + "security_token" + self._security_token.__str__(n + 1)
+                + "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetTriggeringResponse +++++++++++++++++++++++
 class UaSetTriggeringResponse(UaType):
-    def __init__(self, val=ffi.new("UA_SetTriggeringResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SetTriggeringResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_SetTriggeringResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8709,21 +8899,23 @@ class UaSetTriggeringResponse(UaType):
         if self._null:
             return "(UaSetTriggeringResponse) : NULL\n"
 
-        return ("(UaSetTriggeringResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "add_results_size" + self._add_results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "add_results" + self._add_results.__str__(n + 1) +
-                "\t" * (n + 1) + "add_diagnostic_infos_size" + self._add_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "add_diagnostic_infos" + self._add_diagnostic_infos.__str__(n + 1) +
-                "\t" * (n + 1) + "remove_results_size" + self._remove_results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "remove_results" + self._remove_results.__str__(n + 1) +
-                "\t" * (n + 1) + "remove_diagnostic_infos_size" + self._remove_diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "remove_diagnostic_infos" + self._remove_diagnostic_infos.__str__(n + 1))
+        return ("(UaSetTriggeringResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "add_results_size" + self._add_results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "add_results" + self._add_results.__str__(n + 1)
+                + "\t" * (n + 1) + "add_diagnostic_infos_size" + self._add_diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "add_diagnostic_infos" + self._add_diagnostic_infos.__str__(n + 1)
+                + "\t" * (n + 1) + "remove_results_size" + self._remove_results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "remove_results" + self._remove_results.__str__(n + 1)
+                + "\t" * (n + 1) + "remove_diagnostic_infos_size" + self._remove_diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "remove_diagnostic_infos" + self._remove_diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSimpleAttributeOperand +++++++++++++++++++++++
 class UaSimpleAttributeOperand(UaType):
-    def __init__(self, val=ffi.new("UA_SimpleAttributeOperand*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SimpleAttributeOperand*")
         if type(val) is Void:
             val = ffi.cast("UA_SimpleAttributeOperand*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8815,17 +9007,19 @@ class UaSimpleAttributeOperand(UaType):
         if self._null:
             return "(UaSimpleAttributeOperand) : NULL\n"
 
-        return ("(UaSimpleAttributeOperand) :\n" +
-                "\t" * (n + 1) + "type_definition_id" + self._type_definition_id.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_path_size" + self._browse_path_size.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_path" + self._browse_path.__str__(n + 1) +
-                "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
-                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1))
+        return ("(UaSimpleAttributeOperand) :\n"
+                + "\t" * (n + 1) + "type_definition_id" + self._type_definition_id.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_path_size" + self._browse_path_size.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_path" + self._browse_path.__str__(n + 1)
+                + "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1)
+                + "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRepublishRequest +++++++++++++++++++++++
 class UaRepublishRequest(UaType):
-    def __init__(self, val=ffi.new("UA_RepublishRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RepublishRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_RepublishRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8889,15 +9083,17 @@ class UaRepublishRequest(UaType):
         if self._null:
             return "(UaRepublishRequest) : NULL\n"
 
-        return ("(UaRepublishRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "retransmit_sequence_number" + self._retransmit_sequence_number.__str__(n + 1))
+        return ("(UaRepublishRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "retransmit_sequence_number" + self._retransmit_sequence_number.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaRegisterNodesResponse +++++++++++++++++++++++
 class UaRegisterNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_RegisterNodesResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_RegisterNodesResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_RegisterNodesResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -8961,15 +9157,17 @@ class UaRegisterNodesResponse(UaType):
         if self._null:
             return "(UaRegisterNodesResponse) : NULL\n"
 
-        return ("(UaRegisterNodesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "registered_node_ids_size" + self._registered_node_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "registered_node_ids" + self._registered_node_ids.__str__(n + 1))
+        return ("(UaRegisterNodesResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "registered_node_ids_size" + self._registered_node_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "registered_node_ids" + self._registered_node_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifyMonitoredItemsResponse +++++++++++++++++++++++
 class UaModifyMonitoredItemsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ModifyMonitoredItemsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_ModifyMonitoredItemsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9061,17 +9259,19 @@ class UaModifyMonitoredItemsResponse(UaType):
         if self._null:
             return "(UaModifyMonitoredItemsResponse) : NULL\n"
 
-        return ("(UaModifyMonitoredItemsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaModifyMonitoredItemsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteSubscriptionsRequest +++++++++++++++++++++++
 class UaDeleteSubscriptionsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteSubscriptionsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteSubscriptionsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteSubscriptionsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9135,15 +9335,17 @@ class UaDeleteSubscriptionsRequest(UaType):
         if self._null:
             return "(UaDeleteSubscriptionsRequest) : NULL\n"
 
-        return ("(UaDeleteSubscriptionsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1))
+        return ("(UaDeleteSubscriptionsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_ids_size" + self._subscription_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_ids" + self._subscription_ids.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowsePath +++++++++++++++++++++++
 class UaBrowsePath(UaType):
-    def __init__(self, val=ffi.new("UA_BrowsePath*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowsePath*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowsePath*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9193,14 +9395,16 @@ class UaBrowsePath(UaType):
         if self._null:
             return "(UaBrowsePath) : NULL\n"
 
-        return ("(UaBrowsePath) :\n" +
-                "\t" * (n + 1) + "starting_node" + self._starting_node.__str__(n + 1) +
-                "\t" * (n + 1) + "relative_path" + self._relative_path.__str__(n + 1))
+        return ("(UaBrowsePath) :\n"
+                + "\t" * (n + 1) + "starting_node" + self._starting_node.__str__(n + 1)
+                + "\t" * (n + 1) + "relative_path" + self._relative_path.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaObjectAttributes +++++++++++++++++++++++
 class UaObjectAttributes(UaType):
-    def __init__(self, val=ffi.new("UA_ObjectAttributes*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ObjectAttributes*")
         if type(val) is Void:
             val = ffi.cast("UA_ObjectAttributes*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9306,18 +9510,20 @@ class UaObjectAttributes(UaType):
         if self._null:
             return "(UaObjectAttributes) : NULL\n"
 
-        return ("(UaObjectAttributes) :\n" +
-                "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "description" + self._description.__str__(n + 1) +
-                "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1) +
-                "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
+        return ("(UaObjectAttributes) :\n"
+                + "\t" * (n + 1) + "specified_attributes" + self._specified_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "user_write_mask" + self._user_write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaPublishRequest +++++++++++++++++++++++
 class UaPublishRequest(UaType):
-    def __init__(self, val=ffi.new("UA_PublishRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_PublishRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_PublishRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9382,18 +9588,19 @@ class UaPublishRequest(UaType):
         if self._null:
             return "(UaPublishRequest) : NULL\n"
 
-        return ("(UaPublishRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (
+        return ("(UaPublishRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (
                         n + 1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "subscription_acknowledgements" + self._subscription_acknowledgements.__str__(
-                    n + 1))
+                    n + 1)
+                + "\t" * (n + 1) + "subscription_acknowledgements" + self._subscription_acknowledgements.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaFindServersRequest +++++++++++++++++++++++
 class UaFindServersRequest(UaType):
-    def __init__(self, val=ffi.new("UA_FindServersRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_FindServersRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_FindServersRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9499,18 +9706,20 @@ class UaFindServersRequest(UaType):
         if self._null:
             return "(UaFindServersRequest) : NULL\n"
 
-        return ("(UaFindServersRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1) +
-                "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1) +
-                "\t" * (n + 1) + "server_uris_size" + self._server_uris_size.__str__(n + 1) +
-                "\t" * (n + 1) + "server_uris" + self._server_uris.__str__(n + 1))
+        return ("(UaFindServersRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1)
+                + "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1)
+                + "\t" * (n + 1) + "server_uris_size" + self._server_uris_size.__str__(n + 1)
+                + "\t" * (n + 1) + "server_uris" + self._server_uris.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReferenceDescription +++++++++++++++++++++++
 class UaReferenceDescription(UaType):
-    def __init__(self, val=ffi.new("UA_ReferenceDescription*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ReferenceDescription*")
         if type(val) is Void:
             val = ffi.cast("UA_ReferenceDescription*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9630,19 +9839,21 @@ class UaReferenceDescription(UaType):
         if self._null:
             return "(UaReferenceDescription) : NULL\n"
 
-        return ("(UaReferenceDescription) :\n" +
-                "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1) +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1) +
-                "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1) +
-                "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1) +
-                "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1))
+        return ("(UaReferenceDescription) :\n"
+                + "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1)
+                + "\t" * (n + 1) + "is_forward" + self._is_forward.__str__(n + 1)
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1)
+                + "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSubscriptionRequest +++++++++++++++++++++++
 class UaCreateSubscriptionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSubscriptionRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CreateSubscriptionRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CreateSubscriptionRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9762,20 +9973,22 @@ class UaCreateSubscriptionRequest(UaType):
         if self._null:
             return "(UaCreateSubscriptionRequest) : NULL\n"
 
-        return ("(UaCreateSubscriptionRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_publishing_interval" + self._requested_publishing_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_lifetime_count" + self._requested_lifetime_count.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_max_keep_alive_count" + self._requested_max_keep_alive_count.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "max_notifications_per_publish" + self._max_notifications_per_publish.__str__(n + 1) +
-                "\t" * (n + 1) + "publishing_enabled" + self._publishing_enabled.__str__(n + 1) +
-                "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1))
+        return ("(UaCreateSubscriptionRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_publishing_interval" + self._requested_publishing_interval.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_lifetime_count" + self._requested_lifetime_count.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_max_keep_alive_count" + self._requested_max_keep_alive_count.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "max_notifications_per_publish" + self._max_notifications_per_publish.__str__(n + 1)
+                + "\t" * (n + 1) + "publishing_enabled" + self._publishing_enabled.__str__(n + 1)
+                + "\t" * (n + 1) + "priority" + self._priority.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCallResponse +++++++++++++++++++++++
 class UaCallResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CallResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CallResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_CallResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9867,17 +10080,19 @@ class UaCallResponse(UaType):
         if self._null:
             return "(UaCallResponse) : NULL\n"
 
-        return ("(UaCallResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaCallResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteNodesResponse +++++++++++++++++++++++
 class UaDeleteNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteNodesResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteNodesResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteNodesResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -9969,17 +10184,19 @@ class UaDeleteNodesResponse(UaType):
         if self._null:
             return "(UaDeleteNodesResponse) : NULL\n"
 
-        return ("(UaDeleteNodesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaDeleteNodesResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaModifyMonitoredItemsRequest +++++++++++++++++++++++
 class UaModifyMonitoredItemsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ModifyMonitoredItemsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ModifyMonitoredItemsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_ModifyMonitoredItemsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10071,17 +10288,19 @@ class UaModifyMonitoredItemsRequest(UaType):
         if self._null:
             return "(UaModifyMonitoredItemsRequest) : NULL\n"
 
-        return ("(UaModifyMonitoredItemsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1) +
-                "\t" * (n + 1) + "items_to_modify_size" + self._items_to_modify_size.__str__(n + 1) +
-                "\t" * (n + 1) + "items_to_modify" + self._items_to_modify.__str__(n + 1))
+        return ("(UaModifyMonitoredItemsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1)
+                + "\t" * (n + 1) + "items_to_modify_size" + self._items_to_modify_size.__str__(n + 1)
+                + "\t" * (n + 1) + "items_to_modify" + self._items_to_modify.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaServiceFault +++++++++++++++++++++++
 class UaServiceFault(UaType):
-    def __init__(self, val=ffi.new("UA_ServiceFault*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ServiceFault*")
         if type(val) is Void:
             val = ffi.cast("UA_ServiceFault*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10117,13 +10336,15 @@ class UaServiceFault(UaType):
         if self._null:
             return "(UaServiceFault) : NULL\n"
 
-        return ("(UaServiceFault) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
+        return ("(UaServiceFault) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaPublishResponse +++++++++++++++++++++++
 class UaPublishResponse(UaType):
-    def __init__(self, val=ffi.new("UA_PublishResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_PublishResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_PublishResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10285,23 +10506,25 @@ class UaPublishResponse(UaType):
         if self._null:
             return "(UaPublishResponse) : NULL\n"
 
-        return ("(UaPublishResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "available_sequence_numbers_size" + self._available_sequence_numbers_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "available_sequence_numbers" + self._available_sequence_numbers.__str__(n + 1) +
-                "\t" * (n + 1) + "more_notifications" + self._more_notifications.__str__(n + 1) +
-                "\t" * (n + 1) + "notification_message" + self._notification_message.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaPublishResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "available_sequence_numbers_size" + self._available_sequence_numbers_size.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "available_sequence_numbers" + self._available_sequence_numbers.__str__(n + 1)
+                + "\t" * (n + 1) + "more_notifications" + self._more_notifications.__str__(n + 1)
+                + "\t" * (n + 1) + "notification_message" + self._notification_message.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateMonitoredItemsRequest +++++++++++++++++++++++
 class UaCreateMonitoredItemsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CreateMonitoredItemsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CreateMonitoredItemsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CreateMonitoredItemsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10393,17 +10616,19 @@ class UaCreateMonitoredItemsRequest(UaType):
         if self._null:
             return "(UaCreateMonitoredItemsRequest) : NULL\n"
 
-        return ("(UaCreateMonitoredItemsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1) +
-                "\t" * (n + 1) + "items_to_create_size" + self._items_to_create_size.__str__(n + 1) +
-                "\t" * (n + 1) + "items_to_create" + self._items_to_create.__str__(n + 1))
+        return ("(UaCreateMonitoredItemsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1)
+                + "\t" * (n + 1) + "items_to_create_size" + self._items_to_create_size.__str__(n + 1)
+                + "\t" * (n + 1) + "items_to_create" + self._items_to_create.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaOpenSecureChannelRequest +++++++++++++++++++++++
 class UaOpenSecureChannelRequest(UaType):
-    def __init__(self, val=ffi.new("UA_OpenSecureChannelRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_OpenSecureChannelRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_OpenSecureChannelRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10509,18 +10734,20 @@ class UaOpenSecureChannelRequest(UaType):
         if self._null:
             return "(UaOpenSecureChannelRequest) : NULL\n"
 
-        return ("(UaOpenSecureChannelRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "client_protocol_version" + self._client_protocol_version.__str__(n + 1) +
-                "\t" * (n + 1) + "request_type" + self._request_type.__str__(n + 1) +
-                "\t" * (n + 1) + "security_mode" + self._security_mode.__str__(n + 1) +
-                "\t" * (n + 1) + "client_nonce" + self._client_nonce.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_lifetime" + self._requested_lifetime.__str__(n + 1))
+        return ("(UaOpenSecureChannelRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "client_protocol_version" + self._client_protocol_version.__str__(n + 1)
+                + "\t" * (n + 1) + "request_type" + self._request_type.__str__(n + 1)
+                + "\t" * (n + 1) + "security_mode" + self._security_mode.__str__(n + 1)
+                + "\t" * (n + 1) + "client_nonce" + self._client_nonce.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_lifetime" + self._requested_lifetime.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCloseSessionRequest +++++++++++++++++++++++
 class UaCloseSessionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CloseSessionRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CloseSessionRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CloseSessionRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10570,14 +10797,16 @@ class UaCloseSessionRequest(UaType):
         if self._null:
             return "(UaCloseSessionRequest) : NULL\n"
 
-        return ("(UaCloseSessionRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "delete_subscriptions" + self._delete_subscriptions.__str__(n + 1))
+        return ("(UaCloseSessionRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "delete_subscriptions" + self._delete_subscriptions.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSetTriggeringRequest +++++++++++++++++++++++
 class UaSetTriggeringRequest(UaType):
-    def __init__(self, val=ffi.new("UA_SetTriggeringRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SetTriggeringRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_SetTriggeringRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10697,19 +10926,21 @@ class UaSetTriggeringRequest(UaType):
         if self._null:
             return "(UaSetTriggeringRequest) : NULL\n"
 
-        return ("(UaSetTriggeringRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1) +
-                "\t" * (n + 1) + "triggering_item_id" + self._triggering_item_id.__str__(n + 1) +
-                "\t" * (n + 1) + "links_to_add_size" + self._links_to_add_size.__str__(n + 1) +
-                "\t" * (n + 1) + "links_to_add" + self._links_to_add.__str__(n + 1) +
-                "\t" * (n + 1) + "links_to_remove_size" + self._links_to_remove_size.__str__(n + 1) +
-                "\t" * (n + 1) + "links_to_remove" + self._links_to_remove.__str__(n + 1))
+        return ("(UaSetTriggeringRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "subscription_id" + self._subscription_id.__str__(n + 1)
+                + "\t" * (n + 1) + "triggering_item_id" + self._triggering_item_id.__str__(n + 1)
+                + "\t" * (n + 1) + "links_to_add_size" + self._links_to_add_size.__str__(n + 1)
+                + "\t" * (n + 1) + "links_to_add" + self._links_to_add.__str__(n + 1)
+                + "\t" * (n + 1) + "links_to_remove_size" + self._links_to_remove_size.__str__(n + 1)
+                + "\t" * (n + 1) + "links_to_remove" + self._links_to_remove.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseResult +++++++++++++++++++++++
 class UaBrowseResult(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowseResult*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowseResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10787,16 +11018,18 @@ class UaBrowseResult(UaType):
         if self._null:
             return "(UaBrowseResult) : NULL\n"
 
-        return ("(UaBrowseResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "continuation_point" + self._continuation_point.__str__(n + 1) +
-                "\t" * (n + 1) + "references_size" + self._references_size.__str__(n + 1) +
-                "\t" * (n + 1) + "references" + self._references.__str__(n + 1))
+        return ("(UaBrowseResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "continuation_point" + self._continuation_point.__str__(n + 1)
+                + "\t" * (n + 1) + "references_size" + self._references_size.__str__(n + 1)
+                + "\t" * (n + 1) + "references" + self._references.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddReferencesRequest +++++++++++++++++++++++
 class UaAddReferencesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_AddReferencesRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddReferencesRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_AddReferencesRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10860,15 +11093,17 @@ class UaAddReferencesRequest(UaType):
         if self._null:
             return "(UaAddReferencesRequest) : NULL\n"
 
-        return ("(UaAddReferencesRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "references_to_add_size" + self._references_to_add_size.__str__(n + 1) +
-                "\t" * (n + 1) + "references_to_add" + self._references_to_add.__str__(n + 1))
+        return ("(UaAddReferencesRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "references_to_add_size" + self._references_to_add_size.__str__(n + 1)
+                + "\t" * (n + 1) + "references_to_add" + self._references_to_add.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesItem +++++++++++++++++++++++
 class UaAddNodesItem(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesItem*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddNodesItem*")
         if type(val) is Void:
             val = ffi.cast("UA_AddNodesItem*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -10988,19 +11223,21 @@ class UaAddNodesItem(UaType):
         if self._null:
             return "(UaAddNodesItem) : NULL\n"
 
-        return ("(UaAddNodesItem) :\n" +
-                "\t" * (n + 1) + "parent_node_id" + self._parent_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_new_node_id" + self._requested_new_node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1) +
-                "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1) +
-                "\t" * (n + 1) + "node_attributes" + self._node_attributes.__str__(n + 1) +
-                "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1))
+        return ("(UaAddNodesItem) :\n"
+                + "\t" * (n + 1) + "parent_node_id" + self._parent_node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "reference_type_id" + self._reference_type_id.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_new_node_id" + self._requested_new_node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1)
+                + "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1)
+                + "\t" * (n + 1) + "node_attributes" + self._node_attributes.__str__(n + 1)
+                + "\t" * (n + 1) + "type_definition" + self._type_definition.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaServerStatusDataType +++++++++++++++++++++++
 class UaServerStatusDataType(UaType):
-    def __init__(self, val=ffi.new("UA_ServerStatusDataType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ServerStatusDataType*")
         if type(val) is Void:
             val = ffi.cast("UA_ServerStatusDataType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11106,18 +11343,20 @@ class UaServerStatusDataType(UaType):
         if self._null:
             return "(UaServerStatusDataType) : NULL\n"
 
-        return ("(UaServerStatusDataType) :\n" +
-                "\t" * (n + 1) + "start_time" + self._start_time.__str__(n + 1) +
-                "\t" * (n + 1) + "current_time" + self._current_time.__str__(n + 1) +
-                "\t" * (n + 1) + "state" + self._state.__str__(n + 1) +
-                "\t" * (n + 1) + "build_info" + self._build_info.__str__(n + 1) +
-                "\t" * (n + 1) + "seconds_till_shutdown" + self._seconds_till_shutdown.__str__(n + 1) +
-                "\t" * (n + 1) + "shutdown_reason" + self._shutdown_reason.__str__(n + 1))
+        return ("(UaServerStatusDataType) :\n"
+                + "\t" * (n + 1) + "start_time" + self._start_time.__str__(n + 1)
+                + "\t" * (n + 1) + "current_time" + self._current_time.__str__(n + 1)
+                + "\t" * (n + 1) + "state" + self._state.__str__(n + 1)
+                + "\t" * (n + 1) + "build_info" + self._build_info.__str__(n + 1)
+                + "\t" * (n + 1) + "seconds_till_shutdown" + self._seconds_till_shutdown.__str__(n + 1)
+                + "\t" * (n + 1) + "shutdown_reason" + self._shutdown_reason.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseNextResponse +++++++++++++++++++++++
 class UaBrowseNextResponse(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseNextResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowseNextResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowseNextResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11209,17 +11448,19 @@ class UaBrowseNextResponse(UaType):
         if self._null:
             return "(UaBrowseNextResponse) : NULL\n"
 
-        return ("(UaBrowseNextResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaBrowseNextResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAxisInformation +++++++++++++++++++++++
 class UaAxisInformation(UaType):
-    def __init__(self, val=ffi.new("UA_AxisInformation*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AxisInformation*")
         if type(val) is Void:
             val = ffi.cast("UA_AxisInformation*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11325,18 +11566,20 @@ class UaAxisInformation(UaType):
         if self._null:
             return "(UaAxisInformation) : NULL\n"
 
-        return ("(UaAxisInformation) :\n" +
-                "\t" * (n + 1) + "engineering_units" + self._engineering_units.__str__(n + 1) +
-                "\t" * (n + 1) + "e_u_range" + self._e_u_range.__str__(n + 1) +
-                "\t" * (n + 1) + "title" + self._title.__str__(n + 1) +
-                "\t" * (n + 1) + "axis_scale_type" + self._axis_scale_type.__str__(n + 1) +
-                "\t" * (n + 1) + "axis_steps_size" + self._axis_steps_size.__str__(n + 1) +
-                "\t" * (n + 1) + "axis_steps" + self._axis_steps.__str__(n + 1))
+        return ("(UaAxisInformation) :\n"
+                + "\t" * (n + 1) + "engineering_units" + self._engineering_units.__str__(n + 1)
+                + "\t" * (n + 1) + "e_u_range" + self._e_u_range.__str__(n + 1)
+                + "\t" * (n + 1) + "title" + self._title.__str__(n + 1)
+                + "\t" * (n + 1) + "axis_scale_type" + self._axis_scale_type.__str__(n + 1)
+                + "\t" * (n + 1) + "axis_steps_size" + self._axis_steps_size.__str__(n + 1)
+                + "\t" * (n + 1) + "axis_steps" + self._axis_steps.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaApplicationDescription +++++++++++++++++++++++
 class UaApplicationDescription(UaType):
-    def __init__(self, val=ffi.new("UA_ApplicationDescription*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ApplicationDescription*")
         if type(val) is Void:
             val = ffi.cast("UA_ApplicationDescription*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11470,20 +11713,22 @@ class UaApplicationDescription(UaType):
         if self._null:
             return "(UaApplicationDescription) : NULL\n"
 
-        return ("(UaApplicationDescription) :\n" +
-                "\t" * (n + 1) + "application_uri" + self._application_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "product_uri" + self._product_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "application_name" + self._application_name.__str__(n + 1) +
-                "\t" * (n + 1) + "application_type" + self._application_type.__str__(n + 1) +
-                "\t" * (n + 1) + "gateway_server_uri" + self._gateway_server_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "discovery_profile_uri" + self._discovery_profile_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "discovery_urls_size" + self._discovery_urls_size.__str__(n + 1) +
-                "\t" * (n + 1) + "discovery_urls" + self._discovery_urls.__str__(n + 1))
+        return ("(UaApplicationDescription) :\n"
+                + "\t" * (n + 1) + "application_uri" + self._application_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "product_uri" + self._product_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "application_name" + self._application_name.__str__(n + 1)
+                + "\t" * (n + 1) + "application_type" + self._application_type.__str__(n + 1)
+                + "\t" * (n + 1) + "gateway_server_uri" + self._gateway_server_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "discovery_profile_uri" + self._discovery_profile_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "discovery_urls_size" + self._discovery_urls_size.__str__(n + 1)
+                + "\t" * (n + 1) + "discovery_urls" + self._discovery_urls.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaReadRequest +++++++++++++++++++++++
 class UaReadRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ReadRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ReadRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_ReadRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11575,17 +11820,19 @@ class UaReadRequest(UaType):
         if self._null:
             return "(UaReadRequest) : NULL\n"
 
-        return ("(UaReadRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "max_age" + self._max_age.__str__(n + 1) +
-                "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_read_size" + self._nodes_to_read_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_read" + self._nodes_to_read.__str__(n + 1))
+        return ("(UaReadRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "max_age" + self._max_age.__str__(n + 1)
+                + "\t" * (n + 1) + "timestamps_to_return" + self._timestamps_to_return.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_read_size" + self._nodes_to_read_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_read" + self._nodes_to_read.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaActivateSessionRequest +++++++++++++++++++++++
 class UaActivateSessionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_ActivateSessionRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ActivateSessionRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_ActivateSessionRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11720,21 +11967,24 @@ class UaActivateSessionRequest(UaType):
         if self._null:
             return "(UaActivateSessionRequest) : NULL\n"
 
-        return ("(UaActivateSessionRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "client_signature" + self._client_signature.__str__(n + 1) +
-                "\t" * (n + 1) + "client_software_certificates_size" + self._client_software_certificates_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "client_software_certificates" + self._client_software_certificates.__str__(n + 1) +
-                "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1) +
-                "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1) +
-                "\t" * (n + 1) + "user_identity_token" + self._user_identity_token.__str__(n + 1) +
-                "\t" * (n + 1) + "user_token_signature" + self._user_token_signature.__str__(n + 1))
+        return ("(UaActivateSessionRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "client_signature" + self._client_signature.__str__(n + 1)
+                + "\t" * (
+                        n + 1) + "client_software_certificates_size" + self._client_software_certificates_size.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "client_software_certificates" + self._client_software_certificates.__str__(n + 1)
+                + "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1)
+                + "\t" * (n + 1) + "locale_ids" + self._locale_ids.__str__(n + 1)
+                + "\t" * (n + 1) + "user_identity_token" + self._user_identity_token.__str__(n + 1)
+                + "\t" * (n + 1) + "user_token_signature" + self._user_token_signature.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowsePathResult +++++++++++++++++++++++
 class UaBrowsePathResult(UaType):
-    def __init__(self, val=ffi.new("UA_BrowsePathResult*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowsePathResult*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowsePathResult*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11798,15 +12048,17 @@ class UaBrowsePathResult(UaType):
         if self._null:
             return "(UaBrowsePathResult) : NULL\n"
 
-        return ("(UaBrowsePathResult) :\n" +
-                "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "targets_size" + self._targets_size.__str__(n + 1) +
-                "\t" * (n + 1) + "targets" + self._targets.__str__(n + 1))
+        return ("(UaBrowsePathResult) :\n"
+                + "\t" * (n + 1) + "status_code" + self._status_code.__str__(n + 1)
+                + "\t" * (n + 1) + "targets_size" + self._targets_size.__str__(n + 1)
+                + "\t" * (n + 1) + "targets" + self._targets.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesRequest +++++++++++++++++++++++
 class UaAddNodesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddNodesRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_AddNodesRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11870,15 +12122,17 @@ class UaAddNodesRequest(UaType):
         if self._null:
             return "(UaAddNodesRequest) : NULL\n"
 
-        return ("(UaAddNodesRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_add_size" + self._nodes_to_add_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_add" + self._nodes_to_add.__str__(n + 1))
+        return ("(UaAddNodesRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_add_size" + self._nodes_to_add_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_add" + self._nodes_to_add.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseRequest +++++++++++++++++++++++
 class UaBrowseRequest(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowseRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowseRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -11970,18 +12224,21 @@ class UaBrowseRequest(UaType):
         if self._null:
             return "(UaBrowseRequest) : NULL\n"
 
-        return ("(UaBrowseRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "view" + self._view.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_max_references_per_node" + self._requested_max_references_per_node.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "nodes_to_browse_size" + self._nodes_to_browse_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_browse" + self._nodes_to_browse.__str__(n + 1))
+        return ("(UaBrowseRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "view" + self._view.__str__(n + 1)
+                + "\t" * (
+                        n + 1) + "requested_max_references_per_node" + self._requested_max_references_per_node.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "nodes_to_browse_size" + self._nodes_to_browse_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_browse" + self._nodes_to_browse.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaWriteRequest +++++++++++++++++++++++
 class UaWriteRequest(UaType):
-    def __init__(self, val=ffi.new("UA_WriteRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_WriteRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_WriteRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12045,15 +12302,17 @@ class UaWriteRequest(UaType):
         if self._null:
             return "(UaWriteRequest) : NULL\n"
 
-        return ("(UaWriteRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_write_size" + self._nodes_to_write_size.__str__(n + 1) +
-                "\t" * (n + 1) + "nodes_to_write" + self._nodes_to_write.__str__(n + 1))
+        return ("(UaWriteRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_write_size" + self._nodes_to_write_size.__str__(n + 1)
+                + "\t" * (n + 1) + "nodes_to_write" + self._nodes_to_write.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAddNodesResponse +++++++++++++++++++++++
 class UaAddNodesResponse(UaType):
-    def __init__(self, val=ffi.new("UA_AddNodesResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AddNodesResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_AddNodesResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12145,17 +12404,19 @@ class UaAddNodesResponse(UaType):
         if self._null:
             return "(UaAddNodesResponse) : NULL\n"
 
-        return ("(UaAddNodesResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaAddNodesResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaAttributeOperand +++++++++++++++++++++++
 class UaAttributeOperand(UaType):
-    def __init__(self, val=ffi.new("UA_AttributeOperand*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_AttributeOperand*")
         if type(val) is Void:
             val = ffi.cast("UA_AttributeOperand*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12247,17 +12508,19 @@ class UaAttributeOperand(UaType):
         if self._null:
             return "(UaAttributeOperand) : NULL\n"
 
-        return ("(UaAttributeOperand) :\n" +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "alias" + self._alias.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_path" + self._browse_path.__str__(n + 1) +
-                "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1) +
-                "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1))
+        return ("(UaAttributeOperand) :\n"
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "alias" + self._alias.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_path" + self._browse_path.__str__(n + 1)
+                + "\t" * (n + 1) + "attribute_id" + self._attribute_id.__str__(n + 1)
+                + "\t" * (n + 1) + "index_range" + self._index_range.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDataChangeFilter +++++++++++++++++++++++
 class UaDataChangeFilter(UaType):
-    def __init__(self, val=ffi.new("UA_DataChangeFilter*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataChangeFilter*")
         if type(val) is Void:
             val = ffi.cast("UA_DataChangeFilter*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12321,15 +12584,17 @@ class UaDataChangeFilter(UaType):
         if self._null:
             return "(UaDataChangeFilter) : NULL\n"
 
-        return ("(UaDataChangeFilter) :\n" +
-                "\t" * (n + 1) + "trigger" + self._trigger.__str__(n + 1) +
-                "\t" * (n + 1) + "deadband_type" + self._deadband_type.__str__(n + 1) +
-                "\t" * (n + 1) + "deadband_value" + self._deadband_value.__str__(n + 1))
+        return ("(UaDataChangeFilter) :\n"
+                + "\t" * (n + 1) + "trigger" + self._trigger.__str__(n + 1)
+                + "\t" * (n + 1) + "deadband_type" + self._deadband_type.__str__(n + 1)
+                + "\t" * (n + 1) + "deadband_value" + self._deadband_value.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEndpointDescription +++++++++++++++++++++++
 class UaEndpointDescription(UaType):
-    def __init__(self, val=ffi.new("UA_EndpointDescription*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EndpointDescription*")
         if type(val) is Void:
             val = ffi.cast("UA_EndpointDescription*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12477,21 +12742,23 @@ class UaEndpointDescription(UaType):
         if self._null:
             return "(UaEndpointDescription) : NULL\n"
 
-        return ("(UaEndpointDescription) :\n" +
-                "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1) +
-                "\t" * (n + 1) + "server" + self._server.__str__(n + 1) +
-                "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1) +
-                "\t" * (n + 1) + "security_mode" + self._security_mode.__str__(n + 1) +
-                "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "user_identity_tokens_size" + self._user_identity_tokens_size.__str__(n + 1) +
-                "\t" * (n + 1) + "user_identity_tokens" + self._user_identity_tokens.__str__(n + 1) +
-                "\t" * (n + 1) + "transport_profile_uri" + self._transport_profile_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "security_level" + self._security_level.__str__(n + 1))
+        return ("(UaEndpointDescription) :\n"
+                + "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1)
+                + "\t" * (n + 1) + "server" + self._server.__str__(n + 1)
+                + "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1)
+                + "\t" * (n + 1) + "security_mode" + self._security_mode.__str__(n + 1)
+                + "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "user_identity_tokens_size" + self._user_identity_tokens_size.__str__(n + 1)
+                + "\t" * (n + 1) + "user_identity_tokens" + self._user_identity_tokens.__str__(n + 1)
+                + "\t" * (n + 1) + "transport_profile_uri" + self._transport_profile_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "security_level" + self._security_level.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaDeleteReferencesRequest +++++++++++++++++++++++
 class UaDeleteReferencesRequest(UaType):
-    def __init__(self, val=ffi.new("UA_DeleteReferencesRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DeleteReferencesRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_DeleteReferencesRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12555,15 +12822,17 @@ class UaDeleteReferencesRequest(UaType):
         if self._null:
             return "(UaDeleteReferencesRequest) : NULL\n"
 
-        return ("(UaDeleteReferencesRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "references_to_delete_size" + self._references_to_delete_size.__str__(n + 1) +
-                "\t" * (n + 1) + "references_to_delete" + self._references_to_delete.__str__(n + 1))
+        return ("(UaDeleteReferencesRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "references_to_delete_size" + self._references_to_delete_size.__str__(n + 1)
+                + "\t" * (n + 1) + "references_to_delete" + self._references_to_delete.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsRequest +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
-    def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_TranslateBrowsePathsToNodeIdsRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_TranslateBrowsePathsToNodeIdsRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12627,15 +12896,17 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
         if self._null:
             return "(UaTranslateBrowsePathsToNodeIdsRequest) : NULL\n"
 
-        return ("(UaTranslateBrowsePathsToNodeIdsRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_paths_size" + self._browse_paths_size.__str__(n + 1) +
-                "\t" * (n + 1) + "browse_paths" + self._browse_paths.__str__(n + 1))
+        return ("(UaTranslateBrowsePathsToNodeIdsRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_paths_size" + self._browse_paths_size.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_paths" + self._browse_paths.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaFindServersResponse +++++++++++++++++++++++
 class UaFindServersResponse(UaType):
-    def __init__(self, val=ffi.new("UA_FindServersResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_FindServersResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_FindServersResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12699,15 +12970,17 @@ class UaFindServersResponse(UaType):
         if self._null:
             return "(UaFindServersResponse) : NULL\n"
 
-        return ("(UaFindServersResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "servers_size" + self._servers_size.__str__(n + 1) +
-                "\t" * (n + 1) + "servers" + self._servers.__str__(n + 1))
+        return ("(UaFindServersResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "servers_size" + self._servers_size.__str__(n + 1)
+                + "\t" * (n + 1) + "servers" + self._servers.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSessionRequest +++++++++++++++++++++++
 class UaCreateSessionRequest(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSessionRequest*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CreateSessionRequest*")
         if type(val) is Void:
             val = ffi.cast("UA_CreateSessionRequest*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12855,21 +13128,23 @@ class UaCreateSessionRequest(UaType):
         if self._null:
             return "(UaCreateSessionRequest) : NULL\n"
 
-        return ("(UaCreateSessionRequest) :\n" +
-                "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1) +
-                "\t" * (n + 1) + "client_description" + self._client_description.__str__(n + 1) +
-                "\t" * (n + 1) + "server_uri" + self._server_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1) +
-                "\t" * (n + 1) + "session_name" + self._session_name.__str__(n + 1) +
-                "\t" * (n + 1) + "client_nonce" + self._client_nonce.__str__(n + 1) +
-                "\t" * (n + 1) + "client_certificate" + self._client_certificate.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_session_timeout" + self._requested_session_timeout.__str__(n + 1) +
-                "\t" * (n + 1) + "max_response_message_size" + self._max_response_message_size.__str__(n + 1))
+        return ("(UaCreateSessionRequest) :\n"
+                + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
+                + "\t" * (n + 1) + "client_description" + self._client_description.__str__(n + 1)
+                + "\t" * (n + 1) + "server_uri" + self._server_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoint_url" + self._endpoint_url.__str__(n + 1)
+                + "\t" * (n + 1) + "session_name" + self._session_name.__str__(n + 1)
+                + "\t" * (n + 1) + "client_nonce" + self._client_nonce.__str__(n + 1)
+                + "\t" * (n + 1) + "client_certificate" + self._client_certificate.__str__(n + 1)
+                + "\t" * (n + 1) + "requested_session_timeout" + self._requested_session_timeout.__str__(n + 1)
+                + "\t" * (n + 1) + "max_response_message_size" + self._max_response_message_size.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilterElement +++++++++++++++++++++++
 class UaContentFilterElement(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilterElement*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ContentFilterElement*")
         if type(val) is Void:
             val = ffi.cast("UA_ContentFilterElement*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -12933,15 +13208,17 @@ class UaContentFilterElement(UaType):
         if self._null:
             return "(UaContentFilterElement) : NULL\n"
 
-        return ("(UaContentFilterElement) :\n" +
-                "\t" * (n + 1) + "filter_operator" + self._filter_operator.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_operands_size" + self._filter_operands_size.__str__(n + 1) +
-                "\t" * (n + 1) + "filter_operands" + self._filter_operands.__str__(n + 1))
+        return ("(UaContentFilterElement) :\n"
+                + "\t" * (n + 1) + "filter_operator" + self._filter_operator.__str__(n + 1)
+                + "\t" * (n + 1) + "filter_operands_size" + self._filter_operands_size.__str__(n + 1)
+                + "\t" * (n + 1) + "filter_operands" + self._filter_operands.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsResponse +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_TranslateBrowsePathsToNodeIdsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_TranslateBrowsePathsToNodeIdsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_TranslateBrowsePathsToNodeIdsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -13033,17 +13310,19 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
         if self._null:
             return "(UaTranslateBrowsePathsToNodeIdsResponse) : NULL\n"
 
-        return ("(UaTranslateBrowsePathsToNodeIdsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaTranslateBrowsePathsToNodeIdsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaBrowseResponse +++++++++++++++++++++++
 class UaBrowseResponse(UaType):
-    def __init__(self, val=ffi.new("UA_BrowseResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_BrowseResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_BrowseResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -13135,17 +13414,19 @@ class UaBrowseResponse(UaType):
         if self._null:
             return "(UaBrowseResponse) : NULL\n"
 
-        return ("(UaBrowseResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1) +
-                "\t" * (n + 1) + "results" + self._results.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1) +
-                "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
+        return ("(UaBrowseResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "results_size" + self._results_size.__str__(n + 1)
+                + "\t" * (n + 1) + "results" + self._results.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos_size" + self._diagnostic_infos_size.__str__(n + 1)
+                + "\t" * (n + 1) + "diagnostic_infos" + self._diagnostic_infos.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaCreateSessionResponse +++++++++++++++++++++++
 class UaCreateSessionResponse(UaType):
-    def __init__(self, val=ffi.new("UA_CreateSessionResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_CreateSessionResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_CreateSessionResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -13336,25 +13617,28 @@ class UaCreateSessionResponse(UaType):
         if self._null:
             return "(UaCreateSessionResponse) : NULL\n"
 
-        return ("(UaCreateSessionResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "session_id" + self._session_id.__str__(n + 1) +
-                "\t" * (n + 1) + "authentication_token" + self._authentication_token.__str__(n + 1) +
-                "\t" * (n + 1) + "revised_session_timeout" + self._revised_session_timeout.__str__(n + 1) +
-                "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1) +
-                "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1) +
-                "\t" * (n + 1) + "server_endpoints_size" + self._server_endpoints_size.__str__(n + 1) +
-                "\t" * (n + 1) + "server_endpoints" + self._server_endpoints.__str__(n + 1) +
-                "\t" * (n + 1) + "server_software_certificates_size" + self._server_software_certificates_size.__str__(
-                    n + 1) +
-                "\t" * (n + 1) + "server_software_certificates" + self._server_software_certificates.__str__(n + 1) +
-                "\t" * (n + 1) + "server_signature" + self._server_signature.__str__(n + 1) +
-                "\t" * (n + 1) + "max_request_message_size" + self._max_request_message_size.__str__(n + 1))
+        return ("(UaCreateSessionResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "session_id" + self._session_id.__str__(n + 1)
+                + "\t" * (n + 1) + "authentication_token" + self._authentication_token.__str__(n + 1)
+                + "\t" * (n + 1) + "revised_session_timeout" + self._revised_session_timeout.__str__(n + 1)
+                + "\t" * (n + 1) + "server_nonce" + self._server_nonce.__str__(n + 1)
+                + "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1)
+                + "\t" * (n + 1) + "server_endpoints_size" + self._server_endpoints_size.__str__(n + 1)
+                + "\t" * (n + 1) + "server_endpoints" + self._server_endpoints.__str__(n + 1)
+                + "\t" * (
+                        n + 1) + "server_software_certificates_size" + self._server_software_certificates_size.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "server_software_certificates" + self._server_software_certificates.__str__(n + 1)
+                + "\t" * (n + 1) + "server_signature" + self._server_signature.__str__(n + 1)
+                + "\t" * (n + 1) + "max_request_message_size" + self._max_request_message_size.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaContentFilter +++++++++++++++++++++++
 class UaContentFilter(UaType):
-    def __init__(self, val=ffi.new("UA_ContentFilter*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ContentFilter*")
         if type(val) is Void:
             val = ffi.cast("UA_ContentFilter*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -13404,14 +13688,16 @@ class UaContentFilter(UaType):
         if self._null:
             return "(UaContentFilter) : NULL\n"
 
-        return ("(UaContentFilter) :\n" +
-                "\t" * (n + 1) + "elements_size" + self._elements_size.__str__(n + 1) +
-                "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1))
+        return ("(UaContentFilter) :\n"
+                + "\t" * (n + 1) + "elements_size" + self._elements_size.__str__(n + 1)
+                + "\t" * (n + 1) + "elements" + self._elements.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaGetEndpointsResponse +++++++++++++++++++++++
 class UaGetEndpointsResponse(UaType):
-    def __init__(self, val=ffi.new("UA_GetEndpointsResponse*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_GetEndpointsResponse*")
         if type(val) is Void:
             val = ffi.cast("UA_GetEndpointsResponse*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -13475,15 +13761,17 @@ class UaGetEndpointsResponse(UaType):
         if self._null:
             return "(UaGetEndpointsResponse) : NULL\n"
 
-        return ("(UaGetEndpointsResponse) :\n" +
-                "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoints_size" + self._endpoints_size.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoints" + self._endpoints.__str__(n + 1))
+        return ("(UaGetEndpointsResponse) :\n"
+                + "\t" * (n + 1) + "response_header" + self._response_header.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoints_size" + self._endpoints_size.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoints" + self._endpoints.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaEventFilter +++++++++++++++++++++++
 class UaEventFilter(UaType):
-    def __init__(self, val=ffi.new("UA_EventFilter*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_EventFilter*")
         if type(val) is Void:
             val = ffi.cast("UA_EventFilter*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -13547,7 +13835,7 @@ class UaEventFilter(UaType):
         if self._null:
             return "(UaEventFilter) : NULL\n"
 
-        return ("(UaEventFilter) :\n" +
-                "\t" * (n + 1) + "select_clauses_size" + self._select_clauses_size.__str__(n + 1) +
-                "\t" * (n + 1) + "select_clauses" + self._select_clauses.__str__(n + 1) +
-                "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1))
+        return ("(UaEventFilter) :\n"
+                + "\t" * (n + 1) + "select_clauses_size" + self._select_clauses_size.__str__(n + 1)
+                + "\t" * (n + 1) + "select_clauses" + self._select_clauses.__str__(n + 1)
+                + "\t" * (n + 1) + "where_clause" + self._where_clause.__str__(n + 1))

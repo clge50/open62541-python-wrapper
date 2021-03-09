@@ -198,7 +198,9 @@ class UaDataTypeKind(UaType):
 
 # +++++++++++++++++++ UaString +++++++++++++++++++++++
 class UaString(UaType):
-    def __init__(self, val=ffi.new("UA_String*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_String*")
         if type(val) is Void:
             val = ffi.cast("UA_String*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -255,7 +257,9 @@ class UaString(UaType):
 
 # +++++++++++++++++++ UaDateTimeStruct +++++++++++++++++++++++
 class UaDateTimeStruct(UaType):
-    def __init__(self, val=ffi.new("UA_DateTimeStruct*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DateTimeStruct*")
         if type(val) is Void:
             val = ffi.cast("UA_DateTimeStruct*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -417,7 +421,9 @@ class UaDateTimeStruct(UaType):
 
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++
 class UaGuid(UaType):
-    def __init__(self, val=ffi.new("UA_Guid*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_Guid*")
         if type(val) is Void:
             val = ffi.cast("UA_Guid*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -504,7 +510,9 @@ class UaGuid(UaType):
 
 # +++++++++++++++++++ UaExpandedNodeId +++++++++++++++++++++++
 class UaExpandedNodeId(UaType):
-    def __init__(self, val=ffi.new("UA_ExpandedNodeId*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ExpandedNodeId*")
         if type(val) is Void:
             val = ffi.cast("UA_ExpandedNodeId*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -576,7 +584,9 @@ class UaExpandedNodeId(UaType):
 
 # +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
 class UaQualifiedName(UaType):
-    def __init__(self, val=ffi.new("UA_QualifiedName*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_QualifiedName*")
         if type(val) is Void:
             val = ffi.cast("UA_QualifiedName*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -633,7 +643,9 @@ class UaQualifiedName(UaType):
 
 # +++++++++++++++++++ UaLocalizedText +++++++++++++++++++++++
 class UaLocalizedText(UaType):
-    def __init__(self, val=ffi.new("UA_LocalizedText*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_LocalizedText*")
         if type(val) is Void:
             val = ffi.cast("UA_LocalizedText*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -690,7 +702,9 @@ class UaLocalizedText(UaType):
 
 # +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
 class UaNumericRangeDimension(UaType):
-    def __init__(self, val=ffi.new("UA_NumericRangeDimension*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NumericRangeDimension*")
         if type(val) is Void:
             val = ffi.cast("UA_NumericRangeDimension*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -747,7 +761,9 @@ class UaNumericRangeDimension(UaType):
 
 # +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
 class UaNumericRange(UaType):
-    def __init__(self, val=ffi.new("UA_NumericRange*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NumericRange*")
         if type(val) is Void:
             val = ffi.cast("UA_NumericRange*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -804,7 +820,9 @@ class UaNumericRange(UaType):
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
-    def __init__(self, val=ffi.new("UA_Variant*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_Variant*")
         if type(val) is Void:
             val = ffi.cast("UA_Variant*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -921,7 +939,9 @@ class UaVariant(UaType):
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
 class UaDataValue(UaType):
-    def __init__(self, val=ffi.new("UA_DataValue*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataValue*")
         if type(val) is Void:
             val = ffi.cast("UA_DataValue*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1128,7 +1148,9 @@ class UaDataValue(UaType):
 
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
 class UaDiagnosticInfo(UaType):
-    def __init__(self, val=ffi.new("UA_DiagnosticInfo*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DiagnosticInfo*")
         if type(val) is Void:
             val = ffi.cast("UA_DiagnosticInfo*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1365,7 +1387,9 @@ class UaDiagnosticInfo(UaType):
 
 # +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
 class UaDataTypeMember(UaType):
-    def __init__(self, val=ffi.new("UA_DataTypeMember*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataTypeMember*")
         if type(val) is Void:
             val = ffi.cast("UA_DataTypeMember*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1482,7 +1506,9 @@ class UaDataTypeMember(UaType):
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
 class UaDataType(UaType):
-    def __init__(self, val=ffi.new("UA_DataType*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataType*")
         if type(val) is Void:
             val = ffi.cast("UA_DataType*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1659,7 +1685,9 @@ class UaDataType(UaType):
 
 # +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
 class UaDataTypeArray(UaType):
-    def __init__(self, val=ffi.new("UA_DataTypeArray*"), is_pointer=False):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataTypeArray*")
         if type(val) is Void:
             val = ffi.cast("UA_DataTypeArray*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)

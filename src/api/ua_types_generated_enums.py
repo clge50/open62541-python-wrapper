@@ -310,10 +310,6 @@ class UaNodeClass(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
-    # todo: not sure what should happen/if it is needed here but this method was missing and caused read_node_class_attribute to crash
-    def _update(self):
-        pass
-
     def __str__(self, n=0):
         return f"(UaNodeClass): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
