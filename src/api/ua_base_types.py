@@ -205,7 +205,8 @@ class UaString(UaType):
         elif type(val) is str or type(val) is bytes:
             val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
         elif type(val) is not None:
-            val = ffi.new("UA_String*", val)
+            if not is_pointer:
+                val = ffi.new("UA_String*", val)
         else:
             val = ffi.new("UA_String*")
 
