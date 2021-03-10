@@ -52,14 +52,14 @@ def inc_int_32_array_method_callback(server: UaServer,
                                      object_id: UaNodeId,
                                      object_context: Void, input_size: SizeT, input_arg: UaVariant, output_size: SizeT,
                                      output_arg: UaVariant):
-    input_array = UaInt32(input.data[0])
-    delta = UaInt32(input.data[1])
+    input_array = UaInt32(input_arg.data[0])
+    delta = UaInt32(input_arg.data[1])
     # todo: set_scalar should return status code
     retval = output_arg.set_array(input_array, 5, TYPES.INT32)
     if retval is not UaStatusCode.UA_STATUSCODE_GOOD:
         return retval
     output_array = UaUInt32(output_arg.data)
-    for i in range(0, input.array_length - 1):
+    for i in range(0, input_arg.array_length - 1):
         output_array[i] = input_array[i] + delta
     return UaStatusCode.UA_STATUSCODE_GOOD
 
@@ -96,17 +96,17 @@ def add_inc_int_32_array_method(server: UaServer):
     inc_attr.display_name = UaLocalizedText("en-US", "IncInt32ArrayValues")
     inc_attr.executable = UaBoolean(True)
     inc_attr.user_executable = UaBoolean(True)
-    server.add_method_node(server,  # todo: add service to server
-                           UaNodeId(1, "IncInt32ArrayValues"),
+    server.add_method_node(UaNodeId(1, "IncInt32ArrayValues"),
                            NS0ID.OBJECTSFOLDER,
                            NS0ID.HASCOMPONENT,
                            UaQualifiedName(1, "IncInt32ArrayValues"),
-                           inc_attr, inc_int_32_array_method_callback,
-                           2, input_arguments, 1, output_argument)
+                           inc_int_32_array_method_callback,
+                           SizeT(2), input_arguments,
+                           SizeT(1), output_argument, attr=inc_attr)
 
 
 def main():
     server = UaServer()
     add_hello_world_method(server)
-    add_inc_int_32_array_method(server)
+    res = add_inc_int_32_array_method(server)
     retval = server.run(UaBoolean(True))
