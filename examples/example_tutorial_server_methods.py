@@ -50,23 +50,23 @@ def inc_int_32_array_method_callback(server: UaServer,
                                      session_id: UaNodeId,
                                      session_context: Void, method_id: UaNodeId, method_context: Void,
                                      object_id: UaNodeId,
-                                     object_context: Void, input_size: SizeT, input_arg: UaVariant, output_size: SizeT,
+                                     object_context: Void, input_size: SizeT, input_arg: UaList, output_size: SizeT,
                                      output_arg: UaVariant):
-    input_array = UaInt32(input_arg.data[0])
-    delta = UaInt32(input_arg.data[1])
-    # todo: set_scalar should return status code
-    retval = output_arg.set_array(input_array, 5, TYPES.INT32)
-    if retval is not UaStatusCode.UA_STATUSCODE_GOOD:
-        return retval
-    output_array = UaUInt32(output_arg.data)
-    for i in range(0, input_arg.array_length - 1):
-        output_array[i] = input_array[i] + delta
+    print("1234")
+    # input_array = UaList(input_arg[0].data, 5)
+    # delta = UaInt32(input_arg[1].data)
+    # retval = output_arg.set_array(input_array, 5, TYPES.INT32)
+    # if retval is not UaStatusCode.UA_STATUSCODE_GOOD:
+    #    return retval
+    # output_array = UaUInt32(output_arg.data)
+    # for i in range(0, input_arg.array_length - 1):
+    #    output_array[i] = input_array[i] + delta
     return UaStatusCode.UA_STATUSCODE_GOOD
 
 
 def add_inc_int_32_array_method(server: UaServer):
     # two input arguments
-    input_arguments = UaArgument(2)
+    input_arguments = UaList(ua_class=UaArgument, size=2)
     input_arguments[0].description = UaLocalizedText("en-US", "int32[5] array")
     input_arguments[0].name = UaString("int32 array")
     input_arguments[0].data_type = TYPES.INT32.type_id
@@ -105,8 +105,7 @@ def add_inc_int_32_array_method(server: UaServer):
                            SizeT(1), output_argument, attr=inc_attr)
 
 
-def main():
-    server = UaServer()
-    add_hello_world_method(server)
-    res = add_inc_int_32_array_method(server)
-    retval = server.run(UaBoolean(True))
+server = UaServer()
+add_hello_world_method(server)
+res = add_inc_int_32_array_method(server)
+retval = server.run(UaBoolean(True))

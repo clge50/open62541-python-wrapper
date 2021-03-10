@@ -6,6 +6,7 @@
 from intermediateApi import lib, ffi
 import ua_service_results_server as ServerServiceResults
 from ua_types import *
+from ua_list import *
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
 
@@ -99,9 +100,10 @@ class _ServerCallback:
                                                            UaNodeId(val=object_id, is_pointer=True),
                                                            Void(val=object_context, is_pointer=True),
                                                            SizeT(val=input_size, is_pointer=False),
-                                                           UaVariant(val=_input, is_pointer=True),
+                                                           # todo: remove unnecessary size arg
+                                                           UaList(val=_input, size=input_size, ua_class=UaVariant),
                                                            SizeT(val=output_size, is_pointer=False),
-                                                           UaVariant(val=output, is_pointer=True))
+                                                           UaList(val=output, size=output_size, ua_class=UaVariant))
 
     # todo: ExternalValueCallback is missing
 
@@ -484,7 +486,7 @@ class UaServer:
 
         status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
-                                                  attr._val, node_context._ptr, out_node_id._ptr)
+                                                  attr._val, node_context, out_node_id._ptr)
         out_node_id._update()
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code), out_node_id)
 
@@ -510,7 +512,7 @@ class UaServer:
 
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, type_definition._val,
-                                                      attr._val, node_context._ptr, out_node_id._ptr)
+                                                      attr._val, node_context, out_node_id._ptr)
 
         out_node_id._update()
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code), out_node_id)
@@ -520,8 +522,8 @@ class UaServer:
                         method: Callable[
                             ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, SizeT, UaVariant, SizeT,
                              UaVariant], UaStatusCode],
-                        input_arg_size: SizeT, input_arg: UaArgument, output_arg_size: SizeT,
-                        output_arg: UaArgument, attr: UaVariableAttributes = None,
+                        input_arg_size: SizeT, input_arg: Union[UaArgument, UaList], output_arg_size: SizeT,
+                        output_arg: Union[UaArgument, UaList], attr: UaVariableAttributes = None,
                         node_context=None):
         if attr is None:
             attr = VARIABLE_ATTRIBUTES_DEFAULT
@@ -539,8 +541,8 @@ class UaServer:
                                                   reference_type_id._val, browse_name._val, attr._val,
                                                   lib.python_wrapper_UA_MethodCallback,
                                                   input_arg_size._val, input_arg._ptr, output_arg_size._val,
-                                                  output_arg._ptr, node_context._ptr, out_new_node_id._ptr)
-        return ServerServiceResults.AddMethodNodeResult(output_arg_size, output_args, UaStatusCode(status_code),
+                                                  output_arg._ptr, node_context, out_new_node_id._ptr)
+        return ServerServiceResults.AddMethodNodeResult(output_arg_size, output_arg, UaStatusCode(status_code),
                                                         out_new_node_id)
 
     def set_node_type_lifecycle(self, node_id: UaNodeId,
