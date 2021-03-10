@@ -248,8 +248,8 @@ class UaValueCallback(UaType):
             self._uses_python_write_callback = True
         else:
             super().__init__(val=val, is_pointer=is_pointer)
-            self.read_callback = None
-            self.write_callback = None
+            self.read_callback = lambda a, b, c, d, e, f, g: None
+            self.write_callback = lambda a, b, c, d, e, f, g: None
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
 
@@ -397,8 +397,8 @@ class UaExternalValueCallback(UaType):
             self._uses_python_write_callback = True
         else:
             super().__init__(val=val, is_pointer=is_pointer)
-            self.read_callback = None
-            self.write_callback = None
+            self.read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
+            self.write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
 
@@ -478,8 +478,8 @@ class UaDataSource(UaType):
             self._uses_python_write_callback = False
             self._value.read = val.read
             self._value.write = val.write
-            self._read_callback = None
-            self._write_callback = None
+            self._read_callback = lambda a, b, c, d, e, f, g, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._write_callback = lambda a, b, c, d, e, f, g: UaStatusCode.UA_STATUSCODE_GOOD
 
     @property
     def read_callback(self):
@@ -525,6 +525,3 @@ class UaTwoStateVariableCallbackType(UaType):
 class UaTwoStateVariableChangeCallback(UaType):
     def __init__(self):
         return None
-
-
-

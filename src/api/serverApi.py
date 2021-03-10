@@ -542,7 +542,7 @@ class UaServer:
                          condition_source: UaNodeId,
                          hierarchical_reference_type: UaNodeId):
 
-        out_node_id = ffi.new("UA_NodeId *")
+        out_node_id = UaNodeId()
 
         status_code = lib.UA_Server_createCondition(self.ua_server, condition_id._val, condition_type._val,
                                                     condition_name._val, condition_source._val,
