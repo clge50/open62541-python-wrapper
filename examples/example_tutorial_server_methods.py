@@ -5,7 +5,7 @@ from ua import *
 
 def hello_world_method_callback(server, session_id, session_handle, method_id, method_context, object_id,
                                 object_context, input_size, input, output_size, output):
-    str = UaString("Hello ") + + UaString(input.data)
+    str = UaString("Hello " + UaString(input.data).value)
     UaVariant.set_scalar(output, str, TYPES.STRING)
     UaLogger().info(UaLogCategory.UA_LOGCATEGORY_SERVER, "Hello World was called")
     return UaStatusCode.UA_STATUSCODE_GOOD
@@ -24,7 +24,7 @@ def add_hello_world_method(server: UaServer):
     output_argument.data_type = TYPES.STRING.type_id
     output_argument.value_rank = UaValueRanks.SCALAR
 
-    hello_attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT  # todo: put default attributes somewhere elese
+    hello_attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT  # todo: put default attributes somewhere else
     hello_attr.description = UaLocalizedText("en-US", "Say `Hello World`")
     hello_attr.display_name = UaLocalizedText("en-US", "Hello World")
     hello_attr.executable = UaBoolean(True)

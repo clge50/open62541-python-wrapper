@@ -86,6 +86,23 @@ class _ServerCallback:
                                                                                          is_pointer=True),
                                                                           UaDataValue(val=value, is_pointer=True))
 
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
+                                         object_context, input_size, _input, output_size, output):
+        callbacks_dict_key = str(UaNodeId(val=method_id))
+        _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
+                                                           UaNodeId(val=session_id, is_pointer=True),
+                                                           Void(val=session_context, is_pointer=True),
+                                                           UaNodeId(val=method_id, is_pointer=True),
+                                                           Void(val=method_context, is_pointer=True),
+                                                           UaNodeId(val=object_id, is_pointer=True),
+                                                           Void(val=object_context, is_pointer=True),
+                                                           SizeT(val=input_size, is_pointer=False),
+                                                           UaVariant(val=_input, is_pointer=True),
+                                                           SizeT(val=output_size, is_pointer=False),
+                                                           UaVariant(val=output, is_pointer=True))
+
     # todo: ExternalValueCallback is missing
 
 
@@ -498,17 +515,33 @@ class UaServer:
         out_node_id._update()
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code), out_node_id)
 
-    # TODO: implement and test:
-    # def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = UA_ATTRIBUTES_DEFAULT.VARIABLE, node_context = None):
-    #    out_node_id = ffi.new("UA_NodeId *")
+    def add_method_node(self, requested_new_node_id: UaNodeId, parent_node_id: UaNodeId, reference_type_id: UaNodeId,
+                        browse_name: UaQualifiedName,
+                        method: Callable[
+                            ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, SizeT, UaVariant, SizeT,
+                             UaVariant], UaStatusCode],
+                        input_arg_size: SizeT, input_arguments: UaArgument, output_arg_size: SizeT, attr=None,
+                        node_context=None):
+        if attr is None:
+            attr = VARIABLE_ATTRIBUTES_DEFAULT
 
-    #    if node_context is not None:
-    #        node_context = ffi.new_handle(node_context)
-    #    else:
-    #        node_context = ffi.NULL
+        out_new_node_id = UaNodeId()
+        output_args = UaArgument()
 
-    #    status_code = lib.UA_Server_addMethodNode()
-    #    return ServerServiceResults.AddMethodNodeResult(UaStatusCode(status_code), output_arg_size, output_args, out_node)
+        if node_context is not None:
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        _ServerCallback.callbacks_dict[str(requested_new_node_id)] = method
+
+        status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
+                                                  reference_type_id._val, browse_name._val, attr._val,
+                                                  lib.python_wrapper_UA_MethodCallback,
+                                                  input_arg_size._val, input_arguments._ptr, output_arg_size._val,
+                                                  output_args._ptr, node_context._ptr, out_new_node_id._ptr)
+        return ServerServiceResults.AddMethodNodeResult(output_arg_size, output_args, UaStatusCode(status_code),
+                                                        out_new_node_id)
 
     def set_node_type_lifecycle(self, node_id: UaNodeId,
                                 lifecycle: UaNodeTypeLifecycle):
