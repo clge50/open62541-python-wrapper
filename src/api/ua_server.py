@@ -520,13 +520,13 @@ class UaServer:
                         method: Callable[
                             ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, SizeT, UaVariant, SizeT,
                              UaVariant], UaStatusCode],
-                        input_arg_size: SizeT, input_arguments: UaArgument, output_arg_size: SizeT, attr=None,
+                        input_arg_size: SizeT, input_arg: UaArgument, output_arg_size: SizeT,
+                        output_arg: UaArgument, attr: UaVariableAttributes = None,
                         node_context=None):
         if attr is None:
             attr = VARIABLE_ATTRIBUTES_DEFAULT
 
         out_new_node_id = UaNodeId()
-        output_args = UaArgument()
 
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
@@ -538,8 +538,8 @@ class UaServer:
         status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, attr._val,
                                                   lib.python_wrapper_UA_MethodCallback,
-                                                  input_arg_size._val, input_arguments._ptr, output_arg_size._val,
-                                                  output_args._ptr, node_context._ptr, out_new_node_id._ptr)
+                                                  input_arg_size._val, input_arg._ptr, output_arg_size._val,
+                                                  output_arg._ptr, node_context._ptr, out_new_node_id._ptr)
         return ServerServiceResults.AddMethodNodeResult(output_arg_size, output_args, UaStatusCode(status_code),
                                                         out_new_node_id)
 

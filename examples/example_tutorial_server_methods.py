@@ -3,10 +3,14 @@ from ua import *
 
 # Example: Hello World Method
 
-def hello_world_method_callback(server, session_id, session_handle, method_id, method_context, object_id,
-                                object_context, input_size, input, output_size, output):
-    str = UaString("Hello " + UaString(input.data).value)
-    UaVariant.set_scalar(output, str, TYPES.STRING)
+def hello_world_method_callback(server: UaServer,
+                                session_id: UaNodeId,
+                                session_context: Void, method_id: UaNodeId, method_context: Void,
+                                object_id: UaNodeId,
+                                object_context: Void, input_size: SizeT, input_arg: UaVariant, output_size: SizeT,
+                                output_arg: UaVariant):
+    str = UaString("Hello " + UaString(input_arg.data).value)
+    UaVariant.set_scalar(output_arg, str, TYPES.STRING)
     UaLogger().info(UaLogCategory.UA_LOGCATEGORY_SERVER, "Hello World was called")
     return UaStatusCode.UA_STATUSCODE_GOOD
 
@@ -20,7 +24,7 @@ def add_hello_world_method(server: UaServer):
 
     output_argument = UaArgument()
     output_argument.description = UaLocalizedText("en-US", "A String")
-    output_argument.name = UaString("MyInput")
+    output_argument.name = UaString("MyOutput")
     output_argument.data_type = TYPES.STRING.type_id
     output_argument.value_rank = UaValueRanks.SCALAR
 
@@ -30,24 +34,31 @@ def add_hello_world_method(server: UaServer):
     hello_attr.executable = UaBoolean(True)
     hello_attr.user_executable = UaBoolean(True)
     # todo: introduce method in server
-    server.add_method_node(server,
-                           UaNodeId(1, 62541),
+    server.add_method_node(UaNodeId(1, 62541),
                            NS0ID.OBJECTSFOLDER,
                            NS0ID.HASCOMPONENT,
-                           UaQualifiedName("hello world"),
-                           hello_attr, hello_world_method_callback, 1, input_argument, 1, output_argument)
+                           UaQualifiedName(1, "hello world"),
+                           hello_world_method_callback,
+                           SizeT(1),
+                           input_argument,
+                           SizeT(1),
+                           output_argument, attr=hello_attr)
 
 
 # Increase Array Values Method
-def inc_int_32_array_method_callback(server, session_id, session_context, method_id, method_context, object_id,
-                                     object_context, input_size, input, output_size, output):
+def inc_int_32_array_method_callback(server: UaServer,
+                                     session_id: UaNodeId,
+                                     session_context: Void, method_id: UaNodeId, method_context: Void,
+                                     object_id: UaNodeId,
+                                     object_context: Void, input_size: SizeT, input_arg: UaVariant, output_size: SizeT,
+                                     output_arg: UaVariant):
     input_array = UaInt32(input.data[0])
     delta = UaInt32(input.data[1])
     # todo: set_scalar should return status code
-    retval = output.set_array(input_array, 5, TYPES.INT32)
+    retval = output_arg.set_array(input_array, 5, TYPES.INT32)
     if retval is not UaStatusCode.UA_STATUSCODE_GOOD:
         return retval
-    output_array = UaUInt32(output.data)
+    output_array = UaUInt32(output_arg.data)
     for i in range(0, input.array_length - 1):
         output_array[i] = input_array[i] + delta
     return UaStatusCode.UA_STATUSCODE_GOOD
