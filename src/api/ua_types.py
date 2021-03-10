@@ -429,12 +429,8 @@ class UaExternalValueCallback(UaType):
         self._uses_python_write_callback = True
 
 
+# +++++++++++++++++++ UaValueBackendType +++++++++++++++++++++++
 class UaValueBackendType(UaType):
-    UA_VALUEBACKENDTYPE_NONE = 0
-    UA_VALUEBACKENDTYPE_INTERNAL = 1
-    UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK = 2
-    UA_VALUEBACKENDTYPE_EXTERNAL = 3
-
     val_to_string = dict([
         (0, "UA_VALUEBACKENDTYPE_NONE"),
         (1, "UA_VALUEBACKENDTYPE_INTERNAL"),
@@ -457,6 +453,22 @@ class UaValueBackendType(UaType):
                 self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
+
+    @staticmethod
+    def NONE():
+        return UaValueBackendType(0)
+
+    @staticmethod
+    def INTERNAL():
+        return UaValueBackendType(1)
+
+    @staticmethod
+    def DATA_SOURCE_CALLBACK():
+        return UaValueBackendType(2)
+
+    @staticmethod
+    def EXTERNAL():
+        return UaValueBackendType(3)
 
     def __str__(self, n=0):
         return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n"

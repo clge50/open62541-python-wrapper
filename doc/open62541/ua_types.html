@@ -457,12 +457,8 @@ class UaExternalValueCallback(UaType):
         self._uses_python_write_callback = True
 
 
+# +++++++++++++++++++ UaValueBackendType +++++++++++++++++++++++
 class UaValueBackendType(UaType):
-    UA_VALUEBACKENDTYPE_NONE = 0
-    UA_VALUEBACKENDTYPE_INTERNAL = 1
-    UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK = 2
-    UA_VALUEBACKENDTYPE_EXTERNAL = 3
-
     val_to_string = dict([
         (0, &#34;UA_VALUEBACKENDTYPE_NONE&#34;),
         (1, &#34;UA_VALUEBACKENDTYPE_INTERNAL&#34;),
@@ -485,6 +481,22 @@ class UaValueBackendType(UaType):
                 self._value[0] = _val(val)
         else:
             raise OverflowError(f&#34;{val} is not a valid member of this class&#34;)
+
+    @staticmethod
+    def NONE():
+        return UaValueBackendType(0)
+
+    @staticmethod
+    def INTERNAL():
+        return UaValueBackendType(1)
+
+    @staticmethod
+    def DATA_SOURCE_CALLBACK():
+        return UaValueBackendType(2)
+
+    @staticmethod
+    def EXTERNAL():
+        return UaValueBackendType(3)
 
     def __str__(self, n=0):
         return f&#34;(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n&#34;
@@ -1486,11 +1498,6 @@ def data_value(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class UaValueBackendType(UaType):
-    UA_VALUEBACKENDTYPE_NONE = 0
-    UA_VALUEBACKENDTYPE_INTERNAL = 1
-    UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK = 2
-    UA_VALUEBACKENDTYPE_EXTERNAL = 3
-
     val_to_string = dict([
         (0, &#34;UA_VALUEBACKENDTYPE_NONE&#34;),
         (1, &#34;UA_VALUEBACKENDTYPE_INTERNAL&#34;),
@@ -1514,6 +1521,22 @@ def data_value(self):
         else:
             raise OverflowError(f&#34;{val} is not a valid member of this class&#34;)
 
+    @staticmethod
+    def NONE():
+        return UaValueBackendType(0)
+
+    @staticmethod
+    def INTERNAL():
+        return UaValueBackendType(1)
+
+    @staticmethod
+    def DATA_SOURCE_CALLBACK():
+        return UaValueBackendType(2)
+
+    @staticmethod
+    def EXTERNAL():
+        return UaValueBackendType(3)
+
     def __str__(self, n=0):
         return f&#34;(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n&#34;</code></pre>
 </details>
@@ -1523,25 +1546,68 @@ def data_value(self):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK"><code class="name">var <span class="ident">UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_EXTERNAL"><code class="name">var <span class="ident">UA_VALUEBACKENDTYPE_EXTERNAL</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_INTERNAL"><code class="name">var <span class="ident">UA_VALUEBACKENDTYPE_INTERNAL</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_NONE"><code class="name">var <span class="ident">UA_VALUEBACKENDTYPE_NONE</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="open62541.ua_types.UaValueBackendType.val_to_string"><code class="name">var <span class="ident">val_to_string</span></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="open62541.ua_types.UaValueBackendType.DATA_SOURCE_CALLBACK"><code class="name flex">
+<span>def <span class="ident">DATA_SOURCE_CALLBACK</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def DATA_SOURCE_CALLBACK():
+    return UaValueBackendType(2)</code></pre>
+</details>
+</dd>
+<dt id="open62541.ua_types.UaValueBackendType.EXTERNAL"><code class="name flex">
+<span>def <span class="ident">EXTERNAL</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def EXTERNAL():
+    return UaValueBackendType(3)</code></pre>
+</details>
+</dd>
+<dt id="open62541.ua_types.UaValueBackendType.INTERNAL"><code class="name flex">
+<span>def <span class="ident">INTERNAL</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def INTERNAL():
+    return UaValueBackendType(1)</code></pre>
+</details>
+</dd>
+<dt id="open62541.ua_types.UaValueBackendType.NONE"><code class="name flex">
+<span>def <span class="ident">NONE</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def NONE():
+    return UaValueBackendType(0)</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -1715,10 +1781,10 @@ def write_callback(self):
 <li>
 <h4><code><a title="open62541.ua_types.UaValueBackendType" href="#open62541.ua_types.UaValueBackendType">UaValueBackendType</a></code></h4>
 <ul class="">
-<li><code><a title="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK" href="#open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK">UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK</a></code></li>
-<li><code><a title="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_EXTERNAL" href="#open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_EXTERNAL">UA_VALUEBACKENDTYPE_EXTERNAL</a></code></li>
-<li><code><a title="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_INTERNAL" href="#open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_INTERNAL">UA_VALUEBACKENDTYPE_INTERNAL</a></code></li>
-<li><code><a title="open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_NONE" href="#open62541.ua_types.UaValueBackendType.UA_VALUEBACKENDTYPE_NONE">UA_VALUEBACKENDTYPE_NONE</a></code></li>
+<li><code><a title="open62541.ua_types.UaValueBackendType.DATA_SOURCE_CALLBACK" href="#open62541.ua_types.UaValueBackendType.DATA_SOURCE_CALLBACK">DATA_SOURCE_CALLBACK</a></code></li>
+<li><code><a title="open62541.ua_types.UaValueBackendType.EXTERNAL" href="#open62541.ua_types.UaValueBackendType.EXTERNAL">EXTERNAL</a></code></li>
+<li><code><a title="open62541.ua_types.UaValueBackendType.INTERNAL" href="#open62541.ua_types.UaValueBackendType.INTERNAL">INTERNAL</a></code></li>
+<li><code><a title="open62541.ua_types.UaValueBackendType.NONE" href="#open62541.ua_types.UaValueBackendType.NONE">NONE</a></code></li>
 <li><code><a title="open62541.ua_types.UaValueBackendType.val_to_string" href="#open62541.ua_types.UaValueBackendType.val_to_string">val_to_string</a></code></li>
 </ul>
 </li>
