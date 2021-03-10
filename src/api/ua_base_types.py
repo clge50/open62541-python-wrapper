@@ -15,18 +15,15 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 # +++++++++++++++++++ UaNodeIdType +++++++++++++++++++++++
 class UaNodeIdType(UaType):
-    UA_NODEIDTYPE_NUMERIC = 0
-    UA_NODEIDTYPE_STRING = 3
-    UA_NODEIDTYPE_GUID = 4
-    UA_NODEIDTYPE_BYTESTRING = 5
-
     val_to_string = dict([
         (0, "UA_NODEIDTYPE_NUMERIC"),
         (3, "UA_NODEIDTYPE_STRING"),
         (4, "UA_NODEIDTYPE_GUID"),
         (5, "UA_NODEIDTYPE_BYTESTRING")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("enum UA_NodeIdType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("enum UA_NodeIdType*"), is_pointer)
         else:
@@ -41,20 +38,35 @@ class UaNodeIdType(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def NUMERIC():
+        return UaNodeIdType(0)
+
+    @staticmethod
+    def STRING():
+        return UaNodeIdType(3)
+
+    @staticmethod
+    def GUID():
+        return UaNodeIdType(4)
+
+    @staticmethod
+    def BYTESTRING():
+        return UaNodeIdType(5)
+
     def __str__(self, n=0):
         return f"(UaNodeIdType): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaVariantStorageType +++++++++++++++++++++++
 class UaVariantStorageType(UaType):
-    UA_VARIANT_DATA = 0
-    UA_VARIANT_DATA_NODELETE = 1
-
     val_to_string = dict([
         (0, "UA_VARIANT_DATA"),
         (1, "UA_VARIANT_DATA_NODELETE")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_VariantStorageType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_VariantStorageType*"), is_pointer)
         else:
@@ -69,18 +81,20 @@ class UaVariantStorageType(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def DATA():
+        return UaVariantStorageType(0)
+
+    @staticmethod
+    def DATA_NODELETE():
+        return UaVariantStorageType(1)
+
     def __str__(self, n=0):
         return f"(UaVariantStorageType): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
 class UaExtensionObjectEncoding(UaType):
-    UA_EXTENSIONOBJECT_ENCODED_NOBODY = 0
-    UA_EXTENSIONOBJECT_ENCODED_BYTESTRING = 1
-    UA_EXTENSIONOBJECT_ENCODED_XML = 2
-    UA_EXTENSIONOBJECT_DECODED = 3
-    UA_EXTENSIONOBJECT_DECODED_NODELETE = 4
-
     val_to_string = dict([
         (0, "UA_EXTENSIONOBJECT_ENCODED_NOBODY"),
         (1, "UA_EXTENSIONOBJECT_ENCODED_BYTESTRING"),
@@ -88,7 +102,9 @@ class UaExtensionObjectEncoding(UaType):
         (3, "UA_EXTENSIONOBJECT_DECODED"),
         (4, "UA_EXTENSIONOBJECT_DECODED_NODELETE")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_ExtensionObjectEncoding*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_ExtensionObjectEncoding*"), is_pointer)
         else:
@@ -103,44 +119,32 @@ class UaExtensionObjectEncoding(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def ENCODED_NOBODY():
+        return UaExtensionObjectEncoding(0)
+
+    @staticmethod
+    def ENCODED_BYTESTRING():
+        return UaExtensionObjectEncoding(1)
+
+    @staticmethod
+    def ENCODED_XML():
+        return UaExtensionObjectEncoding(2)
+
+    @staticmethod
+    def DECODED():
+        return UaExtensionObjectEncoding(3)
+
+    @staticmethod
+    def DECODED_NODELETE():
+        return UaExtensionObjectEncoding(4)
+
     def __str__(self, n=0):
         return f"(UaExtensionObjectEncoding): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
 class UaDataTypeKind(UaType):
-    UA_DATATYPEKIND_BOOLEAN = 0
-    UA_DATATYPEKIND_SBYTE = 1
-    UA_DATATYPEKIND_BYTE = 2
-    UA_DATATYPEKIND_INT16 = 3
-    UA_DATATYPEKIND_UINT16 = 4
-    UA_DATATYPEKIND_INT32 = 5
-    UA_DATATYPEKIND_UINT32 = 6
-    UA_DATATYPEKIND_INT64 = 7
-    UA_DATATYPEKIND_UINT64 = 8
-    UA_DATATYPEKIND_FLOAT = 9
-    UA_DATATYPEKIND_DOUBLE = 10
-    UA_DATATYPEKIND_STRING = 11
-    UA_DATATYPEKIND_DATETIME = 12
-    UA_DATATYPEKIND_GUID = 13
-    UA_DATATYPEKIND_BYTESTRING = 14
-    UA_DATATYPEKIND_XMLELEMENT = 15
-    UA_DATATYPEKIND_NODEID = 16
-    UA_DATATYPEKIND_EXPANDEDNODEID = 17
-    UA_DATATYPEKIND_STATUSCODE = 18
-    UA_DATATYPEKIND_QUALIFIEDNAME = 19
-    UA_DATATYPEKIND_LOCALIZEDTEXT = 20
-    UA_DATATYPEKIND_EXTENSIONOBJECT = 21
-    UA_DATATYPEKIND_DATAVALUE = 22
-    UA_DATATYPEKIND_VARIANT = 23
-    UA_DATATYPEKIND_DIAGNOSTICINFO = 24
-    UA_DATATYPEKIND_DECIMAL = 25
-    UA_DATATYPEKIND_ENUM = 26
-    UA_DATATYPEKIND_STRUCTURE = 27
-    UA_DATATYPEKIND_OPTSTRUCT = 28
-    UA_DATATYPEKIND_UNION = 29
-    UA_DATATYPEKIND_BITFIELDCLUSTER = 30
-
     val_to_string = dict([
         (0, "UA_DATATYPEKIND_BOOLEAN"),
         (1, "UA_DATATYPEKIND_SBYTE"),
@@ -174,7 +178,9 @@ class UaDataTypeKind(UaType):
         (29, "UA_DATATYPEKIND_UNION"),
         (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_DataTypeKind*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_DataTypeKind*"), is_pointer)
         else:
@@ -188,6 +194,130 @@ class UaDataTypeKind(UaType):
                 self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
+
+    @staticmethod
+    def BOOLEAN():
+        return UaDataTypeKind(0)
+
+    @staticmethod
+    def SBYTE():
+        return UaDataTypeKind(1)
+
+    @staticmethod
+    def BYTE():
+        return UaDataTypeKind(2)
+
+    @staticmethod
+    def INT16():
+        return UaDataTypeKind(3)
+
+    @staticmethod
+    def UINT16():
+        return UaDataTypeKind(4)
+
+    @staticmethod
+    def INT32():
+        return UaDataTypeKind(5)
+
+    @staticmethod
+    def UINT32():
+        return UaDataTypeKind(6)
+
+    @staticmethod
+    def INT64():
+        return UaDataTypeKind(7)
+
+    @staticmethod
+    def UINT64():
+        return UaDataTypeKind(8)
+
+    @staticmethod
+    def FLOAT():
+        return UaDataTypeKind(9)
+
+    @staticmethod
+    def DOUBLE():
+        return UaDataTypeKind(10)
+
+    @staticmethod
+    def STRING():
+        return UaDataTypeKind(11)
+
+    @staticmethod
+    def DATETIME():
+        return UaDataTypeKind(12)
+
+    @staticmethod
+    def GUID():
+        return UaDataTypeKind(13)
+
+    @staticmethod
+    def BYTESTRING():
+        return UaDataTypeKind(14)
+
+    @staticmethod
+    def XMLELEMENT():
+        return UaDataTypeKind(15)
+
+    @staticmethod
+    def NODEID():
+        return UaDataTypeKind(16)
+
+    @staticmethod
+    def EXPANDEDNODEID():
+        return UaDataTypeKind(17)
+
+    @staticmethod
+    def STATUSCODE():
+        return UaDataTypeKind(18)
+
+    @staticmethod
+    def QUALIFIEDNAME():
+        return UaDataTypeKind(19)
+
+    @staticmethod
+    def LOCALIZEDTEXT():
+        return UaDataTypeKind(20)
+
+    @staticmethod
+    def EXTENSIONOBJECT():
+        return UaDataTypeKind(21)
+
+    @staticmethod
+    def DATAVALUE():
+        return UaDataTypeKind(22)
+
+    @staticmethod
+    def VARIANT():
+        return UaDataTypeKind(23)
+
+    @staticmethod
+    def DIAGNOSTICINFO():
+        return UaDataTypeKind(24)
+
+    @staticmethod
+    def DECIMAL():
+        return UaDataTypeKind(25)
+
+    @staticmethod
+    def ENUM():
+        return UaDataTypeKind(26)
+
+    @staticmethod
+    def STRUCTURE():
+        return UaDataTypeKind(27)
+
+    @staticmethod
+    def OPTSTRUCT():
+        return UaDataTypeKind(28)
+
+    @staticmethod
+    def UNION():
+        return UaDataTypeKind(29)
+
+    @staticmethod
+    def BITFIELDCLUSTER():
+        return UaDataTypeKind(30)
 
     def __str__(self, n=0):
         return f"(UaDataTypeKind): {self.val_to_string[self._val]} ({str(self._val)})\n"

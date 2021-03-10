@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
+from typing import Union
 
 from intermediateApi import ffi, lib
 from c_types import *
@@ -14,34 +15,6 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 # +++++++++++++++++++ UaAttributeId +++++++++++++++++++++++
 class UaAttributeId(UaType):
-    UA_ATTRIBUTEID_NODEID = 1
-    UA_ATTRIBUTEID_NODECLASS = 2
-    UA_ATTRIBUTEID_BROWSENAME = 3
-    UA_ATTRIBUTEID_DISPLAYNAME = 4
-    UA_ATTRIBUTEID_DESCRIPTION = 5
-    UA_ATTRIBUTEID_WRITEMASK = 6
-    UA_ATTRIBUTEID_USERWRITEMASK = 7
-    UA_ATTRIBUTEID_ISABSTRACT = 8
-    UA_ATTRIBUTEID_SYMMETRIC = 9
-    UA_ATTRIBUTEID_INVERSENAME = 10
-    UA_ATTRIBUTEID_CONTAINSNOLOOPS = 11
-    UA_ATTRIBUTEID_EVENTNOTIFIER = 12
-    UA_ATTRIBUTEID_VALUE = 13
-    UA_ATTRIBUTEID_DATATYPE = 14
-    UA_ATTRIBUTEID_VALUERANK = 15
-    UA_ATTRIBUTEID_ARRAYDIMENSIONS = 16
-    UA_ATTRIBUTEID_ACCESSLEVEL = 17
-    UA_ATTRIBUTEID_USERACCESSLEVEL = 18
-    UA_ATTRIBUTEID_MINIMUMSAMPLINGINTERVAL = 19
-    UA_ATTRIBUTEID_HISTORIZING = 20
-    UA_ATTRIBUTEID_EXECUTABLE = 21
-    UA_ATTRIBUTEID_USEREXECUTABLE = 22
-    UA_ATTRIBUTEID_DATATYPEDEFINITION = 23
-    UA_ATTRIBUTEID_ROLEPERMISSIONS = 24
-    UA_ATTRIBUTEID_USERROLEPERMISSIONS = 25
-    UA_ATTRIBUTEID_ACCESSRESTRICTIONS = 26
-    UA_ATTRIBUTEID_ACCESSLEVELEX = 27
-
     val_to_string = dict([
         (1, "UA_ATTRIBUTEID_NODEID"),
         (2, "UA_ATTRIBUTEID_NODECLASS"),
@@ -71,7 +44,9 @@ class UaAttributeId(UaType):
         (26, "UA_ATTRIBUTEID_ACCESSRESTRICTIONS"),
         (27, "UA_ATTRIBUTEID_ACCESSLEVELEX")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_AttributeId*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_AttributeId*"), is_pointer)
         else:
@@ -86,24 +61,129 @@ class UaAttributeId(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def NODEID():
+        return UaAttributeId(1)
+
+    @staticmethod
+    def NODECLASS():
+        return UaAttributeId(2)
+
+    @staticmethod
+    def BROWSENAME():
+        return UaAttributeId(3)
+
+    @staticmethod
+    def DISPLAYNAME():
+        return UaAttributeId(4)
+
+    @staticmethod
+    def DESCRIPTION():
+        return UaAttributeId(5)
+
+    @staticmethod
+    def WRITEMASK():
+        return UaAttributeId(6)
+
+    @staticmethod
+    def USERWRITEMASK():
+        return UaAttributeId(7)
+
+    @staticmethod
+    def ISABSTRACT():
+        return UaAttributeId(8)
+
+    @staticmethod
+    def SYMMETRIC():
+        return UaAttributeId(9)
+
+    @staticmethod
+    def INVERSENAME():
+        return UaAttributeId(10)
+
+    @staticmethod
+    def CONTAINSNOLOOPS():
+        return UaAttributeId(11)
+
+    @staticmethod
+    def EVENTNOTIFIER():
+        return UaAttributeId(12)
+
+    @staticmethod
+    def VALUE():
+        return UaAttributeId(13)
+
+    @staticmethod
+    def DATATYPE():
+        return UaAttributeId(14)
+
+    @staticmethod
+    def VALUERANK():
+        return UaAttributeId(15)
+
+    @staticmethod
+    def ARRAYDIMENSIONS():
+        return UaAttributeId(16)
+
+    @staticmethod
+    def ACCESSLEVEL():
+        return UaAttributeId(17)
+
+    @staticmethod
+    def USERACCESSLEVEL():
+        return UaAttributeId(18)
+
+    @staticmethod
+    def MINIMUMSAMPLINGINTERVAL():
+        return UaAttributeId(19)
+
+    @staticmethod
+    def HISTORIZING():
+        return UaAttributeId(20)
+
+    @staticmethod
+    def EXECUTABLE():
+        return UaAttributeId(21)
+
+    @staticmethod
+    def USEREXECUTABLE():
+        return UaAttributeId(22)
+
+    @staticmethod
+    def DATATYPEDEFINITION():
+        return UaAttributeId(23)
+
+    @staticmethod
+    def ROLEPERMISSIONS():
+        return UaAttributeId(24)
+
+    @staticmethod
+    def USERROLEPERMISSIONS():
+        return UaAttributeId(25)
+
+    @staticmethod
+    def ACCESSRESTRICTIONS():
+        return UaAttributeId(26)
+
+    @staticmethod
+    def ACCESSLEVELEX():
+        return UaAttributeId(27)
+
     def __str__(self, n=0):
         return f"(UaAttributeId): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
 class UaRuleHandling(UaType):
-    UA_RULEHANDLING_DEFAULT = 0
-    UA_RULEHANDLING_ABORT = 1
-    UA_RULEHANDLING_WARN = 2
-    UA_RULEHANDLING_ACCEPT = 3
-
     val_to_string = dict([
         (0, "UA_RULEHANDLING_DEFAULT"),
         (1, "UA_RULEHANDLING_ABORT"),
         (2, "UA_RULEHANDLING_WARN"),
         (3, "UA_RULEHANDLING_ACCEPT")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_RuleHandling*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_RuleHandling*"), is_pointer)
         else:
@@ -118,22 +198,36 @@ class UaRuleHandling(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def DEFAULT():
+        return UaRuleHandling(0)
+
+    @staticmethod
+    def ABORT():
+        return UaRuleHandling(1)
+
+    @staticmethod
+    def WARN():
+        return UaRuleHandling(2)
+
+    @staticmethod
+    def ACCEPT():
+        return UaRuleHandling(3)
+
     def __str__(self, n=0):
         return f"(UaRuleHandling): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaOrder +++++++++++++++++++++++
 class UaOrder(UaType):
-    UA_ORDER_LESS = -1
-    UA_ORDER_EQ = 0
-    UA_ORDER_MORE = 1
-
     val_to_string = dict([
         (-1, "UA_ORDER_LESS"),
         (0, "UA_ORDER_EQ"),
         (1, "UA_ORDER_MORE")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_Order*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Order*"), is_pointer)
         else:
@@ -148,21 +242,24 @@ class UaOrder(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def LESS():
+        return UaOrder(-1)
+
+    @staticmethod
+    def EQ():
+        return UaOrder(0)
+
+    @staticmethod
+    def MORE():
+        return UaOrder(1)
+
     def __str__(self, n=0):
         return f"(UaOrder): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
 class UaSecureChannelState(UaType):
-    UA_SECURECHANNELSTATE_CLOSED = 0
-    UA_SECURECHANNELSTATE_HEL_SENT = 1
-    UA_SECURECHANNELSTATE_HEL_RECEIVED = 2
-    UA_SECURECHANNELSTATE_ACK_SENT = 3
-    UA_SECURECHANNELSTATE_ACK_RECEIVED = 4
-    UA_SECURECHANNELSTATE_OPN_SENT = 5
-    UA_SECURECHANNELSTATE_OPEN = 6
-    UA_SECURECHANNELSTATE_CLOSING = 7
-
     val_to_string = dict([
         (0, "UA_SECURECHANNELSTATE_CLOSED"),
         (1, "UA_SECURECHANNELSTATE_HEL_SENT"),
@@ -173,7 +270,9 @@ class UaSecureChannelState(UaType):
         (6, "UA_SECURECHANNELSTATE_OPEN"),
         (7, "UA_SECURECHANNELSTATE_CLOSING")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SecureChannelState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SecureChannelState*"), is_pointer)
         else:
@@ -188,19 +287,44 @@ class UaSecureChannelState(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def CLOSED():
+        return UaSecureChannelState(0)
+
+    @staticmethod
+    def HEL_SENT():
+        return UaSecureChannelState(1)
+
+    @staticmethod
+    def HEL_RECEIVED():
+        return UaSecureChannelState(2)
+
+    @staticmethod
+    def ACK_SENT():
+        return UaSecureChannelState(3)
+
+    @staticmethod
+    def ACK_RECEIVED():
+        return UaSecureChannelState(4)
+
+    @staticmethod
+    def OPN_SENT():
+        return UaSecureChannelState(5)
+
+    @staticmethod
+    def OPEN():
+        return UaSecureChannelState(6)
+
+    @staticmethod
+    def CLOSING():
+        return UaSecureChannelState(7)
+
     def __str__(self, n=0):
         return f"(UaSecureChannelState): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
 class UaSessionState(UaType):
-    UA_SESSIONSTATE_CLOSED = 0
-    UA_SESSIONSTATE_CREATE_REQUESTED = 1
-    UA_SESSIONSTATE_CREATED = 2
-    UA_SESSIONSTATE_ACTIVATE_REQUESTED = 3
-    UA_SESSIONSTATE_ACTIVATED = 4
-    UA_SESSIONSTATE_CLOSING = 5
-
     val_to_string = dict([
         (0, "UA_SESSIONSTATE_CLOSED"),
         (1, "UA_SESSIONSTATE_CREATE_REQUESTED"),
@@ -209,7 +333,9 @@ class UaSessionState(UaType):
         (4, "UA_SESSIONSTATE_ACTIVATED"),
         (5, "UA_SESSIONSTATE_CLOSING")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_SessionState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SessionState*"), is_pointer)
         else:
@@ -224,6 +350,30 @@ class UaSessionState(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def CLOSED():
+        return UaSessionState(0)
+
+    @staticmethod
+    def CREATE_REQUESTED():
+        return UaSessionState(1)
+
+    @staticmethod
+    def CREATED():
+        return UaSessionState(2)
+
+    @staticmethod
+    def ACTIVATE_REQUESTED():
+        return UaSessionState(3)
+
+    @staticmethod
+    def ACTIVATED():
+        return UaSessionState(4)
+
+    @staticmethod
+    def CLOSING():
+        return UaSessionState(5)
+
     def __str__(self, n=0):
         return f"(UaSessionState): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
@@ -237,6 +387,8 @@ class UaNetworkStatistics(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NetworkStatistics*")
+        if type(val) is Void:
+            val = ffi.cast("UA_NetworkStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:
@@ -326,12 +478,12 @@ class UaNetworkStatistics(UaType):
         if self._null:
             return "(UaNetworkStatistics) : NULL\n"
 
-        return ("(UaNetworkStatistics) :\n" +
-                "\t" * (n + 1) + "current_connection_count" + self._current_connection_count.__str__(n + 1) +
-                "\t" * (n + 1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n + 1) +
-                "\t" * (n + 1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n + 1) +
-                "\t" * (n + 1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n + 1) +
-                "\t" * (n + 1) + "connection_abort_count" + self._connection_abort_count.__str__(n + 1))
+        return ("(UaNetworkStatistics) :\n"
+                + "\t" * (n + 1) + "current_connection_count" + self._current_connection_count.__str__(n + 1)
+                + "\t" * (n + 1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n + 1)
+                + "\t" * (n + 1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n + 1)
+                + "\t" * (n + 1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n + 1)
+                + "\t" * (n + 1) + "connection_abort_count" + self._connection_abort_count.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
@@ -339,6 +491,8 @@ class UaSecureChannelStatistics(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecureChannelStatistics*")
+        if type(val) is Void:
+            val = ffi.cast("UA_SecureChannelStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
         if not self._null:
@@ -442,10 +596,10 @@ class UaSecureChannelStatistics(UaType):
         if self._null:
             return "(UaSecureChannelStatistics) : NULL\n"
 
-        return ("(UaSecureChannelStatistics) :\n" +
-                "\t" * (n + 1) + "current_channel_count" + self._current_channel_count.__str__(n + 1) +
-                "\t" * (n + 1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n + 1) +
-                "\t" * (n + 1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n + 1) +
-                "\t" * (n + 1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n + 1) +
-                "\t" * (n + 1) + "channel_abort_count" + self._channel_abort_count.__str__(n + 1) +
-                "\t" * (n + 1) + "channel_purge_count" + self._channel_purge_count.__str__(n + 1))
+        return ("(UaSecureChannelStatistics) :\n"
+                + "\t" * (n + 1) + "current_channel_count" + self._current_channel_count.__str__(n + 1)
+                + "\t" * (n + 1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n + 1)
+                + "\t" * (n + 1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n + 1)
+                + "\t" * (n + 1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n + 1)
+                + "\t" * (n + 1) + "channel_abort_count" + self._channel_abort_count.__str__(n + 1)
+                + "\t" * (n + 1) + "channel_purge_count" + self._channel_purge_count.__str__(n + 1))

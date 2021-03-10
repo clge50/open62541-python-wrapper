@@ -19,5 +19,9 @@ print(string.value)
 # The str method is implemented as well but with formatting so the structs are displayed nicely
 print(string)
 
+#This is how to use enums
+session_state = UaSessionState.ACTIVATED()
+print(session_state)
+
 now = UaDateTimeStruct.now()
 print(now)

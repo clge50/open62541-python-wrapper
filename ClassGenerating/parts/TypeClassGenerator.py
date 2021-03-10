@@ -142,7 +142,6 @@ class {to_python_class_name(struct_name)}(UaType):
     return class_str
 
 
-# TODO: default 0 -> rigth behavior?
 def generator_enum(enum_name: str, ident_to_val: dict):
     tab = "    "
     new_line = "\n"
@@ -152,11 +151,6 @@ def generator_enum(enum_name: str, ident_to_val: dict):
 
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(enum_name)} +++++++++++++++++++++++
 class {to_python_class_name(enum_name)}(UaType):
-{new_line.join(map(
-        lambda attr:
-        f"{tab}{attr} = {ident_to_val[attr]}",
-        ident_to_val.keys()))}
-
     val_to_string = dict([
 {("," + new_line).join(map(
         lambda attr:
@@ -179,7 +173,13 @@ class {to_python_class_name(enum_name)}(UaType):
                 self._value[0] = _val(val)
         else:
             raise OverflowError(f"{l_brace}val{r_brace} is not a valid member of this class")
-
+    
+{new_line.join(map(
+        lambda attr:
+        f"{tab}@staticmethod" +
+        f"{new_line}{tab}def {strip_enum_ident(attr)}():" +
+        f"{new_line}{tab}{tab}return {to_python_class_name(enum_name)}({ident_to_val[attr]}){new_line}",
+        ident_to_val.keys()))}
     def __str__(self, n=0):
         return f"({to_python_class_name(enum_name)
     }): {l_brace}self.val_to_string[self._val]{r_brace} ({l_brace}str(self._val){r_brace})\\n"
@@ -190,7 +190,7 @@ class {to_python_class_name(enum_name)}(UaType):
 
 
 def strip_enum_ident(attr: str):
-    "_".join(attr.split("_")[1:])
+    return "_".join(attr.split("_")[2:])
 
 
 def to_python_ident(attr: str):

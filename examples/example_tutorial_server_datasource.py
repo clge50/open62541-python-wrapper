@@ -36,7 +36,7 @@ def before_read_time(server, session_id, session_context, node_id, node_context,
 
 def after_write_time(server, session_id, session_context, node_id, node_context, numeric_range, data):
     logger = UaLogger()
-    logger.info(UaLogCategory.UA_LOGCATEGORY_USERLAND, "The variable was updated")
+    logger.info(UaLogCategory.USERLAND(), "The variable was updated")
 
 
 def add_value_callback_to_current_time_variable(server: UaServer):
@@ -59,7 +59,7 @@ def read_current_time(server, session_id, session_context, node_id, node_context
 
 def write_current_time(server, session_id, session_context, node_id, node_context, numeric_range, data):
     logger = UaLogger()
-    logger.info(UaLogCategory.UA_LOGCATEGORY_USERLAND, "Changing the system time is not implemented")
+    logger.info(UaLogCategory.USERLAND(), "Changing the system time is not implemented")
     return UaStatusCode.UA_STATUSCODE_BADINTERNALERROR
 
 

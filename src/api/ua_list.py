@@ -41,8 +41,13 @@ class UaList(UaType):
 
             if size is None:
                 raise AttributeError("if 'val' is not a python list 'size' has to be set.")
+            elif isinstance(size, SizeT):
+                size = size._val
 
-            array = ffi.cast(f"{c_type}[{size}]", val)
+            if isinstance(val, UaType):
+                array = ffi.cast(f"{c_type}[{size}]", val._ptr)
+            else:
+                array = ffi.cast(f"{c_type}[{size}]", val)
 
         super().__init__(val=array, is_pointer=True)
         self._size = size
@@ -79,3 +84,6 @@ class UaList(UaType):
             UaList(self.value[index], ua_class=self._ua_type)
         else:
             raise AttributeError("invalid indexing")
+
+    def __str__(self, n=None):
+        return str(self.value)

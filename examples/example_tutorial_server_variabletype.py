@@ -76,14 +76,13 @@ def add_variable_fail():
                                            UaQualifiedName(1, "2DPoint Type (fail)"),
                                            Vars.point_type_id,
                                            v_attr)
-    UaLogger().info(UaLogCategory(UaLogCategory.UA_LOGCATEGORY_USERLAND), f"failed with {result.status_code}")
+    UaLogger().info(UaLogCategory.USERLAND(), f"failed with {result.status_code}")
 
 
 def write_variable():
     ret_val = Vars.server.write_value_rank(Vars.point_variable_id,
                                            UaValueRanks.ONE_OR_MORE_DIMENSIONS)
-    UaLogger().info(UaLogCategory(UaLogCategory.UA_LOGCATEGORY_USERLAND), f"failed with {ret_val}")
-
+    UaLogger().info(UaLogCategory.USERLAND(), f"failed with {ret_val}")
 
 
 server_start()

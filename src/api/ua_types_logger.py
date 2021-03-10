@@ -10,14 +10,6 @@ from ua_types_parent import _ptr, _val
 
 # +++++++++++++++++++ UaLogCategory +++++++++++++++++++++++
 class UaLogCategory(UaType):
-    UA_LOGCATEGORY_NETWORK = 0
-    UA_LOGCATEGORY_SECURECHANNEL = 1
-    UA_LOGCATEGORY_SESSION = 2
-    UA_LOGCATEGORY_SERVER = 3
-    UA_LOGCATEGORY_CLIENT = 4
-    UA_LOGCATEGORY_USERLAND = 5
-    UA_LOGCATEGORY_SECURITYPOLICY = 6
-
     val_to_string = dict([
         (0, "UA_LOGCATEGORY_NETWORK"),
         (1, "UA_LOGCATEGORY_SECURECHANNEL"),
@@ -27,16 +19,13 @@ class UaLogCategory(UaType):
         (5, "UA_LOGCATEGORY_USERLAND"),
         (6, "UA_LOGCATEGORY_SECURITYPOLICY")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
         if type(val) is Void:
             val = ffi.cast("UA_LogCategory*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_LogCategory*"), is_pointer)
         else:
             super().__init__(ffi.cast("UA_LogCategory", _val(val)), is_pointer)
-
-    def _update(self):
-        self.__init__(val=self._ptr)
 
     def _set_value(self, val):
         if _val(val) in self.val_to_string.keys():
@@ -47,19 +36,40 @@ class UaLogCategory(UaType):
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
 
+    @staticmethod
+    def NETWORK():
+        return UaLogCategory(0)
+
+    @staticmethod
+    def SECURECHANNEL():
+        return UaLogCategory(1)
+
+    @staticmethod
+    def SESSION():
+        return UaLogCategory(2)
+
+    @staticmethod
+    def SERVER():
+        return UaLogCategory(3)
+
+    @staticmethod
+    def CLIENT():
+        return UaLogCategory(4)
+
+    @staticmethod
+    def USERLAND():
+        return UaLogCategory(5)
+
+    @staticmethod
+    def SECURITYPOLICY():
+        return UaLogCategory(6)
+
     def __str__(self, n=0):
         return f"(UaLogCategory): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
 # +++++++++++++++++++ UaLogLevel +++++++++++++++++++++++
 class UaLogLevel(UaType):
-    UA_LOGLEVEL_TRACE = 0
-    UA_LOGLEVEL_DEBUG = 1
-    UA_LOGLEVEL_INFO = 2
-    UA_LOGLEVEL_WARNING = 3
-    UA_LOGLEVEL_ERROR = 4
-    UA_LOGLEVEL_FATAL = 5
-
     val_to_string = dict([
         (0, "UA_LOGLEVEL_TRACE"),
         (1, "UA_LOGLEVEL_DEBUG"),
@@ -68,7 +78,7 @@ class UaLogLevel(UaType):
         (4, "UA_LOGLEVEL_ERROR"),
         (5, "UA_LOGLEVEL_FATAL")])
 
-    def __init__(self, val: int = None, is_pointer=False):
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
         if type(val) is Void:
             val = ffi.cast("UA_LogLevel*", val._ptr)
         if val is None:
@@ -84,6 +94,30 @@ class UaLogLevel(UaType):
                 self._value[0] = _val(val)
         else:
             raise OverflowError(f"{val} is not a valid member of this class")
+
+    @staticmethod
+    def TRACE():
+        return UaLogLevel(0)
+
+    @staticmethod
+    def DEBUG():
+        return UaLogLevel(1)
+
+    @staticmethod
+    def INFO():
+        return UaLogLevel(2)
+
+    @staticmethod
+    def WARNING():
+        return UaLogLevel(3)
+
+    @staticmethod
+    def ERROR():
+        return UaLogLevel(4)
+
+    @staticmethod
+    def FATAL():
+        return UaLogLevel(5)
 
     def __str__(self, n=0):
         return f"(UaLogLevel): {self.val_to_string[self._val]} ({str(self._val)})\n"

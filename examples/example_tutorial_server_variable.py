@@ -87,7 +87,7 @@ def write_variable():
 
     wv = UaWriteValue()
     wv.node_id = my_integer_node_id
-    wv.attribute_id = UaAttributeId(UaAttributeId.UA_ATTRIBUTEID_VALUE)
+    wv.attribute_id = UaAttributeId.VALUE()
     wv.data_value.status = UaStatusCode(UaStatusCode.UA_STATUSCODE_BADNOTCONNECTED)
     wv.data_value.has_status = UaBoolean(True)
 

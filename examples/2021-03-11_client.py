@@ -21,10 +21,10 @@ def read_matrix_variable(client):
     result = client.read_value_attribute(my_integer_node_id)
     print(f"read_value_attribute UaStatuscode was: {result.status_code}")
 
-    dimensions = result.value.array_dimensions
-    array = UaDouble(result.value.data, 4)
+    dimensions = UaList(result.value.array_dimensions, result.value.array_dimensions_size, UaUInt32)
+    array = UaList(result.value.data, 4, UaDouble)
 
-    print(f"Result variant: {array.value} in dimensions {dimensions.value}\n")
+    print(f"Result variant: {array} in dimensions {dimensions}\n")
 
 
 if __name__ == '__main__':

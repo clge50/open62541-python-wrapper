@@ -40,5 +40,5 @@ print(
 result = client.read_value_attribute(read_node_id_attribute_result.out_node_id)
 print(f"read_value_attribute UaStatuscode was: {str(result.status_code)}")
 print(result.value)
-array = UaDouble(result.value.data, 9)
+array = UaList(result.value.data, 9, UaDouble)
 print(array.value)
