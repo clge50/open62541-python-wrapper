@@ -15,7 +15,7 @@ def add_current_time_variable(server: UaServer):
     now = UaDateTime.now()
     attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
     attr.display_name = UaLocalizedText("en-US", "Current time - value callback")
-    attr.access_level = UaByte(0x01 << 0 | 0x01 << 1)  # todo: introduce macros or similar
+    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
     UaVariant.set_scalar(attr.data_value, now, TYPES.DATETIME)
 
     current_node_id = UaNodeId(1, "current-time-value-callback")
