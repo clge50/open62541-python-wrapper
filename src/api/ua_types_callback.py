@@ -7,6 +7,7 @@ from intermediateApi import ffi, lib
 from ua_types_logger import *
 from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
 from typing import Callable
+from ua_consts_status_codes import *
 
 
 # +++++++++++++++++++ UaValueBackendType +++++++++++++++++++++++
@@ -54,7 +55,7 @@ class UaValueBackendType(UaType):
         return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
 
-# ++++++++++++++++++++ UaValueCallback +++++++++++++++++++++++
+# +++++++++++++++++++ UaValueCallback +++++++++++++++++++++++
 class UaValueCallback(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -84,6 +85,14 @@ class UaValueCallback(UaType):
             return None
         return self.write_callback
 
+    @property
+    def uses_python_read_callback(self):
+        return self._uses_python_read_callback
+
+    @property
+    def uses_python_write_callback(self):
+        return self._uses_python_write_callback
+
     @read_callback.setter
     def read_callback(self, read_callback: Callable[
         ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNumericRange, UaDataValue], None]):
@@ -107,7 +116,6 @@ class UaValueCallback(UaType):
                 "\t" * (n + 1) + "write_callback" + str(self.write_callback) + "\n")
 
 
-# ++++++++++++++++++++ UaValueBackend +++++++++++++++++++++++
 class UaValueBackend(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -204,7 +212,6 @@ class UaValueBackend(UaType):
                 "\t" * (n + 1) + "data_source" + str(self._data_source) + "\n")
 
 
-# ++++++++++++++++++++ UaExternalValueCallback +++++++++++++++++++++++
 class UaExternalValueCallback(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -250,7 +257,51 @@ class UaExternalValueCallback(UaType):
         self._uses_python_write_callback = True
 
 
-# ++++++++++++++++++++ UaDataSource +++++++++++++++++++++++
+# +++++++++++++++++++ UaValueBackendType +++++++++++++++++++++++
+class UaValueBackendType(UaType):
+    val_to_string = dict([
+        (0, "UA_VALUEBACKENDTYPE_NONE"),
+        (1, "UA_VALUEBACKENDTYPE_INTERNAL"),
+        (2, "UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK"),
+        (3, "UA_VALUEBACKENDTYPE_EXTERNAL")])
+
+    def __init__(self, val: Union[int, Void] = None, is_pointer=False):
+        if type(val) is Void:
+            val = ffi.cast("UA_ValueBackendType*", val._ptr)
+        if val is None:
+            super().__init__(ffi.new("UA_ValueBackendType*"), is_pointer)
+        else:
+            super().__init__(ffi.cast("UA_ValueBackendType", _val(val)), is_pointer)
+
+    def _set_value(self, val):
+        if _val(val) in self.val_to_string.keys():
+            if self._is_pointer:
+                self._value = _ptr(val, "UA_ValueBackendType")
+            else:
+                self._value[0] = _val(val)
+        else:
+            raise OverflowError(f"{val} is not a valid member of this class")
+
+    @staticmethod
+    def NONE():
+        return UaValueBackendType(0)
+
+    @staticmethod
+    def INTERNAL():
+        return UaValueBackendType(1)
+
+    @staticmethod
+    def DATA_SOURCE_CALLBACK():
+        return UaValueBackendType(2)
+
+    @staticmethod
+    def EXTERNAL():
+        return UaValueBackendType(3)
+
+    def __str__(self, n=0):
+        return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+
+
 class UaDataSource(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -278,6 +329,14 @@ class UaDataSource(UaType):
     def write_callback(self):
         return self._write_callback
 
+    @property
+    def uses_python_read_callback(self):
+        return self._uses_python_read_callback
+
+    @property
+    def uses_python_write_callback(self):
+        return self._uses_python_write_callback
+
     @read_callback.setter
     def read_callback(self, val: Callable[
         ['UaServer', UaNodeId, Void, UaNodeId, Void, UaBoolean, UaNumericRange, UaDataValue], UaStatusCode]):
@@ -299,3 +358,18 @@ class UaDataSource(UaType):
         return ("(UA_DataSource) :\n" +
                 "\t" * (n + 1) + "read_callback" + str(self._read_callback) +
                 "\t" * (n + 1) + "write_callback" + str(self._write_callback) + "\n")
+
+
+class UaNodeTypeLifecycle():
+    def __init__(self):
+        pass
+
+
+class UaTwoStateVariableCallbackType(UaType):
+    def __init__(self):
+        return None
+
+
+class UaTwoStateVariableChangeCallback(UaType):
+    def __init__(self):
+        return None

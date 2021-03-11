@@ -9,7 +9,7 @@ from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
 
 
 class UaList(UaType):
-    def __init__(self, val=None, size=None, ua_class=None):
+    def __init__(self, val: Union[UaType, List] = None, size=None, ua_class=None):
         c_type = ""
         if type(val) is list:
             if ua_class is None:
@@ -24,7 +24,7 @@ class UaList(UaType):
                     ua_class = UaString
                 elif type(val[0]) is bool:
                     c_type = "UA_Boolean"
-                    ua_class = "UaString"
+                    ua_class = UaBoolean
             elif isinstance(ua_class(), UaType):
                 c_type = _get_c_type(ua_class()._ptr)
             else:
@@ -46,6 +46,8 @@ class UaList(UaType):
 
             if isinstance(val, UaType):
                 array = ffi.cast(f"{c_type}[{size}]", val._ptr)
+            elif val is None:
+                array = ffi.new(f"{c_type}[{size}]")
             else:
                 array = ffi.cast(f"{c_type}[{size}]", val)
 
@@ -73,7 +75,7 @@ class UaList(UaType):
         if 0 > index or index > self._size:
             raise KeyError("index out of bound")
         if isinstance(value, UaType):
-            self._ptr[index] = value._ptr
+            self._ptr[index] = value._val
 
     def __getitem__(self, index):
         if isinstance(index, int):

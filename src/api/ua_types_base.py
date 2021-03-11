@@ -453,7 +453,7 @@ class UaDateTime(UaType):
         return self._val <= other._val
 
     def to_struct(self):
-        return UaDateTimeStruct(lib.UA_DateTime_toStruct(self._val))
+        return UaDateTimeStruct(val=lib.UA_DateTime_toStruct(self._val))
 
     @staticmethod
     def now():
@@ -1470,8 +1470,9 @@ class UaVariant(UaType):
     # data is the python object matching the data_type or an void ptr
     def set_scalar(self, data: Any, data_type: 'UaDataType'):
         self.__mem_protect = data._ptr
-        lib.UA_Variant_setScalarCopy(self._ptr, self.__mem_protect, data_type._ptr)
+        status_code = lib.UA_Variant_setScalarCopy(self._ptr, self.__mem_protect, data_type._ptr)
         self._update()
+        return UaStatusCode(val=status_code)
 
     def set_array(self, array: Any, size: Union[int, SizeT], data_type: 'UaDataType'):
         if type(size) is int:
@@ -1480,27 +1481,30 @@ class UaVariant(UaType):
             raise AttributeError(f"size={size} has to be int or SizeT")
         self.__mem_protect = array._ptr
         status_code = lib.UA_Variant_setArrayCopy(self._ptr, self.__mem_protect, size._val, data_type._ptr)
-        status_code = UaStatusCode(status_code)
+        status_code = UaStatusCode(val=status_code)
         if not status_code.is_bad():
             self._update()
+            return status_code
         else:
             raise Exception(f"An Error occured - {str(status_code)}")
 
     def copy_range_to(self, variant: 'UaVariant', num_range: UaNumericRange):
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copyRange(self._ptr, variant._ptr, num_range._val)
-        status_code = UaStatusCode(status_code)
+        status_code = UaStatusCode(val=status_code)
         if not status_code.is_bad():
             self._update()
+            return status_code
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
     def copy(self, variant: 'UaVariant'):
         # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copy(self._ptr, variant._ptr)
-        status_code = UaStatusCode(status_code)
+        status_code = UaStatusCode(val=status_code)
         if not status_code.is_bad():
             self._update()
+            return status_code
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
@@ -1511,9 +1515,10 @@ class UaVariant(UaType):
             raise AttributeError(f"size={size} has to be int or SizeT")
         self.__mem_protect = array._ptr
         status_code = lib.UA_Variant_setRangeCopy(self._ptr, self.__mem_protect, size, num_range._val)
-        status_code = UaStatusCode(status_code)
+        status_code = UaStatusCode(val=status_code)
         if not status_code.is_bad():
             self._update()
+            return status_code
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
@@ -1739,7 +1744,7 @@ class UaExtensionObject(UaType):
                 self._data = UaByteString(val=val.content.encoded.body)
             elif self._encoding._val in [3, 4]:
                 self._type = UaDataType(val=val.content.decoded.type, is_pointer=True)
-                self._data = Void(val.content.encoded.body)
+                self._data = Void(val=val.content.encoded.body)
             else:
                 raise ValueError(f"Encoding does not exist.")
 
@@ -1757,11 +1762,11 @@ class UaExtensionObject(UaType):
         if not _is_null(val):
             self._encoding._value[0] = _val(val.encoding)
             if self._encoding in [0, 1, 2]:
-                self._type = UaNodeId(val.content.encoded.typeId)
-                self._data = UaByteString(val.content.encoded.body)
+                self._type = UaNodeId(val=val.content.encoded.typeId)
+                self._data = UaByteString(val=val.content.encoded.body)
             elif self._encoding in [3, 4]:
-                self._type = UaDataType(val.content.decoded.type, is_pointer=True)
-                self._data = Void(val.content.encoded.body)
+                self._type = UaDataType(val=val.content.decoded.type, is_pointer=True)
+                self._data = Void(val=val.content.encoded.body)
             else:
                 raise ValueError(f"Encoding does not exist.")
 
@@ -2443,7 +2448,7 @@ class UaDataTypeArray(UaType):
 class Randomize:
     @staticmethod
     def random_uint_32():
-        return lib.UA_UInt32_random()
+        return UaUInt32(val=lib.UA_UInt32_random())
 
     @staticmethod
     def ua_random_seed(seed: int):

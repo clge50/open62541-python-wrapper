@@ -6,6 +6,7 @@
 from intermediateApi import lib, ffi
 import ua_service_results_server as ServerServiceResults
 from ua_types import *
+from ua_types_list import *
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
 
@@ -32,7 +33,8 @@ class _ServerCallback:
                                                                                           is_pointer=False),
                                                                                 UaNumericRange(val=numeric_range,
                                                                                                is_pointer=True),
-                                                                                UaDataValue(val=value, is_pointer=True))
+                                                                                UaDataValue(val=value,
+                                                                                            is_pointer=True))._val
 
     @staticmethod
     @ffi.def_extern()
@@ -52,7 +54,7 @@ class _ServerCallback:
                                                                                  UaNumericRange(val=numeric_range,
                                                                                                 is_pointer=True),
                                                                                  UaDataValue(val=value,
-                                                                                             is_pointer=True))
+                                                                                             is_pointer=True))._val
 
     @staticmethod
     @ffi.def_extern()
@@ -85,6 +87,23 @@ class _ServerCallback:
                                                                           UaNumericRange(val=numeric_range,
                                                                                          is_pointer=True),
                                                                           UaDataValue(val=value, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
+                                         object_context, input_size, _input, output_size, output):
+        callbacks_dict_key = str(UaNodeId(val=method_id))
+        return _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
+                                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                                  Void(val=session_context, is_pointer=True),
+                                                                  UaNodeId(val=method_id, is_pointer=True),
+                                                                  Void(val=method_context, is_pointer=True),
+                                                                  UaNodeId(val=object_id, is_pointer=True),
+                                                                  Void(val=object_context, is_pointer=True),
+                                                                  UaList(val=_input, size=input_size,
+                                                                         ua_class=UaVariant),
+                                                                  UaList(val=output, size=output_size,
+                                                                         ua_class=UaVariant))._val
 
     # todo: ExternalValueCallback is missing
 
@@ -355,7 +374,10 @@ class UaServer:
             node_context = ffi.NULL
 
         # todo: requested_new_node_id currently mustn't be NULL or this doesn't work
-        _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
+
+        # only has to be added to dict if python callbacks are used instead of only c callbacks
+        if data_source.uses_python_read_callback or data_source.uses_python_write_callback:
+            _ServerCallback.callbacks_dict[str(requested_new_node_id)] = data_source
 
         status_code = lib.UA_Server_addDataSourceVariableNode(self.ua_server, requested_new_node_id._val,
                                                               parent_node_id._val, reference_type_id._val,
@@ -467,7 +489,7 @@ class UaServer:
 
         status_code = lib.UA_Server_addObjectNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
-                                                  attr._val, node_context._ptr, out_node_id._ptr)
+                                                  attr._val, node_context, out_node_id._ptr)
         out_node_id._update()
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code), out_node_id)
 
@@ -493,26 +515,52 @@ class UaServer:
 
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, type_definition._val,
-                                                      attr._val, node_context._ptr, out_node_id._ptr)
+                                                      attr._val, node_context, out_node_id._ptr)
 
         out_node_id._update()
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code), out_node_id)
 
-    # TODO: implement and test:
-    # def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = UA_ATTRIBUTES_DEFAULT.VARIABLE, node_context = None):
-    #    out_node_id = ffi.new("UA_NodeId *")
+    def add_method_node(self, requested_new_node_id: UaNodeId, parent_node_id: UaNodeId, reference_type_id: UaNodeId,
+                        browse_name: UaQualifiedName,
+                        method: Callable[
+                            ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, UaList,
+                             UaList], UaStatusCode], input_arg: Union[UaArgument, UaList],
+                        output_arg: Union[UaArgument, UaList], attr: UaVariableAttributes = None,
+                        node_context=None):
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
-    #    if node_context is not None:
-    #        node_context = ffi.new_handle(node_context)
-    #    else:
-    #        node_context = ffi.NULL
+        out_new_node_id = UaNodeId()
 
-    #    status_code = lib.UA_Server_addMethodNode()
-    #    return ServerServiceResults.AddMethodNodeResult(UaStatusCode(status_code), output_arg_size, output_args, out_node)
+        if node_context is not None:
+            node_context = ffi.new_handle(node_context)
+        else:
+            node_context = ffi.NULL
+
+        if isinstance(input_arg, UaList):
+            input_length = SizeT(len(input_arg))
+        else:
+            input_length = SizeT(1)
+
+        if isinstance(output_arg, UaList):
+            output_length = SizeT(len(output_arg))
+        else:
+            output_length = SizeT(1)
+
+        _ServerCallback.callbacks_dict[str(requested_new_node_id)] = method
+
+        status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
+                                                  reference_type_id._val, browse_name._val, attr._val,
+                                                  lib.python_wrapper_UA_MethodCallback,
+                                                  input_length._val, input_arg._ptr, output_length._val,
+                                                  output_arg._ptr, node_context, out_new_node_id._ptr)
+        return ServerServiceResults.AddMethodNodeResult(output_length, output_arg, UaStatusCode(status_code),
+                                                        out_new_node_id)
 
     def set_node_type_lifecycle(self, node_id: UaNodeId,
                                 lifecycle: UaNodeTypeLifecycle):
-        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val, lifecycle._val)
+        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val,
+                                                        lifecycle._val)  # todo: implement lifecycle type
         return UaStatusCode(val=raw_result)
 
     def trigger_event(self, node_id: UaNodeId, origin_id: UaNodeId,
@@ -524,9 +572,11 @@ class UaServer:
 
     def set_variable_node_value_callback(self, node_id: UaNodeId,
                                          callback: UaValueCallback):
-        _ServerCallback.callbacks_dict[str(node_id)] = callback
-        raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
+        if callback.uses_python_read_callback or callback.uses_python_write_callback:
+            _ServerCallback.callbacks_dict[str(node_id)] = callback
+
+        raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
         return UaStatusCode(val=raw_result)
 
     def set_variable_node_value_backend(self, node_id: UaNodeId,
