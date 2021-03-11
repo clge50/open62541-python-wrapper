@@ -6,7 +6,7 @@
 from intermediateApi import lib, ffi
 import ua_service_results_server as ServerServiceResults
 from ua_types import *
-from ua_list import *
+from ua_types_list import *
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
 
@@ -33,7 +33,8 @@ class _ServerCallback:
                                                                                           is_pointer=False),
                                                                                 UaNumericRange(val=numeric_range,
                                                                                                is_pointer=True),
-                                                                                UaDataValue(val=value, is_pointer=True))
+                                                                                UaDataValue(val=value,
+                                                                                            is_pointer=True))._val
 
     @staticmethod
     @ffi.def_extern()
@@ -53,7 +54,7 @@ class _ServerCallback:
                                                                                  UaNumericRange(val=numeric_range,
                                                                                                 is_pointer=True),
                                                                                  UaDataValue(val=value,
-                                                                                             is_pointer=True))
+                                                                                             is_pointer=True))._val
 
     @staticmethod
     @ffi.def_extern()
@@ -102,7 +103,7 @@ class _ServerCallback:
                                                                   UaList(val=_input, size=input_size,
                                                                          ua_class=UaVariant),
                                                                   UaList(val=output, size=output_size,
-                                                                         ua_class=UaVariant))
+                                                                         ua_class=UaVariant))._val
 
     # todo: ExternalValueCallback is missing
 
@@ -527,7 +528,7 @@ class UaServer:
                         output_arg: Union[UaArgument, UaList], attr: UaVariableAttributes = None,
                         node_context=None):
         if attr is None:
-            attr = VARIABLE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
         out_new_node_id = UaNodeId()
 
