@@ -7,7 +7,7 @@ x = UaStatusCode(0x80000000)
 print(x.is_bad())
 
 client = UaClient()
-retval = client.connect("opc.tcp://127.0.0.1:4840/")
+ret_val = client.connect("opc.tcp://127.0.0.1:4840/")
 
 # configuring attribute
 # attr = clientApi.DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
@@ -20,9 +20,9 @@ retval = client.connect("opc.tcp://127.0.0.1:4840/")
 # adding node
 my_integer_node_id = UaNodeId(1, "the answer")
 my_integer_name = UaQualifiedName(1, "the.answer")
-parent_node_id = NS0ID.OBJECTSFOLDER
-parent_reference_node_id = NS0ID.ORGANIZES
-variable_type = NS0ID.BASEDATAVARIABLETYPE
+parent_node_id = UA_NS0ID.OBJECTSFOLDER
+parent_reference_node_id = UA_NS0ID.ORGANIZES
+variable_type = UA_NS0ID.BASEDATAVARIABLETYPE
 
 parent_node_read_result = client.read_node_id_attribute(parent_reference_node_id)
 print(f"read_node_id_attribute UaStatuscode was: {str(parent_node_read_result.status_code)}")

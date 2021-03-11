@@ -23,8 +23,8 @@ def server_shut_down():
 
 
 def add_variable_type_2d_point():
-    vt_attr = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT
-    vt_attr.data_type = TYPES.DOUBLE.type_id
+    vt_attr = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE
+    vt_attr.data_type = UA_TYPES.DOUBLE.type_id
     vt_attr.value_rank = UaValueRanks.ONE_DIMENSION
     array_dims = UaUInt32([2])
     vt_attr.array_dimensions = array_dims
@@ -32,11 +32,11 @@ def add_variable_type_2d_point():
     vt_attr.display_name = UaLocalizedText("en-US", "2DPoint Type")
 
     zero = UaDouble([0.0, 0.0], 2)
-    vt_attr.data_value.set_array(zero, 2, TYPES.DOUBLE)
+    vt_attr.data_value.set_array(zero, 2, UA_TYPES.DOUBLE)
 
     result = Vars.server.add_variable_type_node(UaNodeId(UaNodeId.NULL),
-                                                NS0ID.BASEDATAVARIABLETYPE,
-                                                NS0ID.HASSUBTYPE,
+                                                UA_NS0ID.BASEDATAVARIABLETYPE,
+                                                UA_NS0ID.HASSUBTYPE,
                                                 UaQualifiedName(1, "2DPoint Type"),
                                                 UaNodeId(UaNodeId.NULL),
                                                 vt_attr)
@@ -44,8 +44,8 @@ def add_variable_type_2d_point():
 
 
 def add_variable():
-    v_attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
-    v_attr.data_type = TYPES.DOUBLE.type_id
+    v_attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
+    v_attr.data_type = UA_TYPES.DOUBLE.type_id
     v_attr.value_rank = UaValueRanks.ONE_DIMENSION
     array_dims = UaUInt32([2])
     v_attr.array_dimensions = array_dims
@@ -54,8 +54,8 @@ def add_variable():
     v_attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
 
     result = Vars.server.add_variable_node(UaNodeId(UaNodeId.NULL),
-                                           NS0ID.OBJECTSFOLDER,
-                                           NS0ID.HASCOMPONENT,
+                                           UA_NS0ID.OBJECTSFOLDER,
+                                           UA_NS0ID.HASCOMPONENT,
                                            UaQualifiedName(1, "2DPoint Type"),
                                            Vars.point_type_id,
                                            v_attr)
@@ -63,16 +63,16 @@ def add_variable():
 
 
 def add_variable_fail():
-    v_attr = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
-    v_attr.data_type = TYPES.DOUBLE.type_id
+    v_attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
+    v_attr.data_type = UA_TYPES.DOUBLE.type_id
     v_attr.value_rank = UaValueRanks.SCALAR
     v_attr.display_name = UaLocalizedText("en-US", "2DPoint Type (fail)")
     s = UaString("2dpoint?")
-    v_attr.data_value.set_scalar(s, TYPES.STRING)
+    v_attr.data_value.set_scalar(s, UA_TYPES.STRING)
 
     result = Vars.server.add_variable_node(UaNodeId(UaNodeId.NULL),
-                                           NS0ID.OBJECTSFOLDER,
-                                           NS0ID.HASCOMPONENT,
+                                           UA_NS0ID.OBJECTSFOLDER,
+                                           UA_NS0ID.HASCOMPONENT,
                                            UaQualifiedName(1, "2DPoint Type (fail)"),
                                            Vars.point_type_id,
                                            v_attr)

@@ -136,7 +136,7 @@ class UaServer:
     ### Write Functions
     ###
 
-    def write(self, value: UaDataValue):
+    def write(self, value: UaWriteValue):
         raw_result = lib.UA_Server_write(self.ua_server, value._ptr)
         value._update()
         return UaStatusCode(val=raw_result)
