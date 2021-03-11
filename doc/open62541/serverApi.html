@@ -121,18 +121,17 @@ class _ServerCallback:
     def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
                                          object_context, input_size, _input, output_size, output):
         callbacks_dict_key = str(UaNodeId(val=method_id))
-        _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
-                                                           UaNodeId(val=session_id, is_pointer=True),
-                                                           Void(val=session_context, is_pointer=True),
-                                                           UaNodeId(val=method_id, is_pointer=True),
-                                                           Void(val=method_context, is_pointer=True),
-                                                           UaNodeId(val=object_id, is_pointer=True),
-                                                           Void(val=object_context, is_pointer=True),
-                                                           SizeT(val=input_size, is_pointer=False),
-                                                           # todo: remove unnecessary size arg
-                                                           UaList(val=_input, size=input_size, ua_class=UaVariant),
-                                                           SizeT(val=output_size, is_pointer=False),
-                                                           UaList(val=output, size=output_size, ua_class=UaVariant))
+        return _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
+                                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                                  Void(val=session_context, is_pointer=True),
+                                                                  UaNodeId(val=method_id, is_pointer=True),
+                                                                  Void(val=method_context, is_pointer=True),
+                                                                  UaNodeId(val=object_id, is_pointer=True),
+                                                                  Void(val=object_context, is_pointer=True),
+                                                                  UaList(val=_input, size=input_size,
+                                                                         ua_class=UaVariant),
+                                                                  UaList(val=output, size=output_size,
+                                                                         ua_class=UaVariant))
 
     # todo: ExternalValueCallback is missing
 
@@ -567,9 +566,9 @@ class UaServer:
             node_context = ffi.NULL
 
         if isinstance(input_arg, UaList):
-            input_length = len(input_arg)
+            input_length = SizeT(len(input_arg))
         else:
-            input_length = 1
+            input_length = SizeT(1)
 
         if isinstance(output_arg, UaList):
             output_length = SizeT(len(output_arg))
@@ -581,14 +580,15 @@ class UaServer:
         status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, attr._val,
                                                   lib.python_wrapper_UA_MethodCallback,
-                                                  input_length, input_arg._ptr, output_length,
+                                                  input_length._val, input_arg._ptr, output_length._val,
                                                   output_arg._ptr, node_context, out_new_node_id._ptr)
         return ServerServiceResults.AddMethodNodeResult(output_length, output_arg, UaStatusCode(status_code),
                                                         out_new_node_id)
 
     def set_node_type_lifecycle(self, node_id: UaNodeId,
                                 lifecycle: UaNodeTypeLifecycle):
-        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val, lifecycle._val)
+        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val,
+                                                        lifecycle._val)  # todo: implement lifecycle type
         return UaStatusCode(val=raw_result)
 
     def trigger_event(self, node_id: UaNodeId, origin_id: UaNodeId,
@@ -603,8 +603,8 @@ class UaServer:
 
         if callback.uses_python_read_callback or callback.uses_python_write_callback:
             _ServerCallback.callbacks_dict[str(node_id)] = callback
-        raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
+        raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
         return UaStatusCode(val=raw_result)
 
     def set_variable_node_value_backend(self, node_id: UaNodeId,
@@ -1112,9 +1112,9 @@ class UaServer:
             node_context = ffi.NULL
 
         if isinstance(input_arg, UaList):
-            input_length = len(input_arg)
+            input_length = SizeT(len(input_arg))
         else:
-            input_length = 1
+            input_length = SizeT(1)
 
         if isinstance(output_arg, UaList):
             output_length = SizeT(len(output_arg))
@@ -1126,14 +1126,15 @@ class UaServer:
         status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, attr._val,
                                                   lib.python_wrapper_UA_MethodCallback,
-                                                  input_length, input_arg._ptr, output_length,
+                                                  input_length._val, input_arg._ptr, output_length._val,
                                                   output_arg._ptr, node_context, out_new_node_id._ptr)
         return ServerServiceResults.AddMethodNodeResult(output_length, output_arg, UaStatusCode(status_code),
                                                         out_new_node_id)
 
     def set_node_type_lifecycle(self, node_id: UaNodeId,
                                 lifecycle: UaNodeTypeLifecycle):
-        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val, lifecycle._val)
+        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val,
+                                                        lifecycle._val)  # todo: implement lifecycle type
         return UaStatusCode(val=raw_result)
 
     def trigger_event(self, node_id: UaNodeId, origin_id: UaNodeId,
@@ -1148,8 +1149,8 @@ class UaServer:
 
         if callback.uses_python_read_callback or callback.uses_python_write_callback:
             _ServerCallback.callbacks_dict[str(node_id)] = callback
-        raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
+        raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
         return UaStatusCode(val=raw_result)
 
     def set_variable_node_value_backend(self, node_id: UaNodeId,
@@ -1283,9 +1284,9 @@ class UaServer:
         node_context = ffi.NULL
 
     if isinstance(input_arg, UaList):
-        input_length = len(input_arg)
+        input_length = SizeT(len(input_arg))
     else:
-        input_length = 1
+        input_length = SizeT(1)
 
     if isinstance(output_arg, UaList):
         output_length = SizeT(len(output_arg))
@@ -1297,7 +1298,7 @@ class UaServer:
     status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
                                               reference_type_id._val, browse_name._val, attr._val,
                                               lib.python_wrapper_UA_MethodCallback,
-                                              input_length, input_arg._ptr, output_length,
+                                              input_length._val, input_arg._ptr, output_length._val,
                                               output_arg._ptr, node_context, out_new_node_id._ptr)
     return ServerServiceResults.AddMethodNodeResult(output_length, output_arg, UaStatusCode(status_code),
                                                     out_new_node_id)</code></pre>
@@ -2050,7 +2051,8 @@ class UaServer:
 </summary>
 <pre><code class="python">def set_node_type_lifecycle(self, node_id: UaNodeId,
                             lifecycle: UaNodeTypeLifecycle):
-    raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val, lifecycle._val)
+    raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val,
+                                                    lifecycle._val)  # todo: implement lifecycle type
     return UaStatusCode(val=raw_result)</code></pre>
 </details>
 </dd>
@@ -2083,8 +2085,8 @@ class UaServer:
 
     if callback.uses_python_read_callback or callback.uses_python_write_callback:
         _ServerCallback.callbacks_dict[str(node_id)] = callback
-    raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
 
+    raw_result = lib.UA_Server_setVariableNode_valueCallback(self.ua_server, node_id._val, callback._val)
     return UaStatusCode(val=raw_result)</code></pre>
 </details>
 </dd>

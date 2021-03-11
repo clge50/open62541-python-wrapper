@@ -92,18 +92,17 @@ class _ServerCallback:
     def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
                                          object_context, input_size, _input, output_size, output):
         callbacks_dict_key = str(UaNodeId(val=method_id))
-        _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
-                                                           UaNodeId(val=session_id, is_pointer=True),
-                                                           Void(val=session_context, is_pointer=True),
-                                                           UaNodeId(val=method_id, is_pointer=True),
-                                                           Void(val=method_context, is_pointer=True),
-                                                           UaNodeId(val=object_id, is_pointer=True),
-                                                           Void(val=object_context, is_pointer=True),
-                                                           SizeT(val=input_size, is_pointer=False),
-                                                           # todo: remove unnecessary size arg
-                                                           UaList(val=_input, size=input_size, ua_class=UaVariant),
-                                                           SizeT(val=output_size, is_pointer=False),
-                                                           UaList(val=output, size=output_size, ua_class=UaVariant))
+        return _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
+                                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                                  Void(val=session_context, is_pointer=True),
+                                                                  UaNodeId(val=method_id, is_pointer=True),
+                                                                  Void(val=method_context, is_pointer=True),
+                                                                  UaNodeId(val=object_id, is_pointer=True),
+                                                                  Void(val=object_context, is_pointer=True),
+                                                                  UaList(val=_input, size=input_size,
+                                                                         ua_class=UaVariant),
+                                                                  UaList(val=output, size=output_size,
+                                                                         ua_class=UaVariant))
 
     # todo: ExternalValueCallback is missing
 

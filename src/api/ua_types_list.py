@@ -75,7 +75,7 @@ class UaList(UaType):
         if 0 > index or index > self._size:
             raise KeyError("index out of bound")
         if isinstance(value, UaType):
-            self._ptr[index] = value._ptr
+            self._ptr[index] = value._val
 
     def __getitem__(self, index):
         if isinstance(index, int):

@@ -8,10 +8,10 @@ def hello_world_method_callback(server: UaServer,
                                 session_context: Void, method_id: UaNodeId, method_context: Void,
                                 object_id: UaNodeId,
                                 object_context: Void,
-                                input_arg: Union[UaVariant, UaList],
-                                output_arg: Union[UaVariant, UaList]):
-    str = UaString("Hello " + UaString(input_arg.data).value)
-    UaVariant.set_scalar(output_arg, str, TYPES.STRING)
+                                input_arg: UaList,
+                                output_arg: UaList):
+    str = UaString("Hello " + UaString(input_arg[0].data).value)
+    UaVariant.set_scalar(output_arg[0], str, TYPES.STRING)
     UaLogger().info(UaLogCategory.SERVER(), "Hello World was called")
     return UaStatusCode.UA_STATUSCODE_GOOD
 
@@ -34,7 +34,6 @@ def add_hello_world_method(server: UaServer):
     hello_attr.display_name = UaLocalizedText("en-US", "Hello World")
     hello_attr.executable = UaBoolean(True)
     hello_attr.user_executable = UaBoolean(True)
-    # todo: introduce method in server
     server.add_method_node(UaNodeId(1, 62541),
                            NS0ID.OBJECTSFOLDER,
                            NS0ID.HASCOMPONENT,
@@ -50,17 +49,15 @@ def inc_int_32_array_method_callback(server: UaServer,
                                      session_context: Void, method_id: UaNodeId, method_context: Void,
                                      object_id: UaNodeId,
                                      object_context: Void,
-                                     input_arg: Union[UaVariant, UaList],
-                                     output_arg: Union[UaVariant, UaList]):
-    print("1234")
-    # input_array = UaList(input_arg[0].data, 5)
-    # delta = UaInt32(input_arg[1].data)
-    # retval = output_arg.set_array(input_array, 5, TYPES.INT32)
-    # if retval is not UaStatusCode.UA_STATUSCODE_GOOD:
-    #    return retval
-    # output_array = UaUInt32(output_arg.data)
-    # for i in range(0, input_arg.array_length - 1):
-    #    output_array[i] = input_array[i] + delta
+                                     input_arg: UaList,
+                                     output_arg: UaList):
+    delta = UaInt32(input_arg[1].data)
+    size = SizeT(5)
+    lst = UaList(input_arg[0].data, size, UaInt32)
+    res_list = UaList(ua_class=UaInt32, size=5)
+    for i in range(0, len(lst)):
+        res_list[i] = UaInt32(lst[i].value + delta.value)
+    output_arg[0].set_array(res_list, size, TYPES.INT32)
     return UaStatusCode.UA_STATUSCODE_GOOD
 
 
@@ -71,9 +68,9 @@ def add_inc_int_32_array_method(server: UaServer):
     input_arguments[0].name = UaString("int32 array")
     input_arguments[0].data_type = TYPES.INT32.type_id
     input_arguments[0].value_rank = UaValueRanks.ONE_DIMENSION
-    p_input_dimention = 5
+    p_input_dimension = 5
     input_arguments[0].array_dimentsions_size = 1
-    input_arguments[0].array_dimentsions = p_input_dimention
+    input_arguments[0].array_dimentsions = p_input_dimension
 
     input_arguments[1].description = UaLocalizedText("en-US", "int32 delta")
     input_arguments[1].name = UaString("int32 delta")
