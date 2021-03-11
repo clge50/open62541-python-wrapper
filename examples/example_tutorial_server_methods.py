@@ -68,9 +68,8 @@ def add_inc_int_32_array_method(server: UaServer):
     input_arguments[0].name = UaString("int32 array")
     input_arguments[0].data_type = UA_TYPES.INT32.type_id
     input_arguments[0].value_rank = UaValueRanks.ONE_DIMENSION
-    p_input_dimension = 5
-    input_arguments[0].array_dimentsions_size = 1
-    input_arguments[0].array_dimentsions = p_input_dimension
+    input_arguments[0].array_dimensions_size = SizeT(1)
+    input_arguments[0].array_dimensions = UaUInt32(5)
 
     input_arguments[1].description = UaLocalizedText("en-US", "int32 delta")
     input_arguments[1].name = UaString("int32 delta")
@@ -102,5 +101,5 @@ def add_inc_int_32_array_method(server: UaServer):
 
 server = UaServer()
 add_hello_world_method(server)
-res = add_inc_int_32_array_method(server)
+add_inc_int_32_array_method(server)
 retval = server.run(UaBoolean(True))
