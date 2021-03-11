@@ -33,14 +33,13 @@ def generate_status_codes():
     with open(dirname + r"/open62541/build/src_generated/open62541/statuscodes.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define"))
-        lines = list(map(lambda l: "\t" + l.split()[0] + " = " + l.split()[1] + "\n", lines))
-        lines.insert(0, "from intermediateApi import lib\n\n\n")
-        lines.insert(1, "class StatusCode:\n")
-        lines.insert(2,
-                     "\t@staticmethod\n\tdef isBad(status_code):\n\t\treturn lib.UA_StatusCode_isBad(status_code)\n\n")
+        lines = list(map(lambda l: "\t" + l.split()[0].replace("UA_STATUSCODE_", "") +
+                                   " = UaStatusCode(" + l.split()[1] + ")\n", lines))
+        lines.insert(0, "from ua_types import UaStatusCode\n\n\n")
+        lines.insert(1, "class UA_STATUSCODES:\n")
 
     os.chdir(dirname + r"/build/open62541/")
-    with open('status_code.py', 'w+') as file:
+    with open('ua_consts_status_codes.py', 'w+') as file:
         file.writelines(lines)
 
 
@@ -51,13 +50,13 @@ def generate_node_ids():
                  line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
         lines = list(map(lambda l: "\t" + l.split()[0].replace("UA_NS0ID_", "") +
                                    " = UaNodeId(0, " + l.split()[1] + ")\n", lines))
-        lines.insert(0, "class NS0ID:\n")
+        lines.insert(0, "class UA_NS0ID:\n")
         lines.insert(0, "from ua_types import UaNodeId\n")
         lines.insert(1, "\n")
         lines.insert(1, "\n")
 
     os.chdir(dirname + r"/build/open62541/")
-    with open('ua_ns0_node_ids.py', 'w+') as file:
+    with open('ua_consts_ns0ids.py', 'w+') as file:
         file.writelines(lines)
 
 
@@ -69,14 +68,14 @@ def generate_type_ids():
                                    l.split()[1] + "])\n", lines))
         count = lines.pop(0)
         lines.insert(0, count.replace("UaDataType(val=lib.UA_TYPES[", "").replace("])", ""))
-        lines.insert(0, "class TYPES:\n")
+        lines.insert(0, "class UA_TYPES:\n")
         lines.insert(0, "from ua_types import UaDataType\n")
         lines.insert(0, "from intermediateApi import ffi, lib\n")
         lines.insert(2, "\n")
         lines.insert(2, "\n")
 
     os.chdir(dirname + r"/build/open62541/")
-    with open('ua_data_types.py', 'w+') as file:
+    with open('ua_consts_data_types.py', 'w+') as file:
         file.writelines(lines)
 
 

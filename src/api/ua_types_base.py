@@ -5,7 +5,7 @@
 from typing import Any
 
 from intermediateApi import ffi, lib
-from ua_primitve_types import *
+from ua_types_primitve import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 

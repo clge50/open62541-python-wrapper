@@ -1,4 +1,4 @@
-from ua_primitve_types import UaInt32
+from ua_types_primitve import UaInt32
 
 class UaValueRanks:
     SCALAR_OR_ONE_DIMENSION = UaInt32(-3)

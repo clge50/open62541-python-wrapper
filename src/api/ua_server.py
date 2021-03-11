@@ -4,11 +4,10 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import lib, ffi
-import server_service_results as ServerServiceResults
+import ua_service_results_server as ServerServiceResults
 from ua_types import *
+from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
-
-VARIABLE_ATTRIBUTES_DEFAULT = UaVariableAttributes(val=lib.UA_VariableAttributes_default)
 
 
 class _ServerCallback:
@@ -348,7 +347,7 @@ class UaServer:
         out_node_id = UaNodeId()
 
         if attr is None:
-            attr = VARIABLE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
@@ -404,7 +403,7 @@ class UaServer:
                           node_context=None):
 
         if attr is None:
-            attr = VARIABLE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
         out_node_id = UaNodeId()
 
@@ -430,7 +429,7 @@ class UaServer:
                                node_context=None):
 
         if attr is None:
-            attr = VARIABLE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
         out_node_id = UaNodeId()
 
@@ -456,7 +455,7 @@ class UaServer:
                         node_context=None):
 
         if attr is None:
-            attr = VARIABLE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
         out_node_id = UaNodeId()
 
@@ -482,7 +481,7 @@ class UaServer:
                              node_context=None):
 
         if attr is None:
-            attr = VARIABLE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
 
         out_node_id = UaNodeId()
 
@@ -500,7 +499,7 @@ class UaServer:
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code), out_node_id)
 
     # TODO: implement and test:
-    # def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = VARIABLE_ATTRIBUTES_DEFAULT, node_context = None):
+    # def add_method_node(self, requested_new_node_id, parent_node_id, reference_type_id, browse_name, method, input_arg_size, input_args, output_arg_size, output_args, out_new_node_id, attr = UA_ATTRIBUTES_DEFAULT.VARIABLE, node_context = None):
     #    out_node_id = ffi.new("UA_NodeId *")
 
     #    if node_context is not None:
