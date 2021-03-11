@@ -7,7 +7,7 @@ def write_matrix_variable(client):
     matrix = UaDouble([0.0, 0.0, 0.0, 0.0])
     
     my_variant = UaVariant()
-    my_variant.set_array(matrix, 4, TYPES.DOUBLE)
+    my_variant.set_array(matrix, 4, UA_TYPES.DOUBLE)
     my_variant.array_dimensions = UaUInt32([2, 2])
     my_variant.array_dimensions_size = SizeT(2)
     

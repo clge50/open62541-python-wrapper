@@ -1,15 +1,15 @@
 import sys
 import time
+from ua import UaBoolean, UaServer
 
 sys.path.append("../build/open62541")
-import serverApi
-from ua import UaBoolean
+
 
 # Create new server object
-server = serverApi.UaServer()
+server = UaServer()
 
 # Start server
-retval = server.run(UaBoolean(True))
+ret_val = server.run(UaBoolean(True))
 
 time.sleep(100)
 server.run_shutdown()

@@ -4,7 +4,7 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import ffi, lib
-from ua_base_types import *
+from ua_types_base import *
 from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
 
 

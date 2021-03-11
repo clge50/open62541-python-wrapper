@@ -6,20 +6,9 @@
 from intermediateApi import ffi, lib
 from typing import Callable
 
-import client_service_results as ClientServiceResult
+import ua_service_results_client as ClientServiceResult
+from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 from ua_types import *
-
-
-class DefaultAttributes:
-    VARIABLE_ATTRIBUTES_DEFAULT = UaVariableAttributes(val=lib.UA_VariableAttributes_default)
-    VARIABLE_TYPE_ATTRIBUTES_DEFAULT = UaVariableTypeAttributes(val=lib.UA_VariableTypeAttributes_default)
-    METHOD_ATTRIBUTES_DEFAULT = UaMethodAttributes(val=lib.UA_MethodAttributes_default)
-    OBJECT_ATTRIBUTES_DEFAULT = UaObjectAttributes(val=lib.UA_ObjectAttributes_default)
-    OBJECT_TYPE_ATTRIBUTES_DEFAULT = UaObjectTypeAttributes(val=lib.UA_ObjectTypeAttributes_default)
-    REFERENCE_TYPE_ATTRIBUTES_DEFAULT = UaReferenceTypeAttributes(val=lib.UA_ReferenceTypeAttributes_default)
-    DATA_TYPE_ATTRIBUTES_DEFAULT = UaDataTypeAttributes(val=lib.UA_DataTypeAttributes_default)
-    VIEW_ATTRIBUTES_DEFAULT = UaViewAttributes(val=lib.UA_ViewAttributes_default)
-
 
 class _ClientCallback:
     """These static c type callback implementations are used to call the actual callback functions which have been
@@ -567,7 +556,7 @@ class UaClient:
                           reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                           type_definition: UaNodeId,
                           requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                          attr: UaVariableAttributes = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
+                          attr: UaVariableAttributes = UA_ATTRIBUTES_DEFAULT.VARIABLE):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, type_definition._val,
@@ -579,7 +568,7 @@ class UaClient:
     def add_variable_type_node(self, parent_node_id: UaNodeId,
                                reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                               attr: UaVariableTypeAttributes = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT):
+                               attr: UaVariableTypeAttributes = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                         reference_type_id._val, browse_name._val, attr._val,
@@ -591,7 +580,7 @@ class UaClient:
                         reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                         type_definition: UaNodeId,
                         requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                        attr: UaObjectAttributes = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT):
+                        attr: UaObjectAttributes = UA_ATTRIBUTES_DEFAULT.OBJECT):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
@@ -603,7 +592,7 @@ class UaClient:
     def add_object_type_node(self, parent_node_id: UaNodeId,
                              reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                              requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                             attr: UaObjectTypeAttributes = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT):
+                             attr: UaObjectTypeAttributes = UA_ATTRIBUTES_DEFAULT.OBJECT_TYPE):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, attr._val,
@@ -614,7 +603,7 @@ class UaClient:
     def add_view_node(self, parent_node_id: UaNodeId,
                       reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                       requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                      attr: UaViewAttributes = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT):
+                      attr: UaViewAttributes = UA_ATTRIBUTES_DEFAULT.VIEW):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                 reference_type_id._val, browse_name._val, attr._val,
@@ -626,7 +615,7 @@ class UaClient:
                                 reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                 requested_new_node_id: UaNodeId = UaNodeId(
                                     val=UaNodeId.NULL),
-                                attr: UaReferenceTypeAttributes = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT):
+                                attr: UaReferenceTypeAttributes = UA_ATTRIBUTES_DEFAULT.REFERENCE_TYPE):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id._val,
                                                          parent_node_id._val,
@@ -638,7 +627,7 @@ class UaClient:
     def add_data_type_node(self, parent_node_id: UaNodeId,
                            reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                            requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                           attr: UaDataTypeAttributes = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT):
+                           attr: UaDataTypeAttributes = UA_ATTRIBUTES_DEFAULT.DATA_TYPE):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, attr._val,
@@ -649,7 +638,7 @@ class UaClient:
     def add_method_node(self, parent_node_id: UaNodeId,
                         reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                         requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                        attr: UaMethodAttributes = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT):
+                        attr: UaMethodAttributes = UA_ATTRIBUTES_DEFAULT.METHOD):
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, attr._val,
@@ -1306,7 +1295,7 @@ class UaClient:
                                 callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
                                 requested_new_node_id: UaNodeId = UaNodeId(
                                     val=UaNodeId.NULL),
-                                attr: UaVariableAttributes = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT):
+                                attr: UaVariableAttributes = UA_ATTRIBUTES_DEFAULT.VARIABLE):
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1356,7 +1345,7 @@ class UaClient:
                                      attr=None):
 
         if attr is None:
-            attr = DefaultAttributes.VARIABLE_TYPE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
@@ -1381,7 +1370,7 @@ class UaClient:
                               attr=None):
 
         if attr is None:
-            attr = DefaultAttributes.OBJECT_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.OBJECT
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
@@ -1408,7 +1397,7 @@ class UaClient:
                                    attr=None):
 
         if attr is None:
-            attr = DefaultAttributes.OBJECT_TYPE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.OBJECT_TYPE
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
@@ -1431,7 +1420,7 @@ class UaClient:
                             requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
                             attr=None):
         if attr is None:
-            attr = DefaultAttributes.VIEW_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.VIEW
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
@@ -1457,7 +1446,7 @@ class UaClient:
                                       attr=None):
 
         if attr is None:
-            attr = DefaultAttributes.REFERENCE_TYPE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.REFERENCE_TYPE
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
@@ -1482,7 +1471,7 @@ class UaClient:
                                  attr=None):
 
         if attr is None:
-            attr = DefaultAttributes.DATA_TYPE_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.DATA_TYPE
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
@@ -1506,7 +1495,7 @@ class UaClient:
                               attr=None):
 
         if attr is None:
-            attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
+            attr = UA_ATTRIBUTES_DEFAULT.METHOD
 
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
