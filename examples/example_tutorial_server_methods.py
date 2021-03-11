@@ -7,11 +7,12 @@ def hello_world_method_callback(server: UaServer,
                                 session_id: UaNodeId,
                                 session_context: Void, method_id: UaNodeId, method_context: Void,
                                 object_id: UaNodeId,
-                                object_context: Void, input_size: SizeT, input_arg: UaVariant, output_size: SizeT,
-                                output_arg: UaVariant):
+                                object_context: Void,
+                                input_arg: Union[UaVariant, UaList],
+                                output_arg: Union[UaVariant, UaList]):
     str = UaString("Hello " + UaString(input_arg.data).value)
     UaVariant.set_scalar(output_arg, str, TYPES.STRING)
-    UaLogger().info(UaLogCategory.UA_LOGCATEGORY_SERVER, "Hello World was called")
+    UaLogger().info(UaLogCategory.SERVER(), "Hello World was called")
     return UaStatusCode.UA_STATUSCODE_GOOD
 
 
@@ -28,7 +29,7 @@ def add_hello_world_method(server: UaServer):
     output_argument.data_type = TYPES.STRING.type_id
     output_argument.value_rank = UaValueRanks.SCALAR
 
-    hello_attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT  # todo: put default attributes somewhere else
+    hello_attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
     hello_attr.description = UaLocalizedText("en-US", "Say `Hello World`")
     hello_attr.display_name = UaLocalizedText("en-US", "Hello World")
     hello_attr.executable = UaBoolean(True)
@@ -39,9 +40,7 @@ def add_hello_world_method(server: UaServer):
                            NS0ID.HASCOMPONENT,
                            UaQualifiedName(1, "hello world"),
                            hello_world_method_callback,
-                           SizeT(1),
                            input_argument,
-                           SizeT(1),
                            output_argument, attr=hello_attr)
 
 
@@ -50,8 +49,9 @@ def inc_int_32_array_method_callback(server: UaServer,
                                      session_id: UaNodeId,
                                      session_context: Void, method_id: UaNodeId, method_context: Void,
                                      object_id: UaNodeId,
-                                     object_context: Void, input_size: SizeT, input_arg: UaList, output_size: SizeT,
-                                     output_arg: UaVariant):
+                                     object_context: Void,
+                                     input_arg: Union[UaVariant, UaList],
+                                     output_arg: Union[UaVariant, UaList]):
     print("1234")
     # input_array = UaList(input_arg[0].data, 5)
     # delta = UaInt32(input_arg[1].data)
@@ -86,12 +86,12 @@ def add_inc_int_32_array_method(server: UaServer):
     output_argument.name = UaString("each entry is incremented by the delta")
     output_argument.data_type = TYPES.INT32.type_id
     output_argument.value_rank = UaValueRanks.ONE_DIMENSION
-    p_output_dimensions = 5
-    output_argument.array_dimensions_size = 1
+    p_output_dimensions = UaUInt32(5)
+    output_argument.array_dimensions_size = SizeT(1)
     output_argument.array_dimensions = p_output_dimensions
 
     # add the method node
-    inc_attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT  # todo: move attributes to their own class
+    inc_attr = DefaultAttributes.METHOD_ATTRIBUTES_DEFAULT
     inc_attr.description = UaLocalizedText("en-US", "IncInt32ArrayValues")
     inc_attr.display_name = UaLocalizedText("en-US", "IncInt32ArrayValues")
     inc_attr.executable = UaBoolean(True)
@@ -100,9 +100,7 @@ def add_inc_int_32_array_method(server: UaServer):
                            NS0ID.OBJECTSFOLDER,
                            NS0ID.HASCOMPONENT,
                            UaQualifiedName(1, "IncInt32ArrayValues"),
-                           inc_int_32_array_method_callback,
-                           SizeT(2), input_arguments,
-                           SizeT(1), output_argument, attr=inc_attr)
+                           inc_int_32_array_method_callback, input_arguments, output_argument, attr=inc_attr)
 
 
 server = UaServer()
