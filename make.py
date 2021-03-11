@@ -95,7 +95,8 @@ def generate_api():
                        "client_highlevel_async",
                        "client_config_default",
                        "nodestore",
-                       "server"]
+                       "server",
+                       "statuscodes"]
     decls_list = []
 
     for file_name in decl_files_list:

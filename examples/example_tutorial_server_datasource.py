@@ -53,13 +53,13 @@ def read_current_time(server, session_id, session_context, node_id, node_context
     UaVariant.set_scalar(data_value.variant, now,
                          UA_TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
     data_value.has_variant = UaBoolean(True)
-    return UaStatusCode.UA_STATUSCODE_GOOD
+    return UA_STATUSCODES.GOOD
 
 
 def write_current_time(server, session_id, session_context, node_id, node_context, numeric_range, data):
     logger = UaLogger()
     logger.info(UaLogCategory.USERLAND(), "Changing the system time is not implemented")
-    return UaStatusCode.UA_STATUSCODE_BADINTERNALERROR
+    return UA_STATUSCODES.BADINTERNALERROR
 
 
 ua_data_value = UaDataValue()

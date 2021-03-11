@@ -591,7 +591,7 @@ class UaStatusCode(UaType):
         if self._null:
             return "(UaStatusCode) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaStatusCode): " + ffi.string(lib.UA_StatusCode_name(self._val)) + ("" if n is None else "\n")
+            return "(UaStatusCode): " + ffi.string(lib.UA_StatusCode_name(self._val)).decode("utf-8") + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val

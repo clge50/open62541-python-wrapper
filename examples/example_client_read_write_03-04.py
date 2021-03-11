@@ -5,22 +5,22 @@ client.connect("opc.tcp://127.0.0.1:4840/")
 
 variable_node_id = UaNodeId(1, "abc")
 browse_name = UaQualifiedName(1, "fgh")
-variable_attributes = DefaultAttributes.VARIABLE_ATTRIBUTES_DEFAULT
+variable_attributes = UA_ATTRIBUTES_DEFAULT.VARIABLE
 v3 = UaVariant()
 d = [1.1, 1.2, 1.3,
      2.1, 2.2, 2.3,
      3.1, 3.2, 3.3]
 d = UaDouble(d)
 
-v3.set_array(d, SizeT(9), TYPES.DOUBLE)
+v3.set_array(d, SizeT(9), UA_TYPES.DOUBLE)
 v3.array_dimensions = UaUInt32([3, 3])
 v3.array_dimensions_size = SizeT(2)
 
 variable_attributes.data_value = v3
 
-parent_node_id = NS0ID.OBJECTSFOLDER
-parent_reference_node_id = NS0ID.ORGANIZES
-variable_type = NS0ID.BASEDATAVARIABLETYPE
+parent_node_id = UA_NS0ID.OBJECTSFOLDER
+parent_reference_node_id = UA_NS0ID.ORGANIZES
+variable_type = UA_NS0ID.BASEDATAVARIABLETYPE
 
 parent_node_read_result = client.read_node_id_attribute(parent_reference_node_id)
 print(f"read_node_id_attribute UaStatuscode was: {str(parent_node_read_result.status_code)}")
