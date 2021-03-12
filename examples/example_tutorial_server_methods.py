@@ -10,14 +10,16 @@ def hello_world_method_callback(server: UaServer,
                                 object_context: Void,
                                 input_arg: UaList,
                                 output_arg: UaList):
-    str = UaString("Hello " + UaString(input_arg[0].data).value)
-    UaVariant.set_scalar(output_arg[0], str, UA_TYPES.STRING)
+    str = UaString("Hello " + UaString(input_arg[
+                                           0].data).value)  # todo: implement "magic method" for Ua_String concat. allow user to use Strings and implicitly map to UaStrings when needed
+    UaVariant.set_scalar(output_arg[0], str, UA_TYPES.STRING)  # todo: can we call set_scalar implicitly to improve UX?
+    # todo: would be nice if the user could just write the following: output_arg[0] = "Hello " + input_arg[0] and we do some "magic" to make it happen
     UaLogger().info(UaLogCategory.SERVER(), "Hello World was called")
     return UA_STATUSCODES.GOOD
 
 
 def add_hello_world_method(server: UaServer):
-    input_argument = UaArgument()
+    input_argument = UaArgument()  # todo: introduce builder pattern for UA types to allow for concise code? --> UaArgument().description(...).name(...)
     input_argument.description = UaLocalizedText("en-US", "A String")
     input_argument.name = UaString("MyInput")
     input_argument.data_type = UA_TYPES.STRING.type_id
@@ -68,9 +70,8 @@ def add_inc_int_32_array_method(server: UaServer):
     input_arguments[0].name = UaString("int32 array")
     input_arguments[0].data_type = UA_TYPES.INT32.type_id
     input_arguments[0].value_rank = UaValueRanks.ONE_DIMENSION
-    p_input_dimension = 5
-    input_arguments[0].array_dimentsions_size = 1
-    input_arguments[0].array_dimentsions = p_input_dimension
+    input_arguments[0].array_dimensions_size = SizeT(1)
+    input_arguments[0].array_dimensions = UaUInt32(5)
 
     input_arguments[1].description = UaLocalizedText("en-US", "int32 delta")
     input_arguments[1].name = UaString("int32 delta")
@@ -91,7 +92,7 @@ def add_inc_int_32_array_method(server: UaServer):
     inc_attr = UA_ATTRIBUTES_DEFAULT.METHOD
     inc_attr.description = UaLocalizedText("en-US", "IncInt32ArrayValues")
     inc_attr.display_name = UaLocalizedText("en-US", "IncInt32ArrayValues")
-    inc_attr.executable = UaBoolean(True)
+    inc_attr.executable = UaBoolean(True)  # todo: adapt setter to allow to pass python bool instead of UaBoolean
     inc_attr.user_executable = UaBoolean(True)
     server.add_method_node(UaNodeId(1, "IncInt32ArrayValues"),
                            UA_NS0ID.OBJECTSFOLDER,
@@ -102,5 +103,5 @@ def add_inc_int_32_array_method(server: UaServer):
 
 server = UaServer()
 add_hello_world_method(server)
-res = add_inc_int_32_array_method(server)
+add_inc_int_32_array_method(server)
 retval = server.run(UaBoolean(True))

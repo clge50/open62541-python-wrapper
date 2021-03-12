@@ -10,6 +10,7 @@ import ua_service_results_client as ClientServiceResult
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 from ua_types import *
 
+
 class _ClientCallback:
     """These static c type callback implementations are used to call the actual callback functions which have been
     submitted by the open62541 user """
@@ -555,8 +556,15 @@ class UaClient:
     def add_variable_node(self, parent_node_id: UaNodeId,
                           reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                           type_definition: UaNodeId,
-                          requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                          attr: UaVariableAttributes = UA_ATTRIBUTES_DEFAULT.VARIABLE):
+                          requested_new_node_id: UaNodeId = None,
+                          attr: UaVariableAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addVariableNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, type_definition._val,
@@ -567,8 +575,15 @@ class UaClient:
 
     def add_variable_type_node(self, parent_node_id: UaNodeId,
                                reference_type_id: UaNodeId, browse_name: UaQualifiedName,
-                               requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                               attr: UaVariableTypeAttributes = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE):
+                               requested_new_node_id: UaNodeId = None,
+                               attr: UaVariableTypeAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addVariableTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                         reference_type_id._val, browse_name._val, attr._val,
@@ -579,8 +594,15 @@ class UaClient:
     def add_object_node(self, parent_node_id: UaNodeId,
                         reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                         type_definition: UaNodeId,
-                        requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                        attr: UaObjectAttributes = UA_ATTRIBUTES_DEFAULT.OBJECT):
+                        requested_new_node_id: UaNodeId = None,
+                        attr: UaObjectAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.OBJECT
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addObjectNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, type_definition._val,
@@ -591,8 +613,15 @@ class UaClient:
 
     def add_object_type_node(self, parent_node_id: UaNodeId,
                              reference_type_id: UaNodeId, browse_name: UaQualifiedName,
-                             requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                             attr: UaObjectTypeAttributes = UA_ATTRIBUTES_DEFAULT.OBJECT_TYPE):
+                             requested_new_node_id: UaNodeId = None,
+                             attr: UaObjectTypeAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.OBJECT_TYPE
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addObjectTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                       reference_type_id._val, browse_name._val, attr._val,
@@ -602,8 +631,15 @@ class UaClient:
 
     def add_view_node(self, parent_node_id: UaNodeId,
                       reference_type_id: UaNodeId, browse_name: UaQualifiedName,
-                      requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                      attr: UaViewAttributes = UA_ATTRIBUTES_DEFAULT.VIEW):
+                      requested_new_node_id: UaNodeId = None,
+                      attr: UaViewAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.VIEW
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addViewNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                 reference_type_id._val, browse_name._val, attr._val,
@@ -613,9 +649,15 @@ class UaClient:
 
     def add_reference_type_node(self, parent_node_id: UaNodeId,
                                 reference_type_id: UaNodeId, browse_name: UaQualifiedName,
-                                requested_new_node_id: UaNodeId = UaNodeId(
-                                    val=UaNodeId.NULL),
-                                attr: UaReferenceTypeAttributes = UA_ATTRIBUTES_DEFAULT.REFERENCE_TYPE):
+                                requested_new_node_id: UaNodeId = None,
+                                attr: UaReferenceTypeAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.REFERENCE_TYPE
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addReferenceTypeNode(self.ua_client, requested_new_node_id._val,
                                                          parent_node_id._val,
@@ -626,8 +668,15 @@ class UaClient:
 
     def add_data_type_node(self, parent_node_id: UaNodeId,
                            reference_type_id: UaNodeId, browse_name: UaQualifiedName,
-                           requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                           attr: UaDataTypeAttributes = UA_ATTRIBUTES_DEFAULT.DATA_TYPE):
+                           requested_new_node_id: UaNodeId = None,
+                           attr: UaDataTypeAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.DATA_TYPE
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addDataTypeNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                     reference_type_id._val, browse_name._val, attr._val,
@@ -637,8 +686,15 @@ class UaClient:
 
     def add_method_node(self, parent_node_id: UaNodeId,
                         reference_type_id: UaNodeId, browse_name: UaQualifiedName,
-                        requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
-                        attr: UaMethodAttributes = UA_ATTRIBUTES_DEFAULT.METHOD):
+                        requested_new_node_id: UaNodeId = None,
+                        attr: UaMethodAttributes = None):
+
+        if attr is None:
+            attr = UA_ATTRIBUTES_DEFAULT.METHOD
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         status_code = lib.UA_Client_addMethodNode(self.ua_client, requested_new_node_id._val, parent_node_id._val,
                                                   reference_type_id._val, browse_name._val, attr._val,
@@ -1293,9 +1349,12 @@ class UaClient:
                                 reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                 type_definition: UaNodeId,
                                 callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
-                                requested_new_node_id: UaNodeId = UaNodeId(
-                                    val=UaNodeId.NULL),
+                                requested_new_node_id: UaNodeId = None,
                                 attr: UaVariableAttributes = UA_ATTRIBUTES_DEFAULT.VARIABLE):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
@@ -1317,7 +1376,11 @@ class UaClient:
                          browse_name: UaQualifiedName, type_definition: UaNodeId, attr,
                          attribute_type: UaDataType,
                          callback: Callable[['UaClient', UaUInt32, Void], None],
-                         requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL)):
+                         requested_new_node_id: UaNodeId = None):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         status_code = lib.__UA_Client_addNode_async(self.ua_client,
@@ -1332,7 +1395,6 @@ class UaClient:
                                                     out_new_node_id._ptr,
                                                     lib.python_wrapper_UA_ClientAsyncServiceCallback,
                                                     ffi.new_handle(callback),
-                                                    # todo: this crashed because the memory gets freed as the owner lives on stackframe and is destroyed after function call
                                                     req_id._ptr)
         return UaStatusCode(val=status_code)
 
@@ -1340,9 +1402,11 @@ class UaClient:
                                      reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                      callback: Callable[
                                          ['UaClient', UaUInt32, UaAddNodesResponse], None],
-                                     requested_new_node_id: UaNodeId = UaNodeId(
-                                         val=UaNodeId.NULL),
+                                     requested_new_node_id: UaNodeId = None,
                                      attr=None):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE
@@ -1366,8 +1430,11 @@ class UaClient:
                               reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                               type_definition: UaNodeId,
                               callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
-                              requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
+                              requested_new_node_id: UaNodeId = None,
                               attr=None):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.OBJECT
@@ -1392,9 +1459,11 @@ class UaClient:
                                    reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                    callback: Callable[
                                        ['UaClient', UaUInt32, UaAddNodesResponse], None],
-                                   requested_new_node_id: UaNodeId = UaNodeId(
-                                       val=UaNodeId.NULL),
+                                   requested_new_node_id: UaNodeId = None,
                                    attr=None):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.OBJECT_TYPE
@@ -1417,8 +1486,12 @@ class UaClient:
     def add_view_node_async(self, parent_node_id: UaNodeId,
                             reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                             callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
-                            requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
+                            requested_new_node_id: UaNodeId = None,
                             attr=None):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
+
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.VIEW
 
@@ -1441,9 +1514,10 @@ class UaClient:
                                       reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                       callback: Callable[
                                           ['UaClient', UaUInt32, UaAddNodesResponse], None],
-                                      requested_new_node_id: UaNodeId = UaNodeId(
-                                          val=UaNodeId.NULL),
+                                      requested_new_node_id: UaNodeId = None,
                                       attr=None):
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.REFERENCE_TYPE
@@ -1466,9 +1540,10 @@ class UaClient:
     def add_data_type_node_async(self, parent_node_id: UaNodeId,
                                  reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                                  callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
-                                 requested_new_node_id: UaNodeId = UaNodeId(
-                                     val=UaNodeId.NULL),
+                                 requested_new_node_id: UaNodeId = None,
                                  attr=None):
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.DATA_TYPE
@@ -1491,8 +1566,11 @@ class UaClient:
     def add_method_node_async(self, parent_node_id: UaNodeId,
                               reference_type_id: UaNodeId, browse_name: UaQualifiedName,
                               callback: Callable[['UaClient', UaUInt32, UaAddNodesResponse], None],
-                              requested_new_node_id: UaNodeId = UaNodeId(val=UaNodeId.NULL),
+                              requested_new_node_id: UaNodeId = None,
                               attr=None):
+
+        if requested_new_node_id is None:
+            requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
         if attr is None:
             attr = UA_ATTRIBUTES_DEFAULT.METHOD
