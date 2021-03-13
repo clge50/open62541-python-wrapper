@@ -1,0 +1,6 @@
+ua\_server module
+---------------------------
+
+.. automodule:: ua_server
+   :members:
+    _ServerCallback

@@ -12,12 +12,27 @@ from ua_types_list import *
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
 
+"""
+ua_server.py
+====================================
+This module contains all functionalities related to the server
+"""
+
 
 class _ServerCallback:
-    """These static c type callback implementations are used to call the actual callback functions which have been
-    submitted by the open62541 user """
+    """
+    This class holds c type callback implementations which are being used to call the actual callback functions which
+    have been submitted by the open62541 user. This is a workaround for the problem of not being able to create c
+    function implementations at runtime. We created a single static callback implementation for each required
+    open62541 c callback type. The sole purpose of these static functions is to call the actual dynamic python
+    callback function which has been passed by the API user and to wrap all function parameters to ensure usability.
+    The python callback functions are being entered in the callback_dict upon registration of e.g the method node and
+    the static "meta" callback implementation does a lookup via a unique identifier, e.g. a method node id to find
+    the correct implementation.
+    """
 
     callbacks_dict: typing.Dict[str, any] = dict()
+    """This dictionary is used to register and lookup callback functions. """
 
     @staticmethod
     @ffi.def_extern()
@@ -94,7 +109,16 @@ class _ServerCallback:
     @ffi.def_extern()
     def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
                                          object_context, input_size, _input, output_size, output):
+        """
+        Let's illustrate the concept using an example:
+        python_wrapper_UA_MethodCallback is being passed to open62541 (c) when a method node is being added. When the
+        method is invoked, open62541 (c) will call this static callback method. The static callback method then looks
+        up the dynamic user created python based callback function in the _ServerCallback.callbacks_dict via the
+        stringified method_id as the key (using the method_id as the key should always work as the method node can
+        hold a single method and it's node it is unique).
+        """
         callbacks_dict_key = str(UaNodeId(val=method_id))
+
         return _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
                                                                   UaNodeId(val=session_id, is_pointer=True),
                                                                   Void(val=session_context, is_pointer=True),
@@ -111,6 +135,10 @@ class _ServerCallback:
 
 
 class UaServer:
+    """
+    This class is used to create and manage servers as well as invoking services
+    """
+
     def __init__(self, config=None, val=None):
         self._running = UaBoolean(False)
         if val is not None:
