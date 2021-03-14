@@ -19,10 +19,10 @@ class _ClientCallback:
     to create c function implementations at runtime.
 
     Note:
-        Client callbacks are handled differently than server callbacks by the open62541 python wrapper.
+        Client callbacks are handled differently than server callbacks by wrappy(o6).
         This is the case because client callbacks are mostly utilized in asynchronous service calls which support the
-        submission of `void* userData`. Through this generic parameters the wrapper can pass the actual
-        python callback which can then be executed by static callback functions.
+        submission of `void* userData`. Through these generic parameters the actual
+        python callback are being passed which can then be executed by static callback functions.
 
     See also:
          ua_server._ServerCallback
@@ -32,7 +32,7 @@ class _ClientCallback:
     """
     Note:
         In order to prevent cases in which the owner of a callback handle "dies" prematurely which would cause 
-        segmentation faults, the open62541 wrapper enters all callback handles in the `_callbacks` set. This way the owner 
+        segmentation faults, wrappy(o6) enters all callback handles in the `_callbacks` set. This way the owner 
         of the memory will not be garbage collected automatically after the callback was triggered/unregistered. 
         Naturally the downside to this is that the memory will be cluttered if the client runs for a long time. If this 
         causes issues for API users they would currently need to implement a solution themselves to remove no longer 
@@ -204,7 +204,6 @@ class _ClientCallback:
         ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaAddNodesResponse(val=ar, is_pointer=True))
 
-    # todo: response is void* --> Void --> handling is not good
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncServiceCallback(client, fun, request_id, response):
@@ -303,8 +302,6 @@ class UaClient:
         return UaUnregisterNodesResponse(val=ua_unregister_nodes_response)
 
     # high level read service
-    # todo: this doesn't really work because out is a void pointer. variable has to be created dynamically depending on type
-    # also needs generic result class object as result
     def __read_attribute(self, node_id: UaNodeId, attribute_id: UaNodeId):
         out = Void()
         out_data_type = UaDataType()
@@ -404,7 +401,7 @@ class UaClient:
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(UaStatusCode(val=status_code), out_value_rank)
 
-    # todo: adapt type system to support UA_UInt32 **"
+    # todo: use UaList for out_array_dimensions"
     def read_array_dimensions_attribute(self, node_id: UaNodeId):
         out_array_dimensions_size = SizeT()
         out_array_dimensions = ffi.new("UA_UInt32 **")
@@ -545,7 +542,7 @@ class UaClient:
     def call(self, object_id: UaNodeId, method_id: UaNodeId, input_size: SizeT,
              call_input: UaVariant):
         output_size = SizeT()
-        # Todo: output has to be ** --> this is a problem for our type system atm
+        # Todo: use UaList
         output = ffi.new("UA_Variant **")
         status_code = lib.UA_Client_call(self.ua_client, object_id._val, method_id._val, input_size._val,
                                          call_input._ptr, output_size._ptr,

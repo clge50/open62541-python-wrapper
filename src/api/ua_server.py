@@ -107,8 +107,27 @@ class _ServerCallback:
 
 
     When it is time for triggering the callback, open62541 will call the static
-    `lib.python_wrapper_UA_MethodCallback`. This static method does a lookup in `_ServerCallback.callbacks_dict` to
-    find the python callback and then calls it while wrapping all c/open62541 cffi parameters.
+    `lib.python_wrapper_UA_MethodCallback` which has been defined in the definitions file "nodestore".
+
+    .. code-block::
+
+        typedef UA_StatusCode (*UA_MethodCallback)(UA_Server *server, const UA_NodeId *sessionId,
+                     void *sessionContext, const UA_NodeId *methodId,
+                     void *methodContext, const UA_NodeId *objectId,
+                     void *objectContext, size_t inputSize,
+                     const UA_Variant *input, size_t outputSize,
+                     UA_Variant *output);
+
+        extern "Python" UA_StatusCode python_wrapper_UA_MethodCallback(UA_Server *server, const UA_NodeId *sessionId,
+                     void *sessionContext, const UA_NodeId *methodId,
+                     void *methodContext, const UA_NodeId *objectId,
+                     void *objectContext, size_t inputSize,
+                     const UA_Variant *input, size_t outputSize,
+                     UA_Variant *output);
+
+    The function is implemented in python by `python_wrapper_UA_MethodCallback` in _ServerCallback. It's only purpose
+    is to perform a lookup in `_ServerCallback.callbacks_dict` to find the python callback and then call it while
+    wrapping all c/open62541 cffi parameters.
 
     .. code-block:: python
 

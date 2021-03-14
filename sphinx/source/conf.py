@@ -25,7 +25,7 @@ extensions = ['sphinx.ext.autodoc',
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
-html_logo = "wrappy_o6.png"
+html_logo = "wrappyo6.png"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
