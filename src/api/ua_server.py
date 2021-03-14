@@ -3,6 +3,12 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
+"""
+ua_server.py
+====================================
+This module contains all functionalities related to the server
+"""
+
 import time
 import threading
 from intermediateApi import lib, ffi
@@ -12,23 +18,46 @@ from ua_types_list import *
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
 
-"""
-ua_server.py
-====================================
-This module contains all functionalities related to the server
-"""
-
 
 class _ServerCallback:
     """
     This class holds c type callback implementations which are being used to call the actual callback functions which
     have been submitted by the open62541 user. This is a workaround for the problem of not being able to create c
-    function implementations at runtime. We created a single static callback implementation for each required
-    open62541 c callback type. The sole purpose of these static functions is to call the actual dynamic python
-    callback function which has been passed by the API user and to wrap all function parameters to ensure usability.
-    The python callback functions are being entered in the callback_dict upon registration of e.g the method node and
-    the static "meta" callback implementation does a lookup via a unique identifier, e.g. a method node id to find
-    the correct implementation.
+    function implementations at runtime. See section below for more information about the issue and workaround.
+
+    Warning:
+        The current handling of server based callback function introduces a multitude of problems. In the longterm
+        it should probably be reimplemented. The issue is the following: In terms of creating function pointers CFFI
+        offers multiple approached (see https://cffi.readthedocs.io/en/latest/using.html#extern-python-new-style-callbacks).
+        The recommended way is outlined in "Extern 'Python' and void* arguments. The basic concept is to add
+        a function definition with the desired parameters and return type for the callback to ffi.cdef() and mark it as
+        `extern "Python"`. This definition can then be implemented in python by defining a function which uses the same
+        name and annotating it with `@ffi.def_extern()`. The problem is that per function that has been defined via
+        `ffi.cdef(...)` only one implementation can be created via python. Any attempt to create a second implementation
+        using the same name and annotating it with `@ffi.def_extern()` will lead to the prior implementation being
+        overwritten.
+
+        In theory it could be possible to solve the issue by using "Callbacks (old style)" (
+        https://cffi.readthedocs.io/en/latest/using.html#callbacks-old-style) but CFFI strongly advises against using
+        this as it introduces numerous security issues and can lead to the program crashing, especially when forking.
+
+        In the initial implementation we have utilized the recommended "Extern 'Python' (new-style callbacks)" (can
+        be found in the "definitions" files, e.g. "nodestore" and created a single static callback implementation for
+        each required open62541 c callback type. The sole purpose of these static functions is to call the actual
+        dynamic python callback function which has been passed by the API user and to wrap all function parameters to
+        ensure usability. As the functions are static and most of them do not have any parameters that can be used to
+        "smuggle in" python function pointers, the current workaround for server callbacks involves storing the
+        python callbacks that shall be called in a global dictionary and retrieving them via a unique key (often
+        bound to node_ids). There is currently no implicit memory management for it and the API user has to clean it
+        up manually if needed. Furthermore, at the time of the implementation there was a lack of resources to test a
+        lot of different flows of registering callback methods. It can therefore very well be the cases that there
+        are flows in which the registration in the map or the retrieval does not work properly which will lead to
+        exceptions. Also, the callback data is not stored within the corresponding nodes, e.g. the method node and
+        therefore cannot be persisted even if the node structure is preserved and would be needed to be persisted
+        separatly.
+
+        It could very well be the case that CFFI will offer a solution to the general problem in the future (
+        >v1.14.5) or that there is a better way of handling the issue with what is there already.
     """
 
     callbacks_dict: typing.Dict[str, any] = dict()
@@ -110,12 +139,13 @@ class _ServerCallback:
     def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
                                          object_context, input_size, _input, output_size, output):
         """
-        Let's illustrate the concept using an example:
-        python_wrapper_UA_MethodCallback is being passed to open62541 (c) when a method node is being added. When the
-        method is invoked, open62541 (c) will call this static callback method. The static callback method then looks
-        up the dynamic user created python based callback function in the _ServerCallback.callbacks_dict via the
-        stringified method_id as the key (using the method_id as the key should always work as the method node can
-        hold a single method and it's node it is unique).
+        Example:
+            Let's illustrate how the server callback workaround works by using an example:
+            python_wrapper_UA_MethodCallback is being passed to open62541 (c) when a method node is being added. When the
+            method is invoked, open62541 (c) will call this static callback method. The static callback method then looks
+            up the dynamic user created python based callback function in the _ServerCallback.callbacks_dict via the
+            stringified method_id as the key (using the method_id as the key should always work as the method node can
+            hold a single method and it's node it is unique).
         """
         callbacks_dict_key = str(UaNodeId(val=method_id))
 
@@ -303,101 +333,99 @@ class UaServer:
         out_node_id = UaNodeId()
         status_code = lib.UA_Server_readNodeId(self.ua_server, node_id._val, out_node_id._ptr)
         out_node_id._update()
-        return ServerServiceResults.NodeIdResult(status_code, out_node_id._ptr)
+        return ServerServiceResults.NodeIdResult(UaStatusCode(val=status_code), out_node_id)
 
     def read_node_class(self, node_id: UaNodeId):
         out_node_class = UaNodeClass()
         status_code = lib.UA_Server_readNodeClass(self.ua_server, node_id._val, out_node_class._ptr)
-        return ServerServiceResults.NodeClassResult(status_code, out_node_class._ptr)
+        return ServerServiceResults.NodeClassResult(UaStatusCode(val=status_code), out_node_class)
 
     def read_browse_name(self, node_id: UaNodeId):
         out_browse_name = UaQualifiedName()
         status_code = lib.UA_Server_readBrowseName(self.ua_server, node_id._val, out_browse_name._ptr)
         out_browse_name._update()
-        return ServerServiceResults.BrowseNameResult(status_code, out_browse_name)
+        return ServerServiceResults.BrowseNameResult(UaStatusCode(val=status_code), out_browse_name)
 
     def read_display_name(self, node_id: UaNodeId):
         out_display_name = UaLocalizedText()
         status_code = lib.UA_Server_readDisplayName(self.ua_server, node_id._val, out_display_name._ptr)
         out_display_name._update()
-        return ServerServiceResults.LocalizedTextResult(status_code, out_display_name._ptr)
+        return ServerServiceResults.LocalizedTextResult(UaStatusCode(val=status_code), out_display_name)
 
     def read_description(self, node_id: UaNodeId):
         out_description = UaLocalizedText()
         status_code = lib.UA_Server_readDescription(self.ua_server, node_id._val, out_description._ptr)
         out_description._update()
-        return ServerServiceResults.LocalizedTextResult(status_code, out_description._ptr)
+        return ServerServiceResults.LocalizedTextResult(UaStatusCode(val=status_code), out_description)
 
     def read_write_mask(self, node_id: UaNodeId):
         out_write_mask = UaUInt32()
         status_code = lib.UA_Server_readWriteMask(self.ua_server, node_id._val, out_write_mask._ptr)
-        return ServerServiceResults.UInt32Result(status_code, out_write_mask._ptr)
+        return ServerServiceResults.UInt32Result(UaStatusCode(val=status_code), out_write_mask)
 
     def read_is_abstract(self, node_id: UaNodeId):
         out_is_abstract = UaBoolean()
         status_code = lib.UA_Server_readIsAbstract(self.ua_server, node_id._val, out_is_abstract._ptr)
-        return ServerServiceResults.BooleanResult(status_code, out_is_abstract._ptr)
+        return ServerServiceResults.BooleanResult(UaStatusCode(val=status_code), out_is_abstract)
 
     def read_symmetric(self, node_id: UaNodeId):
         out_symmetric = UaBoolean()
         status_code = lib.UA_Server_readSymmetric(self.ua_server, node_id._val, out_symmetric._ptr)
-        return ServerServiceResults.BooleanResult(status_code, out_symmetric._ptr)
+        return ServerServiceResults.BooleanResult(UaStatusCode(val=status_code), out_symmetric)
 
     def read_inverse_name(self, node_id: UaNodeId):
         out_name = UaLocalizedText()
         status_code = lib.UA_Server_readInverseName(self.ua_server, node_id._val, out_name._ptr)
         out_name._update()
-        return ServerServiceResults.LocalizedTextResult(status_code, out_name._ptr)
+        return ServerServiceResults.LocalizedTextResult(UaStatusCode(val=status_code), out_name)
 
     def read_contains_no_loops(self, node_id: UaNodeId):
         out_no_loops = UaBoolean()
         status_code = lib.UA_Server_readContainsNoLoops(self.ua_server, node_id._val, out_no_loops._ptr)
-        return ServerServiceResults.BooleanResult(status_code, out_no_loops._ptr)
+        return ServerServiceResults.BooleanResult(UaStatusCode(val=status_code), out_no_loops)
 
     def read_event_notifier(self, node_id: UaNodeId):
         out_event_notifier = UaByte()
         status_code = lib.UA_Server_readEventNotifier(self.ua_server, node_id._val, out_event_notifier._ptr)
-        return ServerServiceResults.ByteResult(status_code, out_event_notifier._ptr)
+        return ServerServiceResults.ByteResult(UaStatusCode(val=status_code), out_event_notifier)
 
     def read_value(self, node_id: UaNodeId):
         out_value = UaVariant()
         status_code = lib.UA_Server_readValue(self.ua_server, node_id._val, out_value._ptr)
         out_value._update()
-        return ServerServiceResults.VariantResult(status_code, out_value._ptr)
+        return ServerServiceResults.VariantResult(UaStatusCode(val=status_code), out_value)
 
     def read_data_type(self, node_id: UaNodeId):
         out_type = UaNodeId()
         status_code = lib.UA_Server_readDataType(self.ua_server, node_id._val, out_type._ptr)
         out_type._update()
-        return ServerServiceResults.NodeIdResult(status_code, out_type._ptr)
+        return ServerServiceResults.NodeIdResult(UaStatusCode(val=status_code), out_type)
 
     def read_value_rank(self, node_id: UaNodeId):
         out_rank = UaUInt32()
         status_code = lib.UA_Server_readValueRank(self.ua_server, node_id._val, out_rank._ptr)
-        return ServerServiceResults.UInt32Result(status_code, out_rank._ptr)
+        return ServerServiceResults.UInt32Result(UaStatusCode(val=status_code), out_rank)
 
     def read_array_dimensions(self, node_id: UaNodeId):
         out_dim = UaVariant()
         status_code = lib.UA_Server_readArrayDimensions(self.ua_server, node_id._val, out_dim._ptr)
         out_dim._update()
-        return ServerServiceResults.VariantResult(status_code, out_dim._ptr)
+        return ServerServiceResults.VariantResult(UaStatusCode(val=status_code), out_dim)
 
     def read_access_level(self, node_id: UaNodeId):
         out_level = UaByte()
         status_code = lib.UA_Server_readAccessLevel(self.ua_server, node_id._val, out_level._ptr)
-        return ServerServiceResults.ByteResult(status_code, out_level._ptr)
+        return ServerServiceResults.ByteResult(UaStatusCode(val=status_code), out_level)
 
     def read_minimum_sampling_interval(self, node_id: UaNodeId):
         out_interval = UaDouble()
         status_code = lib.UA_Server_readMinimumSamplingInterval(self.ua_server, node_id._val, out_interval._ptr)
-        return ServerServiceResults.DoubleResult(status_code, out_interval._ptr)
+        return ServerServiceResults.DoubleResult(UaStatusCode(val=status_code), out_interval)
 
     def read_executable(self, node_id: UaNodeId):
         out_exe = UaBoolean()
         status_code = lib.UA_Server_readExecutable(self.ua_server, node_id._val, out_exe._ptr)
-        return ServerServiceResults.BooleanResult(status_code, out_exe._ptr)
-
-    # def read_historizing():  TODO: to be implemented...
+        return ServerServiceResults.BooleanResult(UaStatusCode(val=status_code), out_exe)
 
     ###
     ### Browse Functions
@@ -407,7 +435,7 @@ class UaServer:
         out_bd = UaBrowseDescription()
         status_code = lib.UA_Server_browse(self.ua_server, max_refs._val, out_bd._ptr)
         out_bd._update()
-        return ServerServiceResults.BrowseResultResult(status_code, out_bd._ptr)
+        return ServerServiceResults.BrowseResultResult(UaStatusCode(val=status_code), out_bd)
 
     def browse_next(self, release_continuation_point: UaBoolean, continuation_point: UaByteString):
         raw_value = lib.UA_Server_browseNext(self.ua_server, release_continuation_point._val, continuation_point._ptr)
