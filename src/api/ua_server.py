@@ -58,10 +58,85 @@ class _ServerCallback:
 
         It could very well be the case that CFFI will offer a solution to the general problem in the future (
         >v1.14.5) or that there is a better way of handling the issue with what is there already.
+
+    Example:
+        Let's illustrate how the server callback workaround works by using an example (method node): When
+        calling `add_method_node` the passed python callback is stored in `_ServerCallback.callbacks_dict` (ua_server
+        module). meanwhile we pass only `lib.python_wrapper_UA_MethodCallback`.
+
+    .. code-block:: python
+       :emphasize-lines: 29,33
+
+        def add_method_node(self, requested_new_node_id: UaNodeId, parent_node_id: UaNodeId, reference_type_id: UaNodeId,
+                    browse_name: UaQualifiedName,
+                    method: Callable[
+                        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, UaList,
+                            UaList], UaStatusCode], input_arg: Union[UaArgument, UaList],
+                    output_arg: Union[UaArgument, UaList], attr: UaVariableAttributes = None,
+                    node_context=None):
+            if attr is None:
+                attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
+
+            out_new_node_id = UaNodeId()
+
+            if node_context is not None:
+                node_context = ffi.new_handle(node_context)
+            else:
+                node_context = ffi.NULL
+
+            if isinstance(input_arg, UaList):
+                input_length = SizeT(len(input_arg))
+            else:
+                input_length = SizeT(1)
+
+            if isinstance(output_arg, UaList):
+                output_length = SizeT(len(output_arg))
+            else:
+                output_length = SizeT(1)
+
+            # add python callback in dict using the requested_new_node_id as the key
+            _ServerCallback.callbacks_dict[str(requested_new_node_id)] = method
+
+            status_code = lib.UA_Server_addMethodNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
+                                                      reference_type_id._val, browse_name._val, attr._val,
+                                                      lib.python_wrapper_UA_MethodCallback,
+                                                      input_length._val, input_arg._ptr, output_length._val,
+                                                      output_arg._ptr, node_context, out_new_node_id._ptr)
+            return ServerServiceResults.AddMethodNodeResult(output_length, output_arg, UaStatusCode(status_code),
+                                                            out_new_node_id)
+
+
+    When it is time for triggering the callback, open62541 will call the static
+    `lib.python_wrapper_UA_MethodCallback`. This static method does a lookup in `_ServerCallback.callbacks_dict` to
+    find the python callback and then calls it while wrapping all c/open62541 cffi parameters.
+
+    .. code-block:: python
+
+        @staticmethod
+        @ffi.def_extern()
+        def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
+                                    object_context, input_size, _input, output_size, output):
+        # lookup python callback function
+        callbacks_dict_key = str(UaNodeId(val=method_id))
+
+        # call python callback function and wrap all c/open62541 cffi parameters
+        return _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
+                                                    UaNodeId(val=session_id, is_pointer=True),
+                                                    Void(val=session_context, is_pointer=True),
+                                                    UaNodeId(val=method_id, is_pointer=True),
+                                                    Void(val=method_context, is_pointer=True),
+                                                    UaNodeId(val=object_id, is_pointer=True),
+                                                    Void(val=object_context, is_pointer=True),
+                                                    UaList(val=_input, size=input_size,
+                                                            ua_class=UaVariant),
+                                                    UaList(val=output, size=output_size,
+                                                            ua_class=UaVariant))._val
     """
 
     callbacks_dict: typing.Dict[str, any] = dict()
-    """This dictionary is used to register and lookup callback functions. """
+    """
+    This dictionary is used to register and lookup callback functions. 
+    """
 
     @staticmethod
     @ffi.def_extern()
@@ -138,15 +213,6 @@ class _ServerCallback:
     @ffi.def_extern()
     def python_wrapper_UA_MethodCallback(server, session_id, session_context, method_id, method_context, object_id,
                                          object_context, input_size, _input, output_size, output):
-        """
-        Example:
-            Let's illustrate how the server callback workaround works by using an example:
-            python_wrapper_UA_MethodCallback is being passed to open62541 (c) when a method node is being added. When the
-            method is invoked, open62541 (c) will call this static callback method. The static callback method then looks
-            up the dynamic user created python based callback function in the _ServerCallback.callbacks_dict via the
-            stringified method_id as the key (using the method_id as the key should always work as the method node can
-            hold a single method and it's node it is unique).
-        """
         callbacks_dict_key = str(UaNodeId(val=method_id))
 
         return _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
