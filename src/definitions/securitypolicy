@@ -1,0 +1,60 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+ * SecurityPolicyCryptoModule
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ */
+ typedef struct{...;} UA_SecurityPolicyCryptoModule;
+
+
+/**
+ * SecurityPolicyAsymmetricModule
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ */
+ typedef struct{...;} UA_SecurityPolicyAsymmetricModule;
+
+
+/**
+ * SecurityPolicySymmetricModule
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ */
+typedef struct{...;} UA_SecurityPolicySymmetricModule;
+
+
+/**
+ * SecurityPolicySignatureAlgorithm
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ */
+ typedef struct{...;} UA_SecurityPolicySignatureAlgorithm;
+
+
+/**
+ * SecurityPolicyChannelModule
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ */
+ typedef struct{...;} UA_SecurityPolicyChannelModule;
+
+
+typedef struct{...;} UA_SecurityPolicy;
+
+
+/**
+ * SecurityPolicy
+ * ^^^^^^^^^^^^^^
+ */
+struct UA_SecurityPolicy {
+    void *policyContext;
+    UA_ByteString policyUri;
+    UA_ByteString localCertificate;
+    UA_SecurityPolicyAsymmetricModule asymmetricModule;
+    UA_SecurityPolicySymmetricModule symmetricModule;
+    UA_SecurityPolicySignatureAlgorithm certificateSigningAlgorithm;
+    UA_SecurityPolicyChannelModule channelModule;
+    const UA_Logger *logger;
+    UA_StatusCode (*updateCertificateAndPrivateKey)(UA_SecurityPolicy *policy,
+                                                    const UA_ByteString newCertificate,
+                                                    const UA_ByteString newPrivateKey);
+    void (*clear)(UA_SecurityPolicy *policy);
+};

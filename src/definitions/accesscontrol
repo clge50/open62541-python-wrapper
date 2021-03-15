@@ -1,0 +1,53 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+typedef struct{...;} UA_AccessControl;
+
+
+/**
+ * AccessControl
+ * ^^^^^^^^^^^^^
+ */
+ struct UA_AccessControl {
+    void *context;
+    void (*clear)(UA_AccessControl *ac);
+    size_t userTokenPoliciesSize;
+    UA_UserTokenPolicy *userTokenPolicies;
+    UA_StatusCode (*activateSession)(UA_Server *server, UA_AccessControl *ac,
+                                     const UA_EndpointDescription *endpointDescription,
+                                     const UA_ByteString *secureChannelRemoteCertificate,
+                                     const UA_NodeId *sessionId,
+                                     const UA_ExtensionObject *userIdentityToken,
+                                     void **sessionContext);
+    void (*closeSession)(UA_Server *server, UA_AccessControl *ac,
+                         const UA_NodeId *sessionId, void *sessionContext);
+    UA_UInt32 (*getUserRightsMask)(UA_Server *server, UA_AccessControl *ac,
+                                   const UA_NodeId *sessionId, void *sessionContext,
+                                   const UA_NodeId *nodeId, void *nodeContext);
+    UA_Byte (*getUserAccessLevel)(UA_Server *server, UA_AccessControl *ac,
+                                  const UA_NodeId *sessionId, void *sessionContext,
+                                  const UA_NodeId *nodeId, void *nodeContext);
+    UA_Boolean (*getUserExecutable)(UA_Server *server, UA_AccessControl *ac,
+                                    const UA_NodeId *sessionId, void *sessionContext,
+                                    const UA_NodeId *methodId, void *methodContext);
+    UA_Boolean (*getUserExecutableOnObject)(UA_Server *server, UA_AccessControl *ac,
+                                            const UA_NodeId *sessionId, void *sessionContext,
+                                            const UA_NodeId *methodId, void *methodContext,
+                                            const UA_NodeId *objectId, void *objectContext);
+    UA_Boolean (*allowAddNode)(UA_Server *server, UA_AccessControl *ac,
+                               const UA_NodeId *sessionId, void *sessionContext,
+                               const UA_AddNodesItem *item);
+    UA_Boolean (*allowAddReference)(UA_Server *server, UA_AccessControl *ac,
+                                    const UA_NodeId *sessionId, void *sessionContext,
+                                    const UA_AddReferencesItem *item);
+    UA_Boolean (*allowDeleteNode)(UA_Server *server, UA_AccessControl *ac,
+                                  const UA_NodeId *sessionId, void *sessionContext,
+                                  const UA_DeleteNodesItem *item);
+    UA_Boolean (*allowDeleteReference)(UA_Server *server, UA_AccessControl *ac,
+                                       const UA_NodeId *sessionId, void *sessionContext,
+                                       const UA_DeleteReferencesItem *item);
+    UA_Boolean (*allowBrowseNode)(UA_Server *server, UA_AccessControl *ac,
+                                  const UA_NodeId *sessionId, void *sessionContext,
+                                  const UA_NodeId *nodeId, void *nodeContext);
+};

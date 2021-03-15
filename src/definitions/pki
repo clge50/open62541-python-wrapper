@@ -1,0 +1,20 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+typedef struct{...;} UA_CertificateVerification;
+
+
+/**
+ * CertificateVerification
+ * ^^^^^^^^^^^^^^^^^^^^^^^
+ */
+ struct UA_CertificateVerification {
+    void *context;
+    UA_StatusCode (*verifyCertificate)(void *verificationContext,
+                                       const UA_ByteString *certificate);
+    UA_StatusCode (*verifyApplicationURI)(void *verificationContext,
+                                          const UA_ByteString *certificate,
+                                          const UA_String *applicationURI);
+    void (*clear)(UA_CertificateVerification *cv);
+};

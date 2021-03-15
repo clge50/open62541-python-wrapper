@@ -1,91 +1,121 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+typedef struct{...;} UA_DataSource;
+
+
+/**
+ * Global Node Lifecycle
+ * ^^^^^^^^^^^^^^^^^^^^^
+ */
 typedef struct {
-    UA_StatusCode (*read)(UA_Server *server, const UA_NodeId *sessionId,
-                          void *sessionContext, const UA_NodeId *nodeId,
-                          void *nodeContext, UA_Boolean includeSourceTimeStamp,
-                          const UA_NumericRange *range, UA_DataValue *value);
+    UA_StatusCode (*constructor)(UA_Server *server,
+                                 const UA_NodeId *sessionId, void *sessionContext,
+                                 const UA_NodeId *nodeId, void **nodeContext);
+    void (*destructor)(UA_Server *server,
+                       const UA_NodeId *sessionId, void *sessionContext,
+                       const UA_NodeId *nodeId, void *nodeContext);
+    UA_Boolean (*createOptionalChild)(UA_Server *server,
+                                      const UA_NodeId *sessionId,
+                                      void *sessionContext,
+                                      const UA_NodeId *sourceNodeId,
+                                      const UA_NodeId *targetParentNodeId,
+                                      const UA_NodeId *referenceTypeId);
+    UA_StatusCode (*generateChildNodeId)(UA_Server *server,
+                                         const UA_NodeId *sessionId, void *sessionContext,
+                                         const UA_NodeId *sourceNodeId,
+                                         const UA_NodeId *targetParentNodeId,
+                                         const UA_NodeId *referenceTypeId,
+                                         UA_NodeId *targetNodeId);
+} UA_GlobalNodeLifecycle;
 
-    UA_StatusCode (*write)(UA_Server *server, const UA_NodeId *sessionId,
-                           void *sessionContext, const UA_NodeId *nodeId,
-                           void *nodeContext, const UA_NumericRange *range,
-                           const UA_DataValue *value);
-} UA_DataSource;
 
-
-extern "Python" UA_StatusCode python_wrapper_UA_DataSourceReadCallback(UA_Server *server, const UA_NodeId *sessionId,
-                          void *sessionContext, const UA_NodeId *nodeId,
-                          void *nodeContext, UA_Boolean includeSourceTimeStamp,
-                          const UA_NumericRange *range, UA_DataValue *value);
-
-extern "Python" UA_StatusCode python_wrapper_UA_DataSourceWriteCallback(UA_Server *server, const UA_NodeId *sessionId,
-                           void *sessionContext, const UA_NodeId *nodeId,
-                           void *nodeContext, const UA_NumericRange *range,
-                           const UA_DataValue *value);
-
+/**
+ * NodeReferenceKind
+ * ^^^^^^^^^^^^^^^^^
+ */
 typedef struct {
-    void (*onRead)(UA_Server *server, const UA_NodeId *sessionId,
-                   void *sessionContext, const UA_NodeId *nodeid,
-                   void *nodeContext, const UA_NumericRange *range,
-                   const UA_DataValue *value);
+    struct aa_entry *idTreeRoot;
+    struct aa_entry *nameTreeRoot;
+    UA_Byte referenceTypeIndex;
+    UA_Boolean isInverse;
+} UA_NodeReferenceKind;
 
-    void (*onWrite)(UA_Server *server, const UA_NodeId *sessionId,
-                    void *sessionContext, const UA_NodeId *nodeId,
-                    void *nodeContext, const UA_NumericRange *range,
-                    const UA_DataValue *data);
-} UA_ValueCallback;
 
-extern "Python" void python_wrapper_UA_ValueCallbackOnReadCallback(UA_Server *server, const UA_NodeId *sessionId,
-                   void *sessionContext, const UA_NodeId *nodeid,
-                   void *nodeContext, const UA_NumericRange *range,
-                   const UA_DataValue *value);
-
-extern "Python" void python_wrapper_UA_ValueCallbackOnWriteCallback(UA_Server *server, const UA_NodeId *sessionId,
-                   void *sessionContext, const UA_NodeId *nodeid,
-                   void *nodeContext, const UA_NumericRange *range,
-                   const UA_DataValue *value);
-
-typedef enum {
-    UA_VALUEBACKENDTYPE_NONE,
-    UA_VALUEBACKENDTYPE_INTERNAL,
-    UA_VALUEBACKENDTYPE_DATA_SOURCE_CALLBACK,
-    UA_VALUEBACKENDTYPE_EXTERNAL
-} UA_ValueBackendType;
-
+/**
+ * NodeHead
+ * ^^^^^^^^
+ */
 typedef struct {
-    UA_StatusCode (*notificationRead)(UA_Server *server, const UA_NodeId *sessionId,
-                                      void *sessionContext, const UA_NodeId *nodeid,
-                                      void *nodeContext, const UA_NumericRange *range);
+    UA_NodeId nodeId;
+    UA_NodeClass nodeClass;
+    UA_QualifiedName browseName;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    size_t referencesSize;
+    UA_NodeReferenceKind *references;
+    void *context;
+    UA_Boolean constructed;
+} UA_NodeHead;
 
-    UA_StatusCode (*userWrite)(UA_Server *server, const UA_NodeId *sessionId,
-                               void *sessionContext, const UA_NodeId *nodeId,
-                               void *nodeContext, const UA_NumericRange *range,
-                               const UA_DataValue *data);
-} UA_ExternalValueCallback;
 
+/**
+ * Node type variations
+ * ####################
+ */
+typedef struct{...;} UA_ValueBackend;
+typedef struct{...;} UA_ValueSource;
+typedef struct{...;} UA_ValueCallback;
+typedef struct{...;} UA_VariableTypeNode;
+typedef struct{...;} UA_MethodNode;
+typedef struct{...;} UA_ObjectNode;
+typedef struct{...;} UA_ObjectTypeNode;
+typedef struct{...;} UA_ReferenceTypeNode;
+typedef struct{...;} UA_DataTypeNode;
+typedef struct{...;} UA_ViewNode;
+typedef struct{...;} UA_VariableNode;
+
+typedef struct{...;} UA_NodestoreVisitor;
+
+
+/**
+ * Node
+ * ^^^^
+ */
+typedef union {
+    UA_NodeHead head;
+    UA_VariableNode variableNode;
+    UA_VariableTypeNode variableTypeNode;
+    UA_MethodNode methodNode;
+    UA_ObjectNode objectNode;
+    UA_ObjectTypeNode objectTypeNode;
+    UA_ReferenceTypeNode referenceTypeNode;
+    UA_DataTypeNode dataTypeNode;
+    UA_ViewNode viewNode;
+} UA_Node;
+
+
+/**
+ * Nodestore
+ * ^^^^^^^^^
+ */
 typedef struct {
-    UA_ValueBackendType backendType;
-    union {
-        struct {
-            UA_DataValue value;
-            UA_ValueCallback callback;
-        } internal;
-        UA_DataSource dataSource;
-        struct {
-            UA_DataValue **value;
-            UA_ExternalValueCallback callback;
-        } external;
-    } backend;
-} UA_ValueBackend;
-
-typedef UA_StatusCode (*UA_MethodCallback)(UA_Server *server, const UA_NodeId *sessionId,
-                     void *sessionContext, const UA_NodeId *methodId,
-                     void *methodContext, const UA_NodeId *objectId,
-                     void *objectContext, size_t inputSize,
-                     const UA_Variant *input, size_t outputSize,
-                     UA_Variant *output);
-
-extern "Python" UA_StatusCode python_wrapper_UA_MethodCallback(UA_Server *server, const UA_NodeId *sessionId,
-                     void *sessionContext, const UA_NodeId *methodId,
-                     void *methodContext, const UA_NodeId *objectId,
-                     void *objectContext, size_t inputSize,
-                     const UA_Variant *input, size_t outputSize,
-                     UA_Variant *output);
+    void *context;
+    void (*clear)(void *nsCtx);
+    UA_Node * (*newNode)(void *nsCtx, UA_NodeClass nodeClass);
+    void (*deleteNode)(void *nsCtx, UA_Node *node);
+    const UA_Node * (*getNode)(void *nsCtx, const UA_NodeId *nodeId);
+    void (*releaseNode)(void *nsCtx, const UA_Node *node);
+    UA_StatusCode (*getNodeCopy)(void *nsCtx, const UA_NodeId *nodeId,
+                                 UA_Node **outNode);
+    UA_StatusCode (*insertNode)(void *nsCtx, UA_Node *node,
+                                UA_NodeId *addedNodeId);
+    UA_StatusCode (*replaceNode)(void *nsCtx, UA_Node *node);
+    UA_StatusCode (*removeNode)(void *nsCtx, const UA_NodeId *nodeId);
+    const UA_NodeId * (*getReferenceTypeId)(void *nsCtx, UA_Byte refTypeIndex);
+    void (*iterate)(void *nsCtx, UA_NodestoreVisitor visitor,
+                    void *visitorCtx);
+} UA_Nodestore;
