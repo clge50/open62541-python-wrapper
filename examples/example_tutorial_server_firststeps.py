@@ -1,16 +1,23 @@
 import sys
 import time
-from ua import UaBoolean, UaServer
+import signal
 
 sys.path.append("../build/open62541")
+from ua import UaBoolean, UaServer
 
 
-# Create new server object
+def handler(sig, frame):
+    print("sigint")
+    server.running = False
+
+
+signal.signal(signal.SIGINT, handler)
+# Create new server object, default set
 server = UaServer()
 
 # Start server
-ret_val = server.run(UaBoolean(True))
+# ret_val = server.run(UaBoolean(True))
+# print(f"server run called with {ret_val}")
 
-time.sleep(100)
-server.run_shutdown()
-print("server shut down after 100s")
+while True:
+    i = 0

@@ -109,8 +109,8 @@ class _ServerCallback:
 
 
 class UaServer:
-
     def __init__(self, config=None, val=None):
+        self._running = UaBoolean(False)
         if val is not None:
             self.ua_server = val
         elif config is None:
@@ -119,9 +119,32 @@ class UaServer:
         else:
             self.ua_server = lib.UA_Server_newWithConfig(config._ptr)
 
-    def run(self, running: UaBoolean):
-        raw_result = lib.UA_Server_run(self.ua_server, running._ptr)
-        return UaStatusCode(val=raw_result)
+    @property
+    def running(self):
+        return self._running
+
+    @running.setter
+    def running(self, running: Union[bool, UaBoolean]):
+        if isinstance(running, UaBoolean):
+            running = running.value
+        self._running._value[0] = ffi.cast("UA_Boolean", running)
+
+    # TODO: call this in init and only use running setter???
+    def run(self):
+        self.running = True
+
+        ret_val = lib.UA_Server_run_startup(self.ua_server)
+        if ret_val != lib.UA_STATUSCODE_GOOD:
+            return UaStatusCode(val=ret_val)
+
+        while not lib.testShutdownCondition(self.ua_server):
+            lib.UA_Server_run_iterate(self.ua_server, True)
+            if not self._running.value:
+                if lib.setServerShutdown(self.ua_server):
+                    break
+
+        ret_val = lib.UA_Server_run_shutdown(self.ua_server)
+        return UaStatusCode(val=ret_val)
 
     def run_shutdown(self):
         raw_result = lib.UA_Server_run_shutdown(self.ua_server)
