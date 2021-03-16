@@ -37,13 +37,13 @@ typedef struct{...;} UA_SecurityPolicySymmetricModule;
  typedef struct{...;} UA_SecurityPolicyChannelModule;
 
 
-typedef struct{...;} UA_SecurityPolicy;
-
-
 /**
  * SecurityPolicy
  * ^^^^^^^^^^^^^^
  */
+
+struct UA_SecurityPolicy;
+typedef struct UA_SecurityPolicy UA_SecurityPolicy;
 struct UA_SecurityPolicy {
     void *policyContext;
     UA_ByteString policyUri;
@@ -58,3 +58,8 @@ struct UA_SecurityPolicy {
                                                     const UA_ByteString newPrivateKey);
     void (*clear)(UA_SecurityPolicy *policy);
 };
+
+extern "Python" UA_StatusCode python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey(UA_SecurityPolicy *policy,
+                                                    const UA_ByteString newCertificate,
+                                                    const UA_ByteString newPrivateKey);
+extern "Python" void python_wrapper_UA_SecurityPolicy_clear(UA_SecurityPolicy *policy);

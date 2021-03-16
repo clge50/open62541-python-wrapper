@@ -306,6 +306,7 @@ def generate_defs_primitive(prim_list):
 generate_defs("types_generated")
 generate_defs("common_edited")
 generate_defs("types_struct_enum")
+generate_defs("server_config")
 generate_defs_primitive(["UA_Boolean",
                          "UA_SByte",
                          "UA_Byte",

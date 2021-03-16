@@ -4,6 +4,47 @@
 
 typedef struct{...;} UA_AccessControl;
 
+extern "Python" void python_wrapper_UA_AccessControl_clear(UA_AccessControl *ac);
+extern "Python" UA_StatusCode python_wrapper_UA_AccessControl_activateSession(UA_Server *server, UA_AccessControl *ac,
+                                     const UA_EndpointDescription *endpointDescription,
+                                     const UA_ByteString *secureChannelRemoteCertificate,
+                                     const UA_NodeId *sessionId,
+                                     const UA_ExtensionObject *userIdentityToken,
+                                     void **sessionContext);
+extern "Python" void python_wrapper_UA_AccessControl_closeSession(UA_Server *server, UA_AccessControl *ac,
+                         const UA_NodeId *sessionId, void *sessionContext);
+extern "Python" UA_UInt32 python_wrapper_UA_AccessControl_getUserRightsMask(UA_Server *server, UA_AccessControl *ac,
+                                   const UA_NodeId *sessionId, void *sessionContext,
+                                   const UA_NodeId *nodeId, void *nodeContext);
+extern "Python" UA_Byte python_wrapper_UA_AccessControl_(UA_Server *server, UA_AccessControl *ac,
+                                   const UA_NodeId *sessionId, void *sessionContext,
+                                   const UA_NodeId *nodeId, void *nodeContext);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_getUserAccessLevel(UA_Server *server, UA_AccessControl *ac,
+                                  const UA_NodeId *sessionId, void *sessionContext,
+                                  const UA_NodeId *nodeId, void *nodeContext);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_getUserExecutable(UA_Server *server, UA_AccessControl *ac,
+                                    const UA_NodeId *sessionId, void *sessionContext,
+                                    const UA_NodeId *methodId, void *methodContext);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_getUserExecutableOnObject(UA_Server *server, UA_AccessControl *ac,
+                                            const UA_NodeId *sessionId, void *sessionContext,
+                                            const UA_NodeId *methodId, void *methodContext,
+                                            const UA_NodeId *objectId, void *objectContext);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_allowAddNode(UA_Server *server, UA_AccessControl *ac,
+                               const UA_NodeId *sessionId, void *sessionContext,
+                               const UA_AddNodesItem *item);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_allowAddReference(UA_Server *server, UA_AccessControl *ac,
+                                    const UA_NodeId *sessionId, void *sessionContext,
+                                    const UA_AddReferencesItem *item);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_allowDeleteNode(UA_Server *server, UA_AccessControl *ac,
+                                  const UA_NodeId *sessionId, void *sessionContext,
+                                  const UA_DeleteNodesItem *item);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_allowDeleteReference(UA_Server *server, UA_AccessControl *ac,
+                                       const UA_NodeId *sessionId, void *sessionContext,
+                                       const UA_DeleteReferencesItem *item);
+extern "Python" UA_Boolean python_wrapper_UA_AccessControl_allowBrowseNode(UA_Server *server, UA_AccessControl *ac,
+                                  const UA_NodeId *sessionId, void *sessionContext,
+                                  const UA_NodeId *nodeId, void *nodeContext);
+
 
 /**
  * AccessControl

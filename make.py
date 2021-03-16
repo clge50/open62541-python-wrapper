@@ -84,6 +84,7 @@ def generate_api():
     if os.path.isdir(dirname + "/build"):
         rmtree("build")
     decl_files_list = ["c_basics",
+                       "aa_tree",
                        "common",
                        "types",
                        "types_generated",
@@ -94,6 +95,9 @@ def generate_api():
                        "client_highlevel",
                        "client_highlevel_async",
                        "client_config_default",
+                       "accesscontrol",
+                       "securitypolicy",
+                       "pki",
                        "nodestore",
                        "server",
                        "statuscodes"]

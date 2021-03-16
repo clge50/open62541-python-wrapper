@@ -13,14 +13,14 @@ typedef struct {
 } UA_ConnectionConfig;
 
 
-typedef struct{...;} UA_ServerNetworkLayer;
-
-
 /**
  * ServerNetworkLayer
  * ^^^^^^^^^^^^^^^^^^
  */
- struct UA_ServerNetworkLayer {
+struct UA_ServerNetworkLayer;
+typedef struct UA_ServerNetworkLayer UA_ServerNetworkLayer;
+
+struct  UA_ServerNetworkLayer{
     void *handle;
     UA_NetworkStatistics *statistics;
     UA_String discoveryUrl;
@@ -32,3 +32,10 @@ typedef struct{...;} UA_ServerNetworkLayer;
     void (*stop)(UA_ServerNetworkLayer *nl, UA_Server *server);
     void (*clear)(UA_ServerNetworkLayer *nl);
 };
+
+extern "Python" UA_StatusCode python_wrapper_UA_ServerNetworkLayer_start(UA_ServerNetworkLayer *nl, const UA_Logger *logger,
+                           const UA_String *customHostname);
+extern "Python" UA_StatusCode python_wrapper_UA_ServerNetworkLayer_listen(UA_ServerNetworkLayer *nl, UA_Server *server,
+                            UA_UInt16 timeout);
+extern "Python" void python_wrapper_UA_ServerNetworkLayer_stop(UA_ServerNetworkLayer *nl, UA_Server *server);
+extern "Python" void python_wrapper_UA_ServerNetworkLayer_clear(UA_ServerNetworkLayer *nl);

@@ -2,14 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-typedef struct{...;} UA_CertificateVerification;
-
-
 /**
  * CertificateVerification
  * ^^^^^^^^^^^^^^^^^^^^^^^
  */
- struct UA_CertificateVerification {
+ struct UA_CertificateVerification;
+typedef struct UA_CertificateVerification UA_CertificateVerification;
+struct UA_CertificateVerification{
     void *context;
     UA_StatusCode (*verifyCertificate)(void *verificationContext,
                                        const UA_ByteString *certificate);
@@ -18,3 +17,10 @@ typedef struct{...;} UA_CertificateVerification;
                                           const UA_String *applicationURI);
     void (*clear)(UA_CertificateVerification *cv);
 };
+
+extern "Python" UA_StatusCode python_wrapper_UA_CertificateVerification_verifyCertificate(void *verificationContext,
+                                       const UA_ByteString *certificate);
+extern "Python" UA_StatusCode python_wrapper_UA_SecurityPolicy_verifyApplicationURI(void *verificationContext,
+                                          const UA_ByteString *certificate,
+                                          const UA_String *applicationURI);
+extern "Python" void python_wrapper_UA_CertificateVerification_clear(UA_CertificateVerification *cv);
