@@ -62,14 +62,14 @@ class UaValueCallback(UaType):
             super().__init__(val=ffi.new("UA_ValueCallback*"), is_pointer=is_pointer)
             self._value[0].onRead = lib.python_wrapper_UA_ValueCallbackOnReadCallback
             self._value[0].onWrite = lib.python_wrapper_UA_ValueCallbackOnWriteCallback
-            self.read_callback = lambda a, b, c, d, e, f, g: None
-            self.write_callback = lambda a, b, c, d, e, f, g: None
+            self._read_callback = lambda a, b, c, d, e, f, g: None
+            self._write_callback = lambda a, b, c, d, e, f, g: None
             self._uses_python_read_callback = True
             self._uses_python_write_callback = True
         else:
             super().__init__(val=val, is_pointer=is_pointer)
-            self.read_callback = lambda a, b, c, d, e, f, g: None
-            self.write_callback = lambda a, b, c, d, e, f, g: None
+            self._read_callback = lambda a, b, c, d, e, f, g: None
+            self._write_callback = lambda a, b, c, d, e, f, g: None
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
 
@@ -77,13 +77,13 @@ class UaValueCallback(UaType):
     def read_callback(self):
         if self._null:
             return None
-        return self.read_callback
+        return self._read_callback
 
     @property
     def write_callback(self):
         if self._null:
             return None
-        return self.write_callback
+        return self._write_callback
 
     @property
     def uses_python_read_callback(self):
@@ -112,8 +112,8 @@ class UaValueCallback(UaType):
             return "(UaValueCallback): NULL\n"
 
         return ("(UaValueCallback):\n" +
-                "\t" * (n + 1) + "read_callback" + str(self.read_callback) +
-                "\t" * (n + 1) + "write_callback" + str(self.write_callback) + "\n")
+                "\t" * (n + 1) + "read_callback" + str(self._read_callback) +
+                "\t" * (n + 1) + "write_callback" + str(self._write_callback) + "\n")
 
 
 class UaValueBackend(UaType):
@@ -219,14 +219,14 @@ class UaExternalValueCallback(UaType):
             # todo: create callbacks
             self._value[0].onRead = lib.python_wrapper_UA_ExternalValueCallbackNotificationReadCallback
             self._value[0].onWrite = lib.python_wrapper_UA_ExternalValueCallbackUserWriteCallback
-            self.read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
-            self.write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
+            self._write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
             self._uses_python_read_callback = True
             self._uses_python_write_callback = True
         else:
             super().__init__(val=val, is_pointer=is_pointer)
-            self.read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
-            self.write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
+            self._write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
 
@@ -234,13 +234,13 @@ class UaExternalValueCallback(UaType):
     def read_callback(self):
         if self._null:
             return None
-        return self.read_callback
+        return self._read_callback
 
     @property
     def write_callback(self):
         if self._null:
             return None
-        return self.write_callback
+        return self._write_callback
 
     @read_callback.setter
     def read_callback(self, read_callback: Callable[
