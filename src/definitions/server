@@ -2,7 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
+
 UA_Server * UA_Server_new(void);
+
 
 UA_StatusCode UA_Server_run(UA_Server *server, const volatile UA_Boolean  *running);
 
@@ -107,3 +110,77 @@ UA_StatusCode UA_Server_addMethodNode(UA_Server *server, const UA_NodeId request
                         size_t inputArgumentsSize, const UA_Argument *inputArguments,
                         size_t outputArgumentsSize, const UA_Argument *outputArguments,
                         void *nodeContext, UA_NodeId *outNewNodeId);
+
+/**
+ * DurationRange
+ * ^^^^^^^^^^^^^
+ */
+ typedef struct {
+    UA_Duration min;
+    UA_Duration max;
+} UA_DurationRange;
+
+
+/**
+ * UInt32Range
+ * ^^^^^^^^^^^^^
+ */
+ typedef struct {
+    UA_UInt32 min;
+    UA_UInt32 max;
+} UA_UInt32Range;
+
+
+/**
+ * ServerConfig
+ * ^^^^^^^^^^^^
+ */
+ struct UA_ServerConfig {
+    UA_Logger logger;
+    UA_BuildInfo buildInfo;
+    UA_ApplicationDescription applicationDescription;
+    UA_ByteString serverCertificate;
+    UA_Double shutdownDelay;
+    UA_RuleHandling verifyRequestTimestamp;
+    UA_RuleHandling allowEmptyVariables;
+    const UA_DataTypeArray *customDataTypes;
+    size_t networkLayersSize;
+    UA_ServerNetworkLayer *networkLayers;
+    UA_String customHostname;
+    size_t securityPoliciesSize;
+    UA_SecurityPolicy* securityPolicies;
+    size_t endpointsSize;
+    UA_EndpointDescription *endpoints;
+    UA_Boolean securityPolicyNoneDiscoveryOnly;
+    UA_GlobalNodeLifecycle nodeLifecycle;
+    UA_AccessControl accessControl;
+    UA_Nodestore nodestore;
+    UA_CertificateVerification certificateVerification;
+    UA_UInt16 maxSecureChannels;
+    UA_UInt32 maxSecurityTokenLifetime;
+    UA_UInt16 maxSessions;
+    UA_Double maxSessionTimeout;
+    UA_UInt32 maxNodesPerRead;
+    UA_UInt32 maxNodesPerWrite;
+    UA_UInt32 maxNodesPerMethodCall;
+    UA_UInt32 maxNodesPerBrowse;
+    UA_UInt32 maxNodesPerRegisterNodes;
+    UA_UInt32 maxNodesPerTranslateBrowsePathsToNodeIds;
+    UA_UInt32 maxNodesPerNodeManagement;
+    UA_UInt32 maxMonitoredItemsPerCall;
+    UA_UInt32 maxReferencesPerNode;
+    UA_UInt32 maxMonitoredItems;
+    UA_UInt32 maxMonitoredItemsPerSubscription;
+    UA_DurationRange samplingIntervalLimits;
+    UA_UInt32Range queueSizeLimits;
+    UA_UInt32 maxPublishReqPerSession;
+    void (*monitoredItemRegisterCallback)(UA_Server *server,
+                                          const UA_NodeId *sessionId, void *sessionContext,
+                                          const UA_NodeId *nodeId, void *nodeContext,
+                                          UA_UInt32 attibuteId, UA_Boolean removed);
+};
+
+extern "Python" void python_wrapper_UA_ServerConfig_monitoredItemRegisterCallback(UA_Server *server,
+                                          const UA_NodeId *sessionId, void *sessionContext,
+                                          const UA_NodeId *nodeId, void *nodeContext,
+                                          UA_UInt32 attibuteId, UA_Boolean removed);

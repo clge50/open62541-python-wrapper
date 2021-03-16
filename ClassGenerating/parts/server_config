@@ -1,0 +1,242 @@
+
+
+typedef struct {
+    void *context;
+    CFun *verifyCertificate;
+    CFun *verifyApplicationURI;
+    CFun *clear;
+} UA_CertificateVerification;
+
+
+typedef struct {
+    void *context;
+    CFun *clear;
+    CFun *newNode;
+    CFun *deleteNode;
+    CFun *getNode;
+    CFun *releaseNode;
+    CFun *getNodeCopy;
+    CFun *insertNode;
+    CFun *replaceNode;
+    CFun *removeNode;
+    CFun *getReferenceTypeId;
+    CFun *iterate;
+} UA_Nodestore;
+
+
+typedef struct {
+    void *context;
+    CFun *clear;
+    size_t userTokenPoliciesSize;
+    UA_UserTokenPolicy *userTokenPolicies;
+    CFun *activateSession;
+    CFun *closeSession;
+    CFun *getUserRightsMask;
+    CFun *getUserAccessLevel;
+    CFun *getUserExecutable;
+    CFun *getUserExecutableOnObject;
+    CFun *allowAddNode;
+    CFun *allowAddReference;
+    CFun *allowDeleteNode;
+    CFun *allowDeleteReference;
+    CFun *allowBrowseNode;
+} UA_AccessControl;
+
+
+typedef struct {
+    CFun *constructor;
+    CFun *destructor;
+    CFun *createOptionalChild;
+    CFun *generateChildNodeId;
+} UA_GlobalNodeLifecycle;
+
+
+typedef struct {
+    void *handle; ;
+    UA_NetworkStatistics *statistics;
+    UA_String discoveryUrl;
+    UA_ConnectionConfig localConnectionConfig;
+    CFun *start;
+    CFun *listen;
+    CFun *stop;
+    CFun *clear;
+} UA_ServerNetworkLayer;
+
+
+typedef struct {
+    void *policyContext;
+    UA_ByteString policyUri;
+    UA_ByteString localCertificate;
+    UA_SecurityPolicyAsymmetricModule asymmetricModule;
+    UA_SecurityPolicySymmetricModule symmetricModule;
+    UA_SecurityPolicySignatureAlgorithm certificateSigningAlgorithm;
+    UA_SecurityPolicyChannelModule channelModule;
+    UA_Logger *logger;
+    CFun *updateCertificateAndPrivateKey;
+    CFun *clear;
+} UA_SecurityPolicy;
+
+
+typedef struct {
+    UA_UInt32 protocolVersion;
+    UA_UInt32 recvBufferSize;
+    UA_UInt32 sendBufferSize;
+    UA_UInt32 localMaxMessageSize;
+    UA_UInt32 remoteMaxMessageSize;
+    UA_UInt32 localMaxChunkCount;
+    UA_UInt32 remoteMaxChunkCount;
+} UA_ConnectionConfig;
+
+typedef struct {
+} UA_SecurityPolicyAsymmetricModule;
+
+
+typedef struct {
+} UA_SecurityPolicySymmetricModule;
+
+
+typedef struct {
+} UA_SecurityPolicyChannelModule;
+
+
+typedef struct {
+} UA_SecurityPolicySignatureAlgorithm;
+
+
+typedef struct {
+    CFun *constructor;
+    CFun *destructor;
+} UA_NodeTypeLifecycle;
+
+typedef struct {
+    aa_entry *idTreeRoot;
+    aa_entry *nameTreeRoot;
+    UA_Byte referenceTypeIndex;
+    UA_Boolean isInverse;
+} UA_NodeReferenceKind;
+
+typedef struct {
+    UA_NodeId nodeId;
+    UA_NodeClass nodeClass;
+    UA_QualifiedName browseName;
+    UA_LocalizedText displayName;
+    UA_LocalizedText description;
+    UA_UInt32 writeMask;
+    size_t referencesSize;
+    UA_NodeReferenceKind *references;
+    void *context;
+    UA_Boolean constructed;
+} UA_NodeHead;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_NODE_VARIABLEATTRIBUTES
+    UA_Byte accessLevel;
+    UA_Double minimumSamplingInterval;
+    UA_Boolean historizing;
+    UA_Boolean isDynamic;
+} UA_VariableNode;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_NODE_VARIABLEATTRIBUTES
+    UA_Boolean isAbstract;
+    UA_NodeTypeLifecycle lifecycle;
+} UA_VariableTypeNode;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_Boolean executable;
+    UA_MethodCallback method;
+} UA_MethodNode;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_Byte eventNotifier;
+} UA_ObjectNode;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_Boolean isAbstract;
+    UA_NodeTypeLifecycle lifecycle;
+} UA_ObjectTypeNode;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_Boolean isAbstract;
+    UA_Boolean symmetric;
+    UA_LocalizedText inverseName;
+    UA_Byte referenceTypeIndex;
+    UA_ReferenceTypeSet subTypes; /* contains the type itself as well */
+} UA_ReferenceTypeNode;
+
+typedef struct {
+    UA_UInt32 *bits;
+} UA_ReferenceTypeSet;
+
+
+typedef struct {
+    UA_NodeHead head;
+    UA_Boolean isAbstract;
+} UA_DataTypeNode;
+
+typedef struct {
+    UA_NodeHead head;
+    UA_Byte eventNotifier;
+    UA_Boolean containsNoLoops;
+} UA_ViewNode;
+
+typedef union {
+    UA_NodeHead head;
+    UA_VariableNode variableNode;
+    UA_VariableTypeNode variableTypeNode;
+    UA_MethodNode methodNode;
+    UA_ObjectNode objectNode;
+    UA_ObjectTypeNode objectTypeNode;
+    UA_ReferenceTypeNode referenceTypeNode;
+    UA_DataTypeNode dataTypeNode;
+    UA_ViewNode viewNode;
+} UA_Node;
+
+typedef struct {
+    UA_Logger logger;
+    UA_BuildInfo buildInfo;
+    UA_ApplicationDescription applicationDescription;
+    UA_ByteString serverCertificate;
+    UA_Double shutdownDelay;
+    UA_RuleHandling verifyRequestTimestamp;
+    UA_RuleHandling allowEmptyVariables;
+    UA_DataTypeArray *customDataTypes;
+    size_t networkLayersSize;
+    UA_ServerNetworkLayer *networkLayers;
+    UA_String customHostname;
+    size_t securityPoliciesSize;
+    UA_SecurityPolicy* securityPolicies;
+    size_t endpointsSize;
+    UA_EndpointDescription *endpoints;
+    UA_Boolean securityPolicyNoneDiscoveryOnly;
+    UA_GlobalNodeLifecycle nodeLifecycle;
+    UA_AccessControl accessControl;
+    UA_Nodestore nodestore;
+    UA_CertificateVerification certificateVerification;
+    UA_UInt16 maxSecureChannels;
+    UA_UInt32 maxSecurityTokenLifetime;
+    UA_UInt16 maxSessions;
+    UA_Double maxSessionTimeout;
+    UA_UInt32 maxNodesPerRead;
+    UA_UInt32 maxNodesPerWrite;
+    UA_UInt32 maxNodesPerMethodCall;
+    UA_UInt32 maxNodesPerBrowse;
+    UA_UInt32 maxNodesPerRegisterNodes;
+    UA_UInt32 maxNodesPerTranslateBrowsePathsToNodeIds;
+    UA_UInt32 maxNodesPerNodeManagement;
+    UA_UInt32 maxMonitoredItemsPerCall;
+    UA_UInt32 maxReferencesPerNode;
+} UA_ServerConfig;
+
+typedef struct {
+    aa_entry *left;
+    aa_entry *right;
+    unsigned int level;
+} aa_entry;
+

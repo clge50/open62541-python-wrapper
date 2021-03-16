@@ -1,0 +1,5 @@
+struct aa_entry {
+    struct aa_entry *left;
+    struct aa_entry *right;
+    unsigned int level;
+};

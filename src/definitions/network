@@ -11,3 +11,31 @@ typedef struct {
     UA_UInt32 localMaxChunkCount;   /* (0 = unbounded) */
     UA_UInt32 remoteMaxChunkCount;  /* (0 = unbounded) */
 } UA_ConnectionConfig;
+
+
+/**
+ * ServerNetworkLayer
+ * ^^^^^^^^^^^^^^^^^^
+ */
+struct UA_ServerNetworkLayer;
+typedef struct UA_ServerNetworkLayer UA_ServerNetworkLayer;
+
+struct  UA_ServerNetworkLayer{
+    void *handle;
+    UA_NetworkStatistics *statistics;
+    UA_String discoveryUrl;
+    UA_ConnectionConfig localConnectionConfig;
+    UA_StatusCode (*start)(UA_ServerNetworkLayer *nl, const UA_Logger *logger,
+                           const UA_String *customHostname);
+    UA_StatusCode (*listen)(UA_ServerNetworkLayer *nl, UA_Server *server,
+                            UA_UInt16 timeout);
+    void (*stop)(UA_ServerNetworkLayer *nl, UA_Server *server);
+    void (*clear)(UA_ServerNetworkLayer *nl);
+};
+
+extern "Python" UA_StatusCode python_wrapper_UA_ServerNetworkLayer_start(UA_ServerNetworkLayer *nl, const UA_Logger *logger,
+                           const UA_String *customHostname);
+extern "Python" UA_StatusCode python_wrapper_UA_ServerNetworkLayer_listen(UA_ServerNetworkLayer *nl, UA_Server *server,
+                            UA_UInt16 timeout);
+extern "Python" void python_wrapper_UA_ServerNetworkLayer_stop(UA_ServerNetworkLayer *nl, UA_Server *server);
+extern "Python" void python_wrapper_UA_ServerNetworkLayer_clear(UA_ServerNetworkLayer *nl);
