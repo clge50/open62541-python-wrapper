@@ -106,5 +106,4 @@ server_start()
 add_variable()
 add_matrix_variable()
 write_variable()
-
 server_shut_down()

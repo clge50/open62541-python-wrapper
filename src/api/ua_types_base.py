@@ -22,7 +22,7 @@ class UaNodeIdType(UaType):
         (5, "UA_NODEIDTYPE_BYTESTRING")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("enum UA_NodeIdType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("enum UA_NodeIdType*"), is_pointer)
@@ -65,7 +65,7 @@ class UaVariantStorageType(UaType):
         (1, "UA_VARIANT_DATA_NODELETE")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_VariantStorageType*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_VariantStorageType*"), is_pointer)
@@ -103,7 +103,7 @@ class UaExtensionObjectEncoding(UaType):
         (4, "UA_EXTENSIONOBJECT_DECODED_NODELETE")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ExtensionObjectEncoding*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_ExtensionObjectEncoding*"), is_pointer)
@@ -179,7 +179,7 @@ class UaDataTypeKind(UaType):
         (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DataTypeKind*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_DataTypeKind*"), is_pointer)
@@ -330,7 +330,7 @@ class UaDataTypeKind(UaType):
 # +++++++++++++++++++ UaString +++++++++++++++++++++++
 class UaString(UaType):
     def __init__(self, val: Union[str, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_String*", val._ptr)
         elif type(val) is str or type(val) is bytes:
             val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
@@ -406,7 +406,7 @@ UaXmlElement = UaString
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
     def __init__(self, val: Union[int, List[int], Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DateTime*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_DateTime*"), is_pointer)
@@ -466,7 +466,7 @@ class UaDateTimeStruct(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DateTimeStruct*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DateTimeStruct*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
@@ -635,7 +635,7 @@ class UaGuid(UaType):
     def __init__(self, string: str = "", val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_Guid*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Guid*", val._ptr)
         elif string != "":
             val = ffi.new("UA_Guid*", lib.UA_GUID(bytes(string, 'utf-8')))
@@ -735,7 +735,12 @@ class UaGuid(UaType):
         for i in range(2, 8):
             d5 += '{0:0{1}X}'.format(self._data4._ptr[i], 2)
 
-        return "\t" * n + "UaGuid: " + f"{d1}-{d2}-{d3}-{d4}-{d5}" + "\n"
+        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}" + "\n"
+
+    @staticmethod
+    def random():
+        Randomize.ua_random_seed(UaDateTime.now()._val)
+        return UaGuid(val=lib.UA_Guid_random())
 
 
 # +++++++++++++++++++ UaNodeId +++++++++++++++++++++++
@@ -751,14 +756,14 @@ class UaNodeId(UaType):
                  val: Void = None):
         if val is None:
             val = ffi.new("UA_NodeId*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NodeId*", val._ptr)
         elif ns_index is not None and ident is not None:
             if type(ns_index) is int:
                 if type(ident) is int:
                     val = lib.UA_NODEID_NUMERIC(ns_index, ident)
                 elif type(ident) is UaUInt32:
-                    val = lib.UA_NODEID_NUMERIC(ns_index, ident._value)
+                    val = lib.UA_NODEID_NUMERIC(ns_index, ident._val)
                 elif type(ident) is str:
                     val = lib.UA_NODEID_STRING_ALLOC(ns_index, bytes(ident, 'utf-8'))
                 elif type(ident) is bytearray:
@@ -766,7 +771,7 @@ class UaNodeId(UaType):
                 elif type(ident) is UaString:
                     val = lib.UA_NODEID_STRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
                 elif type(ident) is UaGuid:
-                    val = lib.A_NODEID_GUID(ns_index, ident._value)
+                    val = lib.UA_NODEID_GUID(ns_index, ident._val)
                 elif type(ident) is UaByteString:
                     val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
                 else:
@@ -774,19 +779,19 @@ class UaNodeId(UaType):
                                     f"str, bytearray, UaString, UaGuid or UaByteString")
             elif type(ns_index) is UaUInt16:
                 if type(ident) is int:
-                    val = lib.UA_NODEID_NUMERIC(ns_index._value, ident)
+                    val = lib.UA_NODEID_NUMERIC(ns_index._val, ident)
                 elif type(ident) is UaUInt32:
-                    val = lib.UA_NODEID_NUMERIC(ns_index._value, ident._value)
+                    val = lib.UA_NODEID_NUMERIC(ns_index._val, ident._val)
                 elif type(ident) is str:
-                    val = lib.UA_NODEID_STRING_ALLOC(ns_index._value, bytes(ident, 'utf-8'))
+                    val = lib.UA_NODEID_STRING_ALLOC(ns_index._val, bytes(ident, 'utf-8'))
                 elif type(ident) is bytearray:
-                    val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index._value, ident)
+                    val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index._val, ident)
                 elif type(ident) is UaString:
-                    val = lib.UA_NODEID_STRING_ALLOC(ns_index._value, bytes(str(ident), 'utf-8'))
+                    val = lib.UA_NODEID_STRING_ALLOC(ns_index._val, bytes(str(ident), 'utf-8'))
                 elif type(ident) is UaGuid:
-                    val = lib.A_NODEID_GUID(ns_index._value, ident._value)
+                    val = lib.A_NODEID_GUID(ns_index._val, ident._val)
                 elif type(ident) is UaByteString:
-                    val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index._value, bytes(str(ident), 'utf-8'))
+                    val = lib.UA_NODEID_BYTESTRING_ALLOC(ns_index._val, bytes(str(ident), 'utf-8'))
                 else:
                     raise TypeError(f"ident={ident} has invalid type, must be int, UaUInt32, "
                                     f"str, bytearray, UaString, UaGuid or UaByteString")
@@ -841,10 +846,10 @@ class UaNodeId(UaType):
             return None
         return self._namespace_index
 
-    # @namespace_index.setter
-    # def namespace_index(self, val):
-    #     self._namespace_index = val
-    #     self._value.namespaceIndex = val._val
+    @namespace_index.setter
+    def namespace_index(self, val):
+        self._namespace_index = val
+        self._value.namespaceIndex = val._val
 
     @property
     def identifier_type(self):
@@ -900,14 +905,14 @@ class UaExpandedNodeId(UaType):
 
         if val is None:
             val = ffi.new("UA_ExpandedNodeId*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ExpandedNodeId*", val._ptr)
         elif ns_index is not None and ident is not None:
             if type(ns_index) is int:
                 if type(ident) is int:
                     val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, ident)
                 elif type(ident) is UaUInt32:
-                    val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, ident._value)
+                    val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index, ident._val)
                 elif type(ident) is str:
                     val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index, bytes(ident, 'utf-8'))
                 elif type(ident) is bytearray:
@@ -915,7 +920,7 @@ class UaExpandedNodeId(UaType):
                 elif type(ident) is UaString:
                     val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
                 elif type(ident) is UaGuid:
-                    val = lib.A_EXPANDEDNODEID_GUID(ns_index, ident._value)
+                    val = lib.A_EXPANDEDNODEID_GUID(ns_index, ident._val)
                 elif type(ident) is UaByteString:
                     val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index, bytes(str(ident), 'utf-8'))
                 else:
@@ -923,19 +928,19 @@ class UaExpandedNodeId(UaType):
                                     f"str, bytearray, UaString, UaGuid or UaByteString")
             elif type(ns_index) is UaUInt16:
                 if type(ident) is int:
-                    val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index._value, ident)
+                    val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index._val, ident)
                 elif type(ident) is UaUInt32:
-                    val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index._value, ident._value)
+                    val = lib.UA_EXPANDEDNODEID_NUMERIC(ns_index._val, ident._val)
                 elif type(ident) is str:
-                    val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index._value, bytes(ident, 'utf-8'))
+                    val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index._val, bytes(ident, 'utf-8'))
                 elif type(ident) is bytearray:
-                    val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index._value, ident)
+                    val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index._val, ident)
                 elif type(ident) is UaString:
-                    val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index._value, bytes(str(ident), 'utf-8'))
+                    val = lib.UA_EXPANDEDNODEID_STRING_ALLOC(ns_index._val, bytes(str(ident), 'utf-8'))
                 elif type(ident) is UaGuid:
-                    val = lib.A_EXPANDEDNODEID_GUID(ns_index._value, ident._value)
+                    val = lib.A_EXPANDEDNODEID_GUID(ns_index._val, ident._val)
                 elif type(ident) is UaByteString:
-                    val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index._value, bytes(str(ident), 'utf-8'))
+                    val = lib.UA_EXPANDEDNODEID_BYTESTRING_ALLOC(ns_index._val, bytes(str(ident), 'utf-8'))
                 else:
                     raise TypeError(f"ident={ident} has invalid type, must be int, UaUInt32, "
                                     f"str, bytearray, UaString, UaGuid or UaByteString")
@@ -1046,7 +1051,7 @@ class UaQualifiedName(UaType):
             val = ffi.new("UA_QualifiedName*")
         # TODO: refactor
         # TODO: Memory management
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_QualifiedName*", val._ptr)
         elif ns_index is not None and string is not None:
             if type(ns_index) is int:
@@ -1058,9 +1063,9 @@ class UaQualifiedName(UaType):
                     raise AttributeError(f"string={type(string)} has to be str or UaString")
             elif type(ns_index) is UaUInt16:
                 if type(string) is str:
-                    val = lib.UA_QUALIFIEDNAME_ALLOC(ns_index._value, bytes(string, "utf-8"))
+                    val = lib.UA_QUALIFIEDNAME_ALLOC(ns_index._val, bytes(string, "utf-8"))
                 elif type(string) is UaString:
-                    val = lib.UA_QUALIFIEDNAME_ALLOC(ns_index._value, bytes(str(string), "utf-8"))
+                    val = lib.UA_QUALIFIEDNAME_ALLOC(ns_index._val, bytes(str(string), "utf-8"))
                 else:
                     raise AttributeError(f"string={string} has to be str or UaString")
             else:
@@ -1140,7 +1145,7 @@ class UaLocalizedText(UaType):
                  is_pointer=False):
         if val is None:
             ffi.new("UA_LocalizedText*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_LocalizedText*", val._ptr)
         elif locale is not None and text is not None:
             if type(locale) is str:
@@ -1220,7 +1225,7 @@ class UaNumericRangeDimension(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NumericRangeDimension*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NumericRangeDimension*", val._ptr)
 
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1280,7 +1285,7 @@ class UaNumericRange(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NumericRange*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NumericRange*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
@@ -1337,7 +1342,7 @@ class UaNumericRange(UaType):
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Variant*", val._ptr)
         elif val is None:
             val = ffi.new("UA_Variant*")
@@ -1528,7 +1533,7 @@ class UaDataValue(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataValue*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DataValue*", val._ptr)
 
         super().__init__(val=val, is_pointer=is_pointer)
@@ -1816,7 +1821,7 @@ class UaDiagnosticInfo(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DiagnosticInfo*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DiagnosticInfo*", val._ptr)
 
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2057,7 +2062,7 @@ class UaDataTypeMember(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataTypeMember*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DataTypeMember*", val._ptr)
 
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2177,7 +2182,7 @@ class UaDataType(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataType*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DataType*", val._ptr)
 
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2375,7 +2380,7 @@ class UaDataTypeArray(UaType):
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataTypeArray*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DataTypeArray*", val._ptr)
 
         super().__init__(val=val, is_pointer=is_pointer)
@@ -2452,4 +2457,4 @@ class Randomize:
 
     @staticmethod
     def ua_random_seed(seed: int):
-        lib.UA_random_seed(ffi.cast("UA_UInt64*", seed))
+        lib.UA_random_seed(ffi.cast("UA_UInt64", seed))
