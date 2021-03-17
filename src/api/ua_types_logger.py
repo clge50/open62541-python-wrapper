@@ -79,7 +79,7 @@ class UaLogLevel(UaType):
         (5, "UA_LOGLEVEL_FATAL")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_LogLevel*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_LogLevel*"), is_pointer)
@@ -126,7 +126,7 @@ class UaLogLevel(UaType):
 # +++++++++++++++++++ UaLogger +++++++++++++++++++++++
 class UaLogger(UaType):
     def __init__(self, log_level: UaLogLevel = None, val=lib.UA_Log_Stdout, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Logger*", val._ptr)
         elif log_level is not None:
             val = lib.UA_Log_Stdout_withLevel(log_level._val)

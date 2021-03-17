@@ -80,7 +80,7 @@ class {to_python_class_name(struct_name)}(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("{struct_name}*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("{struct_name}*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         

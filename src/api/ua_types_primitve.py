@@ -13,7 +13,7 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
     def __init__(self, val: Union[Void, bool, List[bool]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Boolean*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Boolean*"), is_pointer)
@@ -51,7 +51,7 @@ class UaBoolean(UaType):
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SByte*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SByte*"), is_pointer)
@@ -101,7 +101,7 @@ class UaSByte(UaType):
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Byte*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Byte*"), is_pointer)
@@ -160,7 +160,7 @@ class UaByte(UaType):
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Int16*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Int16*"), is_pointer)
@@ -210,7 +210,7 @@ class UaInt16(UaType):
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_UInt16*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt16*"), is_pointer)
@@ -260,7 +260,7 @@ class UaUInt16(UaType):
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Int32*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Int32*"), is_pointer)
@@ -367,7 +367,7 @@ class UaUInt32(UaType):
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Int64*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Int64*"), is_pointer)
@@ -417,7 +417,7 @@ class UaInt64(UaType):
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_UInt64*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt64*"), is_pointer)
@@ -467,7 +467,7 @@ class UaUInt64(UaType):
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
     def __init__(self, val: Union[Void, float, List[float]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Float*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Float*"), is_pointer)
@@ -565,7 +565,7 @@ class UaDouble(UaType):
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_StatusCode*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_StatusCode*"), is_pointer)

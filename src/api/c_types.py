@@ -54,8 +54,12 @@ class SizeT(UaType):
         else:
             self._value[0] = ffi.cast("size_t", _val(val))
 
+    @property
+    def value(self):
+        return int(self._val)
+
     def __str__(self, n=0):
-        return "(SizeT): " + str(self._value) + "\n"
+        return "(SizeT): " + str(self._val) + "\n"
 
 
 # +++++++++++++++++++ CString +++++++++++++++++++++++

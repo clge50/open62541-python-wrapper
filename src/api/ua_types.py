@@ -14,7 +14,7 @@ from typing import Callable
 # +++++++++++++++++++ UaClientConfig +++++++++++++++++++++++
 class UaClientConfig(UaType):
     def __init__(self, val=None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ClientConfig*", val._ptr)
         if val is None:
             val = ffi.new("UA_ClientConfig*")

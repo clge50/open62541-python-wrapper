@@ -1,7 +1,7 @@
 import sys
 import time
 
-sys.path.append("../build/open62541")
+sys.path.append("../../build/open62541")
 from ua import *
 
 x = UaStatusCode(0x80000000)

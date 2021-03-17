@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../build/open62541")
+sys.path.append("../../build/open62541")
 from ua import *
 from intermediateApi import ffi
 

@@ -1,0 +1,146 @@
+// WIP
+
+struct UA_Server {
+    UA_ServerConfig config;
+    UA_DateTime startTime;
+    UA_DateTime endTime;
+    // UA_ServerLifecycle state;
+    struct {
+        struct channel_entry *tqh_first;
+        struct channel_entry **tqh_last;
+    }  channels;
+    UA_UInt32 lastChannelId;
+    UA_UInt32 lastTokenId;
+    struct session_list {
+        struct session_list_entry *lh_first;
+    } sessions;
+    UA_UInt32 sessionCount;
+    UA_Session adminSession;
+    size_t namespacesSize;
+    UA_String *namespaces;
+    UA_Timer timer;
+    UA_Boolean bootstrapNS0;
+    UA_ServerStatistics serverStats;
+};
+
+
+typedef struct {
+    size_t currentConnectionCount;
+    size_t cumulatedConnectionCount;
+    size_t rejectedConnectionCount;
+    size_t connectionTimeoutCount;
+    size_t connectionAbortCount;
+} UA_NetworkStatistics;
+
+
+typedef struct {
+    size_t currentChannelCount;
+    size_t cumulatedChannelCount;
+    size_t rejectedChannelCount;
+    size_t channelTimeoutCount;
+    size_t channelAbortCount;
+    size_t channelPurgeCount;
+} UA_SecureChannelStatistics;
+
+
+typedef struct {
+    size_t currentSessionCount;
+    size_t cumulatedSessionCount;
+    size_t securityRejectedSessionCount;
+    size_t rejectedSessionCount;
+    size_t sessionTimeoutCount;
+    size_t sessionAbortCount;
+} UA_SessionStatistics;
+
+
+typedef struct {
+   UA_NetworkStatistics ns;
+   UA_SecureChannelStatistics scs;
+   UA_SessionStatistics ss;
+} UA_ServerStatistics;
+
+
+typedef struct {
+    struct aa_head root;
+    struct aa_head idRoot;
+    UA_UInt64 idCounter;
+} UA_Timer;
+
+
+typedef struct UA_SessionHeader {
+    struct {
+        struct UA_SessionHeader *sle_next;
+    } next;
+    UA_NodeId authenticationToken;
+    UA_SecureChannel *channel; /* The pointer back to the SecureChannel in the session. */
+} UA_SessionHeader;
+
+
+typedef enum {
+    UA_APPLICATIONTYPE_SERVER = 0,
+    UA_APPLICATIONTYPE_CLIENT = 1,
+    UA_APPLICATIONTYPE_CLIENTANDSERVER = 2,
+    UA_APPLICATIONTYPE_DISCOVERYSERVER = 3,
+    __UA_APPLICATIONTYPE_FORCE32BIT = 0x7fffffff
+} UA_ApplicationType;
+
+
+typedef struct {
+    UA_String applicationUri;
+    UA_String productUri;
+    UA_LocalizedText applicationName;
+    UA_ApplicationType applicationType;
+    UA_String gatewayServerUri;
+    UA_String discoveryProfileUri;
+    size_t discoveryUrlsSize;
+    UA_String *discoveryUrls;
+} UA_ApplicationDescription;
+
+
+struct ContinuationPoint;
+typedef struct ContinuationPoint ContinuationPoint;
+struct ContinuationPoint {
+    ContinuationPoint *next;
+    UA_ByteString identifier;
+    UA_BrowseDescription browseDescription;
+    UA_UInt32 maxReferences;
+    UA_ReferenceTypeSet relevantReferences;
+    UA_ExpandedNodeId nextTarget;
+    UA_Byte nextRefKindIndex;
+};
+
+typedef struct {
+    UA_SessionHeader  header;
+    UA_ApplicationDescription clientDescription;
+    UA_String         sessionName;
+    UA_Boolean        activated;
+    void             *sessionHandle;
+    UA_NodeId         sessionId;
+    UA_UInt32         maxRequestMessageSize;
+    UA_UInt32         maxResponseMessageSize;
+    UA_Double         timeout;
+    UA_DateTime       validTill;
+    UA_ByteString     serverNonce;
+    UA_UInt16         availableContinuationPoints;
+    ContinuationPoint *continuationPoints;
+} UA_Session;
+
+
+typedef enum {
+    UA_SERVERLIFECYCLE_FRESH,
+    UA_SERVERLIFECYLE_RUNNING
+} UA_ServerLifecycle;
+
+
+typedef struct channel_entry {
+    UA_TimerEntry cleanupCallback;
+    TAILQ_ENTRY(channel_entry) pointers;
+    UA_SecureChannel channel;
+} channel_entry;
+
+
+typedef struct session_list_entry {
+    UA_TimerEntry cleanupCallback;
+    LIST_ENTRY(session_list_entry) pointers;
+    UA_Session session;
+} session_list_entry;

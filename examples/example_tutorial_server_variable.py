@@ -6,18 +6,6 @@ from ua import *
 
 class Vars:
     server = UaServer()
-    thread = None
-
-
-def server_start():
-    Vars.thread = threading.Thread(target=Vars.server.run, args=[UaBoolean(True)], daemon=True)
-    Vars.thread.start()
-    time.sleep(0.40)
-
-
-def server_shut_down():
-    Vars.server.run_shutdown()
-    Vars.thread.join(1)
 
 
 def add_variable():
@@ -101,10 +89,10 @@ def write_variable():
     print(result)
 
 
-server_start()
+Vars.server.run_async()
 
 add_variable()
 add_matrix_variable()
 write_variable()
 
-server_shut_down()
+Vars.server.running = False

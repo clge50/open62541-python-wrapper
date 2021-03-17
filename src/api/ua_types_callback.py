@@ -219,14 +219,14 @@ class UaExternalValueCallback(UaType):
             # todo: create callbacks
             self._value[0].onRead = lib.python_wrapper_UA_ExternalValueCallbackNotificationReadCallback
             self._value[0].onWrite = lib.python_wrapper_UA_ExternalValueCallbackUserWriteCallback
-            self._read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
-            self._write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._read_callback = lambda a, b, c, d, e, f: UA_STATUSCODES.GOOD
+            self._write_callback = lambda a, b, c, d, e, f, h: UA_STATUSCODES.GOOD
             self._uses_python_read_callback = True
             self._uses_python_write_callback = True
         else:
             super().__init__(val=val, is_pointer=is_pointer)
-            self._read_callback = lambda a, b, c, d, e, f: UaStatusCode.UA_STATUSCODE_GOOD
-            self._write_callback = lambda a, b, c, d, e, f, h: UaStatusCode.UA_STATUSCODE_GOOD
+            self._read_callback = lambda a, b, c, d, e, f: UA_STATUSCODES.GOOD
+            self._write_callback = lambda a, b, c, d, e, f, h: UA_STATUSCODES.GOOD
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
 
@@ -310,16 +310,16 @@ class UaDataSource(UaType):
             self._uses_python_write_callback = True
             self._value.read = lib.python_wrapper_UA_DataSourceReadCallback
             self._value.write = lib.python_wrapper_UA_DataSourceWriteCallback
-            self._read_callback = lambda a, b, c, d, e, f, g, h: UaStatusCode.UA_STATUSCODE_GOOD
-            self._write_callback = lambda a, b, c, d, e, f, g: UaStatusCode.UA_STATUSCODE_GOOD
+            self._read_callback = lambda a, b, c, d, e, f, g, h: UA_STATUSCODES.GOOD
+            self._write_callback = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
         else:
             super().__init__(val=val, is_pointer=is_pointer)
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
             self._value.read = val.read
             self._value.write = val.write
-            self._read_callback = lambda a, b, c, d, e, f, g, h: UaStatusCode.UA_STATUSCODE_GOOD
-            self._write_callback = lambda a, b, c, d, e, f, g: UaStatusCode.UA_STATUSCODE_GOOD
+            self._read_callback = lambda a, b, c, d, e, f, g, h: UA_STATUSCODES.GOOD
+            self._write_callback = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
 
     @property
     def read_callback(self):

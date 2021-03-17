@@ -45,7 +45,7 @@ class UaAttributeId(UaType):
         (27, "UA_ATTRIBUTEID_ACCESSLEVELEX")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_AttributeId*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_AttributeId*"), is_pointer)
@@ -182,7 +182,7 @@ class UaRuleHandling(UaType):
         (3, "UA_RULEHANDLING_ACCEPT")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_RuleHandling*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_RuleHandling*"), is_pointer)
@@ -226,7 +226,7 @@ class UaOrder(UaType):
         (1, "UA_ORDER_MORE")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Order*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Order*"), is_pointer)
@@ -271,7 +271,7 @@ class UaSecureChannelState(UaType):
         (7, "UA_SECURECHANNELSTATE_CLOSING")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecureChannelState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SecureChannelState*"), is_pointer)
@@ -334,7 +334,7 @@ class UaSessionState(UaType):
         (5, "UA_SESSIONSTATE_CLOSING")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SessionState*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_SessionState*"), is_pointer)
@@ -387,7 +387,7 @@ class UaNetworkStatistics(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NetworkStatistics*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NetworkStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
@@ -491,7 +491,7 @@ class UaSecureChannelStatistics(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecureChannelStatistics*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecureChannelStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
