@@ -3,6 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
+import time
+import threading
 from intermediateApi import lib, ffi
 import ua_service_results_server as ServerServiceResults
 from ua_types import *
@@ -127,24 +129,46 @@ class UaServer:
     def running(self, running: Union[bool, UaBoolean]):
         if isinstance(running, UaBoolean):
             running = running.value
-        self._running._value[0] = ffi.cast("UA_Boolean", running)
+        self._running._value[0] = running
 
-    # TODO: call this in init and only use running setter???
+    # def __set_server_shutdown(self):
+    #     if self.ua_server.endTime != 0:
+    #         return False
+    #     if self.ua_server.config.shutdownDelay == 0:
+    #         return True
+    #     lib.UA_LOG_WARNING(self.ua_server.config.logger, lib.UA_LOGCATEGORY_SERVER,
+    #                        "Shutting down the server with a delay of %i ms",
+    #                        self.ua_server.config.shutdownDelay)
+    #     self.ua_server.endTime = (lib.UA_DateTime_now() +
+    #                               (self.ua_server.config.shutdownDelay * lib.UA_DATETIME_MSEC))
+    #     return False
+    #
+    # def __test_shut_down_condition(self):
+    #     if self.ua_server.endTime == 0:
+    #         return False
+    #     return lib.UA_DateTime_now() > self.ua_server.endTime
+
     def run(self):
         self.running = True
-
-        ret_val = lib.UA_Server_run_startup(self.ua_server)
-        if ret_val != lib.UA_STATUSCODE_GOOD:
-            return UaStatusCode(val=ret_val)
-
-        while not lib.testShutdownCondition(self.ua_server):
-            lib.UA_Server_run_iterate(self.ua_server, True)
-            if not self._running.value:
-                if lib.setServerShutdown(self.ua_server):
-                    break
-
-        ret_val = lib.UA_Server_run_shutdown(self.ua_server)
+        ret_val = lib.UA_Server_run(self.ua_server, self.running._value)
         return UaStatusCode(val=ret_val)
+        # ret_val = lib.UA_Server_run_startup(self.ua_server)
+        # if ret_val != UA_STATUSCODES.GOOD._val:
+        #     return UaStatusCode(val=ret_val)
+        #
+        # while not self.__test_shut_down_condition():
+        #     lib.UA_Server_run_iterate(self.ua_server, True)
+        #     if not self._running.value:
+        #         if self.__set_server_shutdown():
+        #             break
+        #
+        # ret_val = lib.UA_Server_run_shutdown(self.ua_server)
+        # return UaStatusCode(val=ret_val)
+
+    def run_async(self):
+        t = threading.Thread(target=self.run, daemon=True)
+        t.start()
+        time.sleep(0.50)
 
     def run_shutdown(self):
         raw_result = lib.UA_Server_run_shutdown(self.ua_server)

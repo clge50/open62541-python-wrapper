@@ -1,23 +1,14 @@
 import sys
 import time
-import signal
+import threading
 
 sys.path.append("../build/open62541")
 from ua import UaBoolean, UaServer
 
-
-def handler(sig, frame):
-    print("sigint")
-    server.running = False
-
-
-signal.signal(signal.SIGINT, handler)
 # Create new server object, default set
 server = UaServer()
+server.run_async()
 
-# Start server
-# ret_val = server.run(UaBoolean(True))
-# print(f"server run called with {ret_val}")
+time.sleep(15)
 
-while True:
-    i = 0
+server.running = False

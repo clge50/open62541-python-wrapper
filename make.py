@@ -117,6 +117,30 @@ def generate_api():
                             void pseudoFree(void *ptr) {
                                 printf("doing nothing\n");
                             }
+                            
+                            /*void setServerConfig(UA_Server server, UA_ServerConfig config) {
+                                server.config = config;
+                            }
+                            
+                            void setServerStartTime(UA_Server server, UA_DateTime startTime) {
+                                server.startTime = startTime;
+                            }
+                            
+                            void setServerEndTime(UA_Server server, UA_DateTime endTime) {
+                                server.endTime = endTime;
+                            }
+                            
+                            UA_ServerConfig getServerConfig(UA_Server server) {
+                                return server.config;
+                            }
+                            
+                            UA_DateTime getServerStartTime(UA_Server server) {
+                                return server.startTime;
+                            }
+                            
+                            UA_DateTime getServerEndTime(UA_Server server) {
+                                return server.endTime;
+                            }*/
                            
                            """,
                            include_dirs=[dirname + r"/open62541/build"],

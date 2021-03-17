@@ -11,17 +11,6 @@ class Vars:
     point_variable_id = None
 
 
-def server_start():
-    Vars.thread = threading.Thread(target=Vars.server.run, args=[UaBoolean(True)], daemon=True)
-    Vars.thread.start()
-    time.sleep(0.40)
-
-
-def server_shut_down():
-    Vars.server.run_shutdown()
-    Vars.thread.join(1)
-
-
 def add_variable_type_2d_point():
     vt_attr = UA_ATTRIBUTES_DEFAULT.VARIABLE_TYPE
     vt_attr.data_type = UA_TYPES.DOUBLE.type_id
@@ -85,11 +74,11 @@ def write_variable():
     UaLogger().info(UaLogCategory.USERLAND(), f"failed with {ret_val}")
 
 
-server_start()
+Vars.server.run_async()
 
 add_variable_type_2d_point()
 add_variable()
 add_variable_fail()
 write_variable()
 
-server_shut_down()
+Vars.server.running = False
