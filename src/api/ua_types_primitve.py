@@ -737,7 +737,7 @@ class UaDouble(UaType):
 
     @property
     def value(self):
-        return int(self._val)
+        return float(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:

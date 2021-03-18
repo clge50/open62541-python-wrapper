@@ -59,7 +59,7 @@ class SizeT(UaType):
         return int(self._val)
 
     def __str__(self, n=0):
-        return "(SizeT): " + str(self._val) + "\n"
+        return "(SizeT): " + str(self._val)
 
 
 # +++++++++++++++++++ CString +++++++++++++++++++++++
@@ -88,7 +88,7 @@ class CString(UaType):
         self._value = ffi.new("char[]", self._p_value)
 
     def __str__(self, n=0):
-        return "(CString): " + str(self.value) + "\n"
+        return "(CString): " + str(self.value)
 
     def __add__(self, other):
         return CString(self.value + other.value)

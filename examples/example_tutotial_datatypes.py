@@ -7,7 +7,13 @@ from ua import *
 def variables_basics():
     i = UaInt32(5)
     j = UaInt32(i)
-    print(j)
+    k = i + j
+    print(f"i + j = {k}")
+    i = k * j
+    l = UaDouble(3.1416)
+    # the first operand determines the type of the expression:
+    print(f"l + i = {l + i}")
+    print(f"i + l = {i + l}")
 
     s = UaString("test")
     s2 = UaString(s)
@@ -16,6 +22,8 @@ def variables_basics():
 
     print(f"s == s2: {s == s2}")
     print(f"s2 == s3: {s3 == s2}")
+    print(f"s2 + s3: {s3 + s2}")
+    print(f"s2 * 5: {s2 * 5}")
 
     rr = UaReadRequest()
     rr.request_header.timestamp = UaDateTime.now()

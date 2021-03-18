@@ -400,7 +400,7 @@ class UaString(UaType):
         return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val).decode("utf-8")
 
     def __str__(self, n=0):
-        return "(UaString): " + self.value + "\n"
+        return "(UaString): " + self.value
 
 
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
@@ -441,7 +441,7 @@ class UaDateTime(UaType):
             self._value[0] = ffi.cast("UA_DateTime", _val(val))
 
     def __str__(self, n=0):
-        return "(UaDateTime): " + str(self._val) + "\n"
+        return "(UaDateTime): " + str(self._val)
 
     def __eq__(self, other):
         return self._val == other._val
@@ -620,12 +620,12 @@ class UaDateTimeStruct(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDateTimeStruct) : NULL\n"
+            return "(UaDateTimeStruct) : NULL"
 
         return ("(UaDateTimeStruct) :\n" +
                 "\t" * (n + 1) + f"{self._year.value}-{self._month.value:02d}-{self._day.value:02d} " +
                 f"{self._hour.value:02d}:{self._min.value:02d}:{self._sec.value:02d}." +
-                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}\n")
+                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}")
 
     def to_primitive(self):
         return UaDateTime(lib.UA_DateTime_fromStruct(self._val))
@@ -734,7 +734,7 @@ class UaGuid(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaGuid) : NULL\n"
+            return "(UaGuid) : NULL"
 
         d1 = '{0:0{1}X}'.format(self._data1._val, 8)
         d2 = '{0:0{1}X}'.format(self._data2._val, 4)
@@ -746,7 +746,7 @@ class UaGuid(UaType):
         for i in range(2, 8):
             d5 += '{0:0{1}X}'.format(self._data4._ptr[i], 2)
 
-        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}" + "\n"
+        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}"
 
     @staticmethod
     def random():
@@ -1023,7 +1023,7 @@ class UaExpandedNodeId(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaExpandedNodeId) : NULL\n"
+            return "(UaExpandedNodeId) : NULL"
 
         return ("(UaExpandedNodeId) :\n" +
                 "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
@@ -1135,7 +1135,7 @@ class UaQualifiedName(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaQualifiedName) : NULL\n"
+            return "(UaQualifiedName) : NULL"
 
         return ("(UaQualifiedName) :\n" +
                 "\t" * (n + 1) + "namespace_index" + self._namespace_index.__str__(n + 1) +
@@ -1232,7 +1232,7 @@ class UaLocalizedText(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaLocalizedText) : NULL\n"
+            return "(UaLocalizedText) : NULL"
 
         return ("(UaLocalizedText) :\n" +
                 "\t" * (n + 1) + "locale" + self._locale.__str__(n + 1) +
@@ -1292,7 +1292,7 @@ class UaNumericRangeDimension(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaNumericRangeDimension) : NULL\n"
+            return "(UaNumericRangeDimension) : NULL"
 
         return ("(UaNumericRangeDimension) :\n" +
                 "\t" * (n + 1) + "min" + self._min.__str__(n + 1) +
@@ -1351,7 +1351,7 @@ class UaNumericRange(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaNumericRange) : NULL\n"
+            return "(UaNumericRange) : NULL"
 
         return ("(UaNumericRange) :\n" +
                 "\t" * (n + 1) + "dimensions_size" + self._dimensions_size.__str__(n + 1) +
@@ -1483,7 +1483,7 @@ class UaVariant(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaVariant) : NULL\n"
+            return "(UaVariant) : NULL"
 
         return ("(UaVariant) :\n" +
                 "\t" * (n + 1) + "type" + self._type.__str__(n + 1) +
@@ -1754,7 +1754,7 @@ class UaDataValue(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataValue) : NULL\n"
+            return "(UaDataValue) : NULL"
 
         return ("(UaDataValue) :\n" +
                 "\t" * (n + 1) + "variant" + self._variant.__str__(n + 1) +
@@ -1845,7 +1845,7 @@ class UaExtensionObject(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaExtensionObject) : NULL\n"
+            return "(UaExtensionObject) : NULL"
 
         return ("(UaExtensionObject) :\n" +
                 "\t" * (n + 1) + "encoding" + self._encoding.__str__(n + 1) +
@@ -2077,7 +2077,7 @@ class UaDiagnosticInfo(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDiagnosticInfo) : NULL\n"
+            return "(UaDiagnosticInfo) : NULL"
 
         return ("(UaDiagnosticInfo) :\n" +
                 "\t" * (n + 1) + "has_symbolic_id" + self._has_symbolic_id.__str__(n + 1) +
@@ -2205,7 +2205,7 @@ class UaDataTypeMember(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataTypeMember) : NULL\n"
+            return "(UaDataTypeMember) : NULL"
 
         return ("(UaDataTypeMember) :\n" +
                 "\t" * (n + 1) + "member_type_index" + self._member_type_index.__str__(n + 1) +
@@ -2381,7 +2381,7 @@ class UaDataType(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataType) : NULL\n"
+            return "(UaDataType) : NULL"
 
         return ("(UaDataType) :\n" +
                 "\t" * (n + 1) + "type_id" + self._type_id.__str__(n + 1) +
@@ -2481,7 +2481,7 @@ class UaDataTypeArray(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataTypeArray) : NULL\n"
+            return "(UaDataTypeArray) : NULL"
 
         return ("(UaDataTypeArray) :\n" +
                 "\t" * (n + 1) + "next" + self._next.__str__(n + 1) +
