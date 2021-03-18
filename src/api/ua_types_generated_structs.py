@@ -4,14 +4,14 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import ffi, lib
-from ua_consts_data_types import *
+from ua_consts_types_raw import _UA_TYPES
 from ua_types_generated_enums import *
 from ua_types_parent import _ptr, _val, _is_null
 
 
 # +++++++++++++++++++ UaViewAttributes +++++++++++++++++++++++
 class UaViewAttributes(UaType):
-    UA_TYPE = UA_TYPES.VIEWATTRIBUTES
+    _UA_TYPE = _UA_TYPES._VIEWATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -147,7 +147,7 @@ class UaViewAttributes(UaType):
 
 # +++++++++++++++++++ UaXVType +++++++++++++++++++++++
 class UaXVType(UaType):
-    UA_TYPE = UA_TYPES.XVTYPE
+    _UA_TYPE = _UA_TYPES._XVTYPE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -208,7 +208,7 @@ class UaXVType(UaType):
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
 class UaElementOperand(UaType):
-    UA_TYPE = UA_TYPES.ELEMENTOPERAND
+    _UA_TYPE = _UA_TYPES._ELEMENTOPERAND
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -254,7 +254,7 @@ class UaElementOperand(UaType):
 
 # +++++++++++++++++++ UaVariableAttributes +++++++++++++++++++++++
 class UaVariableAttributes(UaType):
-    UA_TYPE = UA_TYPES.VARIABLEATTRIBUTES
+    _UA_TYPE = _UA_TYPES._VARIABLEATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -495,7 +495,7 @@ class UaVariableAttributes(UaType):
 
 # +++++++++++++++++++ UaEnumValueType +++++++++++++++++++++++
 class UaEnumValueType(UaType):
-    UA_TYPE = UA_TYPES.ENUMVALUETYPE
+    _UA_TYPE = _UA_TYPES._ENUMVALUETYPE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -571,7 +571,7 @@ class UaEnumValueType(UaType):
 
 # +++++++++++++++++++ UaEventFieldList +++++++++++++++++++++++
 class UaEventFieldList(UaType):
-    UA_TYPE = UA_TYPES.EVENTFIELDLIST
+    _UA_TYPE = _UA_TYPES._EVENTFIELDLIST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -647,7 +647,7 @@ class UaEventFieldList(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemCreateResult +++++++++++++++++++++++
 class UaMonitoredItemCreateResult(UaType):
-    UA_TYPE = UA_TYPES.MONITOREDITEMCREATERESULT
+    _UA_TYPE = _UA_TYPES._MONITOREDITEMCREATERESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -753,7 +753,7 @@ class UaMonitoredItemCreateResult(UaType):
 
 # +++++++++++++++++++ UaEUInformation +++++++++++++++++++++++
 class UaEUInformation(UaType):
-    UA_TYPE = UA_TYPES.EUINFORMATION
+    _UA_TYPE = _UA_TYPES._EUINFORMATION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -844,7 +844,7 @@ class UaEUInformation(UaType):
 
 # +++++++++++++++++++ UaServerDiagnosticsSummaryDataType +++++++++++++++++++++++
 class UaServerDiagnosticsSummaryDataType(UaType):
-    UA_TYPE = UA_TYPES.SERVERDIAGNOSTICSSUMMARYDATATYPE
+    _UA_TYPE = _UA_TYPES._SERVERDIAGNOSTICSSUMMARYDATATYPE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1057,7 +1057,7 @@ class UaServerDiagnosticsSummaryDataType(UaType):
 
 # +++++++++++++++++++ UaContentFilterElementResult +++++++++++++++++++++++
 class UaContentFilterElementResult(UaType):
-    UA_TYPE = UA_TYPES.CONTENTFILTERELEMENTRESULT
+    _UA_TYPE = _UA_TYPES._CONTENTFILTERELEMENTRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1163,7 +1163,7 @@ class UaContentFilterElementResult(UaType):
 
 # +++++++++++++++++++ UaLiteralOperand +++++++++++++++++++++++
 class UaLiteralOperand(UaType):
-    UA_TYPE = UA_TYPES.LITERALOPERAND
+    _UA_TYPE = _UA_TYPES._LITERALOPERAND
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1209,7 +1209,7 @@ class UaLiteralOperand(UaType):
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
 class UaUserIdentityToken(UaType):
-    UA_TYPE = UA_TYPES.USERIDENTITYTOKEN
+    _UA_TYPE = _UA_TYPES._USERIDENTITYTOKEN
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1255,7 +1255,7 @@ class UaUserIdentityToken(UaType):
 
 # +++++++++++++++++++ UaX509IdentityToken +++++++++++++++++++++++
 class UaX509IdentityToken(UaType):
-    UA_TYPE = UA_TYPES.X509IDENTITYTOKEN
+    _UA_TYPE = _UA_TYPES._X509IDENTITYTOKEN
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1316,7 +1316,7 @@ class UaX509IdentityToken(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemNotification +++++++++++++++++++++++
 class UaMonitoredItemNotification(UaType):
-    UA_TYPE = UA_TYPES.MONITOREDITEMNOTIFICATION
+    _UA_TYPE = _UA_TYPES._MONITOREDITEMNOTIFICATION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1377,7 +1377,7 @@ class UaMonitoredItemNotification(UaType):
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
 class UaResponseHeader(UaType):
-    UA_TYPE = UA_TYPES.RESPONSEHEADER
+    _UA_TYPE = _UA_TYPES._RESPONSEHEADER
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1513,7 +1513,7 @@ class UaResponseHeader(UaType):
 
 # +++++++++++++++++++ UaSignatureData +++++++++++++++++++++++
 class UaSignatureData(UaType):
-    UA_TYPE = UA_TYPES.SIGNATUREDATA
+    _UA_TYPE = _UA_TYPES._SIGNATUREDATA
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1574,7 +1574,7 @@ class UaSignatureData(UaType):
 
 # +++++++++++++++++++ UaModifySubscriptionResponse +++++++++++++++++++++++
 class UaModifySubscriptionResponse(UaType):
-    UA_TYPE = UA_TYPES.MODIFYSUBSCRIPTIONRESPONSE
+    _UA_TYPE = _UA_TYPES._MODIFYSUBSCRIPTIONRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1665,7 +1665,7 @@ class UaModifySubscriptionResponse(UaType):
 
 # +++++++++++++++++++ UaNodeAttributes +++++++++++++++++++++++
 class UaNodeAttributes(UaType):
-    UA_TYPE = UA_TYPES.NODEATTRIBUTES
+    _UA_TYPE = _UA_TYPES._NODEATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1771,7 +1771,7 @@ class UaNodeAttributes(UaType):
 
 # +++++++++++++++++++ UaActivateSessionResponse +++++++++++++++++++++++
 class UaActivateSessionResponse(UaType):
-    UA_TYPE = UA_TYPES.ACTIVATESESSIONRESPONSE
+    _UA_TYPE = _UA_TYPES._ACTIVATESESSIONRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1892,7 +1892,7 @@ class UaActivateSessionResponse(UaType):
 
 # +++++++++++++++++++ UaEnumField +++++++++++++++++++++++
 class UaEnumField(UaType):
-    UA_TYPE = UA_TYPES.ENUMFIELD
+    _UA_TYPE = _UA_TYPES._ENUMFIELD
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1983,7 +1983,7 @@ class UaEnumField(UaType):
 
 # +++++++++++++++++++ UaVariableTypeAttributes +++++++++++++++++++++++
 class UaVariableTypeAttributes(UaType):
-    UA_TYPE = UA_TYPES.VARIABLETYPEATTRIBUTES
+    _UA_TYPE = _UA_TYPES._VARIABLETYPEATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2179,7 +2179,7 @@ class UaVariableTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaCallMethodResult +++++++++++++++++++++++
 class UaCallMethodResult(UaType):
-    UA_TYPE = UA_TYPES.CALLMETHODRESULT
+    _UA_TYPE = _UA_TYPES._CALLMETHODRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2320,7 +2320,7 @@ class UaCallMethodResult(UaType):
 
 # +++++++++++++++++++ UaSetMonitoringModeResponse +++++++++++++++++++++++
 class UaSetMonitoringModeResponse(UaType):
-    UA_TYPE = UA_TYPES.SETMONITORINGMODERESPONSE
+    _UA_TYPE = _UA_TYPES._SETMONITORINGMODERESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2426,7 +2426,7 @@ class UaSetMonitoringModeResponse(UaType):
 
 # +++++++++++++++++++ UaRequestHeader +++++++++++++++++++++++
 class UaRequestHeader(UaType):
-    UA_TYPE = UA_TYPES.REQUESTHEADER
+    _UA_TYPE = _UA_TYPES._REQUESTHEADER
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2562,7 +2562,7 @@ class UaRequestHeader(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemModifyResult +++++++++++++++++++++++
 class UaMonitoredItemModifyResult(UaType):
-    UA_TYPE = UA_TYPES.MONITOREDITEMMODIFYRESULT
+    _UA_TYPE = _UA_TYPES._MONITOREDITEMMODIFYRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2653,7 +2653,7 @@ class UaMonitoredItemModifyResult(UaType):
 
 # +++++++++++++++++++ UaCloseSecureChannelRequest +++++++++++++++++++++++
 class UaCloseSecureChannelRequest(UaType):
-    UA_TYPE = UA_TYPES.CLOSESECURECHANNELREQUEST
+    _UA_TYPE = _UA_TYPES._CLOSESECURECHANNELREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2699,7 +2699,7 @@ class UaCloseSecureChannelRequest(UaType):
 
 # +++++++++++++++++++ UaNotificationMessage +++++++++++++++++++++++
 class UaNotificationMessage(UaType):
-    UA_TYPE = UA_TYPES.NOTIFICATIONMESSAGE
+    _UA_TYPE = _UA_TYPES._NOTIFICATIONMESSAGE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2790,7 +2790,7 @@ class UaNotificationMessage(UaType):
 
 # +++++++++++++++++++ UaCreateSubscriptionResponse +++++++++++++++++++++++
 class UaCreateSubscriptionResponse(UaType):
-    UA_TYPE = UA_TYPES.CREATESUBSCRIPTIONRESPONSE
+    _UA_TYPE = _UA_TYPES._CREATESUBSCRIPTIONRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2896,7 +2896,7 @@ class UaCreateSubscriptionResponse(UaType):
 
 # +++++++++++++++++++ UaEnumDefinition +++++++++++++++++++++++
 class UaEnumDefinition(UaType):
-    UA_TYPE = UA_TYPES.ENUMDEFINITION
+    _UA_TYPE = _UA_TYPES._ENUMDEFINITION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2957,7 +2957,7 @@ class UaEnumDefinition(UaType):
 
 # +++++++++++++++++++ UaCallMethodRequest +++++++++++++++++++++++
 class UaCallMethodRequest(UaType):
-    UA_TYPE = UA_TYPES.CALLMETHODREQUEST
+    _UA_TYPE = _UA_TYPES._CALLMETHODREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3048,7 +3048,7 @@ class UaCallMethodRequest(UaType):
 
 # +++++++++++++++++++ UaReadResponse +++++++++++++++++++++++
 class UaReadResponse(UaType):
-    UA_TYPE = UA_TYPES.READRESPONSE
+    _UA_TYPE = _UA_TYPES._READRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3154,7 +3154,7 @@ class UaReadResponse(UaType):
 
 # +++++++++++++++++++ UaObjectTypeAttributes +++++++++++++++++++++++
 class UaObjectTypeAttributes(UaType):
-    UA_TYPE = UA_TYPES.OBJECTTYPEATTRIBUTES
+    _UA_TYPE = _UA_TYPES._OBJECTTYPEATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3275,7 +3275,7 @@ class UaObjectTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaCloseSessionResponse +++++++++++++++++++++++
 class UaCloseSessionResponse(UaType):
-    UA_TYPE = UA_TYPES.CLOSESESSIONRESPONSE
+    _UA_TYPE = _UA_TYPES._CLOSESESSIONRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3321,7 +3321,7 @@ class UaCloseSessionResponse(UaType):
 
 # +++++++++++++++++++ UaSetPublishingModeRequest +++++++++++++++++++++++
 class UaSetPublishingModeRequest(UaType):
-    UA_TYPE = UA_TYPES.SETPUBLISHINGMODEREQUEST
+    _UA_TYPE = _UA_TYPES._SETPUBLISHINGMODEREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3412,7 +3412,7 @@ class UaSetPublishingModeRequest(UaType):
 
 # +++++++++++++++++++ UaIssuedIdentityToken +++++++++++++++++++++++
 class UaIssuedIdentityToken(UaType):
-    UA_TYPE = UA_TYPES.ISSUEDIDENTITYTOKEN
+    _UA_TYPE = _UA_TYPES._ISSUEDIDENTITYTOKEN
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3488,7 +3488,7 @@ class UaIssuedIdentityToken(UaType):
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsResponse +++++++++++++++++++++++
 class UaDeleteMonitoredItemsResponse(UaType):
-    UA_TYPE = UA_TYPES.DELETEMONITOREDITEMSRESPONSE
+    _UA_TYPE = _UA_TYPES._DELETEMONITOREDITEMSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3594,7 +3594,7 @@ class UaDeleteMonitoredItemsResponse(UaType):
 
 # +++++++++++++++++++ UaBrowseNextRequest +++++++++++++++++++++++
 class UaBrowseNextRequest(UaType):
-    UA_TYPE = UA_TYPES.BROWSENEXTREQUEST
+    _UA_TYPE = _UA_TYPES._BROWSENEXTREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3685,7 +3685,7 @@ class UaBrowseNextRequest(UaType):
 
 # +++++++++++++++++++ UaModifySubscriptionRequest +++++++++++++++++++++++
 class UaModifySubscriptionRequest(UaType):
-    UA_TYPE = UA_TYPES.MODIFYSUBSCRIPTIONREQUEST
+    _UA_TYPE = _UA_TYPES._MODIFYSUBSCRIPTIONREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3822,7 +3822,7 @@ class UaModifySubscriptionRequest(UaType):
 
 # +++++++++++++++++++ UaBrowseDescription +++++++++++++++++++++++
 class UaBrowseDescription(UaType):
-    UA_TYPE = UA_TYPES.BROWSEDESCRIPTION
+    _UA_TYPE = _UA_TYPES._BROWSEDESCRIPTION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -3943,7 +3943,7 @@ class UaBrowseDescription(UaType):
 
 # +++++++++++++++++++ UaSignedSoftwareCertificate +++++++++++++++++++++++
 class UaSignedSoftwareCertificate(UaType):
-    UA_TYPE = UA_TYPES.SIGNEDSOFTWARECERTIFICATE
+    _UA_TYPE = _UA_TYPES._SIGNEDSOFTWARECERTIFICATE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4004,7 +4004,7 @@ class UaSignedSoftwareCertificate(UaType):
 
 # +++++++++++++++++++ UaBrowsePathTarget +++++++++++++++++++++++
 class UaBrowsePathTarget(UaType):
-    UA_TYPE = UA_TYPES.BROWSEPATHTARGET
+    _UA_TYPE = _UA_TYPES._BROWSEPATHTARGET
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4065,7 +4065,7 @@ class UaBrowsePathTarget(UaType):
 
 # +++++++++++++++++++ UaWriteResponse +++++++++++++++++++++++
 class UaWriteResponse(UaType):
-    UA_TYPE = UA_TYPES.WRITERESPONSE
+    _UA_TYPE = _UA_TYPES._WRITERESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4171,7 +4171,7 @@ class UaWriteResponse(UaType):
 
 # +++++++++++++++++++ UaAddNodesResult +++++++++++++++++++++++
 class UaAddNodesResult(UaType):
-    UA_TYPE = UA_TYPES.ADDNODESRESULT
+    _UA_TYPE = _UA_TYPES._ADDNODESRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4232,7 +4232,7 @@ class UaAddNodesResult(UaType):
 
 # +++++++++++++++++++ UaAddReferencesItem +++++++++++++++++++++++
 class UaAddReferencesItem(UaType):
-    UA_TYPE = UA_TYPES.ADDREFERENCESITEM
+    _UA_TYPE = _UA_TYPES._ADDREFERENCESITEM
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4353,7 +4353,7 @@ class UaAddReferencesItem(UaType):
 
 # +++++++++++++++++++ UaDeleteReferencesResponse +++++++++++++++++++++++
 class UaDeleteReferencesResponse(UaType):
-    UA_TYPE = UA_TYPES.DELETEREFERENCESRESPONSE
+    _UA_TYPE = _UA_TYPES._DELETEREFERENCESRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4459,7 +4459,7 @@ class UaDeleteReferencesResponse(UaType):
 
 # +++++++++++++++++++ UaRelativePathElement +++++++++++++++++++++++
 class UaRelativePathElement(UaType):
-    UA_TYPE = UA_TYPES.RELATIVEPATHELEMENT
+    _UA_TYPE = _UA_TYPES._RELATIVEPATHELEMENT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4550,7 +4550,7 @@ class UaRelativePathElement(UaType):
 
 # +++++++++++++++++++ UaSubscriptionAcknowledgement +++++++++++++++++++++++
 class UaSubscriptionAcknowledgement(UaType):
-    UA_TYPE = UA_TYPES.SUBSCRIPTIONACKNOWLEDGEMENT
+    _UA_TYPE = _UA_TYPES._SUBSCRIPTIONACKNOWLEDGEMENT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4611,7 +4611,7 @@ class UaSubscriptionAcknowledgement(UaType):
 
 # +++++++++++++++++++ UaTransferResult +++++++++++++++++++++++
 class UaTransferResult(UaType):
-    UA_TYPE = UA_TYPES.TRANSFERRESULT
+    _UA_TYPE = _UA_TYPES._TRANSFERRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4688,7 +4688,7 @@ class UaTransferResult(UaType):
 
 # +++++++++++++++++++ UaCreateMonitoredItemsResponse +++++++++++++++++++++++
 class UaCreateMonitoredItemsResponse(UaType):
-    UA_TYPE = UA_TYPES.CREATEMONITOREDITEMSRESPONSE
+    _UA_TYPE = _UA_TYPES._CREATEMONITOREDITEMSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4794,7 +4794,7 @@ class UaCreateMonitoredItemsResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteReferencesItem +++++++++++++++++++++++
 class UaDeleteReferencesItem(UaType):
-    UA_TYPE = UA_TYPES.DELETEREFERENCESITEM
+    _UA_TYPE = _UA_TYPES._DELETEREFERENCESITEM
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4900,7 +4900,7 @@ class UaDeleteReferencesItem(UaType):
 
 # +++++++++++++++++++ UaWriteValue +++++++++++++++++++++++
 class UaWriteValue(UaType):
-    UA_TYPE = UA_TYPES.WRITEVALUE
+    _UA_TYPE = _UA_TYPES._WRITEVALUE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -4991,7 +4991,7 @@ class UaWriteValue(UaType):
 
 # +++++++++++++++++++ UaDataTypeAttributes +++++++++++++++++++++++
 class UaDataTypeAttributes(UaType):
-    UA_TYPE = UA_TYPES.DATATYPEATTRIBUTES
+    _UA_TYPE = _UA_TYPES._DATATYPEATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5112,7 +5112,7 @@ class UaDataTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaTransferSubscriptionsResponse +++++++++++++++++++++++
 class UaTransferSubscriptionsResponse(UaType):
-    UA_TYPE = UA_TYPES.TRANSFERSUBSCRIPTIONSRESPONSE
+    _UA_TYPE = _UA_TYPES._TRANSFERSUBSCRIPTIONSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5218,7 +5218,7 @@ class UaTransferSubscriptionsResponse(UaType):
 
 # +++++++++++++++++++ UaAddReferencesResponse +++++++++++++++++++++++
 class UaAddReferencesResponse(UaType):
-    UA_TYPE = UA_TYPES.ADDREFERENCESRESPONSE
+    _UA_TYPE = _UA_TYPES._ADDREFERENCESRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5324,7 +5324,7 @@ class UaAddReferencesResponse(UaType):
 
 # +++++++++++++++++++ UaBuildInfo +++++++++++++++++++++++
 class UaBuildInfo(UaType):
-    UA_TYPE = UA_TYPES.BUILDINFO
+    _UA_TYPE = _UA_TYPES._BUILDINFO
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5445,7 +5445,7 @@ class UaBuildInfo(UaType):
 
 # +++++++++++++++++++ UaMonitoringParameters +++++++++++++++++++++++
 class UaMonitoringParameters(UaType):
-    UA_TYPE = UA_TYPES.MONITORINGPARAMETERS
+    _UA_TYPE = _UA_TYPES._MONITORINGPARAMETERS
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5551,7 +5551,7 @@ class UaMonitoringParameters(UaType):
 
 # +++++++++++++++++++ UaDoubleComplexNumberType +++++++++++++++++++++++
 class UaDoubleComplexNumberType(UaType):
-    UA_TYPE = UA_TYPES.DOUBLECOMPLEXNUMBERTYPE
+    _UA_TYPE = _UA_TYPES._DOUBLECOMPLEXNUMBERTYPE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5612,7 +5612,7 @@ class UaDoubleComplexNumberType(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesItem +++++++++++++++++++++++
 class UaDeleteNodesItem(UaType):
-    UA_TYPE = UA_TYPES.DELETENODESITEM
+    _UA_TYPE = _UA_TYPES._DELETENODESITEM
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5673,7 +5673,7 @@ class UaDeleteNodesItem(UaType):
 
 # +++++++++++++++++++ UaReadValueId +++++++++++++++++++++++
 class UaReadValueId(UaType):
-    UA_TYPE = UA_TYPES.READVALUEID
+    _UA_TYPE = _UA_TYPES._READVALUEID
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5764,7 +5764,7 @@ class UaReadValueId(UaType):
 
 # +++++++++++++++++++ UaCallRequest +++++++++++++++++++++++
 class UaCallRequest(UaType):
-    UA_TYPE = UA_TYPES.CALLREQUEST
+    _UA_TYPE = _UA_TYPES._CALLREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5840,7 +5840,7 @@ class UaCallRequest(UaType):
 
 # +++++++++++++++++++ UaRelativePath +++++++++++++++++++++++
 class UaRelativePath(UaType):
-    UA_TYPE = UA_TYPES.RELATIVEPATH
+    _UA_TYPE = _UA_TYPES._RELATIVEPATH
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5901,7 +5901,7 @@ class UaRelativePath(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesRequest +++++++++++++++++++++++
 class UaDeleteNodesRequest(UaType):
-    UA_TYPE = UA_TYPES.DELETENODESREQUEST
+    _UA_TYPE = _UA_TYPES._DELETENODESREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -5977,7 +5977,7 @@ class UaDeleteNodesRequest(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemModifyRequest +++++++++++++++++++++++
 class UaMonitoredItemModifyRequest(UaType):
-    UA_TYPE = UA_TYPES.MONITOREDITEMMODIFYREQUEST
+    _UA_TYPE = _UA_TYPES._MONITOREDITEMMODIFYREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6038,7 +6038,7 @@ class UaMonitoredItemModifyRequest(UaType):
 
 # +++++++++++++++++++ UaAggregateConfiguration +++++++++++++++++++++++
 class UaAggregateConfiguration(UaType):
-    UA_TYPE = UA_TYPES.AGGREGATECONFIGURATION
+    _UA_TYPE = _UA_TYPES._AGGREGATECONFIGURATION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6145,7 +6145,7 @@ class UaAggregateConfiguration(UaType):
 
 # +++++++++++++++++++ UaUnregisterNodesResponse +++++++++++++++++++++++
 class UaUnregisterNodesResponse(UaType):
-    UA_TYPE = UA_TYPES.UNREGISTERNODESRESPONSE
+    _UA_TYPE = _UA_TYPES._UNREGISTERNODESRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6191,7 +6191,7 @@ class UaUnregisterNodesResponse(UaType):
 
 # +++++++++++++++++++ UaContentFilterResult +++++++++++++++++++++++
 class UaContentFilterResult(UaType):
-    UA_TYPE = UA_TYPES.CONTENTFILTERRESULT
+    _UA_TYPE = _UA_TYPES._CONTENTFILTERRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6282,7 +6282,7 @@ class UaContentFilterResult(UaType):
 
 # +++++++++++++++++++ UaUserTokenPolicy +++++++++++++++++++++++
 class UaUserTokenPolicy(UaType):
-    UA_TYPE = UA_TYPES.USERTOKENPOLICY
+    _UA_TYPE = _UA_TYPES._USERTOKENPOLICY
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6388,7 +6388,7 @@ class UaUserTokenPolicy(UaType):
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsRequest +++++++++++++++++++++++
 class UaDeleteMonitoredItemsRequest(UaType):
-    UA_TYPE = UA_TYPES.DELETEMONITOREDITEMSREQUEST
+    _UA_TYPE = _UA_TYPES._DELETEMONITOREDITEMSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6479,7 +6479,7 @@ class UaDeleteMonitoredItemsRequest(UaType):
 
 # +++++++++++++++++++ UaSetMonitoringModeRequest +++++++++++++++++++++++
 class UaSetMonitoringModeRequest(UaType):
-    UA_TYPE = UA_TYPES.SETMONITORINGMODEREQUEST
+    _UA_TYPE = _UA_TYPES._SETMONITORINGMODEREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6585,7 +6585,7 @@ class UaSetMonitoringModeRequest(UaType):
 
 # +++++++++++++++++++ UaReferenceTypeAttributes +++++++++++++++++++++++
 class UaReferenceTypeAttributes(UaType):
-    UA_TYPE = UA_TYPES.REFERENCETYPEATTRIBUTES
+    _UA_TYPE = _UA_TYPES._REFERENCETYPEATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6736,7 +6736,7 @@ class UaReferenceTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaGetEndpointsRequest +++++++++++++++++++++++
 class UaGetEndpointsRequest(UaType):
-    UA_TYPE = UA_TYPES.GETENDPOINTSREQUEST
+    _UA_TYPE = _UA_TYPES._GETENDPOINTSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6857,7 +6857,7 @@ class UaGetEndpointsRequest(UaType):
 
 # +++++++++++++++++++ UaCloseSecureChannelResponse +++++++++++++++++++++++
 class UaCloseSecureChannelResponse(UaType):
-    UA_TYPE = UA_TYPES.CLOSESECURECHANNELRESPONSE
+    _UA_TYPE = _UA_TYPES._CLOSESECURECHANNELRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6903,7 +6903,7 @@ class UaCloseSecureChannelResponse(UaType):
 
 # +++++++++++++++++++ UaViewDescription +++++++++++++++++++++++
 class UaViewDescription(UaType):
-    UA_TYPE = UA_TYPES.VIEWDESCRIPTION
+    _UA_TYPE = _UA_TYPES._VIEWDESCRIPTION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -6979,7 +6979,7 @@ class UaViewDescription(UaType):
 
 # +++++++++++++++++++ UaSetPublishingModeResponse +++++++++++++++++++++++
 class UaSetPublishingModeResponse(UaType):
-    UA_TYPE = UA_TYPES.SETPUBLISHINGMODERESPONSE
+    _UA_TYPE = _UA_TYPES._SETPUBLISHINGMODERESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7085,7 +7085,7 @@ class UaSetPublishingModeResponse(UaType):
 
 # +++++++++++++++++++ UaStatusChangeNotification +++++++++++++++++++++++
 class UaStatusChangeNotification(UaType):
-    UA_TYPE = UA_TYPES.STATUSCHANGENOTIFICATION
+    _UA_TYPE = _UA_TYPES._STATUSCHANGENOTIFICATION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7146,7 +7146,7 @@ class UaStatusChangeNotification(UaType):
 
 # +++++++++++++++++++ UaStructureField +++++++++++++++++++++++
 class UaStructureField(UaType):
-    UA_TYPE = UA_TYPES.STRUCTUREFIELD
+    _UA_TYPE = _UA_TYPES._STRUCTUREFIELD
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7297,7 +7297,7 @@ class UaStructureField(UaType):
 
 # +++++++++++++++++++ UaEventFilterResult +++++++++++++++++++++++
 class UaEventFilterResult(UaType):
-    UA_TYPE = UA_TYPES.EVENTFILTERRESULT
+    _UA_TYPE = _UA_TYPES._EVENTFILTERRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7407,7 +7407,7 @@ class UaEventFilterResult(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemCreateRequest +++++++++++++++++++++++
 class UaMonitoredItemCreateRequest(UaType):
-    UA_TYPE = UA_TYPES.MONITOREDITEMCREATEREQUEST
+    _UA_TYPE = _UA_TYPES._MONITOREDITEMCREATEREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7483,7 +7483,7 @@ class UaMonitoredItemCreateRequest(UaType):
 
 # +++++++++++++++++++ UaComplexNumberType +++++++++++++++++++++++
 class UaComplexNumberType(UaType):
-    UA_TYPE = UA_TYPES.COMPLEXNUMBERTYPE
+    _UA_TYPE = _UA_TYPES._COMPLEXNUMBERTYPE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7544,7 +7544,7 @@ class UaComplexNumberType(UaType):
 
 # +++++++++++++++++++ UaRange +++++++++++++++++++++++
 class UaRange(UaType):
-    UA_TYPE = UA_TYPES.RANGE
+    _UA_TYPE = _UA_TYPES._RANGE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7605,7 +7605,7 @@ class UaRange(UaType):
 
 # +++++++++++++++++++ UaDataChangeNotification +++++++++++++++++++++++
 class UaDataChangeNotification(UaType):
-    UA_TYPE = UA_TYPES.DATACHANGENOTIFICATION
+    _UA_TYPE = _UA_TYPES._DATACHANGENOTIFICATION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7696,7 +7696,7 @@ class UaDataChangeNotification(UaType):
 
 # +++++++++++++++++++ UaArgument +++++++++++++++++++++++
 class UaArgument(UaType):
-    UA_TYPE = UA_TYPES.ARGUMENT
+    _UA_TYPE = _UA_TYPES._ARGUMENT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7817,7 +7817,7 @@ class UaArgument(UaType):
 
 # +++++++++++++++++++ UaTransferSubscriptionsRequest +++++++++++++++++++++++
 class UaTransferSubscriptionsRequest(UaType):
-    UA_TYPE = UA_TYPES.TRANSFERSUBSCRIPTIONSREQUEST
+    _UA_TYPE = _UA_TYPES._TRANSFERSUBSCRIPTIONSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7908,7 +7908,7 @@ class UaTransferSubscriptionsRequest(UaType):
 
 # +++++++++++++++++++ UaChannelSecurityToken +++++++++++++++++++++++
 class UaChannelSecurityToken(UaType):
-    UA_TYPE = UA_TYPES.CHANNELSECURITYTOKEN
+    _UA_TYPE = _UA_TYPES._CHANNELSECURITYTOKEN
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -7999,7 +7999,7 @@ class UaChannelSecurityToken(UaType):
 
 # +++++++++++++++++++ UaEventNotificationList +++++++++++++++++++++++
 class UaEventNotificationList(UaType):
-    UA_TYPE = UA_TYPES.EVENTNOTIFICATIONLIST
+    _UA_TYPE = _UA_TYPES._EVENTNOTIFICATIONLIST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8060,7 +8060,7 @@ class UaEventNotificationList(UaType):
 
 # +++++++++++++++++++ UaAnonymousIdentityToken +++++++++++++++++++++++
 class UaAnonymousIdentityToken(UaType):
-    UA_TYPE = UA_TYPES.ANONYMOUSIDENTITYTOKEN
+    _UA_TYPE = _UA_TYPES._ANONYMOUSIDENTITYTOKEN
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8106,7 +8106,7 @@ class UaAnonymousIdentityToken(UaType):
 
 # +++++++++++++++++++ UaAggregateFilter +++++++++++++++++++++++
 class UaAggregateFilter(UaType):
-    UA_TYPE = UA_TYPES.AGGREGATEFILTER
+    _UA_TYPE = _UA_TYPES._AGGREGATEFILTER
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8197,7 +8197,7 @@ class UaAggregateFilter(UaType):
 
 # +++++++++++++++++++ UaRepublishResponse +++++++++++++++++++++++
 class UaRepublishResponse(UaType):
-    UA_TYPE = UA_TYPES.REPUBLISHRESPONSE
+    _UA_TYPE = _UA_TYPES._REPUBLISHRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8258,7 +8258,7 @@ class UaRepublishResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteSubscriptionsResponse +++++++++++++++++++++++
 class UaDeleteSubscriptionsResponse(UaType):
-    UA_TYPE = UA_TYPES.DELETESUBSCRIPTIONSRESPONSE
+    _UA_TYPE = _UA_TYPES._DELETESUBSCRIPTIONSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8364,7 +8364,7 @@ class UaDeleteSubscriptionsResponse(UaType):
 
 # +++++++++++++++++++ UaRegisterNodesRequest +++++++++++++++++++++++
 class UaRegisterNodesRequest(UaType):
-    UA_TYPE = UA_TYPES.REGISTERNODESREQUEST
+    _UA_TYPE = _UA_TYPES._REGISTERNODESREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8440,7 +8440,7 @@ class UaRegisterNodesRequest(UaType):
 
 # +++++++++++++++++++ UaStructureDefinition +++++++++++++++++++++++
 class UaStructureDefinition(UaType):
-    UA_TYPE = UA_TYPES.STRUCTUREDEFINITION
+    _UA_TYPE = _UA_TYPES._STRUCTUREDEFINITION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8546,7 +8546,7 @@ class UaStructureDefinition(UaType):
 
 # +++++++++++++++++++ UaMethodAttributes +++++++++++++++++++++++
 class UaMethodAttributes(UaType):
-    UA_TYPE = UA_TYPES.METHODATTRIBUTES
+    _UA_TYPE = _UA_TYPES._METHODATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8682,7 +8682,7 @@ class UaMethodAttributes(UaType):
 
 # +++++++++++++++++++ UaUserNameIdentityToken +++++++++++++++++++++++
 class UaUserNameIdentityToken(UaType):
-    UA_TYPE = UA_TYPES.USERNAMEIDENTITYTOKEN
+    _UA_TYPE = _UA_TYPES._USERNAMEIDENTITYTOKEN
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8773,7 +8773,7 @@ class UaUserNameIdentityToken(UaType):
 
 # +++++++++++++++++++ UaUnregisterNodesRequest +++++++++++++++++++++++
 class UaUnregisterNodesRequest(UaType):
-    UA_TYPE = UA_TYPES.UNREGISTERNODESREQUEST
+    _UA_TYPE = _UA_TYPES._UNREGISTERNODESREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8849,7 +8849,7 @@ class UaUnregisterNodesRequest(UaType):
 
 # +++++++++++++++++++ UaOpenSecureChannelResponse +++++++++++++++++++++++
 class UaOpenSecureChannelResponse(UaType):
-    UA_TYPE = UA_TYPES.OPENSECURECHANNELRESPONSE
+    _UA_TYPE = _UA_TYPES._OPENSECURECHANNELRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -8940,7 +8940,7 @@ class UaOpenSecureChannelResponse(UaType):
 
 # +++++++++++++++++++ UaSetTriggeringResponse +++++++++++++++++++++++
 class UaSetTriggeringResponse(UaType):
-    UA_TYPE = UA_TYPES.SETTRIGGERINGRESPONSE
+    _UA_TYPE = _UA_TYPES._SETTRIGGERINGRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9106,7 +9106,7 @@ class UaSetTriggeringResponse(UaType):
 
 # +++++++++++++++++++ UaSimpleAttributeOperand +++++++++++++++++++++++
 class UaSimpleAttributeOperand(UaType):
-    UA_TYPE = UA_TYPES.SIMPLEATTRIBUTEOPERAND
+    _UA_TYPE = _UA_TYPES._SIMPLEATTRIBUTEOPERAND
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9212,7 +9212,7 @@ class UaSimpleAttributeOperand(UaType):
 
 # +++++++++++++++++++ UaRepublishRequest +++++++++++++++++++++++
 class UaRepublishRequest(UaType):
-    UA_TYPE = UA_TYPES.REPUBLISHREQUEST
+    _UA_TYPE = _UA_TYPES._REPUBLISHREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9288,7 +9288,7 @@ class UaRepublishRequest(UaType):
 
 # +++++++++++++++++++ UaRegisterNodesResponse +++++++++++++++++++++++
 class UaRegisterNodesResponse(UaType):
-    UA_TYPE = UA_TYPES.REGISTERNODESRESPONSE
+    _UA_TYPE = _UA_TYPES._REGISTERNODESRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9364,7 +9364,7 @@ class UaRegisterNodesResponse(UaType):
 
 # +++++++++++++++++++ UaModifyMonitoredItemsResponse +++++++++++++++++++++++
 class UaModifyMonitoredItemsResponse(UaType):
-    UA_TYPE = UA_TYPES.MODIFYMONITOREDITEMSRESPONSE
+    _UA_TYPE = _UA_TYPES._MODIFYMONITOREDITEMSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9470,7 +9470,7 @@ class UaModifyMonitoredItemsResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteSubscriptionsRequest +++++++++++++++++++++++
 class UaDeleteSubscriptionsRequest(UaType):
-    UA_TYPE = UA_TYPES.DELETESUBSCRIPTIONSREQUEST
+    _UA_TYPE = _UA_TYPES._DELETESUBSCRIPTIONSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9546,7 +9546,7 @@ class UaDeleteSubscriptionsRequest(UaType):
 
 # +++++++++++++++++++ UaBrowsePath +++++++++++++++++++++++
 class UaBrowsePath(UaType):
-    UA_TYPE = UA_TYPES.BROWSEPATH
+    _UA_TYPE = _UA_TYPES._BROWSEPATH
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9607,7 +9607,7 @@ class UaBrowsePath(UaType):
 
 # +++++++++++++++++++ UaObjectAttributes +++++++++++++++++++++++
 class UaObjectAttributes(UaType):
-    UA_TYPE = UA_TYPES.OBJECTATTRIBUTES
+    _UA_TYPE = _UA_TYPES._OBJECTATTRIBUTES
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9728,7 +9728,7 @@ class UaObjectAttributes(UaType):
 
 # +++++++++++++++++++ UaPublishRequest +++++++++++++++++++++++
 class UaPublishRequest(UaType):
-    UA_TYPE = UA_TYPES.PUBLISHREQUEST
+    _UA_TYPE = _UA_TYPES._PUBLISHREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9807,7 +9807,7 @@ class UaPublishRequest(UaType):
 
 # +++++++++++++++++++ UaFindServersRequest +++++++++++++++++++++++
 class UaFindServersRequest(UaType):
-    UA_TYPE = UA_TYPES.FINDSERVERSREQUEST
+    _UA_TYPE = _UA_TYPES._FINDSERVERSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -9928,7 +9928,7 @@ class UaFindServersRequest(UaType):
 
 # +++++++++++++++++++ UaReferenceDescription +++++++++++++++++++++++
 class UaReferenceDescription(UaType):
-    UA_TYPE = UA_TYPES.REFERENCEDESCRIPTION
+    _UA_TYPE = _UA_TYPES._REFERENCEDESCRIPTION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10064,7 +10064,7 @@ class UaReferenceDescription(UaType):
 
 # +++++++++++++++++++ UaCreateSubscriptionRequest +++++++++++++++++++++++
 class UaCreateSubscriptionRequest(UaType):
-    UA_TYPE = UA_TYPES.CREATESUBSCRIPTIONREQUEST
+    _UA_TYPE = _UA_TYPES._CREATESUBSCRIPTIONREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10201,7 +10201,7 @@ class UaCreateSubscriptionRequest(UaType):
 
 # +++++++++++++++++++ UaCallResponse +++++++++++++++++++++++
 class UaCallResponse(UaType):
-    UA_TYPE = UA_TYPES.CALLRESPONSE
+    _UA_TYPE = _UA_TYPES._CALLRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10307,7 +10307,7 @@ class UaCallResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesResponse +++++++++++++++++++++++
 class UaDeleteNodesResponse(UaType):
-    UA_TYPE = UA_TYPES.DELETENODESRESPONSE
+    _UA_TYPE = _UA_TYPES._DELETENODESRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10413,7 +10413,7 @@ class UaDeleteNodesResponse(UaType):
 
 # +++++++++++++++++++ UaModifyMonitoredItemsRequest +++++++++++++++++++++++
 class UaModifyMonitoredItemsRequest(UaType):
-    UA_TYPE = UA_TYPES.MODIFYMONITOREDITEMSREQUEST
+    _UA_TYPE = _UA_TYPES._MODIFYMONITOREDITEMSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10519,7 +10519,7 @@ class UaModifyMonitoredItemsRequest(UaType):
 
 # +++++++++++++++++++ UaServiceFault +++++++++++++++++++++++
 class UaServiceFault(UaType):
-    UA_TYPE = UA_TYPES.SERVICEFAULT
+    _UA_TYPE = _UA_TYPES._SERVICEFAULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10565,7 +10565,7 @@ class UaServiceFault(UaType):
 
 # +++++++++++++++++++ UaPublishResponse +++++++++++++++++++++++
 class UaPublishResponse(UaType):
-    UA_TYPE = UA_TYPES.PUBLISHRESPONSE
+    _UA_TYPE = _UA_TYPES._PUBLISHRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10747,7 +10747,7 @@ class UaPublishResponse(UaType):
 
 # +++++++++++++++++++ UaCreateMonitoredItemsRequest +++++++++++++++++++++++
 class UaCreateMonitoredItemsRequest(UaType):
-    UA_TYPE = UA_TYPES.CREATEMONITOREDITEMSREQUEST
+    _UA_TYPE = _UA_TYPES._CREATEMONITOREDITEMSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10853,7 +10853,7 @@ class UaCreateMonitoredItemsRequest(UaType):
 
 # +++++++++++++++++++ UaOpenSecureChannelRequest +++++++++++++++++++++++
 class UaOpenSecureChannelRequest(UaType):
-    UA_TYPE = UA_TYPES.OPENSECURECHANNELREQUEST
+    _UA_TYPE = _UA_TYPES._OPENSECURECHANNELREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -10974,7 +10974,7 @@ class UaOpenSecureChannelRequest(UaType):
 
 # +++++++++++++++++++ UaCloseSessionRequest +++++++++++++++++++++++
 class UaCloseSessionRequest(UaType):
-    UA_TYPE = UA_TYPES.CLOSESESSIONREQUEST
+    _UA_TYPE = _UA_TYPES._CLOSESESSIONREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11035,7 +11035,7 @@ class UaCloseSessionRequest(UaType):
 
 # +++++++++++++++++++ UaSetTriggeringRequest +++++++++++++++++++++++
 class UaSetTriggeringRequest(UaType):
-    UA_TYPE = UA_TYPES.SETTRIGGERINGREQUEST
+    _UA_TYPE = _UA_TYPES._SETTRIGGERINGREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11171,7 +11171,7 @@ class UaSetTriggeringRequest(UaType):
 
 # +++++++++++++++++++ UaBrowseResult +++++++++++++++++++++++
 class UaBrowseResult(UaType):
-    UA_TYPE = UA_TYPES.BROWSERESULT
+    _UA_TYPE = _UA_TYPES._BROWSERESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11262,7 +11262,7 @@ class UaBrowseResult(UaType):
 
 # +++++++++++++++++++ UaAddReferencesRequest +++++++++++++++++++++++
 class UaAddReferencesRequest(UaType):
-    UA_TYPE = UA_TYPES.ADDREFERENCESREQUEST
+    _UA_TYPE = _UA_TYPES._ADDREFERENCESREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11338,7 +11338,7 @@ class UaAddReferencesRequest(UaType):
 
 # +++++++++++++++++++ UaAddNodesItem +++++++++++++++++++++++
 class UaAddNodesItem(UaType):
-    UA_TYPE = UA_TYPES.ADDNODESITEM
+    _UA_TYPE = _UA_TYPES._ADDNODESITEM
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11474,7 +11474,7 @@ class UaAddNodesItem(UaType):
 
 # +++++++++++++++++++ UaServerStatusDataType +++++++++++++++++++++++
 class UaServerStatusDataType(UaType):
-    UA_TYPE = UA_TYPES.SERVERSTATUSDATATYPE
+    _UA_TYPE = _UA_TYPES._SERVERSTATUSDATATYPE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11595,7 +11595,7 @@ class UaServerStatusDataType(UaType):
 
 # +++++++++++++++++++ UaBrowseNextResponse +++++++++++++++++++++++
 class UaBrowseNextResponse(UaType):
-    UA_TYPE = UA_TYPES.BROWSENEXTRESPONSE
+    _UA_TYPE = _UA_TYPES._BROWSENEXTRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11701,7 +11701,7 @@ class UaBrowseNextResponse(UaType):
 
 # +++++++++++++++++++ UaAxisInformation +++++++++++++++++++++++
 class UaAxisInformation(UaType):
-    UA_TYPE = UA_TYPES.AXISINFORMATION
+    _UA_TYPE = _UA_TYPES._AXISINFORMATION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11822,7 +11822,7 @@ class UaAxisInformation(UaType):
 
 # +++++++++++++++++++ UaApplicationDescription +++++++++++++++++++++++
 class UaApplicationDescription(UaType):
-    UA_TYPE = UA_TYPES.APPLICATIONDESCRIPTION
+    _UA_TYPE = _UA_TYPES._APPLICATIONDESCRIPTION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -11973,7 +11973,7 @@ class UaApplicationDescription(UaType):
 
 # +++++++++++++++++++ UaReadRequest +++++++++++++++++++++++
 class UaReadRequest(UaType):
-    UA_TYPE = UA_TYPES.READREQUEST
+    _UA_TYPE = _UA_TYPES._READREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12079,7 +12079,7 @@ class UaReadRequest(UaType):
 
 # +++++++++++++++++++ UaActivateSessionRequest +++++++++++++++++++++++
 class UaActivateSessionRequest(UaType):
-    UA_TYPE = UA_TYPES.ACTIVATESESSIONREQUEST
+    _UA_TYPE = _UA_TYPES._ACTIVATESESSIONREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12233,7 +12233,7 @@ class UaActivateSessionRequest(UaType):
 
 # +++++++++++++++++++ UaBrowsePathResult +++++++++++++++++++++++
 class UaBrowsePathResult(UaType):
-    UA_TYPE = UA_TYPES.BROWSEPATHRESULT
+    _UA_TYPE = _UA_TYPES._BROWSEPATHRESULT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12309,7 +12309,7 @@ class UaBrowsePathResult(UaType):
 
 # +++++++++++++++++++ UaAddNodesRequest +++++++++++++++++++++++
 class UaAddNodesRequest(UaType):
-    UA_TYPE = UA_TYPES.ADDNODESREQUEST
+    _UA_TYPE = _UA_TYPES._ADDNODESREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12385,7 +12385,7 @@ class UaAddNodesRequest(UaType):
 
 # +++++++++++++++++++ UaBrowseRequest +++++++++++++++++++++++
 class UaBrowseRequest(UaType):
-    UA_TYPE = UA_TYPES.BROWSEREQUEST
+    _UA_TYPE = _UA_TYPES._BROWSEREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12493,7 +12493,7 @@ class UaBrowseRequest(UaType):
 
 # +++++++++++++++++++ UaWriteRequest +++++++++++++++++++++++
 class UaWriteRequest(UaType):
-    UA_TYPE = UA_TYPES.WRITEREQUEST
+    _UA_TYPE = _UA_TYPES._WRITEREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12569,7 +12569,7 @@ class UaWriteRequest(UaType):
 
 # +++++++++++++++++++ UaAddNodesResponse +++++++++++++++++++++++
 class UaAddNodesResponse(UaType):
-    UA_TYPE = UA_TYPES.ADDNODESRESPONSE
+    _UA_TYPE = _UA_TYPES._ADDNODESRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12675,7 +12675,7 @@ class UaAddNodesResponse(UaType):
 
 # +++++++++++++++++++ UaAttributeOperand +++++++++++++++++++++++
 class UaAttributeOperand(UaType):
-    UA_TYPE = UA_TYPES.ATTRIBUTEOPERAND
+    _UA_TYPE = _UA_TYPES._ATTRIBUTEOPERAND
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12781,7 +12781,7 @@ class UaAttributeOperand(UaType):
 
 # +++++++++++++++++++ UaDataChangeFilter +++++++++++++++++++++++
 class UaDataChangeFilter(UaType):
-    UA_TYPE = UA_TYPES.DATACHANGEFILTER
+    _UA_TYPE = _UA_TYPES._DATACHANGEFILTER
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -12857,7 +12857,7 @@ class UaDataChangeFilter(UaType):
 
 # +++++++++++++++++++ UaEndpointDescription +++++++++++++++++++++++
 class UaEndpointDescription(UaType):
-    UA_TYPE = UA_TYPES.ENDPOINTDESCRIPTION
+    _UA_TYPE = _UA_TYPES._ENDPOINTDESCRIPTION
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13023,7 +13023,7 @@ class UaEndpointDescription(UaType):
 
 # +++++++++++++++++++ UaDeleteReferencesRequest +++++++++++++++++++++++
 class UaDeleteReferencesRequest(UaType):
-    UA_TYPE = UA_TYPES.DELETEREFERENCESREQUEST
+    _UA_TYPE = _UA_TYPES._DELETEREFERENCESREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13099,7 +13099,7 @@ class UaDeleteReferencesRequest(UaType):
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsRequest +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
-    UA_TYPE = UA_TYPES.TRANSLATEBROWSEPATHSTONODEIDSREQUEST
+    _UA_TYPE = _UA_TYPES._TRANSLATEBROWSEPATHSTONODEIDSREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13175,7 +13175,7 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
 
 # +++++++++++++++++++ UaFindServersResponse +++++++++++++++++++++++
 class UaFindServersResponse(UaType):
-    UA_TYPE = UA_TYPES.FINDSERVERSRESPONSE
+    _UA_TYPE = _UA_TYPES._FINDSERVERSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13251,7 +13251,7 @@ class UaFindServersResponse(UaType):
 
 # +++++++++++++++++++ UaCreateSessionRequest +++++++++++++++++++++++
 class UaCreateSessionRequest(UaType):
-    UA_TYPE = UA_TYPES.CREATESESSIONREQUEST
+    _UA_TYPE = _UA_TYPES._CREATESESSIONREQUEST
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13417,7 +13417,7 @@ class UaCreateSessionRequest(UaType):
 
 # +++++++++++++++++++ UaContentFilterElement +++++++++++++++++++++++
 class UaContentFilterElement(UaType):
-    UA_TYPE = UA_TYPES.CONTENTFILTERELEMENT
+    _UA_TYPE = _UA_TYPES._CONTENTFILTERELEMENT
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13493,7 +13493,7 @@ class UaContentFilterElement(UaType):
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsResponse +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
-    UA_TYPE = UA_TYPES.TRANSLATEBROWSEPATHSTONODEIDSRESPONSE
+    _UA_TYPE = _UA_TYPES._TRANSLATEBROWSEPATHSTONODEIDSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13599,7 +13599,7 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
 
 # +++++++++++++++++++ UaBrowseResponse +++++++++++++++++++++++
 class UaBrowseResponse(UaType):
-    UA_TYPE = UA_TYPES.BROWSERESPONSE
+    _UA_TYPE = _UA_TYPES._BROWSERESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13705,7 +13705,7 @@ class UaBrowseResponse(UaType):
 
 # +++++++++++++++++++ UaCreateSessionResponse +++++++++++++++++++++++
 class UaCreateSessionResponse(UaType):
-    UA_TYPE = UA_TYPES.CREATESESSIONRESPONSE
+    _UA_TYPE = _UA_TYPES._CREATESESSIONRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13917,7 +13917,7 @@ class UaCreateSessionResponse(UaType):
 
 # +++++++++++++++++++ UaContentFilter +++++++++++++++++++++++
 class UaContentFilter(UaType):
-    UA_TYPE = UA_TYPES.CONTENTFILTER
+    _UA_TYPE = _UA_TYPES._CONTENTFILTER
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -13978,7 +13978,7 @@ class UaContentFilter(UaType):
 
 # +++++++++++++++++++ UaGetEndpointsResponse +++++++++++++++++++++++
 class UaGetEndpointsResponse(UaType):
-    UA_TYPE = UA_TYPES.GETENDPOINTSRESPONSE
+    _UA_TYPE = _UA_TYPES._GETENDPOINTSRESPONSE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -14054,7 +14054,7 @@ class UaGetEndpointsResponse(UaType):
 
 # +++++++++++++++++++ UaEventFilter +++++++++++++++++++++++
 class UaEventFilter(UaType):
-    UA_TYPE = UA_TYPES.EVENTFILTER
+    _UA_TYPE = _UA_TYPES._EVENTFILTER
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:

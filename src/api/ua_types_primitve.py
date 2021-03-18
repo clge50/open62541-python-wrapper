@@ -4,7 +4,7 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from typing import Union, List
-from ua_consts_data_types import *
+from ua_consts_types_raw import _UA_TYPES
 from intermediateApi import ffi, lib
 from ua_types_common import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
@@ -12,7 +12,7 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
-    UA_TYPE = UA_TYPES.BOOLEAN
+    _UA_TYPE = _UA_TYPES._BOOLEAN
 
     def __init__(self, val: Union[Void, bool, List[bool]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -52,7 +52,7 @@ class UaBoolean(UaType):
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
-    UA_TYPE = UA_TYPES.SBYTE
+    _UA_TYPE = _UA_TYPES._SBYTE
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -128,7 +128,7 @@ class UaSByte(UaType):
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
-    UA_TYPE = UA_TYPES.BYTE
+    _UA_TYPE = _UA_TYPES._BYTE
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -204,7 +204,7 @@ class UaByte(UaType):
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
-    UA_TYPE = UA_TYPES.INT16
+    _UA_TYPE = _UA_TYPES._INT16
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -280,7 +280,7 @@ class UaInt16(UaType):
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
-    UA_TYPE = UA_TYPES.UINT16
+    _UA_TYPE = _UA_TYPES._UINT16
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -356,7 +356,7 @@ class UaUInt16(UaType):
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
-    UA_TYPE = UA_TYPES.INT32
+    _UA_TYPE = _UA_TYPES._INT32
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -432,7 +432,7 @@ class UaInt32(UaType):
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
-    UA_TYPE = UA_TYPES.UINT32
+    _UA_TYPE = _UA_TYPES._UINT32
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -506,7 +506,7 @@ class UaUInt32(UaType):
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
-    UA_TYPE = UA_TYPES.INT64
+    _UA_TYPE = _UA_TYPES._INT64
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -582,7 +582,7 @@ class UaInt64(UaType):
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
-    UA_TYPE = UA_TYPES.UINT64
+    _UA_TYPE = _UA_TYPES._UINT64
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -658,7 +658,7 @@ class UaUInt64(UaType):
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
-    UA_TYPE = UA_TYPES.FLOAT
+    _UA_TYPE = _UA_TYPES._FLOAT
 
     def __init__(self, val: Union[Void, float, List[float]] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -722,7 +722,7 @@ class UaFloat(UaType):
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
-    UA_TYPE = UA_TYPES.DOUBLE
+    _UA_TYPE = _UA_TYPES._DOUBLE
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -784,7 +784,7 @@ class UaDouble(UaType):
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
-    UA_TYPE = UA_TYPES.STATUSCODE
+    _UA_TYPE = _UA_TYPES._STATUSCODE
 
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):

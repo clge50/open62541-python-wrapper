@@ -60,7 +60,7 @@ def generate_node_ids():
         file.writelines(lines)
 
 
-def generate_type_ids():
+def generate_data_types():
     with open(dirname + r"/open62541/build/src_generated/open62541/types_generated.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define UA_TYPES_"))
@@ -76,6 +76,23 @@ def generate_type_ids():
 
     os.chdir(dirname + r"/build/open62541/")
     with open('ua_consts_data_types.py', 'w+') as file:
+        file.writelines(lines)
+
+
+def generate_type_ids():
+    with open(dirname + r"/open62541/build/src_generated/open62541/types_generated.h") as file_handler:
+        lines = (line.rstrip() for line in file_handler)
+        lines = (line.replace("#define ", "") for line in lines if line.startswith("#define UA_TYPES_"))
+        lines = list(map(lambda l: "\t_" + l.split()[0].split("_")[2] + " = lib.UA_TYPES[" +
+                                   l.split()[1] + "]\n", lines))
+        lines.pop(0)
+        lines.insert(0, "class _UA_TYPES:\n")
+        lines.insert(0, "from intermediateApi import ffi, lib\n")
+        lines.insert(1, "\n")
+        lines.insert(1, "\n")
+
+    os.chdir(dirname + r"/build/open62541/")
+    with open('ua_consts_types_raw.py', 'w+') as file:
         file.writelines(lines)
 
 
@@ -168,5 +185,6 @@ if __name__ == "__main__":
     generate_api()
     generate_status_codes()
     generate_node_ids()
+    generate_data_types()
     generate_type_ids()
     generate_pdoc()

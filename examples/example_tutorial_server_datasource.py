@@ -5,7 +5,7 @@ from ua import *
 def update_current_time(server: UaServer):
     now = UaDateTime.now()
     value = UaVariant()
-    UaVariant.set_scalar(value, now, UA_TYPES.DATETIME)
+    value.data = now
     current_node_id = UaNodeId(1, "current-time-value-callback")
     server.write_value(current_node_id, value)
 
@@ -15,7 +15,7 @@ def add_current_time_variable(server: UaServer):
     attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
     attr.display_name = UaLocalizedText("en-US", "Current time - value callback")
     attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
-    UaVariant.set_scalar(attr.data_value, now, UA_TYPES.DATETIME)
+    attr.data_value.data = now
 
     current_node_id = UaNodeId(1, "current-time-value-callback")
     current_name = UaQualifiedName(1, "current-time-value-callback")
@@ -50,8 +50,7 @@ def add_value_callback_to_current_time_variable(server: UaServer):
 def read_current_time(server, session_id, session_context, node_id, node_context, source_time_stamp, numeric_range,
                       data_value: UaDataValue):
     now = UaDateTime.now()
-    UaVariant.set_scalar(data_value.variant, now,
-                         UA_TYPES.DATETIME)  # todo: call set scalar implicitly when setting the value
+    data_value.variant.data = now
     data_value.has_variant = UaBoolean(True)
     return UA_STATUSCODES.GOOD
 
@@ -99,7 +98,7 @@ def main():
     add_current_time_data_source_variable(server)
 
     add_current_time_external_data_source(server)
-    ret_val = server.run(UaBoolean(True))
+    ret_val = server.run()
 
 
 if __name__ == "__main__":
