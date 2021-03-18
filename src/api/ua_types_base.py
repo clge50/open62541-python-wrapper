@@ -6,6 +6,7 @@ from typing import Any
 from ua_consts_data_types import *
 from intermediateApi import ffi, lib
 from ua_types_primitve import *
+from ua_types_list import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 
@@ -1453,11 +1454,19 @@ class UaVariant(UaType):
         self._array_length = val
         self._value.arrayLength = val._val
 
+    # TODO: Document this!
+    # ---> it only works if val is of the correct subclass of uatype or ualist with correctly
+    # set class attribute respectively
     @data.setter
     def data(self, val: UaType):
-
-        self._data = val
-        self._value.data = val._ptr
+        if type(val) is UaType or not isinstance(val, UaType):
+            raise TypeError("'val' has to be an instance of a child class of UaType.")
+        if isinstance(val, UaList):
+            if val.ua_type is None:
+                raise TypeError("if 'val' is a UaList the attribute ua_type has to be set correctly.")
+            self.set_array(val, len(val), val.ua_type)
+        else:
+            self.set_scalar(val, val.UA_TYPE)
 
     @array_dimensions_size.setter
     def array_dimensions_size(self, val: SizeT):
@@ -1547,9 +1556,6 @@ class UaVariant(UaType):
             return status_code
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
-
-    # @staticmethod
-    # def __guess_data_type(data) -> 'UaDataType':
 
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
