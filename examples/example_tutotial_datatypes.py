@@ -6,10 +6,12 @@ from ua import *
 
 def variables_basics():
     i = UaInt32(5)
-    j = UaInt32(i.value)
+    j = UaInt32(i)
+    i._value[0] = 7
+    print(j)
 
     s = UaString("test")
-    s2 = UaString(s.value)
+    s2 = UaString(s)
 
     s3 = UaString("test2")
 
