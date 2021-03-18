@@ -5,7 +5,7 @@
 
 # +++++++++++++++++++ UaNodeIdType +++++++++++++++++++++++
 class UaNodeIdType(UaType):
-    TYPE = UA_TYPES.NODEIDTYPE
+    UA_TYPE = UA_TYPES.NODEIDTYPE
     
     val_to_string = dict([
         (0, "UA_NODEIDTYPE_NUMERIC"),
@@ -52,7 +52,7 @@ class UaNodeIdType(UaType):
 
 # +++++++++++++++++++ UaVariantStorageType +++++++++++++++++++++++
 class UaVariantStorageType(UaType):
-    TYPE = UA_TYPES.VARIANTSTORAGETYPE
+    UA_TYPE = UA_TYPES.VARIANTSTORAGETYPE
     
     val_to_string = dict([
         (0, "UA_VARIANT_DATA"),
@@ -89,7 +89,7 @@ class UaVariantStorageType(UaType):
 
 # +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
 class UaExtensionObjectEncoding(UaType):
-    TYPE = UA_TYPES.EXTENSIONOBJECTENCODING
+    UA_TYPE = UA_TYPES.EXTENSIONOBJECTENCODING
     
     val_to_string = dict([
         (0, "UA_EXTENSIONOBJECT_ENCODED_NOBODY"),
@@ -141,7 +141,7 @@ class UaExtensionObjectEncoding(UaType):
 
 # +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
 class UaDataTypeKind(UaType):
-    TYPE = UA_TYPES.DATATYPEKIND
+    UA_TYPE = UA_TYPES.DATATYPEKIND
     
     val_to_string = dict([
         (0, "UA_DATATYPEKIND_BOOLEAN"),
@@ -328,7 +328,7 @@ class UaDataTypeKind(UaType):
 
 # +++++++++++++++++++ UaString +++++++++++++++++++++++
 class UaString(UaType):
-    TYPE = UA_TYPES.STRING
+    UA_TYPE = UA_TYPES.STRING
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -389,7 +389,7 @@ class UaString(UaType):
 
 # +++++++++++++++++++ UaDateTimeStruct +++++++++++++++++++++++
 class UaDateTimeStruct(UaType):
-    TYPE = UA_TYPES.DATETIMESTRUCT
+    UA_TYPE = UA_TYPES.DATETIMESTRUCT
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -555,7 +555,7 @@ class UaDateTimeStruct(UaType):
 
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++
 class UaGuid(UaType):
-    TYPE = UA_TYPES.GUID
+    UA_TYPE = UA_TYPES.GUID
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -646,7 +646,7 @@ class UaGuid(UaType):
 
 # +++++++++++++++++++ UaExpandedNodeId +++++++++++++++++++++++
 class UaExpandedNodeId(UaType):
-    TYPE = UA_TYPES.EXPANDEDNODEID
+    UA_TYPE = UA_TYPES.EXPANDEDNODEID
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -722,7 +722,7 @@ class UaExpandedNodeId(UaType):
 
 # +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
 class UaQualifiedName(UaType):
-    TYPE = UA_TYPES.QUALIFIEDNAME
+    UA_TYPE = UA_TYPES.QUALIFIEDNAME
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -783,7 +783,7 @@ class UaQualifiedName(UaType):
 
 # +++++++++++++++++++ UaLocalizedText +++++++++++++++++++++++
 class UaLocalizedText(UaType):
-    TYPE = UA_TYPES.LOCALIZEDTEXT
+    UA_TYPE = UA_TYPES.LOCALIZEDTEXT
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -844,7 +844,7 @@ class UaLocalizedText(UaType):
 
 # +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
 class UaNumericRangeDimension(UaType):
-    TYPE = UA_TYPES.NUMERICRANGEDIMENSION
+    UA_TYPE = UA_TYPES.NUMERICRANGEDIMENSION
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -905,7 +905,7 @@ class UaNumericRangeDimension(UaType):
 
 # +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
 class UaNumericRange(UaType):
-    TYPE = UA_TYPES.NUMERICRANGE
+    UA_TYPE = UA_TYPES.NUMERICRANGE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -966,7 +966,7 @@ class UaNumericRange(UaType):
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
-    TYPE = UA_TYPES.VARIANT
+    UA_TYPE = UA_TYPES.VARIANT
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1087,7 +1087,7 @@ class UaVariant(UaType):
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
 class UaDataValue(UaType):
-    TYPE = UA_TYPES.DATAVALUE
+    UA_TYPE = UA_TYPES.DATAVALUE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1298,7 +1298,7 @@ class UaDataValue(UaType):
 
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
 class UaDiagnosticInfo(UaType):
-    TYPE = UA_TYPES.DIAGNOSTICINFO
+    UA_TYPE = UA_TYPES.DIAGNOSTICINFO
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1539,7 +1539,7 @@ class UaDiagnosticInfo(UaType):
 
 # +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
 class UaDataTypeMember(UaType):
-    TYPE = UA_TYPES.DATATYPEMEMBER
+    UA_TYPE = UA_TYPES.DATATYPEMEMBER
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1660,7 +1660,7 @@ class UaDataTypeMember(UaType):
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
 class UaDataType(UaType):
-    TYPE = UA_TYPES.DATATYPE
+    UA_TYPE = UA_TYPES.DATATYPE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1841,7 +1841,7 @@ class UaDataType(UaType):
 
 # +++++++++++++++++++ UaDataTypeArray +++++++++++++++++++++++
 class UaDataTypeArray(UaType):
-    TYPE = UA_TYPES.DATATYPEARRAY
+    UA_TYPE = UA_TYPES.DATATYPEARRAY
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:

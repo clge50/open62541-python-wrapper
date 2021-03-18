@@ -4,7 +4,7 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from typing import Union, List
-
+from ua_consts_data_types import *
 from intermediateApi import ffi, lib
 from ua_types_common import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
@@ -12,6 +12,8 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
+    UA_TYPE = UA_TYPES.BOOLEAN
+
     def __init__(self, val: Union[Void, bool, List[bool]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Boolean*", val._ptr)
@@ -50,6 +52,8 @@ class UaBoolean(UaType):
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
+    UA_TYPE = UA_TYPES.SBYTE
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_SByte*", val._ptr)
@@ -124,6 +128,8 @@ class UaSByte(UaType):
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
+    UA_TYPE = UA_TYPES.BYTE
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Byte*", val._ptr)
@@ -198,6 +204,8 @@ class UaByte(UaType):
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
+    UA_TYPE = UA_TYPES.INT16
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Int16*", val._ptr)
@@ -272,6 +280,8 @@ class UaInt16(UaType):
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
+    UA_TYPE = UA_TYPES.UINT16
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_UInt16*", val._ptr)
@@ -346,6 +356,8 @@ class UaUInt16(UaType):
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
+    UA_TYPE = UA_TYPES.INT32
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Int32*", val._ptr)
@@ -420,6 +432,8 @@ class UaInt32(UaType):
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
+    UA_TYPE = UA_TYPES.UINT32
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
@@ -492,6 +506,8 @@ class UaUInt32(UaType):
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
+    UA_TYPE = UA_TYPES.INT64
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Int64*", val._ptr)
@@ -566,6 +582,8 @@ class UaInt64(UaType):
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
+    UA_TYPE = UA_TYPES.UINT64
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_UInt64*", val._ptr)
@@ -640,6 +658,8 @@ class UaUInt64(UaType):
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
+    UA_TYPE = UA_TYPES.FLOAT
+
     def __init__(self, val: Union[Void, float, List[float]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Float*", val._ptr)
@@ -702,6 +722,8 @@ class UaFloat(UaType):
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
+    UA_TYPE = UA_TYPES.DOUBLE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
@@ -762,6 +784,8 @@ class UaDouble(UaType):
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
+    UA_TYPE = UA_TYPES.STATUSCODE
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_StatusCode*", val._ptr)

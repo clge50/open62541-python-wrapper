@@ -5,7 +5,7 @@
 
 # +++++++++++++++++++ UaAttributeId +++++++++++++++++++++++
 class UaAttributeId(UaType):
-    TYPE = UA_TYPES.TTRIBUTEID
+    UA_TYPE = UA_TYPES.TTRIBUTEID
     
     val_to_string = dict([
         (1, "UA_ATTRIBUTEID_NODEID"),
@@ -167,7 +167,7 @@ class UaAttributeId(UaType):
 
 # +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
 class UaRuleHandling(UaType):
-    TYPE = UA_TYPES.RULEHANDLING
+    UA_TYPE = UA_TYPES.RULEHANDLING
     
     val_to_string = dict([
         (0, "UA_RULEHANDLING_DEFAULT"),
@@ -214,7 +214,7 @@ class UaRuleHandling(UaType):
 
 # +++++++++++++++++++ UaOrder +++++++++++++++++++++++
 class UaOrder(UaType):
-    TYPE = UA_TYPES.ORDER
+    UA_TYPE = UA_TYPES.ORDER
     
     val_to_string = dict([
         (-1, "UA_ORDER_LESS"),
@@ -256,7 +256,7 @@ class UaOrder(UaType):
 
 # +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
 class UaSecureChannelState(UaType):
-    TYPE = UA_TYPES.SECURECHANNELSTATE
+    UA_TYPE = UA_TYPES.SECURECHANNELSTATE
     
     val_to_string = dict([
         (0, "UA_SECURECHANNELSTATE_CLOSED"),
@@ -323,7 +323,7 @@ class UaSecureChannelState(UaType):
 
 # +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
 class UaSessionState(UaType):
-    TYPE = UA_TYPES.SESSIONSTATE
+    UA_TYPE = UA_TYPES.SESSIONSTATE
     
     val_to_string = dict([
         (0, "UA_SESSIONSTATE_CLOSED"),
@@ -385,7 +385,7 @@ class UaSessionState(UaType):
 
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
-    TYPE = UA_TYPES.NETWORKSTATISTICS
+    UA_TYPE = UA_TYPES.NETWORKSTATISTICS
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -491,7 +491,7 @@ class UaNetworkStatistics(UaType):
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
 class UaSecureChannelStatistics(UaType):
-    TYPE = UA_TYPES.SECURECHANNELSTATISTICS
+    UA_TYPE = UA_TYPES.SECURECHANNELSTATISTICS
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:

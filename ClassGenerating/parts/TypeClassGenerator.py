@@ -22,7 +22,7 @@ def generator_primitive(prim_name: str):
 
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(prim_name)} +++++++++++++++++++++++
 class {to_python_class_name(prim_name)}(UaType):
-    TYPE = UA_TYPES.{prim_name.strip("UA_").upper()}
+    UA_TYPE = UA_TYPES.{prim_name.replace("UA_", "").upper()}
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -79,7 +79,7 @@ def generator_struct(struct_name: str, attribute_to_type: dict):
 
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(struct_name)} +++++++++++++++++++++++
 class {to_python_class_name(struct_name)}(UaType):
-    TYPE = UA_TYPES.{struct_name.strip("UA_").upper()}
+    UA_TYPE = UA_TYPES.{struct_name.replace("UA_", "").upper()}
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -155,7 +155,7 @@ def generator_enum(enum_name: str, ident_to_val: dict):
 
     class_str = f"""# +++++++++++++++++++ {to_python_class_name(enum_name)} +++++++++++++++++++++++
 class {to_python_class_name(enum_name)}(UaType):
-    TYPE = UA_TYPES.{enum_name.strip("UA_").upper()}
+    UA_TYPE = UA_TYPES.{enum_name.replace("UA_", "").upper()}
     
     val_to_string = dict([
 {("," + new_line).join(map(

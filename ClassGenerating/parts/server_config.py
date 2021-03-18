@@ -10,7 +10,7 @@
 
 # +++++++++++++++++++ UaCertificateVerification +++++++++++++++++++++++
 class UaCertificateVerification(UaType):
-    TYPE = UA_TYPES.CERTIFICATEVERIFICATION
+    UA_TYPE = UA_TYPES.CERTIFICATEVERIFICATION
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -101,7 +101,7 @@ class UaCertificateVerification(UaType):
 
 # +++++++++++++++++++ UaNodestore +++++++++++++++++++++++
 class UaNodestore(UaType):
-    TYPE = UA_TYPES.NODESTORE
+    UA_TYPE = UA_TYPES.NODESTORE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -312,7 +312,7 @@ class UaNodestore(UaType):
 
 # +++++++++++++++++++ UaAccessControl +++++++++++++++++++++++
 class UaAccessControl(UaType):
-    TYPE = UA_TYPES.CCESSCONTROL
+    UA_TYPE = UA_TYPES.CCESSCONTROL
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -568,7 +568,7 @@ class UaAccessControl(UaType):
 
 # +++++++++++++++++++ UaGlobalNodeLifecycle +++++++++++++++++++++++
 class UaGlobalNodeLifecycle(UaType):
-    TYPE = UA_TYPES.GLOBALNODELIFECYCLE
+    UA_TYPE = UA_TYPES.GLOBALNODELIFECYCLE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -659,7 +659,7 @@ class UaGlobalNodeLifecycle(UaType):
 
 # +++++++++++++++++++ UaServerNetworkLayer +++++++++++++++++++++++
 class UaServerNetworkLayer(UaType):
-    TYPE = UA_TYPES.SERVERNETWORKLAYER
+    UA_TYPE = UA_TYPES.SERVERNETWORKLAYER
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -810,7 +810,7 @@ class UaServerNetworkLayer(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicy +++++++++++++++++++++++
 class UaSecurityPolicy(UaType):
-    TYPE = UA_TYPES.SECURITYPOLICY
+    UA_TYPE = UA_TYPES.SECURITYPOLICY
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -991,7 +991,7 @@ class UaSecurityPolicy(UaType):
 
 # +++++++++++++++++++ UaConnectionConfig +++++++++++++++++++++++
 class UaConnectionConfig(UaType):
-    TYPE = UA_TYPES.CONNECTIONCONFIG
+    UA_TYPE = UA_TYPES.CONNECTIONCONFIG
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1127,7 +1127,7 @@ class UaConnectionConfig(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicyAsymmetricModule +++++++++++++++++++++++
 class UaSecurityPolicyAsymmetricModule(UaType):
-    TYPE = UA_TYPES.SECURITYPOLICYASYMMETRICMODULE
+    UA_TYPE = UA_TYPES.SECURITYPOLICYASYMMETRICMODULE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1165,7 +1165,7 @@ class UaSecurityPolicyAsymmetricModule(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicySymmetricModule +++++++++++++++++++++++
 class UaSecurityPolicySymmetricModule(UaType):
-    TYPE = UA_TYPES.SECURITYPOLICYSYMMETRICMODULE
+    UA_TYPE = UA_TYPES.SECURITYPOLICYSYMMETRICMODULE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1203,7 +1203,7 @@ class UaSecurityPolicySymmetricModule(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicyChannelModule +++++++++++++++++++++++
 class UaSecurityPolicyChannelModule(UaType):
-    TYPE = UA_TYPES.SECURITYPOLICYCHANNELMODULE
+    UA_TYPE = UA_TYPES.SECURITYPOLICYCHANNELMODULE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1241,7 +1241,7 @@ class UaSecurityPolicyChannelModule(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicySignatureAlgorithm +++++++++++++++++++++++
 class UaSecurityPolicySignatureAlgorithm(UaType):
-    TYPE = UA_TYPES.SECURITYPOLICYSIGNATUREALGORITHM
+    UA_TYPE = UA_TYPES.SECURITYPOLICYSIGNATUREALGORITHM
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1279,7 +1279,7 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
 
 # +++++++++++++++++++ UaNodeTypeLifecycle +++++++++++++++++++++++
 class UaNodeTypeLifecycle(UaType):
-    TYPE = UA_TYPES.NODETYPELIFECYCLE
+    UA_TYPE = UA_TYPES.NODETYPELIFECYCLE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1340,7 +1340,7 @@ class UaNodeTypeLifecycle(UaType):
 
 # +++++++++++++++++++ UaNodeReferenceKind +++++++++++++++++++++++
 class UaNodeReferenceKind(UaType):
-    TYPE = UA_TYPES.NODEREFERENCEKIND
+    UA_TYPE = UA_TYPES.NODEREFERENCEKIND
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1431,7 +1431,7 @@ class UaNodeReferenceKind(UaType):
 
 # +++++++++++++++++++ UaNodeHead +++++++++++++++++++++++
 class UaNodeHead(UaType):
-    TYPE = UA_TYPES.NODEHEAD
+    UA_TYPE = UA_TYPES.NODEHEAD
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1612,7 +1612,7 @@ class UaNodeHead(UaType):
 
 # +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
 class UaMethodNode(UaType):
-    TYPE = UA_TYPES.METHODNODE
+    UA_TYPE = UA_TYPES.METHODNODE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1688,7 +1688,7 @@ class UaMethodNode(UaType):
 
 # +++++++++++++++++++ UaObjectNode +++++++++++++++++++++++
 class UaObjectNode(UaType):
-    TYPE = UA_TYPES.OBJECTNODE
+    UA_TYPE = UA_TYPES.OBJECTNODE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1749,7 +1749,7 @@ class UaObjectNode(UaType):
 
 # +++++++++++++++++++ UaObjectTypeNode +++++++++++++++++++++++
 class UaObjectTypeNode(UaType):
-    TYPE = UA_TYPES.OBJECTTYPENODE
+    UA_TYPE = UA_TYPES.OBJECTTYPENODE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1825,7 +1825,7 @@ class UaObjectTypeNode(UaType):
 
 # +++++++++++++++++++ UaReferenceTypeSet +++++++++++++++++++++++
 class UaReferenceTypeSet(UaType):
-    TYPE = UA_TYPES.REFERENCETYPESET
+    UA_TYPE = UA_TYPES.REFERENCETYPESET
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1871,7 +1871,7 @@ class UaReferenceTypeSet(UaType):
 
 # +++++++++++++++++++ UaDataTypeNode +++++++++++++++++++++++
 class UaDataTypeNode(UaType):
-    TYPE = UA_TYPES.DATATYPENODE
+    UA_TYPE = UA_TYPES.DATATYPENODE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1932,7 +1932,7 @@ class UaDataTypeNode(UaType):
 
 # +++++++++++++++++++ UaViewNode +++++++++++++++++++++++
 class UaViewNode(UaType):
-    TYPE = UA_TYPES.VIEWNODE
+    UA_TYPE = UA_TYPES.VIEWNODE
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2008,7 +2008,7 @@ class UaViewNode(UaType):
 
 # +++++++++++++++++++ UaServerConfig +++++++++++++++++++++++
 class UaServerConfig(UaType):
-    TYPE = UA_TYPES.SERVERCONFIG
+    UA_TYPE = UA_TYPES.SERVERCONFIG
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -2534,7 +2534,7 @@ class UaServerConfig(UaType):
 
 # +++++++++++++++++++ aa_entry +++++++++++++++++++++++
 class aa_entry(UaType):
-    TYPE = UA_TYPES.AA_ENTRY
+    UA_TYPE = UA_TYPES.AA_ENTRY
     
     def __init__(self, val=None, is_pointer=False):
         if val is None:

@@ -4,12 +4,15 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import ffi, lib
+from ua_consts_data_types import *
 from ua_types_generated_enums import *
 from ua_types_parent import _ptr, _val, _is_null
 
 
 # +++++++++++++++++++ UaViewAttributes +++++++++++++++++++++++
 class UaViewAttributes(UaType):
+    UA_TYPE = UA_TYPES.VIEWATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ViewAttributes*")
@@ -144,6 +147,8 @@ class UaViewAttributes(UaType):
 
 # +++++++++++++++++++ UaXVType +++++++++++++++++++++++
 class UaXVType(UaType):
+    UA_TYPE = UA_TYPES.XVTYPE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_XVType*")
@@ -203,6 +208,8 @@ class UaXVType(UaType):
 
 # +++++++++++++++++++ UaElementOperand +++++++++++++++++++++++
 class UaElementOperand(UaType):
+    UA_TYPE = UA_TYPES.ELEMENTOPERAND
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ElementOperand*")
@@ -247,6 +254,8 @@ class UaElementOperand(UaType):
 
 # +++++++++++++++++++ UaVariableAttributes +++++++++++++++++++++++
 class UaVariableAttributes(UaType):
+    UA_TYPE = UA_TYPES.VARIABLEATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_VariableAttributes*")
@@ -486,6 +495,8 @@ class UaVariableAttributes(UaType):
 
 # +++++++++++++++++++ UaEnumValueType +++++++++++++++++++++++
 class UaEnumValueType(UaType):
+    UA_TYPE = UA_TYPES.ENUMVALUETYPE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EnumValueType*")
@@ -560,6 +571,8 @@ class UaEnumValueType(UaType):
 
 # +++++++++++++++++++ UaEventFieldList +++++++++++++++++++++++
 class UaEventFieldList(UaType):
+    UA_TYPE = UA_TYPES.EVENTFIELDLIST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EventFieldList*")
@@ -634,6 +647,8 @@ class UaEventFieldList(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemCreateResult +++++++++++++++++++++++
 class UaMonitoredItemCreateResult(UaType):
+    UA_TYPE = UA_TYPES.MONITOREDITEMCREATERESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MonitoredItemCreateResult*")
@@ -738,6 +753,8 @@ class UaMonitoredItemCreateResult(UaType):
 
 # +++++++++++++++++++ UaEUInformation +++++++++++++++++++++++
 class UaEUInformation(UaType):
+    UA_TYPE = UA_TYPES.EUINFORMATION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EUInformation*")
@@ -827,6 +844,8 @@ class UaEUInformation(UaType):
 
 # +++++++++++++++++++ UaServerDiagnosticsSummaryDataType +++++++++++++++++++++++
 class UaServerDiagnosticsSummaryDataType(UaType):
+    UA_TYPE = UA_TYPES.SERVERDIAGNOSTICSSUMMARYDATATYPE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ServerDiagnosticsSummaryDataType*")
@@ -1038,6 +1057,8 @@ class UaServerDiagnosticsSummaryDataType(UaType):
 
 # +++++++++++++++++++ UaContentFilterElementResult +++++++++++++++++++++++
 class UaContentFilterElementResult(UaType):
+    UA_TYPE = UA_TYPES.CONTENTFILTERELEMENTRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ContentFilterElementResult*")
@@ -1142,6 +1163,8 @@ class UaContentFilterElementResult(UaType):
 
 # +++++++++++++++++++ UaLiteralOperand +++++++++++++++++++++++
 class UaLiteralOperand(UaType):
+    UA_TYPE = UA_TYPES.LITERALOPERAND
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_LiteralOperand*")
@@ -1186,6 +1209,8 @@ class UaLiteralOperand(UaType):
 
 # +++++++++++++++++++ UaUserIdentityToken +++++++++++++++++++++++
 class UaUserIdentityToken(UaType):
+    UA_TYPE = UA_TYPES.USERIDENTITYTOKEN
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_UserIdentityToken*")
@@ -1230,6 +1255,8 @@ class UaUserIdentityToken(UaType):
 
 # +++++++++++++++++++ UaX509IdentityToken +++++++++++++++++++++++
 class UaX509IdentityToken(UaType):
+    UA_TYPE = UA_TYPES.X509IDENTITYTOKEN
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_X509IdentityToken*")
@@ -1289,6 +1316,8 @@ class UaX509IdentityToken(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemNotification +++++++++++++++++++++++
 class UaMonitoredItemNotification(UaType):
+    UA_TYPE = UA_TYPES.MONITOREDITEMNOTIFICATION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MonitoredItemNotification*")
@@ -1348,6 +1377,8 @@ class UaMonitoredItemNotification(UaType):
 
 # +++++++++++++++++++ UaResponseHeader +++++++++++++++++++++++
 class UaResponseHeader(UaType):
+    UA_TYPE = UA_TYPES.RESPONSEHEADER
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ResponseHeader*")
@@ -1482,6 +1513,8 @@ class UaResponseHeader(UaType):
 
 # +++++++++++++++++++ UaSignatureData +++++++++++++++++++++++
 class UaSignatureData(UaType):
+    UA_TYPE = UA_TYPES.SIGNATUREDATA
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SignatureData*")
@@ -1541,6 +1574,8 @@ class UaSignatureData(UaType):
 
 # +++++++++++++++++++ UaModifySubscriptionResponse +++++++++++++++++++++++
 class UaModifySubscriptionResponse(UaType):
+    UA_TYPE = UA_TYPES.MODIFYSUBSCRIPTIONRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ModifySubscriptionResponse*")
@@ -1630,6 +1665,8 @@ class UaModifySubscriptionResponse(UaType):
 
 # +++++++++++++++++++ UaNodeAttributes +++++++++++++++++++++++
 class UaNodeAttributes(UaType):
+    UA_TYPE = UA_TYPES.NODEATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NodeAttributes*")
@@ -1734,6 +1771,8 @@ class UaNodeAttributes(UaType):
 
 # +++++++++++++++++++ UaActivateSessionResponse +++++++++++++++++++++++
 class UaActivateSessionResponse(UaType):
+    UA_TYPE = UA_TYPES.ACTIVATESESSIONRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ActivateSessionResponse*")
@@ -1853,6 +1892,8 @@ class UaActivateSessionResponse(UaType):
 
 # +++++++++++++++++++ UaEnumField +++++++++++++++++++++++
 class UaEnumField(UaType):
+    UA_TYPE = UA_TYPES.ENUMFIELD
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EnumField*")
@@ -1942,6 +1983,8 @@ class UaEnumField(UaType):
 
 # +++++++++++++++++++ UaVariableTypeAttributes +++++++++++++++++++++++
 class UaVariableTypeAttributes(UaType):
+    UA_TYPE = UA_TYPES.VARIABLETYPEATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_VariableTypeAttributes*")
@@ -2136,6 +2179,8 @@ class UaVariableTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaCallMethodResult +++++++++++++++++++++++
 class UaCallMethodResult(UaType):
+    UA_TYPE = UA_TYPES.CALLMETHODRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CallMethodResult*")
@@ -2265,7 +2310,7 @@ class UaCallMethodResult(UaType):
                 + "\t" * (n + 1) + "input_argument_results_size" + self._input_argument_results_size.__str__(n + 1)
                 + "\t" * (n + 1) + "input_argument_results" + self._input_argument_results.__str__(n + 1)
                 + "\t" * (
-                        n + 1) + "input_argument_diagnostic_infos_size" + self._input_argument_diagnostic_infos_size.__str__(
+                            n + 1) + "input_argument_diagnostic_infos_size" + self._input_argument_diagnostic_infos_size.__str__(
                     n + 1)
                 + "\t" * (n + 1) + "input_argument_diagnostic_infos" + self._input_argument_diagnostic_infos.__str__(
                     n + 1)
@@ -2275,6 +2320,8 @@ class UaCallMethodResult(UaType):
 
 # +++++++++++++++++++ UaSetMonitoringModeResponse +++++++++++++++++++++++
 class UaSetMonitoringModeResponse(UaType):
+    UA_TYPE = UA_TYPES.SETMONITORINGMODERESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SetMonitoringModeResponse*")
@@ -2379,6 +2426,8 @@ class UaSetMonitoringModeResponse(UaType):
 
 # +++++++++++++++++++ UaRequestHeader +++++++++++++++++++++++
 class UaRequestHeader(UaType):
+    UA_TYPE = UA_TYPES.REQUESTHEADER
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RequestHeader*")
@@ -2513,6 +2562,8 @@ class UaRequestHeader(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemModifyResult +++++++++++++++++++++++
 class UaMonitoredItemModifyResult(UaType):
+    UA_TYPE = UA_TYPES.MONITOREDITEMMODIFYRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MonitoredItemModifyResult*")
@@ -2602,6 +2653,8 @@ class UaMonitoredItemModifyResult(UaType):
 
 # +++++++++++++++++++ UaCloseSecureChannelRequest +++++++++++++++++++++++
 class UaCloseSecureChannelRequest(UaType):
+    UA_TYPE = UA_TYPES.CLOSESECURECHANNELREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CloseSecureChannelRequest*")
@@ -2646,6 +2699,8 @@ class UaCloseSecureChannelRequest(UaType):
 
 # +++++++++++++++++++ UaNotificationMessage +++++++++++++++++++++++
 class UaNotificationMessage(UaType):
+    UA_TYPE = UA_TYPES.NOTIFICATIONMESSAGE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NotificationMessage*")
@@ -2735,6 +2790,8 @@ class UaNotificationMessage(UaType):
 
 # +++++++++++++++++++ UaCreateSubscriptionResponse +++++++++++++++++++++++
 class UaCreateSubscriptionResponse(UaType):
+    UA_TYPE = UA_TYPES.CREATESUBSCRIPTIONRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CreateSubscriptionResponse*")
@@ -2839,6 +2896,8 @@ class UaCreateSubscriptionResponse(UaType):
 
 # +++++++++++++++++++ UaEnumDefinition +++++++++++++++++++++++
 class UaEnumDefinition(UaType):
+    UA_TYPE = UA_TYPES.ENUMDEFINITION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EnumDefinition*")
@@ -2898,6 +2957,8 @@ class UaEnumDefinition(UaType):
 
 # +++++++++++++++++++ UaCallMethodRequest +++++++++++++++++++++++
 class UaCallMethodRequest(UaType):
+    UA_TYPE = UA_TYPES.CALLMETHODREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CallMethodRequest*")
@@ -2987,6 +3048,8 @@ class UaCallMethodRequest(UaType):
 
 # +++++++++++++++++++ UaReadResponse +++++++++++++++++++++++
 class UaReadResponse(UaType):
+    UA_TYPE = UA_TYPES.READRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ReadResponse*")
@@ -3091,6 +3154,8 @@ class UaReadResponse(UaType):
 
 # +++++++++++++++++++ UaObjectTypeAttributes +++++++++++++++++++++++
 class UaObjectTypeAttributes(UaType):
+    UA_TYPE = UA_TYPES.OBJECTTYPEATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ObjectTypeAttributes*")
@@ -3210,6 +3275,8 @@ class UaObjectTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaCloseSessionResponse +++++++++++++++++++++++
 class UaCloseSessionResponse(UaType):
+    UA_TYPE = UA_TYPES.CLOSESESSIONRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CloseSessionResponse*")
@@ -3254,6 +3321,8 @@ class UaCloseSessionResponse(UaType):
 
 # +++++++++++++++++++ UaSetPublishingModeRequest +++++++++++++++++++++++
 class UaSetPublishingModeRequest(UaType):
+    UA_TYPE = UA_TYPES.SETPUBLISHINGMODEREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SetPublishingModeRequest*")
@@ -3343,6 +3412,8 @@ class UaSetPublishingModeRequest(UaType):
 
 # +++++++++++++++++++ UaIssuedIdentityToken +++++++++++++++++++++++
 class UaIssuedIdentityToken(UaType):
+    UA_TYPE = UA_TYPES.ISSUEDIDENTITYTOKEN
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_IssuedIdentityToken*")
@@ -3417,6 +3488,8 @@ class UaIssuedIdentityToken(UaType):
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsResponse +++++++++++++++++++++++
 class UaDeleteMonitoredItemsResponse(UaType):
+    UA_TYPE = UA_TYPES.DELETEMONITOREDITEMSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteMonitoredItemsResponse*")
@@ -3521,6 +3594,8 @@ class UaDeleteMonitoredItemsResponse(UaType):
 
 # +++++++++++++++++++ UaBrowseNextRequest +++++++++++++++++++++++
 class UaBrowseNextRequest(UaType):
+    UA_TYPE = UA_TYPES.BROWSENEXTREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowseNextRequest*")
@@ -3610,6 +3685,8 @@ class UaBrowseNextRequest(UaType):
 
 # +++++++++++++++++++ UaModifySubscriptionRequest +++++++++++++++++++++++
 class UaModifySubscriptionRequest(UaType):
+    UA_TYPE = UA_TYPES.MODIFYSUBSCRIPTIONREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ModifySubscriptionRequest*")
@@ -3745,6 +3822,8 @@ class UaModifySubscriptionRequest(UaType):
 
 # +++++++++++++++++++ UaBrowseDescription +++++++++++++++++++++++
 class UaBrowseDescription(UaType):
+    UA_TYPE = UA_TYPES.BROWSEDESCRIPTION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowseDescription*")
@@ -3864,6 +3943,8 @@ class UaBrowseDescription(UaType):
 
 # +++++++++++++++++++ UaSignedSoftwareCertificate +++++++++++++++++++++++
 class UaSignedSoftwareCertificate(UaType):
+    UA_TYPE = UA_TYPES.SIGNEDSOFTWARECERTIFICATE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SignedSoftwareCertificate*")
@@ -3923,6 +4004,8 @@ class UaSignedSoftwareCertificate(UaType):
 
 # +++++++++++++++++++ UaBrowsePathTarget +++++++++++++++++++++++
 class UaBrowsePathTarget(UaType):
+    UA_TYPE = UA_TYPES.BROWSEPATHTARGET
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowsePathTarget*")
@@ -3982,6 +4065,8 @@ class UaBrowsePathTarget(UaType):
 
 # +++++++++++++++++++ UaWriteResponse +++++++++++++++++++++++
 class UaWriteResponse(UaType):
+    UA_TYPE = UA_TYPES.WRITERESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_WriteResponse*")
@@ -4086,6 +4171,8 @@ class UaWriteResponse(UaType):
 
 # +++++++++++++++++++ UaAddNodesResult +++++++++++++++++++++++
 class UaAddNodesResult(UaType):
+    UA_TYPE = UA_TYPES.ADDNODESRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddNodesResult*")
@@ -4145,6 +4232,8 @@ class UaAddNodesResult(UaType):
 
 # +++++++++++++++++++ UaAddReferencesItem +++++++++++++++++++++++
 class UaAddReferencesItem(UaType):
+    UA_TYPE = UA_TYPES.ADDREFERENCESITEM
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddReferencesItem*")
@@ -4264,6 +4353,8 @@ class UaAddReferencesItem(UaType):
 
 # +++++++++++++++++++ UaDeleteReferencesResponse +++++++++++++++++++++++
 class UaDeleteReferencesResponse(UaType):
+    UA_TYPE = UA_TYPES.DELETEREFERENCESRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteReferencesResponse*")
@@ -4368,6 +4459,8 @@ class UaDeleteReferencesResponse(UaType):
 
 # +++++++++++++++++++ UaRelativePathElement +++++++++++++++++++++++
 class UaRelativePathElement(UaType):
+    UA_TYPE = UA_TYPES.RELATIVEPATHELEMENT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RelativePathElement*")
@@ -4457,6 +4550,8 @@ class UaRelativePathElement(UaType):
 
 # +++++++++++++++++++ UaSubscriptionAcknowledgement +++++++++++++++++++++++
 class UaSubscriptionAcknowledgement(UaType):
+    UA_TYPE = UA_TYPES.SUBSCRIPTIONACKNOWLEDGEMENT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SubscriptionAcknowledgement*")
@@ -4516,6 +4611,8 @@ class UaSubscriptionAcknowledgement(UaType):
 
 # +++++++++++++++++++ UaTransferResult +++++++++++++++++++++++
 class UaTransferResult(UaType):
+    UA_TYPE = UA_TYPES.TRANSFERRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_TransferResult*")
@@ -4591,6 +4688,8 @@ class UaTransferResult(UaType):
 
 # +++++++++++++++++++ UaCreateMonitoredItemsResponse +++++++++++++++++++++++
 class UaCreateMonitoredItemsResponse(UaType):
+    UA_TYPE = UA_TYPES.CREATEMONITOREDITEMSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CreateMonitoredItemsResponse*")
@@ -4695,6 +4794,8 @@ class UaCreateMonitoredItemsResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteReferencesItem +++++++++++++++++++++++
 class UaDeleteReferencesItem(UaType):
+    UA_TYPE = UA_TYPES.DELETEREFERENCESITEM
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteReferencesItem*")
@@ -4799,6 +4900,8 @@ class UaDeleteReferencesItem(UaType):
 
 # +++++++++++++++++++ UaWriteValue +++++++++++++++++++++++
 class UaWriteValue(UaType):
+    UA_TYPE = UA_TYPES.WRITEVALUE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_WriteValue*")
@@ -4888,6 +4991,8 @@ class UaWriteValue(UaType):
 
 # +++++++++++++++++++ UaDataTypeAttributes +++++++++++++++++++++++
 class UaDataTypeAttributes(UaType):
+    UA_TYPE = UA_TYPES.DATATYPEATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataTypeAttributes*")
@@ -5007,6 +5112,8 @@ class UaDataTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaTransferSubscriptionsResponse +++++++++++++++++++++++
 class UaTransferSubscriptionsResponse(UaType):
+    UA_TYPE = UA_TYPES.TRANSFERSUBSCRIPTIONSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_TransferSubscriptionsResponse*")
@@ -5111,6 +5218,8 @@ class UaTransferSubscriptionsResponse(UaType):
 
 # +++++++++++++++++++ UaAddReferencesResponse +++++++++++++++++++++++
 class UaAddReferencesResponse(UaType):
+    UA_TYPE = UA_TYPES.ADDREFERENCESRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddReferencesResponse*")
@@ -5215,6 +5324,8 @@ class UaAddReferencesResponse(UaType):
 
 # +++++++++++++++++++ UaBuildInfo +++++++++++++++++++++++
 class UaBuildInfo(UaType):
+    UA_TYPE = UA_TYPES.BUILDINFO
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BuildInfo*")
@@ -5334,6 +5445,8 @@ class UaBuildInfo(UaType):
 
 # +++++++++++++++++++ UaMonitoringParameters +++++++++++++++++++++++
 class UaMonitoringParameters(UaType):
+    UA_TYPE = UA_TYPES.MONITORINGPARAMETERS
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MonitoringParameters*")
@@ -5438,6 +5551,8 @@ class UaMonitoringParameters(UaType):
 
 # +++++++++++++++++++ UaDoubleComplexNumberType +++++++++++++++++++++++
 class UaDoubleComplexNumberType(UaType):
+    UA_TYPE = UA_TYPES.DOUBLECOMPLEXNUMBERTYPE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DoubleComplexNumberType*")
@@ -5497,6 +5612,8 @@ class UaDoubleComplexNumberType(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesItem +++++++++++++++++++++++
 class UaDeleteNodesItem(UaType):
+    UA_TYPE = UA_TYPES.DELETENODESITEM
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteNodesItem*")
@@ -5556,6 +5673,8 @@ class UaDeleteNodesItem(UaType):
 
 # +++++++++++++++++++ UaReadValueId +++++++++++++++++++++++
 class UaReadValueId(UaType):
+    UA_TYPE = UA_TYPES.READVALUEID
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ReadValueId*")
@@ -5645,6 +5764,8 @@ class UaReadValueId(UaType):
 
 # +++++++++++++++++++ UaCallRequest +++++++++++++++++++++++
 class UaCallRequest(UaType):
+    UA_TYPE = UA_TYPES.CALLREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CallRequest*")
@@ -5719,6 +5840,8 @@ class UaCallRequest(UaType):
 
 # +++++++++++++++++++ UaRelativePath +++++++++++++++++++++++
 class UaRelativePath(UaType):
+    UA_TYPE = UA_TYPES.RELATIVEPATH
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RelativePath*")
@@ -5778,6 +5901,8 @@ class UaRelativePath(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesRequest +++++++++++++++++++++++
 class UaDeleteNodesRequest(UaType):
+    UA_TYPE = UA_TYPES.DELETENODESREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteNodesRequest*")
@@ -5852,6 +5977,8 @@ class UaDeleteNodesRequest(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemModifyRequest +++++++++++++++++++++++
 class UaMonitoredItemModifyRequest(UaType):
+    UA_TYPE = UA_TYPES.MONITOREDITEMMODIFYREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MonitoredItemModifyRequest*")
@@ -5911,6 +6038,8 @@ class UaMonitoredItemModifyRequest(UaType):
 
 # +++++++++++++++++++ UaAggregateConfiguration +++++++++++++++++++++++
 class UaAggregateConfiguration(UaType):
+    UA_TYPE = UA_TYPES.AGGREGATECONFIGURATION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AggregateConfiguration*")
@@ -6016,6 +6145,8 @@ class UaAggregateConfiguration(UaType):
 
 # +++++++++++++++++++ UaUnregisterNodesResponse +++++++++++++++++++++++
 class UaUnregisterNodesResponse(UaType):
+    UA_TYPE = UA_TYPES.UNREGISTERNODESRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_UnregisterNodesResponse*")
@@ -6060,6 +6191,8 @@ class UaUnregisterNodesResponse(UaType):
 
 # +++++++++++++++++++ UaContentFilterResult +++++++++++++++++++++++
 class UaContentFilterResult(UaType):
+    UA_TYPE = UA_TYPES.CONTENTFILTERRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ContentFilterResult*")
@@ -6149,6 +6282,8 @@ class UaContentFilterResult(UaType):
 
 # +++++++++++++++++++ UaUserTokenPolicy +++++++++++++++++++++++
 class UaUserTokenPolicy(UaType):
+    UA_TYPE = UA_TYPES.USERTOKENPOLICY
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_UserTokenPolicy*")
@@ -6253,6 +6388,8 @@ class UaUserTokenPolicy(UaType):
 
 # +++++++++++++++++++ UaDeleteMonitoredItemsRequest +++++++++++++++++++++++
 class UaDeleteMonitoredItemsRequest(UaType):
+    UA_TYPE = UA_TYPES.DELETEMONITOREDITEMSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteMonitoredItemsRequest*")
@@ -6342,6 +6479,8 @@ class UaDeleteMonitoredItemsRequest(UaType):
 
 # +++++++++++++++++++ UaSetMonitoringModeRequest +++++++++++++++++++++++
 class UaSetMonitoringModeRequest(UaType):
+    UA_TYPE = UA_TYPES.SETMONITORINGMODEREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SetMonitoringModeRequest*")
@@ -6446,6 +6585,8 @@ class UaSetMonitoringModeRequest(UaType):
 
 # +++++++++++++++++++ UaReferenceTypeAttributes +++++++++++++++++++++++
 class UaReferenceTypeAttributes(UaType):
+    UA_TYPE = UA_TYPES.REFERENCETYPEATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ReferenceTypeAttributes*")
@@ -6595,6 +6736,8 @@ class UaReferenceTypeAttributes(UaType):
 
 # +++++++++++++++++++ UaGetEndpointsRequest +++++++++++++++++++++++
 class UaGetEndpointsRequest(UaType):
+    UA_TYPE = UA_TYPES.GETENDPOINTSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_GetEndpointsRequest*")
@@ -6714,6 +6857,8 @@ class UaGetEndpointsRequest(UaType):
 
 # +++++++++++++++++++ UaCloseSecureChannelResponse +++++++++++++++++++++++
 class UaCloseSecureChannelResponse(UaType):
+    UA_TYPE = UA_TYPES.CLOSESECURECHANNELRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CloseSecureChannelResponse*")
@@ -6758,6 +6903,8 @@ class UaCloseSecureChannelResponse(UaType):
 
 # +++++++++++++++++++ UaViewDescription +++++++++++++++++++++++
 class UaViewDescription(UaType):
+    UA_TYPE = UA_TYPES.VIEWDESCRIPTION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ViewDescription*")
@@ -6832,6 +6979,8 @@ class UaViewDescription(UaType):
 
 # +++++++++++++++++++ UaSetPublishingModeResponse +++++++++++++++++++++++
 class UaSetPublishingModeResponse(UaType):
+    UA_TYPE = UA_TYPES.SETPUBLISHINGMODERESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SetPublishingModeResponse*")
@@ -6936,6 +7085,8 @@ class UaSetPublishingModeResponse(UaType):
 
 # +++++++++++++++++++ UaStatusChangeNotification +++++++++++++++++++++++
 class UaStatusChangeNotification(UaType):
+    UA_TYPE = UA_TYPES.STATUSCHANGENOTIFICATION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_StatusChangeNotification*")
@@ -6995,6 +7146,8 @@ class UaStatusChangeNotification(UaType):
 
 # +++++++++++++++++++ UaStructureField +++++++++++++++++++++++
 class UaStructureField(UaType):
+    UA_TYPE = UA_TYPES.STRUCTUREFIELD
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_StructureField*")
@@ -7144,6 +7297,8 @@ class UaStructureField(UaType):
 
 # +++++++++++++++++++ UaEventFilterResult +++++++++++++++++++++++
 class UaEventFilterResult(UaType):
+    UA_TYPE = UA_TYPES.EVENTFILTERRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EventFilterResult*")
@@ -7243,7 +7398,7 @@ class UaEventFilterResult(UaType):
                 + "\t" * (n + 1) + "select_clause_results_size" + self._select_clause_results_size.__str__(n + 1)
                 + "\t" * (n + 1) + "select_clause_results" + self._select_clause_results.__str__(n + 1)
                 + "\t" * (
-                        n + 1) + "select_clause_diagnostic_infos_size" + self._select_clause_diagnostic_infos_size.__str__(
+                            n + 1) + "select_clause_diagnostic_infos_size" + self._select_clause_diagnostic_infos_size.__str__(
                     n + 1)
                 + "\t" * (n + 1) + "select_clause_diagnostic_infos" + self._select_clause_diagnostic_infos.__str__(
                     n + 1)
@@ -7252,6 +7407,8 @@ class UaEventFilterResult(UaType):
 
 # +++++++++++++++++++ UaMonitoredItemCreateRequest +++++++++++++++++++++++
 class UaMonitoredItemCreateRequest(UaType):
+    UA_TYPE = UA_TYPES.MONITOREDITEMCREATEREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MonitoredItemCreateRequest*")
@@ -7326,6 +7483,8 @@ class UaMonitoredItemCreateRequest(UaType):
 
 # +++++++++++++++++++ UaComplexNumberType +++++++++++++++++++++++
 class UaComplexNumberType(UaType):
+    UA_TYPE = UA_TYPES.COMPLEXNUMBERTYPE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ComplexNumberType*")
@@ -7385,6 +7544,8 @@ class UaComplexNumberType(UaType):
 
 # +++++++++++++++++++ UaRange +++++++++++++++++++++++
 class UaRange(UaType):
+    UA_TYPE = UA_TYPES.RANGE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_Range*")
@@ -7444,6 +7605,8 @@ class UaRange(UaType):
 
 # +++++++++++++++++++ UaDataChangeNotification +++++++++++++++++++++++
 class UaDataChangeNotification(UaType):
+    UA_TYPE = UA_TYPES.DATACHANGENOTIFICATION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataChangeNotification*")
@@ -7533,6 +7696,8 @@ class UaDataChangeNotification(UaType):
 
 # +++++++++++++++++++ UaArgument +++++++++++++++++++++++
 class UaArgument(UaType):
+    UA_TYPE = UA_TYPES.ARGUMENT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_Argument*")
@@ -7652,6 +7817,8 @@ class UaArgument(UaType):
 
 # +++++++++++++++++++ UaTransferSubscriptionsRequest +++++++++++++++++++++++
 class UaTransferSubscriptionsRequest(UaType):
+    UA_TYPE = UA_TYPES.TRANSFERSUBSCRIPTIONSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_TransferSubscriptionsRequest*")
@@ -7741,6 +7908,8 @@ class UaTransferSubscriptionsRequest(UaType):
 
 # +++++++++++++++++++ UaChannelSecurityToken +++++++++++++++++++++++
 class UaChannelSecurityToken(UaType):
+    UA_TYPE = UA_TYPES.CHANNELSECURITYTOKEN
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ChannelSecurityToken*")
@@ -7830,6 +7999,8 @@ class UaChannelSecurityToken(UaType):
 
 # +++++++++++++++++++ UaEventNotificationList +++++++++++++++++++++++
 class UaEventNotificationList(UaType):
+    UA_TYPE = UA_TYPES.EVENTNOTIFICATIONLIST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EventNotificationList*")
@@ -7889,6 +8060,8 @@ class UaEventNotificationList(UaType):
 
 # +++++++++++++++++++ UaAnonymousIdentityToken +++++++++++++++++++++++
 class UaAnonymousIdentityToken(UaType):
+    UA_TYPE = UA_TYPES.ANONYMOUSIDENTITYTOKEN
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AnonymousIdentityToken*")
@@ -7933,6 +8106,8 @@ class UaAnonymousIdentityToken(UaType):
 
 # +++++++++++++++++++ UaAggregateFilter +++++++++++++++++++++++
 class UaAggregateFilter(UaType):
+    UA_TYPE = UA_TYPES.AGGREGATEFILTER
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AggregateFilter*")
@@ -8022,6 +8197,8 @@ class UaAggregateFilter(UaType):
 
 # +++++++++++++++++++ UaRepublishResponse +++++++++++++++++++++++
 class UaRepublishResponse(UaType):
+    UA_TYPE = UA_TYPES.REPUBLISHRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RepublishResponse*")
@@ -8081,6 +8258,8 @@ class UaRepublishResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteSubscriptionsResponse +++++++++++++++++++++++
 class UaDeleteSubscriptionsResponse(UaType):
+    UA_TYPE = UA_TYPES.DELETESUBSCRIPTIONSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteSubscriptionsResponse*")
@@ -8185,6 +8364,8 @@ class UaDeleteSubscriptionsResponse(UaType):
 
 # +++++++++++++++++++ UaRegisterNodesRequest +++++++++++++++++++++++
 class UaRegisterNodesRequest(UaType):
+    UA_TYPE = UA_TYPES.REGISTERNODESREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RegisterNodesRequest*")
@@ -8259,6 +8440,8 @@ class UaRegisterNodesRequest(UaType):
 
 # +++++++++++++++++++ UaStructureDefinition +++++++++++++++++++++++
 class UaStructureDefinition(UaType):
+    UA_TYPE = UA_TYPES.STRUCTUREDEFINITION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_StructureDefinition*")
@@ -8363,6 +8546,8 @@ class UaStructureDefinition(UaType):
 
 # +++++++++++++++++++ UaMethodAttributes +++++++++++++++++++++++
 class UaMethodAttributes(UaType):
+    UA_TYPE = UA_TYPES.METHODATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MethodAttributes*")
@@ -8497,6 +8682,8 @@ class UaMethodAttributes(UaType):
 
 # +++++++++++++++++++ UaUserNameIdentityToken +++++++++++++++++++++++
 class UaUserNameIdentityToken(UaType):
+    UA_TYPE = UA_TYPES.USERNAMEIDENTITYTOKEN
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_UserNameIdentityToken*")
@@ -8586,6 +8773,8 @@ class UaUserNameIdentityToken(UaType):
 
 # +++++++++++++++++++ UaUnregisterNodesRequest +++++++++++++++++++++++
 class UaUnregisterNodesRequest(UaType):
+    UA_TYPE = UA_TYPES.UNREGISTERNODESREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_UnregisterNodesRequest*")
@@ -8660,6 +8849,8 @@ class UaUnregisterNodesRequest(UaType):
 
 # +++++++++++++++++++ UaOpenSecureChannelResponse +++++++++++++++++++++++
 class UaOpenSecureChannelResponse(UaType):
+    UA_TYPE = UA_TYPES.OPENSECURECHANNELRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_OpenSecureChannelResponse*")
@@ -8749,6 +8940,8 @@ class UaOpenSecureChannelResponse(UaType):
 
 # +++++++++++++++++++ UaSetTriggeringResponse +++++++++++++++++++++++
 class UaSetTriggeringResponse(UaType):
+    UA_TYPE = UA_TYPES.SETTRIGGERINGRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SetTriggeringResponse*")
@@ -8913,6 +9106,8 @@ class UaSetTriggeringResponse(UaType):
 
 # +++++++++++++++++++ UaSimpleAttributeOperand +++++++++++++++++++++++
 class UaSimpleAttributeOperand(UaType):
+    UA_TYPE = UA_TYPES.SIMPLEATTRIBUTEOPERAND
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SimpleAttributeOperand*")
@@ -9017,6 +9212,8 @@ class UaSimpleAttributeOperand(UaType):
 
 # +++++++++++++++++++ UaRepublishRequest +++++++++++++++++++++++
 class UaRepublishRequest(UaType):
+    UA_TYPE = UA_TYPES.REPUBLISHREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RepublishRequest*")
@@ -9091,6 +9288,8 @@ class UaRepublishRequest(UaType):
 
 # +++++++++++++++++++ UaRegisterNodesResponse +++++++++++++++++++++++
 class UaRegisterNodesResponse(UaType):
+    UA_TYPE = UA_TYPES.REGISTERNODESRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_RegisterNodesResponse*")
@@ -9165,6 +9364,8 @@ class UaRegisterNodesResponse(UaType):
 
 # +++++++++++++++++++ UaModifyMonitoredItemsResponse +++++++++++++++++++++++
 class UaModifyMonitoredItemsResponse(UaType):
+    UA_TYPE = UA_TYPES.MODIFYMONITOREDITEMSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ModifyMonitoredItemsResponse*")
@@ -9269,6 +9470,8 @@ class UaModifyMonitoredItemsResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteSubscriptionsRequest +++++++++++++++++++++++
 class UaDeleteSubscriptionsRequest(UaType):
+    UA_TYPE = UA_TYPES.DELETESUBSCRIPTIONSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteSubscriptionsRequest*")
@@ -9343,6 +9546,8 @@ class UaDeleteSubscriptionsRequest(UaType):
 
 # +++++++++++++++++++ UaBrowsePath +++++++++++++++++++++++
 class UaBrowsePath(UaType):
+    UA_TYPE = UA_TYPES.BROWSEPATH
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowsePath*")
@@ -9402,6 +9607,8 @@ class UaBrowsePath(UaType):
 
 # +++++++++++++++++++ UaObjectAttributes +++++++++++++++++++++++
 class UaObjectAttributes(UaType):
+    UA_TYPE = UA_TYPES.OBJECTATTRIBUTES
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ObjectAttributes*")
@@ -9521,6 +9728,8 @@ class UaObjectAttributes(UaType):
 
 # +++++++++++++++++++ UaPublishRequest +++++++++++++++++++++++
 class UaPublishRequest(UaType):
+    UA_TYPE = UA_TYPES.PUBLISHREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_PublishRequest*")
@@ -9591,13 +9800,15 @@ class UaPublishRequest(UaType):
         return ("(UaPublishRequest) :\n"
                 + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
                 + "\t" * (
-                        n + 1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(
+                            n + 1) + "subscription_acknowledgements_size" + self._subscription_acknowledgements_size.__str__(
                     n + 1)
                 + "\t" * (n + 1) + "subscription_acknowledgements" + self._subscription_acknowledgements.__str__(n + 1))
 
 
 # +++++++++++++++++++ UaFindServersRequest +++++++++++++++++++++++
 class UaFindServersRequest(UaType):
+    UA_TYPE = UA_TYPES.FINDSERVERSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_FindServersRequest*")
@@ -9717,6 +9928,8 @@ class UaFindServersRequest(UaType):
 
 # +++++++++++++++++++ UaReferenceDescription +++++++++++++++++++++++
 class UaReferenceDescription(UaType):
+    UA_TYPE = UA_TYPES.REFERENCEDESCRIPTION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ReferenceDescription*")
@@ -9851,6 +10064,8 @@ class UaReferenceDescription(UaType):
 
 # +++++++++++++++++++ UaCreateSubscriptionRequest +++++++++++++++++++++++
 class UaCreateSubscriptionRequest(UaType):
+    UA_TYPE = UA_TYPES.CREATESUBSCRIPTIONREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CreateSubscriptionRequest*")
@@ -9986,6 +10201,8 @@ class UaCreateSubscriptionRequest(UaType):
 
 # +++++++++++++++++++ UaCallResponse +++++++++++++++++++++++
 class UaCallResponse(UaType):
+    UA_TYPE = UA_TYPES.CALLRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CallResponse*")
@@ -10090,6 +10307,8 @@ class UaCallResponse(UaType):
 
 # +++++++++++++++++++ UaDeleteNodesResponse +++++++++++++++++++++++
 class UaDeleteNodesResponse(UaType):
+    UA_TYPE = UA_TYPES.DELETENODESRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteNodesResponse*")
@@ -10194,6 +10413,8 @@ class UaDeleteNodesResponse(UaType):
 
 # +++++++++++++++++++ UaModifyMonitoredItemsRequest +++++++++++++++++++++++
 class UaModifyMonitoredItemsRequest(UaType):
+    UA_TYPE = UA_TYPES.MODIFYMONITOREDITEMSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ModifyMonitoredItemsRequest*")
@@ -10298,6 +10519,8 @@ class UaModifyMonitoredItemsRequest(UaType):
 
 # +++++++++++++++++++ UaServiceFault +++++++++++++++++++++++
 class UaServiceFault(UaType):
+    UA_TYPE = UA_TYPES.SERVICEFAULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ServiceFault*")
@@ -10342,6 +10565,8 @@ class UaServiceFault(UaType):
 
 # +++++++++++++++++++ UaPublishResponse +++++++++++++++++++++++
 class UaPublishResponse(UaType):
+    UA_TYPE = UA_TYPES.PUBLISHRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_PublishResponse*")
@@ -10522,6 +10747,8 @@ class UaPublishResponse(UaType):
 
 # +++++++++++++++++++ UaCreateMonitoredItemsRequest +++++++++++++++++++++++
 class UaCreateMonitoredItemsRequest(UaType):
+    UA_TYPE = UA_TYPES.CREATEMONITOREDITEMSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CreateMonitoredItemsRequest*")
@@ -10626,6 +10853,8 @@ class UaCreateMonitoredItemsRequest(UaType):
 
 # +++++++++++++++++++ UaOpenSecureChannelRequest +++++++++++++++++++++++
 class UaOpenSecureChannelRequest(UaType):
+    UA_TYPE = UA_TYPES.OPENSECURECHANNELREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_OpenSecureChannelRequest*")
@@ -10745,6 +10974,8 @@ class UaOpenSecureChannelRequest(UaType):
 
 # +++++++++++++++++++ UaCloseSessionRequest +++++++++++++++++++++++
 class UaCloseSessionRequest(UaType):
+    UA_TYPE = UA_TYPES.CLOSESESSIONREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CloseSessionRequest*")
@@ -10804,6 +11035,8 @@ class UaCloseSessionRequest(UaType):
 
 # +++++++++++++++++++ UaSetTriggeringRequest +++++++++++++++++++++++
 class UaSetTriggeringRequest(UaType):
+    UA_TYPE = UA_TYPES.SETTRIGGERINGREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SetTriggeringRequest*")
@@ -10938,6 +11171,8 @@ class UaSetTriggeringRequest(UaType):
 
 # +++++++++++++++++++ UaBrowseResult +++++++++++++++++++++++
 class UaBrowseResult(UaType):
+    UA_TYPE = UA_TYPES.BROWSERESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowseResult*")
@@ -11027,6 +11262,8 @@ class UaBrowseResult(UaType):
 
 # +++++++++++++++++++ UaAddReferencesRequest +++++++++++++++++++++++
 class UaAddReferencesRequest(UaType):
+    UA_TYPE = UA_TYPES.ADDREFERENCESREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddReferencesRequest*")
@@ -11101,6 +11338,8 @@ class UaAddReferencesRequest(UaType):
 
 # +++++++++++++++++++ UaAddNodesItem +++++++++++++++++++++++
 class UaAddNodesItem(UaType):
+    UA_TYPE = UA_TYPES.ADDNODESITEM
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddNodesItem*")
@@ -11235,6 +11474,8 @@ class UaAddNodesItem(UaType):
 
 # +++++++++++++++++++ UaServerStatusDataType +++++++++++++++++++++++
 class UaServerStatusDataType(UaType):
+    UA_TYPE = UA_TYPES.SERVERSTATUSDATATYPE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ServerStatusDataType*")
@@ -11354,6 +11595,8 @@ class UaServerStatusDataType(UaType):
 
 # +++++++++++++++++++ UaBrowseNextResponse +++++++++++++++++++++++
 class UaBrowseNextResponse(UaType):
+    UA_TYPE = UA_TYPES.BROWSENEXTRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowseNextResponse*")
@@ -11458,6 +11701,8 @@ class UaBrowseNextResponse(UaType):
 
 # +++++++++++++++++++ UaAxisInformation +++++++++++++++++++++++
 class UaAxisInformation(UaType):
+    UA_TYPE = UA_TYPES.AXISINFORMATION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AxisInformation*")
@@ -11577,6 +11822,8 @@ class UaAxisInformation(UaType):
 
 # +++++++++++++++++++ UaApplicationDescription +++++++++++++++++++++++
 class UaApplicationDescription(UaType):
+    UA_TYPE = UA_TYPES.APPLICATIONDESCRIPTION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ApplicationDescription*")
@@ -11726,6 +11973,8 @@ class UaApplicationDescription(UaType):
 
 # +++++++++++++++++++ UaReadRequest +++++++++++++++++++++++
 class UaReadRequest(UaType):
+    UA_TYPE = UA_TYPES.READREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ReadRequest*")
@@ -11830,6 +12079,8 @@ class UaReadRequest(UaType):
 
 # +++++++++++++++++++ UaActivateSessionRequest +++++++++++++++++++++++
 class UaActivateSessionRequest(UaType):
+    UA_TYPE = UA_TYPES.ACTIVATESESSIONREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ActivateSessionRequest*")
@@ -11971,7 +12222,7 @@ class UaActivateSessionRequest(UaType):
                 + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
                 + "\t" * (n + 1) + "client_signature" + self._client_signature.__str__(n + 1)
                 + "\t" * (
-                        n + 1) + "client_software_certificates_size" + self._client_software_certificates_size.__str__(
+                            n + 1) + "client_software_certificates_size" + self._client_software_certificates_size.__str__(
                     n + 1)
                 + "\t" * (n + 1) + "client_software_certificates" + self._client_software_certificates.__str__(n + 1)
                 + "\t" * (n + 1) + "locale_ids_size" + self._locale_ids_size.__str__(n + 1)
@@ -11982,6 +12233,8 @@ class UaActivateSessionRequest(UaType):
 
 # +++++++++++++++++++ UaBrowsePathResult +++++++++++++++++++++++
 class UaBrowsePathResult(UaType):
+    UA_TYPE = UA_TYPES.BROWSEPATHRESULT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowsePathResult*")
@@ -12056,6 +12309,8 @@ class UaBrowsePathResult(UaType):
 
 # +++++++++++++++++++ UaAddNodesRequest +++++++++++++++++++++++
 class UaAddNodesRequest(UaType):
+    UA_TYPE = UA_TYPES.ADDNODESREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddNodesRequest*")
@@ -12130,6 +12385,8 @@ class UaAddNodesRequest(UaType):
 
 # +++++++++++++++++++ UaBrowseRequest +++++++++++++++++++++++
 class UaBrowseRequest(UaType):
+    UA_TYPE = UA_TYPES.BROWSEREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowseRequest*")
@@ -12228,7 +12485,7 @@ class UaBrowseRequest(UaType):
                 + "\t" * (n + 1) + "request_header" + self._request_header.__str__(n + 1)
                 + "\t" * (n + 1) + "view" + self._view.__str__(n + 1)
                 + "\t" * (
-                        n + 1) + "requested_max_references_per_node" + self._requested_max_references_per_node.__str__(
+                            n + 1) + "requested_max_references_per_node" + self._requested_max_references_per_node.__str__(
                     n + 1)
                 + "\t" * (n + 1) + "nodes_to_browse_size" + self._nodes_to_browse_size.__str__(n + 1)
                 + "\t" * (n + 1) + "nodes_to_browse" + self._nodes_to_browse.__str__(n + 1))
@@ -12236,6 +12493,8 @@ class UaBrowseRequest(UaType):
 
 # +++++++++++++++++++ UaWriteRequest +++++++++++++++++++++++
 class UaWriteRequest(UaType):
+    UA_TYPE = UA_TYPES.WRITEREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_WriteRequest*")
@@ -12310,6 +12569,8 @@ class UaWriteRequest(UaType):
 
 # +++++++++++++++++++ UaAddNodesResponse +++++++++++++++++++++++
 class UaAddNodesResponse(UaType):
+    UA_TYPE = UA_TYPES.ADDNODESRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AddNodesResponse*")
@@ -12414,6 +12675,8 @@ class UaAddNodesResponse(UaType):
 
 # +++++++++++++++++++ UaAttributeOperand +++++++++++++++++++++++
 class UaAttributeOperand(UaType):
+    UA_TYPE = UA_TYPES.ATTRIBUTEOPERAND
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AttributeOperand*")
@@ -12518,6 +12781,8 @@ class UaAttributeOperand(UaType):
 
 # +++++++++++++++++++ UaDataChangeFilter +++++++++++++++++++++++
 class UaDataChangeFilter(UaType):
+    UA_TYPE = UA_TYPES.DATACHANGEFILTER
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataChangeFilter*")
@@ -12592,6 +12857,8 @@ class UaDataChangeFilter(UaType):
 
 # +++++++++++++++++++ UaEndpointDescription +++++++++++++++++++++++
 class UaEndpointDescription(UaType):
+    UA_TYPE = UA_TYPES.ENDPOINTDESCRIPTION
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EndpointDescription*")
@@ -12756,6 +13023,8 @@ class UaEndpointDescription(UaType):
 
 # +++++++++++++++++++ UaDeleteReferencesRequest +++++++++++++++++++++++
 class UaDeleteReferencesRequest(UaType):
+    UA_TYPE = UA_TYPES.DELETEREFERENCESREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DeleteReferencesRequest*")
@@ -12830,6 +13099,8 @@ class UaDeleteReferencesRequest(UaType):
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsRequest +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
+    UA_TYPE = UA_TYPES.TRANSLATEBROWSEPATHSTONODEIDSREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_TranslateBrowsePathsToNodeIdsRequest*")
@@ -12904,6 +13175,8 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
 
 # +++++++++++++++++++ UaFindServersResponse +++++++++++++++++++++++
 class UaFindServersResponse(UaType):
+    UA_TYPE = UA_TYPES.FINDSERVERSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_FindServersResponse*")
@@ -12978,6 +13251,8 @@ class UaFindServersResponse(UaType):
 
 # +++++++++++++++++++ UaCreateSessionRequest +++++++++++++++++++++++
 class UaCreateSessionRequest(UaType):
+    UA_TYPE = UA_TYPES.CREATESESSIONREQUEST
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CreateSessionRequest*")
@@ -13142,6 +13417,8 @@ class UaCreateSessionRequest(UaType):
 
 # +++++++++++++++++++ UaContentFilterElement +++++++++++++++++++++++
 class UaContentFilterElement(UaType):
+    UA_TYPE = UA_TYPES.CONTENTFILTERELEMENT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ContentFilterElement*")
@@ -13216,6 +13493,8 @@ class UaContentFilterElement(UaType):
 
 # +++++++++++++++++++ UaTranslateBrowsePathsToNodeIdsResponse +++++++++++++++++++++++
 class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
+    UA_TYPE = UA_TYPES.TRANSLATEBROWSEPATHSTONODEIDSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_TranslateBrowsePathsToNodeIdsResponse*")
@@ -13320,6 +13599,8 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
 
 # +++++++++++++++++++ UaBrowseResponse +++++++++++++++++++++++
 class UaBrowseResponse(UaType):
+    UA_TYPE = UA_TYPES.BROWSERESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_BrowseResponse*")
@@ -13424,6 +13705,8 @@ class UaBrowseResponse(UaType):
 
 # +++++++++++++++++++ UaCreateSessionResponse +++++++++++++++++++++++
 class UaCreateSessionResponse(UaType):
+    UA_TYPE = UA_TYPES.CREATESESSIONRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CreateSessionResponse*")
@@ -13626,9 +13909,7 @@ class UaCreateSessionResponse(UaType):
                 + "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1)
                 + "\t" * (n + 1) + "server_endpoints_size" + self._server_endpoints_size.__str__(n + 1)
                 + "\t" * (n + 1) + "server_endpoints" + self._server_endpoints.__str__(n + 1)
-                + "\t" * (
-                        n + 1) + "server_software_certificates_size" + self._server_software_certificates_size.__str__(
-                    n + 1)
+                + "\t" * (n + 1) + "server_software_certificates_size" + self._server_software_certificates_size.__str__(n + 1)
                 + "\t" * (n + 1) + "server_software_certificates" + self._server_software_certificates.__str__(n + 1)
                 + "\t" * (n + 1) + "server_signature" + self._server_signature.__str__(n + 1)
                 + "\t" * (n + 1) + "max_request_message_size" + self._max_request_message_size.__str__(n + 1))
@@ -13636,6 +13917,8 @@ class UaCreateSessionResponse(UaType):
 
 # +++++++++++++++++++ UaContentFilter +++++++++++++++++++++++
 class UaContentFilter(UaType):
+    UA_TYPE = UA_TYPES.CONTENTFILTER
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ContentFilter*")
@@ -13695,6 +13978,8 @@ class UaContentFilter(UaType):
 
 # +++++++++++++++++++ UaGetEndpointsResponse +++++++++++++++++++++++
 class UaGetEndpointsResponse(UaType):
+    UA_TYPE = UA_TYPES.GETENDPOINTSRESPONSE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_GetEndpointsResponse*")
@@ -13769,6 +14054,8 @@ class UaGetEndpointsResponse(UaType):
 
 # +++++++++++++++++++ UaEventFilter +++++++++++++++++++++++
 class UaEventFilter(UaType):
+    UA_TYPE = UA_TYPES.EVENTFILTER
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_EventFilter*")

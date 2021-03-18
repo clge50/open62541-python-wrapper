@@ -4,16 +4,15 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import ffi, lib
+from ua_consts_data_types import *
 from ua_types_base import *
 from ua_types_parent import _ptr, _val
 
 
-# -------------------------------------------------------------
-# --------------------------- Enums ---------------------------
-# -------------------------------------------------------------
-
 # +++++++++++++++++++ UaMessageSecurityMode +++++++++++++++++++++++
 class UaMessageSecurityMode(UaType):
+    UA_TYPE = UA_TYPES.MESSAGESECURITYMODE
+
     val_to_string = dict([
         (0, "UA_MESSAGESECURITYMODE_INVALID"),
         (1, "UA_MESSAGESECURITYMODE_NONE"),
@@ -64,6 +63,8 @@ class UaMessageSecurityMode(UaType):
 
 # +++++++++++++++++++ UaStructureType +++++++++++++++++++++++
 class UaStructureType(UaType):
+    UA_TYPE = UA_TYPES.STRUCTURETYPE
+
     val_to_string = dict([
         (0, "UA_STRUCTURETYPE_STRUCTURE"),
         (1, "UA_STRUCTURETYPE_STRUCTUREWITHOPTIONALFIELDS"),
@@ -109,6 +110,8 @@ class UaStructureType(UaType):
 
 # +++++++++++++++++++ UaMonitoringMode +++++++++++++++++++++++
 class UaMonitoringMode(UaType):
+    UA_TYPE = UA_TYPES.MONITORINGMODE
+
     val_to_string = dict([
         (0, "UA_MONITORINGMODE_DISABLED"),
         (1, "UA_MONITORINGMODE_SAMPLING"),
@@ -154,6 +157,8 @@ class UaMonitoringMode(UaType):
 
 # +++++++++++++++++++ UaBrowseResultMask +++++++++++++++++++++++
 class UaBrowseResultMask(UaType):
+    UA_TYPE = UA_TYPES.BROWSERESULTMASK
+
     val_to_string = dict([
         (0, "UA_BROWSERESULTMASK_NONE"),
         (1, "UA_BROWSERESULTMASK_REFERENCETYPEID"),
@@ -234,6 +239,8 @@ class UaBrowseResultMask(UaType):
 
 # +++++++++++++++++++ UaAxisScaleEnumeration +++++++++++++++++++++++
 class UaAxisScaleEnumeration(UaType):
+    UA_TYPE = UA_TYPES.AXISSCALEENUMERATION
+
     val_to_string = dict([
         (0, "UA_AXISSCALEENUMERATION_LINEAR"),
         (1, "UA_AXISSCALEENUMERATION_LOG"),
@@ -279,6 +286,8 @@ class UaAxisScaleEnumeration(UaType):
 
 # +++++++++++++++++++ UaBrowseDirection +++++++++++++++++++++++
 class UaBrowseDirection(UaType):
+    UA_TYPE = UA_TYPES.BROWSEDIRECTION
+
     val_to_string = dict([
         (0, "UA_BROWSEDIRECTION_FORWARD"),
         (1, "UA_BROWSEDIRECTION_INVERSE"),
@@ -329,6 +338,8 @@ class UaBrowseDirection(UaType):
 
 # +++++++++++++++++++ UaTimestampsToReturn +++++++++++++++++++++++
 class UaTimestampsToReturn(UaType):
+    UA_TYPE = UA_TYPES.TIMESTAMPSTORETURN
+
     val_to_string = dict([
         (0, "UA_TIMESTAMPSTORETURN_SOURCE"),
         (1, "UA_TIMESTAMPSTORETURN_SERVER"),
@@ -384,6 +395,8 @@ class UaTimestampsToReturn(UaType):
 
 # +++++++++++++++++++ UaNodeClass +++++++++++++++++++++++
 class UaNodeClass(UaType):
+    UA_TYPE = UA_TYPES.NODECLASS
+
     val_to_string = dict([
         (0, "UA_NODECLASS_UNSPECIFIED"),
         (1, "UA_NODECLASS_OBJECT"),
@@ -459,6 +472,8 @@ class UaNodeClass(UaType):
 
 # +++++++++++++++++++ UaSecurityTokenRequestType +++++++++++++++++++++++
 class UaSecurityTokenRequestType(UaType):
+    UA_TYPE = UA_TYPES.SECURITYTOKENREQUESTTYPE
+
     val_to_string = dict([
         (0, "UA_SECURITYTOKENREQUESTTYPE_ISSUE"),
         (1, "UA_SECURITYTOKENREQUESTTYPE_RENEW"),
@@ -499,6 +514,8 @@ class UaSecurityTokenRequestType(UaType):
 
 # +++++++++++++++++++ UaApplicationType +++++++++++++++++++++++
 class UaApplicationType(UaType):
+    UA_TYPE = UA_TYPES.APPLICATIONTYPE
+
     val_to_string = dict([
         (0, "UA_APPLICATIONTYPE_SERVER"),
         (1, "UA_APPLICATIONTYPE_CLIENT"),
@@ -549,6 +566,8 @@ class UaApplicationType(UaType):
 
 # +++++++++++++++++++ UaDeadbandType +++++++++++++++++++++++
 class UaDeadbandType(UaType):
+    UA_TYPE = UA_TYPES.DEADBANDTYPE
+
     val_to_string = dict([
         (0, "UA_DEADBANDTYPE_NONE"),
         (1, "UA_DEADBANDTYPE_ABSOLUTE"),
@@ -594,6 +613,8 @@ class UaDeadbandType(UaType):
 
 # +++++++++++++++++++ UaDataChangeTrigger +++++++++++++++++++++++
 class UaDataChangeTrigger(UaType):
+    UA_TYPE = UA_TYPES.DATACHANGETRIGGER
+
     val_to_string = dict([
         (0, "UA_DATACHANGETRIGGER_STATUS"),
         (1, "UA_DATACHANGETRIGGER_STATUSVALUE"),
@@ -639,6 +660,8 @@ class UaDataChangeTrigger(UaType):
 
 # +++++++++++++++++++ UaUserTokenType +++++++++++++++++++++++
 class UaUserTokenType(UaType):
+    UA_TYPE = UA_TYPES.USERTOKENTYPE
+
     val_to_string = dict([
         (0, "UA_USERTOKENTYPE_ANONYMOUS"),
         (1, "UA_USERTOKENTYPE_USERNAME"),
@@ -689,6 +712,8 @@ class UaUserTokenType(UaType):
 
 # +++++++++++++++++++ UaNodeAttributesMask +++++++++++++++++++++++
 class UaNodeAttributesMask(UaType):
+    UA_TYPE = UA_TYPES.NODEATTRIBUTESMASK
+
     val_to_string = dict([
         (0, "UA_NODEATTRIBUTESMASK_NONE"),
         (1, "UA_NODEATTRIBUTESMASK_ACCESSLEVEL"),
@@ -894,6 +919,8 @@ class UaNodeAttributesMask(UaType):
 
 # +++++++++++++++++++ UaServerState +++++++++++++++++++++++
 class UaServerState(UaType):
+    UA_TYPE = UA_TYPES.SERVERSTATE
+
     val_to_string = dict([
         (0, "UA_SERVERSTATE_RUNNING"),
         (1, "UA_SERVERSTATE_FAILED"),
@@ -964,6 +991,8 @@ class UaServerState(UaType):
 
 # +++++++++++++++++++ UaFilterOperator +++++++++++++++++++++++
 class UaFilterOperator(UaType):
+    UA_TYPE = UA_TYPES.FILTEROPERATOR
+
     val_to_string = dict([
         (0, "UA_FILTEROPERATOR_EQUALS"),
         (1, "UA_FILTEROPERATOR_ISNULL"),
@@ -1084,6 +1113,8 @@ class UaFilterOperator(UaType):
 
 # +++++++++++++++++++ UaRedundancySupport +++++++++++++++++++++++
 class UaRedundancySupport(UaType):
+    UA_TYPE = UA_TYPES.REDUNDANCYSUPPORT
+
     val_to_string = dict([
         (0, "UA_REDUNDANCYSUPPORT_NONE"),
         (1, "UA_REDUNDANCYSUPPORT_COLD"),
