@@ -5,6 +5,8 @@
 
 # +++++++++++++++++++ UaAttributeId +++++++++++++++++++++++
 class UaAttributeId(UaType):
+    UA_TYPE = UA_TYPES.TTRIBUTEID
+    
     val_to_string = dict([
         (1, "UA_ATTRIBUTEID_NODEID"),
         (2, "UA_ATTRIBUTEID_NODECLASS"),
@@ -165,6 +167,8 @@ class UaAttributeId(UaType):
 
 # +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
 class UaRuleHandling(UaType):
+    UA_TYPE = UA_TYPES.RULEHANDLING
+    
     val_to_string = dict([
         (0, "UA_RULEHANDLING_DEFAULT"),
         (1, "UA_RULEHANDLING_ABORT"),
@@ -210,6 +214,8 @@ class UaRuleHandling(UaType):
 
 # +++++++++++++++++++ UaOrder +++++++++++++++++++++++
 class UaOrder(UaType):
+    UA_TYPE = UA_TYPES.ORDER
+    
     val_to_string = dict([
         (-1, "UA_ORDER_LESS"),
         (0, "UA_ORDER_EQ"),
@@ -250,6 +256,8 @@ class UaOrder(UaType):
 
 # +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
 class UaSecureChannelState(UaType):
+    UA_TYPE = UA_TYPES.SECURECHANNELSTATE
+    
     val_to_string = dict([
         (0, "UA_SECURECHANNELSTATE_CLOSED"),
         (1, "UA_SECURECHANNELSTATE_HEL_SENT"),
@@ -315,6 +323,8 @@ class UaSecureChannelState(UaType):
 
 # +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
 class UaSessionState(UaType):
+    UA_TYPE = UA_TYPES.SESSIONSTATE
+    
     val_to_string = dict([
         (0, "UA_SESSIONSTATE_CLOSED"),
         (1, "UA_SESSIONSTATE_CREATE_REQUESTED"),
@@ -375,10 +385,12 @@ class UaSessionState(UaType):
 
 # +++++++++++++++++++ UaNetworkStatistics +++++++++++++++++++++++
 class UaNetworkStatistics(UaType):
+    UA_TYPE = UA_TYPES.NETWORKSTATISTICS
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NetworkStatistics*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NetworkStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -479,10 +491,12 @@ class UaNetworkStatistics(UaType):
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
 class UaSecureChannelStatistics(UaType):
+    UA_TYPE = UA_TYPES.SECURECHANNELSTATISTICS
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecureChannelStatistics*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecureChannelStatistics*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         

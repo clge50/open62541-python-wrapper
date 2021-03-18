@@ -67,7 +67,7 @@ def write_variable():
     my_integer_node_id = UaNodeId(1, "the.answer")
     my_integer = UaInt32(43)
     my_var = UaVariant()
-    my_var.set_scalar(my_integer, UA_TYPES.INT32)
+    my_var.date = my_integer
 
     result = Vars.server.write_value(my_integer_node_id, my_var)
     print(result)

@@ -10,10 +10,12 @@
 
 # +++++++++++++++++++ UaCertificateVerification +++++++++++++++++++++++
 class UaCertificateVerification(UaType):
+    UA_TYPE = UA_TYPES.CERTIFICATEVERIFICATION
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CertificateVerification*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_CertificateVerification*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -99,10 +101,12 @@ class UaCertificateVerification(UaType):
 
 # +++++++++++++++++++ UaNodestore +++++++++++++++++++++++
 class UaNodestore(UaType):
+    UA_TYPE = UA_TYPES.NODESTORE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_Nodestore*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_Nodestore*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -308,10 +312,12 @@ class UaNodestore(UaType):
 
 # +++++++++++++++++++ UaAccessControl +++++++++++++++++++++++
 class UaAccessControl(UaType):
+    UA_TYPE = UA_TYPES.CCESSCONTROL
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AccessControl*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_AccessControl*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -562,10 +568,12 @@ class UaAccessControl(UaType):
 
 # +++++++++++++++++++ UaGlobalNodeLifecycle +++++++++++++++++++++++
 class UaGlobalNodeLifecycle(UaType):
+    UA_TYPE = UA_TYPES.GLOBALNODELIFECYCLE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_GlobalNodeLifecycle*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_GlobalNodeLifecycle*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -651,10 +659,12 @@ class UaGlobalNodeLifecycle(UaType):
 
 # +++++++++++++++++++ UaServerNetworkLayer +++++++++++++++++++++++
 class UaServerNetworkLayer(UaType):
+    UA_TYPE = UA_TYPES.SERVERNETWORKLAYER
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ServerNetworkLayer*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ServerNetworkLayer*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -800,10 +810,12 @@ class UaServerNetworkLayer(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicy +++++++++++++++++++++++
 class UaSecurityPolicy(UaType):
+    UA_TYPE = UA_TYPES.SECURITYPOLICY
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicy*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecurityPolicy*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -979,10 +991,12 @@ class UaSecurityPolicy(UaType):
 
 # +++++++++++++++++++ UaConnectionConfig +++++++++++++++++++++++
 class UaConnectionConfig(UaType):
+    UA_TYPE = UA_TYPES.CONNECTIONCONFIG
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ConnectionConfig*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ConnectionConfig*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1113,10 +1127,12 @@ class UaConnectionConfig(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicyAsymmetricModule +++++++++++++++++++++++
 class UaSecurityPolicyAsymmetricModule(UaType):
+    UA_TYPE = UA_TYPES.SECURITYPOLICYASYMMETRICMODULE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicyAsymmetricModule*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecurityPolicyAsymmetricModule*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1149,10 +1165,12 @@ class UaSecurityPolicyAsymmetricModule(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicySymmetricModule +++++++++++++++++++++++
 class UaSecurityPolicySymmetricModule(UaType):
+    UA_TYPE = UA_TYPES.SECURITYPOLICYSYMMETRICMODULE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicySymmetricModule*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecurityPolicySymmetricModule*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1185,10 +1203,12 @@ class UaSecurityPolicySymmetricModule(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicyChannelModule +++++++++++++++++++++++
 class UaSecurityPolicyChannelModule(UaType):
+    UA_TYPE = UA_TYPES.SECURITYPOLICYCHANNELMODULE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicyChannelModule*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecurityPolicyChannelModule*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1221,10 +1241,12 @@ class UaSecurityPolicyChannelModule(UaType):
 
 # +++++++++++++++++++ UaSecurityPolicySignatureAlgorithm +++++++++++++++++++++++
 class UaSecurityPolicySignatureAlgorithm(UaType):
+    UA_TYPE = UA_TYPES.SECURITYPOLICYSIGNATUREALGORITHM
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicySignatureAlgorithm*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_SecurityPolicySignatureAlgorithm*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1257,10 +1279,12 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
 
 # +++++++++++++++++++ UaNodeTypeLifecycle +++++++++++++++++++++++
 class UaNodeTypeLifecycle(UaType):
+    UA_TYPE = UA_TYPES.NODETYPELIFECYCLE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NodeTypeLifecycle*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NodeTypeLifecycle*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1316,10 +1340,12 @@ class UaNodeTypeLifecycle(UaType):
 
 # +++++++++++++++++++ UaNodeReferenceKind +++++++++++++++++++++++
 class UaNodeReferenceKind(UaType):
+    UA_TYPE = UA_TYPES.NODEREFERENCEKIND
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NodeReferenceKind*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NodeReferenceKind*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1405,10 +1431,12 @@ class UaNodeReferenceKind(UaType):
 
 # +++++++++++++++++++ UaNodeHead +++++++++++++++++++++++
 class UaNodeHead(UaType):
+    UA_TYPE = UA_TYPES.NODEHEAD
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NodeHead*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_NodeHead*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1584,10 +1612,12 @@ class UaNodeHead(UaType):
 
 # +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
 class UaMethodNode(UaType):
+    UA_TYPE = UA_TYPES.METHODNODE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MethodNode*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_MethodNode*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1658,10 +1688,12 @@ class UaMethodNode(UaType):
 
 # +++++++++++++++++++ UaObjectNode +++++++++++++++++++++++
 class UaObjectNode(UaType):
+    UA_TYPE = UA_TYPES.OBJECTNODE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ObjectNode*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ObjectNode*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1717,10 +1749,12 @@ class UaObjectNode(UaType):
 
 # +++++++++++++++++++ UaObjectTypeNode +++++++++++++++++++++++
 class UaObjectTypeNode(UaType):
+    UA_TYPE = UA_TYPES.OBJECTTYPENODE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ObjectTypeNode*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ObjectTypeNode*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1791,10 +1825,12 @@ class UaObjectTypeNode(UaType):
 
 # +++++++++++++++++++ UaReferenceTypeSet +++++++++++++++++++++++
 class UaReferenceTypeSet(UaType):
+    UA_TYPE = UA_TYPES.REFERENCETYPESET
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ReferenceTypeSet*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ReferenceTypeSet*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1835,10 +1871,12 @@ class UaReferenceTypeSet(UaType):
 
 # +++++++++++++++++++ UaDataTypeNode +++++++++++++++++++++++
 class UaDataTypeNode(UaType):
+    UA_TYPE = UA_TYPES.DATATYPENODE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataTypeNode*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_DataTypeNode*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1894,10 +1932,12 @@ class UaDataTypeNode(UaType):
 
 # +++++++++++++++++++ UaViewNode +++++++++++++++++++++++
 class UaViewNode(UaType):
+    UA_TYPE = UA_TYPES.VIEWNODE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ViewNode*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ViewNode*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -1968,10 +2008,12 @@ class UaViewNode(UaType):
 
 # +++++++++++++++++++ UaServerConfig +++++++++++++++++++++++
 class UaServerConfig(UaType):
+    UA_TYPE = UA_TYPES.SERVERCONFIG
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ServerConfig*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("UA_ServerConfig*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         
@@ -2492,10 +2534,12 @@ class UaServerConfig(UaType):
 
 # +++++++++++++++++++ aa_entry +++++++++++++++++++++++
 class aa_entry(UaType):
+    UA_TYPE = UA_TYPES.AA_ENTRY
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("aa_entry*")
-        if type(val) is Void:
+        if isinstance(val, UaType):
             val = ffi.cast("aa_entry*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
         

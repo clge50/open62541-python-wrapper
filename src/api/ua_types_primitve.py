@@ -4,7 +4,7 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from typing import Union, List
-
+from ua_consts_types_raw import _UA_TYPES
 from intermediateApi import ffi, lib
 from ua_types_common import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
@@ -12,6 +12,8 @@ from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
+    _UA_TYPE = _UA_TYPES._BOOLEAN
+
     def __init__(self, val: Union[Void, bool, List[bool]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Boolean*", val._ptr)
@@ -50,6 +52,8 @@ class UaBoolean(UaType):
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
+    _UA_TYPE = _UA_TYPES._SBYTE
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_SByte*", val._ptr)
@@ -97,9 +101,35 @@ class UaSByte(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaSByte(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaSByte(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaSByte(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaSByte(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaSByte(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaSByte(self._val | other._val)
+
+    def __and__(self, other):
+        return UaSByte(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaSByte(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
+    _UA_TYPE = _UA_TYPES._BYTE
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Byte*", val._ptr)
@@ -147,6 +177,21 @@ class UaByte(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaByte(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaByte(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaByte(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaByte(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaByte(self.value % int(other.value))
+
     def __or__(self, other):
         return UaByte(self._val | other._val)
 
@@ -159,6 +204,8 @@ class UaByte(UaType):
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
+    _UA_TYPE = _UA_TYPES._INT16
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Int16*", val._ptr)
@@ -206,9 +253,35 @@ class UaInt16(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaInt16(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaInt16(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaInt16(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaInt16(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaInt16(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaByte(self._val | other._val)
+
+    def __and__(self, other):
+        return UaByte(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaByte(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
+    _UA_TYPE = _UA_TYPES._UINT16
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_UInt16*", val._ptr)
@@ -256,9 +329,35 @@ class UaUInt16(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaUInt16(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaUInt16(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaUInt16(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaUInt16(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaUInt16(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaUInt16(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt16(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt16(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
+    _UA_TYPE = _UA_TYPES._INT32
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Int32*", val._ptr)
@@ -306,9 +405,35 @@ class UaInt32(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaInt32(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaInt32(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaInt32(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaInt32(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaInt32(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaInt32(self._val | other._val)
+
+    def __and__(self, other):
+        return UaInt32(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaInt32(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
+    _UA_TYPE = _UA_TYPES._UINT32
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
@@ -354,6 +479,21 @@ class UaUInt32(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaUInt32(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaUInt32(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaUInt32(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaUInt32(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaUInt32(self.value % int(other.value))
+
     def __or__(self, other):
         return UaUInt32(self._val | other._val)
 
@@ -366,6 +506,8 @@ class UaUInt32(UaType):
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
+    _UA_TYPE = _UA_TYPES._INT64
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Int64*", val._ptr)
@@ -413,9 +555,35 @@ class UaInt64(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaInt64(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaInt64(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaInt64(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaInt64(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaInt64(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaUInt32(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt32(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt32(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
+    _UA_TYPE = _UA_TYPES._UINT64
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_UInt64*", val._ptr)
@@ -463,9 +631,35 @@ class UaUInt64(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaUInt64(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaUInt64(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaUInt64(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaUInt64(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaUInt64(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaUInt64(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt64(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt64(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
+    _UA_TYPE = _UA_TYPES._FLOAT
+
     def __init__(self, val: Union[Void, float, List[float]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Float*", val._ptr)
@@ -513,9 +707,23 @@ class UaFloat(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaFloat(self.value + other.value)
+
+    def __sub__(self, other):
+        return UaFloat(self.value - other.value)
+
+    def __mul__(self, other):
+        return UaFloat(self.value - other.value)
+
+    def __truediv__(self, other):
+        return UaFloat(self.value / other.value)
+
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
+    _UA_TYPE = _UA_TYPES._DOUBLE
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
@@ -529,7 +737,7 @@ class UaDouble(UaType):
 
     @property
     def value(self):
-        return int(self._val)
+        return float(self._val)
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -561,9 +769,23 @@ class UaDouble(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaDouble(self.value + other.value)
+
+    def __sub__(self, other):
+        return UaDouble(self.value - other.value)
+
+    def __mul__(self, other):
+        return UaDouble(self.value - other.value)
+
+    def __truediv__(self, other):
+        return UaDouble(self.value / other.value)
+
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
+    _UA_TYPE = _UA_TYPES._STATUSCODE
+
     def __init__(self, val: Union[Void, int, List[int]] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_StatusCode*", val._ptr)
@@ -610,6 +832,15 @@ class UaStatusCode(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __or__(self, other):
+        return UaStatusCode(self._val | other._val)
+
+    def __and__(self, other):
+        return UaStatusCode(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaStatusCode(self._val ^ other._val)
 
     def is_bad(self):
         return lib.UA_StatusCode_isBad(self._val)

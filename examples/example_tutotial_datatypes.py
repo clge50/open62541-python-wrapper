@@ -6,15 +6,24 @@ from ua import *
 
 def variables_basics():
     i = UaInt32(5)
-    j = UaInt32(i.value)
+    j = UaInt32(i)
+    k = i + j
+    print(f"i + j = {k}")
+    i = k * j
+    l = UaDouble(3.1416)
+    # the first operand determines the type of the expression:
+    print(f"l + i = {l + i}")
+    print(f"i + l = {i + l}")
 
     s = UaString("test")
-    s2 = UaString(s.value)
+    s2 = UaString(s)
 
     s3 = UaString("test2")
 
     print(f"s == s2: {s == s2}")
     print(f"s2 == s3: {s3 == s2}")
+    print(f"s2 + s3: {s3 + s2}")
+    print(f"s2 * 5: {s2 * 5}")
 
     rr = UaReadRequest()
     rr.request_header.timestamp = UaDateTime.now()
@@ -39,7 +48,7 @@ def variables_nodeids():
 def variables_variants():
     v = UaVariant()
     i = UaInt32(42)
-    v.set_scalar(i, UA_TYPES.INT32)
+    v.data = i
 
     v2 = UaVariant(v)
 
@@ -47,12 +56,12 @@ def variables_variants():
     d = UaList([1.0, 2.0, 3.0,
                 4.0, 5.0, 6.0,
                 7.0, 8.0, 9.0])
-    v3.set_array(d, SizeT(9), UA_TYPES.DOUBLE)
-    v3.array_dimensions = UaUInt32([3, 3])
+    v3.data = d
+    v3.array_dimensions = UaList([3, 3], ua_class=UaUInt32)
     v3.array_dimensions_size = SizeT(2)
 
     print(f"Has array type double: {v3.has_array_type(UA_TYPES.DOUBLE)}")
-    print(f"Array: {UaList(v3.data, 9, UaDouble).value}")
+    print(f"Array: {UaList(v3.data, 9, UaDouble).value} in dimensions {v3.array_dimensions}")
 
 
 variables_basics()

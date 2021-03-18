@@ -3,9 +3,10 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 from typing import Any
-
+from ua_consts_types_raw import _UA_TYPES
 from intermediateApi import ffi, lib
 from ua_types_primitve import *
+from ua_types_list import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 
@@ -92,7 +93,6 @@ class UaVariantStorageType(UaType):
     def __str__(self, n=0):
         return f"(UaVariantStorageType): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
-
 # +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
 class UaExtensionObjectEncoding(UaType):
     val_to_string = dict([
@@ -142,41 +142,40 @@ class UaExtensionObjectEncoding(UaType):
     def __str__(self, n=0):
         return f"(UaExtensionObjectEncoding): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
-
 # +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
 class UaDataTypeKind(UaType):
     val_to_string = dict([
-        (0, "UA_DATATYPEKIND_BOOLEAN"),
-        (1, "UA_DATATYPEKIND_SBYTE"),
-        (2, "UA_DATATYPEKIND_BYTE"),
-        (3, "UA_DATATYPEKIND_INT16"),
-        (4, "UA_DATATYPEKIND_UINT16"),
-        (5, "UA_DATATYPEKIND_INT32"),
-        (6, "UA_DATATYPEKIND_UINT32"),
-        (7, "UA_DATATYPEKIND_INT64"),
-        (8, "UA_DATATYPEKIND_UINT64"),
-        (9, "UA_DATATYPEKIND_FLOAT"),
-        (10, "UA_DATATYPEKIND_DOUBLE"),
-        (11, "UA_DATATYPEKIND_STRING"),
-        (12, "UA_DATATYPEKIND_DATETIME"),
-        (13, "UA_DATATYPEKIND_GUID"),
-        (14, "UA_DATATYPEKIND_BYTESTRING"),
-        (15, "UA_DATATYPEKIND_XMLELEMENT"),
-        (16, "UA_DATATYPEKIND_NODEID"),
-        (17, "UA_DATATYPEKIND_EXPANDEDNODEID"),
-        (18, "UA_DATATYPEKIND_STATUSCODE"),
-        (19, "UA_DATATYPEKIND_QUALIFIEDNAME"),
-        (20, "UA_DATATYPEKIND_LOCALIZEDTEXT"),
-        (21, "UA_DATATYPEKIND_EXTENSIONOBJECT"),
-        (22, "UA_DATATYPEKIND_DATAVALUE"),
-        (23, "UA_DATATYPEKIND_VARIANT"),
-        (24, "UA_DATATYPEKIND_DIAGNOSTICINFO"),
-        (25, "UA_DATATYPEKIND_DECIMAL"),
-        (26, "UA_DATATYPEKIND_ENUM"),
-        (27, "UA_DATATYPEKIND_STRUCTURE"),
-        (28, "UA_DATATYPEKIND_OPTSTRUCT"),
-        (29, "UA_DATATYPEKIND_UNION"),
-        (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
+            (0, "UA_DATATYPEKIND_BOOLEAN"),
+            (1, "UA_DATATYPEKIND_SBYTE"),
+            (2, "UA_DATATYPEKIND_BYTE"),
+            (3, "UA_DATATYPEKIND_INT16"),
+            (4, "UA_DATATYPEKIND_UINT16"),
+            (5, "UA_DATATYPEKIND_INT32"),
+            (6, "UA_DATATYPEKIND_UINT32"),
+            (7, "UA_DATATYPEKIND_INT64"),
+            (8, "UA_DATATYPEKIND_UINT64"),
+            (9, "UA_DATATYPEKIND_FLOAT"),
+            (10, "UA_DATATYPEKIND_DOUBLE"),
+            (11, "UA_DATATYPEKIND_STRING"),
+            (12, "UA_DATATYPEKIND_DATETIME"),
+            (13, "UA_DATATYPEKIND_GUID"),
+            (14, "UA_DATATYPEKIND_BYTESTRING"),
+            (15, "UA_DATATYPEKIND_XMLELEMENT"),
+            (16, "UA_DATATYPEKIND_NODEID"),
+            (17, "UA_DATATYPEKIND_EXPANDEDNODEID"),
+            (18, "UA_DATATYPEKIND_STATUSCODE"),
+            (19, "UA_DATATYPEKIND_QUALIFIEDNAME"),
+            (20, "UA_DATATYPEKIND_LOCALIZEDTEXT"),
+            (21, "UA_DATATYPEKIND_EXTENSIONOBJECT"),
+            (22, "UA_DATATYPEKIND_DATAVALUE"),
+            (23, "UA_DATATYPEKIND_VARIANT"),
+            (24, "UA_DATATYPEKIND_DIAGNOSTICINFO"),
+            (25, "UA_DATATYPEKIND_DECIMAL"),
+            (26, "UA_DATATYPEKIND_ENUM"),
+            (27, "UA_DATATYPEKIND_STRUCTURE"),
+            (28, "UA_DATATYPEKIND_OPTSTRUCT"),
+            (29, "UA_DATATYPEKIND_UNION"),
+            (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -329,6 +328,8 @@ class UaDataTypeKind(UaType):
 
 # +++++++++++++++++++ UaString +++++++++++++++++++++++
 class UaString(UaType):
+    _UA_TYPE = _UA_TYPES._STRING
+
     def __init__(self, val: Union[str, Void] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_String*", val._ptr)
@@ -383,17 +384,23 @@ class UaString(UaType):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def __add__(self, other):
+        return UaString(self.value + other.value)
+
+    def __mul__(self, other: int):
+        return UaString(self.value * other)
+
     def equal_ignore_case(self, ua_string):
         return lib.UA_String_equal_ignorecase(self._ptr, ua_string._ptr)
 
     @property
-    def value(self):
+    def value(self) -> str:
         if self._null:
             return "NULL"
         return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val).decode("utf-8")
 
     def __str__(self, n=0):
-        return "(UaString): " + self.value + "\n"
+        return "(UaString): " + self.value
 
 
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
@@ -405,6 +412,8 @@ UaXmlElement = UaString
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
+    _UA_TYPE = _UA_TYPES._DATETIME
+
     def __init__(self, val: Union[int, List[int], Void] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_DateTime*", val._ptr)
@@ -432,7 +441,7 @@ class UaDateTime(UaType):
             self._value[0] = ffi.cast("UA_DateTime", _val(val))
 
     def __str__(self, n=0):
-        return "(UaDateTime): " + str(self._val) + "\n"
+        return "(UaDateTime): " + str(self._val)
 
     def __eq__(self, other):
         return self._val == other._val
@@ -611,12 +620,12 @@ class UaDateTimeStruct(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDateTimeStruct) : NULL\n"
+            return "(UaDateTimeStruct) : NULL"
 
         return ("(UaDateTimeStruct) :\n" +
                 "\t" * (n + 1) + f"{self._year.value}-{self._month.value:02d}-{self._day.value:02d} " +
                 f"{self._hour.value:02d}:{self._min.value:02d}:{self._sec.value:02d}." +
-                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}\n")
+                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}")
 
     def to_primitive(self):
         return UaDateTime(lib.UA_DateTime_fromStruct(self._val))
@@ -628,6 +637,8 @@ class UaDateTimeStruct(UaType):
 
 # +++++++++++++++++++ UaGuid +++++++++++++++++++++++
 class UaGuid(UaType):
+    _UA_TYPE = _UA_TYPES._GUID
+
     NULL = lib.UA_GUID_NULL
 
     # random guid
@@ -723,7 +734,7 @@ class UaGuid(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaGuid) : NULL\n"
+            return "(UaGuid) : NULL"
 
         d1 = '{0:0{1}X}'.format(self._data1._val, 8)
         d2 = '{0:0{1}X}'.format(self._data2._val, 4)
@@ -735,7 +746,7 @@ class UaGuid(UaType):
         for i in range(2, 8):
             d5 += '{0:0{1}X}'.format(self._data4._ptr[i], 2)
 
-        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}" + "\n"
+        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}"
 
     @staticmethod
     def random():
@@ -745,6 +756,8 @@ class UaGuid(UaType):
 
 # +++++++++++++++++++ UaNodeId +++++++++++++++++++++++
 class UaNodeId(UaType):
+    _UA_TYPE = _UA_TYPES._NODEID
+
     NULL = lib.UA_NODEID_NULL
 
     # TODO: refactor
@@ -893,6 +906,8 @@ class UaNodeId(UaType):
 
 # +++++++++++++++++++ UaExpandedNodeId +++++++++++++++++++++++
 class UaExpandedNodeId(UaType):
+    _UA_TYPE = _UA_TYPES._EXPANDEDNODEID
+
     NULL = lib.UA_EXPANDEDNODEID_NULL
 
     # TODO: refactor
@@ -1008,7 +1023,7 @@ class UaExpandedNodeId(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaExpandedNodeId) : NULL\n"
+            return "(UaExpandedNodeId) : NULL"
 
         return ("(UaExpandedNodeId) :\n" +
                 "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
@@ -1042,6 +1057,8 @@ class UaExpandedNodeId(UaType):
 
 # +++++++++++++++++++ UaQualifiedName +++++++++++++++++++++++
 class UaQualifiedName(UaType):
+    _UA_TYPE = _UA_TYPES._QUALIFIEDNAME
+
     def __init__(self,
                  ns_index: Union[int, UaUInt16] = None,
                  string: Union[str, UaString] = None,
@@ -1118,7 +1135,7 @@ class UaQualifiedName(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaQualifiedName) : NULL\n"
+            return "(UaQualifiedName) : NULL"
 
         return ("(UaQualifiedName) :\n" +
                 "\t" * (n + 1) + "namespace_index" + self._namespace_index.__str__(n + 1) +
@@ -1136,6 +1153,8 @@ class UaQualifiedName(UaType):
 
 # +++++++++++++++++++ UaLocalizedText +++++++++++++++++++++++
 class UaLocalizedText(UaType):
+    _UA_TYPE = _UA_TYPES._LOCALIZEDTEXT
+
     # TODO: refactor
     # TODO: Memory management
     def __init__(self,
@@ -1152,15 +1171,15 @@ class UaLocalizedText(UaType):
                 if type(text) is str:
                     val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(text, "utf-8"))
                 elif type(text) is UaString:
-                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(text.to_string(), "utf-8"))
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale, "utf-8"), bytes(text.value, "utf-8"))
                 else:
                     raise AttributeError(f"text={text} has to be str or UaString")
             elif type(locale) is UaString:
                 if type(text) is str:
-                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"), bytes(text, "utf-8"))
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.value, "utf-8"), bytes(text, "utf-8"))
                 elif type(text) is UaString:
-                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.to_string(), "utf-8"),
-                                                     bytes(text.to_string(), "utf-8"))
+                    val = lib.UA_LOCALIZEDTEXT_ALLOC(bytes(locale.value, "utf-8"),
+                                                     bytes(text.value, "utf-8"))
                 else:
                     raise AttributeError(f"text={text} has to be str or UaString")
             else:
@@ -1213,7 +1232,7 @@ class UaLocalizedText(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaLocalizedText) : NULL\n"
+            return "(UaLocalizedText) : NULL"
 
         return ("(UaLocalizedText) :\n" +
                 "\t" * (n + 1) + "locale" + self._locale.__str__(n + 1) +
@@ -1273,7 +1292,7 @@ class UaNumericRangeDimension(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaNumericRangeDimension) : NULL\n"
+            return "(UaNumericRangeDimension) : NULL"
 
         return ("(UaNumericRangeDimension) :\n" +
                 "\t" * (n + 1) + "min" + self._min.__str__(n + 1) +
@@ -1332,7 +1351,7 @@ class UaNumericRange(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaNumericRange) : NULL\n"
+            return "(UaNumericRange) : NULL"
 
         return ("(UaNumericRange) :\n" +
                 "\t" * (n + 1) + "dimensions_size" + self._dimensions_size.__str__(n + 1) +
@@ -1341,6 +1360,8 @@ class UaNumericRange(UaType):
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
 class UaVariant(UaType):
+    _UA_TYPE = _UA_TYPES._VARIANT
+
     def __init__(self, val: Void = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_Variant*", val._ptr)
@@ -1433,10 +1454,22 @@ class UaVariant(UaType):
         self._array_length = val
         self._value.arrayLength = val._val
 
+    # TODO: Document this!
+    # ---> it only works if val is of the correct subclass of uatype or ualist with correctly
+    # set class attribute respectively
     @data.setter
-    def data(self, val: Void):
-        self._data = val
-        self._value.data = val._ptr
+    def data(self, val: UaType):
+        if type(val) is UaType or not isinstance(val, UaType):
+            raise TypeError("'val' has to be an instance of a child class of UaType.")
+        if isinstance(val, UaList):
+            if val.ua_type is None:
+                raise TypeError("if 'val' is a UaList the attribute ua_type has to be set correctly.")
+            self.set_array(val, len(val), UaDataType(val=val.ua_type._UA_TYPE))
+            # set array dimensions per default to 1-dimensional
+            self.array_dimensions = UaUInt32([len(val)])
+            self.array_dimensions_size = SizeT(1)
+        else:
+            self.set_scalar(val, UaDataType(val=val._UA_TYPE))
 
     @array_dimensions_size.setter
     def array_dimensions_size(self, val: SizeT):
@@ -1450,7 +1483,7 @@ class UaVariant(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaVariant) : NULL\n"
+            return "(UaVariant) : NULL"
 
         return ("(UaVariant) :\n" +
                 "\t" * (n + 1) + "type" + self._type.__str__(n + 1) +
@@ -1530,6 +1563,8 @@ class UaVariant(UaType):
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++
 class UaDataValue(UaType):
+    _UA_TYPE = _UA_TYPES._DATAVALUE
+
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DataValue*")
@@ -1719,7 +1754,7 @@ class UaDataValue(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataValue) : NULL\n"
+            return "(UaDataValue) : NULL"
 
         return ("(UaDataValue) :\n" +
                 "\t" * (n + 1) + "variant" + self._variant.__str__(n + 1) +
@@ -1737,6 +1772,8 @@ class UaDataValue(UaType):
 
 
 class UaExtensionObject(UaType):
+    _UA_TYPE = _UA_TYPES._EXTENSIONOBJECT
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ExtensionObject*")
@@ -1808,7 +1845,7 @@ class UaExtensionObject(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaExtensionObject) : NULL\n"
+            return "(UaExtensionObject) : NULL"
 
         return ("(UaExtensionObject) :\n" +
                 "\t" * (n + 1) + "encoding" + self._encoding.__str__(n + 1) +
@@ -1818,6 +1855,8 @@ class UaExtensionObject(UaType):
 
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
 class UaDiagnosticInfo(UaType):
+    _UA_TYPE = _UA_TYPES._DIAGNOSTICINFO
+
     def __init__(self, val: Void = None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_DiagnosticInfo*")
@@ -2038,7 +2077,7 @@ class UaDiagnosticInfo(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDiagnosticInfo) : NULL\n"
+            return "(UaDiagnosticInfo) : NULL"
 
         return ("(UaDiagnosticInfo) :\n" +
                 "\t" * (n + 1) + "has_symbolic_id" + self._has_symbolic_id.__str__(n + 1) +
@@ -2166,7 +2205,7 @@ class UaDataTypeMember(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataTypeMember) : NULL\n"
+            return "(UaDataTypeMember) : NULL"
 
         return ("(UaDataTypeMember) :\n" +
                 "\t" * (n + 1) + "member_type_index" + self._member_type_index.__str__(n + 1) +
@@ -2342,7 +2381,7 @@ class UaDataType(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataType) : NULL\n"
+            return "(UaDataType) : NULL"
 
         return ("(UaDataType) :\n" +
                 "\t" * (n + 1) + "type_id" + self._type_id.__str__(n + 1) +
@@ -2442,7 +2481,7 @@ class UaDataTypeArray(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaDataTypeArray) : NULL\n"
+            return "(UaDataTypeArray) : NULL"
 
         return ("(UaDataTypeArray) :\n" +
                 "\t" * (n + 1) + "next" + self._next.__str__(n + 1) +
