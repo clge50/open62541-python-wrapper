@@ -1,5 +1,7 @@
 # +++++++++++++++++++ UaBoolean +++++++++++++++++++++++
 class UaBoolean(UaType):
+    TYPE = UA_TYPES.BOOLEAN
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Boolean*"), is_pointer)
@@ -45,6 +47,8 @@ class UaBoolean(UaType):
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
 class UaSByte(UaType):
+    TYPE = UA_TYPES.SBYTE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_SByte*"), is_pointer)
@@ -90,6 +94,8 @@ class UaSByte(UaType):
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
+    TYPE = UA_TYPES.BYTE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Byte*"), is_pointer)
@@ -135,6 +141,8 @@ class UaByte(UaType):
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
 class UaInt16(UaType):
+    TYPE = UA_TYPES.INT16
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Int16*"), is_pointer)
@@ -180,6 +188,8 @@ class UaInt16(UaType):
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
+    TYPE = UA_TYPES.INT16
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt16*"), is_pointer)
@@ -225,6 +235,8 @@ class UaUInt16(UaType):
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
 class UaInt32(UaType):
+    TYPE = UA_TYPES.INT32
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Int32*"), is_pointer)
@@ -270,6 +282,8 @@ class UaInt32(UaType):
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
+    TYPE = UA_TYPES.INT32
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
@@ -315,6 +329,8 @@ class UaUInt32(UaType):
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
 class UaInt64(UaType):
+    TYPE = UA_TYPES.INT64
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Int64*"), is_pointer)
@@ -360,6 +376,8 @@ class UaInt64(UaType):
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
+    TYPE = UA_TYPES.INT64
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_UInt64*"), is_pointer)
@@ -405,6 +423,8 @@ class UaUInt64(UaType):
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
 class UaFloat(UaType):
+    TYPE = UA_TYPES.FLOAT
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Float*"), is_pointer)
@@ -450,6 +470,8 @@ class UaFloat(UaType):
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
+    TYPE = UA_TYPES.DOUBLE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
@@ -495,6 +517,8 @@ class UaDouble(UaType):
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
 class UaStatusCode(UaType):
+    TYPE = UA_TYPES.STATUSCODE
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_StatusCode*"), is_pointer)
@@ -540,6 +564,8 @@ class UaStatusCode(UaType):
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
 class UaDateTime(UaType):
+    TYPE = UA_TYPES.DATETIME
+    
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             super().__init__(ffi.new("UA_DateTime*"), is_pointer)

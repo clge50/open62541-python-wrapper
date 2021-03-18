@@ -89,3 +89,9 @@ class CString(UaType):
 
     def __str__(self, n=0):
         return "(CString): " + str(self.value) + "\n"
+
+    def __add__(self, other):
+        return CString(self.value + other.value)
+
+    def __mul__(self, other: int):
+        return CString(self.value * other)

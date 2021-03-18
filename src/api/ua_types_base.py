@@ -383,11 +383,17 @@ class UaString(UaType):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def __add__(self, other):
+        return UaString(self.value + other.value)
+
+    def __mul__(self, other: int):
+        return UaString(self.value * other)
+
     def equal_ignore_case(self, ua_string):
         return lib.UA_String_equal_ignorecase(self._ptr, ua_string._ptr)
 
     @property
-    def value(self):
+    def value(self) -> str:
         if self._null:
             return "NULL"
         return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val).decode("utf-8")
@@ -1434,7 +1440,8 @@ class UaVariant(UaType):
         self._value.arrayLength = val._val
 
     @data.setter
-    def data(self, val: Void):
+    def data(self, val: UaType):
+
         self._data = val
         self._value.data = val._ptr
 
@@ -1526,6 +1533,9 @@ class UaVariant(UaType):
             return status_code
         else:
             raise AttributeError(f"An Error occured - {str(status_code)}")
+
+    # @staticmethod
+    # def __guess_data_type(data) -> 'UaDataType':
 
 
 # +++++++++++++++++++ UaDataValue +++++++++++++++++++++++

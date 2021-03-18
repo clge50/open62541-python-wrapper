@@ -97,6 +97,30 @@ class UaSByte(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaSByte(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaSByte(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaSByte(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaSByte(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaSByte(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaSByte(self._val | other._val)
+
+    def __and__(self, other):
+        return UaSByte(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaSByte(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
 class UaByte(UaType):
@@ -146,6 +170,21 @@ class UaByte(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __add__(self, other):
+        return UaByte(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaByte(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaByte(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaByte(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaByte(self.value % int(other.value))
 
     def __or__(self, other):
         return UaByte(self._val | other._val)
@@ -206,6 +245,30 @@ class UaInt16(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaInt16(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaInt16(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaInt16(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaInt16(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaInt16(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaByte(self._val | other._val)
+
+    def __and__(self, other):
+        return UaByte(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaByte(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
 class UaUInt16(UaType):
@@ -255,6 +318,30 @@ class UaUInt16(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __add__(self, other):
+        return UaUInt16(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaUInt16(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaUInt16(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaUInt16(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaUInt16(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaUInt16(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt16(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt16(self._val ^ other._val)
 
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
@@ -306,6 +393,30 @@ class UaInt32(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaInt32(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaInt32(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaInt32(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaInt32(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaInt32(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaInt32(self._val | other._val)
+
+    def __and__(self, other):
+        return UaInt32(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaInt32(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
 class UaUInt32(UaType):
@@ -353,6 +464,21 @@ class UaUInt32(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __add__(self, other):
+        return UaUInt32(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaUInt32(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaUInt32(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaUInt32(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaUInt32(self.value % int(other.value))
 
     def __or__(self, other):
         return UaUInt32(self._val | other._val)
@@ -413,6 +539,30 @@ class UaInt64(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaInt64(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaInt64(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaInt64(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaInt64(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaInt64(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaUInt32(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt32(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt32(self._val ^ other._val)
+
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
 class UaUInt64(UaType):
@@ -462,6 +612,30 @@ class UaUInt64(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __add__(self, other):
+        return UaUInt64(self.value + int(other.value))
+
+    def __sub__(self, other):
+        return UaUInt64(self.value - int(other.value))
+
+    def __mul__(self, other):
+        return UaUInt64(self.value - int(other.value))
+
+    def __floordiv__(self, other):
+        return UaUInt64(self.value // int(other.value))
+
+    def __mod__(self, other):
+        return UaUInt64(self.value % int(other.value))
+
+    def __or__(self, other):
+        return UaUInt64(self._val | other._val)
+
+    def __and__(self, other):
+        return UaUInt64(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaUInt64(self._val ^ other._val)
 
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
@@ -513,6 +687,18 @@ class UaFloat(UaType):
     def __le__(self, other):
         return self._val <= other._val
 
+    def __add__(self, other):
+        return UaFloat(self.value + other.value)
+
+    def __sub__(self, other):
+        return UaFloat(self.value - other.value)
+
+    def __mul__(self, other):
+        return UaFloat(self.value - other.value)
+
+    def __truediv__(self, other):
+        return UaFloat(self.value / other.value)
+
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
 class UaDouble(UaType):
@@ -560,6 +746,18 @@ class UaDouble(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __add__(self, other):
+        return UaDouble(self.value + other.value)
+
+    def __sub__(self, other):
+        return UaDouble(self.value - other.value)
+
+    def __mul__(self, other):
+        return UaDouble(self.value - other.value)
+
+    def __truediv__(self, other):
+        return UaDouble(self.value / other.value)
 
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
@@ -610,6 +808,15 @@ class UaStatusCode(UaType):
 
     def __le__(self, other):
         return self._val <= other._val
+
+    def __or__(self, other):
+        return UaStatusCode(self._val | other._val)
+
+    def __and__(self, other):
+        return UaStatusCode(self._val & other._val)
+
+    def __xor__(self, other):
+        return UaStatusCode(self._val ^ other._val)
 
     def is_bad(self):
         return lib.UA_StatusCode_isBad(self._val)
