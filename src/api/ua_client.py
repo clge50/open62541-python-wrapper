@@ -12,10 +12,33 @@ from ua_types import *
 
 
 class _ClientCallback:
-    """These static c type callback implementations are used to call the actual callback functions which have been
-    submitted by the open62541 user """
+    """Aggregates static callback functions which execute the actual user submitted python callbacks
 
-    # todo: it might cause problems that we always create a new client wrapper instead of granting access to the same client wrapper object that has made the async call.
+    _ClientCallback holds c type callback implementations which are being used to call the actual callback
+    functions which have been submitted by the open62541 user. This is a workaround for the problem of not being able 
+    to create c function implementations at runtime.
+
+    Note:
+        Client callbacks are handled differently than server callbacks by wrappy(o6).
+        This is the case because client callbacks are mostly utilized in asynchronous service calls which support the
+        submission of `void* userData`. Through these generic parameters the actual
+        python callback are being passed which can then be executed by static callback functions.
+
+    See also:
+         ua_server._ServerCallback
+    """
+
+    _callbacks = set()
+    """
+    Note:
+        In order to prevent cases in which the owner of a callback handle "dies" prematurely which would cause 
+        segmentation faults, wrappy(o6) enters all callback handles in the `_callbacks` set. This way the owner 
+        of the memory will not be garbage collected automatically after the callback was triggered/unregistered. 
+        Naturally the downside to this is that the memory will be cluttered if the client runs for a long time. If this 
+        causes issues for API users they would currently need to implement a solution themselves to remove no longer 
+        needed functions from the map. Users can find the registered handles in the `_handle` field which is contained in 
+        the asynchronous service responses. 
+    """
 
     @staticmethod
     @ffi.def_extern()
@@ -181,7 +204,6 @@ class _ClientCallback:
         ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
                              UaAddNodesResponse(val=ar, is_pointer=True))
 
-    # todo: response is void* --> Void --> handling is not good
     @staticmethod
     @ffi.def_extern()
     def python_wrapper_UA_ClientAsyncServiceCallback(client, fun, request_id, response):
@@ -280,8 +302,6 @@ class UaClient:
         return UaUnregisterNodesResponse(val=ua_unregister_nodes_response)
 
     # high level read service
-    # todo: this doesn't really work because out is a void pointer. variable has to be created dynamically depending on type
-    # also needs generic result class object as result
     def __read_attribute(self, node_id: UaNodeId, attribute_id: UaNodeId):
         out = Void()
         out_data_type = UaDataType()
@@ -381,7 +401,7 @@ class UaClient:
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(UaStatusCode(val=status_code), out_value_rank)
 
-    # todo: adapt type system to support UA_UInt32 **"
+    # todo: use UaList for out_array_dimensions"
     def read_array_dimensions_attribute(self, node_id: UaNodeId):
         out_array_dimensions_size = SizeT()
         out_array_dimensions = ffi.new("UA_UInt32 **")
@@ -522,7 +542,7 @@ class UaClient:
     def call(self, object_id: UaNodeId, method_id: UaNodeId, input_size: SizeT,
              call_input: UaVariant):
         output_size = SizeT()
-        # Todo: output has to be ** --> this is a problem for our type system atm
+        # Todo: use UaList
         output = ffi.new("UA_Variant **")
         status_code = lib.UA_Client_call(self.ua_client, object_id._val, method_id._val, input_size._val,
                                          call_input._ptr, output_size._ptr,
@@ -749,6 +769,7 @@ class UaClient:
                                 callback: Callable[['UaClient', UaUInt32, UaVariant], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_sendAsyncReadRequest(self.ua_client,
                                                          request._ptr,
                                                          lib.python_wrapper_UA_ClientAsyncReadCallback,
@@ -761,6 +782,7 @@ class UaClient:
         out_data_type = UaDataType()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.__UA_Client_readAttribute_async(self.ua_client,
                                                           node_id._ptr,
                                                           attribute_id._val,
@@ -774,6 +796,7 @@ class UaClient:
                                        callback: Callable[['UaClient', UaUInt32, UaNodeId], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readDataTypeAttribute_async(self.ua_client,
                                                                 node_id._val,
                                                                 lib.python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback,
@@ -785,6 +808,7 @@ class UaClient:
                                    callback: Callable[['UaClient', UaUInt32, UaVariant], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readValueAttribute_async(self.ua_client,
                                                              node_id._val,
                                                              lib.python_wrapper_UA_ClientAsyncReadValueAttributeCallback,
@@ -796,6 +820,7 @@ class UaClient:
                                      callback: Callable[['UaClient', UaUInt32, UaNodeId], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readNodeIdAttribute_async(self.ua_client,
                                                               node_id._val,
                                                               lib.python_wrapper_UA_ClientAsyncReadNodeIdAttributeCallback,
@@ -808,6 +833,7 @@ class UaClient:
                                             ['UaClient', UaUInt32, UaNodeClass], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readNodeClassAttribute_async(self.ua_client,
                                                                  node_id._val,
                                                                  lib.python_wrapper_UA_ClientAsyncReadNodeClassAttributeCallback,
@@ -819,6 +845,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaQualifiedName], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readBrowseNameAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   lib.python_wrapper_UA_ClientAsyncReadBrowseNameAttributeCallback,
@@ -831,6 +858,7 @@ class UaClient:
                                               ['UaClient', UaUInt32, UaLocalizedText], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readDisplayNameAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    lib.python_wrapper_UA_ClientAsyncReadDisplayNameAttributeCallback,
@@ -842,6 +870,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaLocalizedText], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readDescriptionAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    lib.python_wrapper_UA_ClientAsyncReadDescriptionAttributeCallback,
@@ -853,6 +882,7 @@ class UaClient:
                                         callback: Callable[['UaClient', UaUInt32, UaUInt32], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readWriteMaskAttribute_async(self.ua_client,
                                                                  node_id._val,
                                                                  lib.python_wrapper_UA_ClientAsyncReadWriteMaskAttributeCallback,
@@ -865,6 +895,7 @@ class UaClient:
                                                  ['UaClient', UaUInt32, UaUInt32], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readUserWriteMaskAttribute_async(self.ua_client,
                                                                      node_id._val,
                                                                      lib.python_wrapper_UA_ClientAsyncReadUserWriteMaskAttributeCallback,
@@ -876,6 +907,7 @@ class UaClient:
                                          callback: Callable[['UaClient', UaUInt32, UaBoolean], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readIsAbstractAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   lib.python_wrapper_UA_ClientAsyncReadIsAbstractAttributeCallback,
@@ -887,6 +919,7 @@ class UaClient:
                                        callback: Callable[['UaClient', UaUInt32, UaBoolean], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readSymmetricAttribute_async(self.ua_client,
                                                                  node_id._val,
                                                                  lib.python_wrapper_UA_ClientAsyncReadSymmetricAttributeCallback,
@@ -898,6 +931,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaLocalizedText], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readInverseNameAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    lib.python_wrapper_UA_ClientAsyncReadInverseNameAttributeCallback,
@@ -909,6 +943,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaBoolean], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readContainsNoLoopsAttribute_async(self.ua_client,
                                                                        node_id._val,
                                                                        lib.python_wrapper_UA_ClientAsyncReadContainsNoLoopsAttributeCallback,
@@ -920,6 +955,7 @@ class UaClient:
                                             callback: Callable[['UaClient', UaUInt32, UaByte], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readEventNotifierAttribute_async(self.ua_client,
                                                                      node_id._val,
                                                                      lib.python_wrapper_UA_ClientAsyncReadEventNotifierAttributeCallback,
@@ -931,6 +967,7 @@ class UaClient:
                                         callback: Callable[['UaClient', UaUInt32, UaUInt32], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readValueRankAttribute_async(self.ua_client,
                                                                  node_id._val,
                                                                  lib.python_wrapper_UA_ClientAsyncReadValueRankAttributeCallback,
@@ -942,6 +979,7 @@ class UaClient:
                                           callback: Callable[['UaClient', UaUInt32, UaByte], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readAccessLevelAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    lib.python_wrapper_UA_ClientAsyncReadAccessLevelAttributeCallback,
@@ -953,6 +991,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaByte], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readUserAccessLevelAttribute_async(self.ua_client,
                                                                        node_id._val,
                                                                        lib.python_wrapper_UA_ClientAsyncReadUserAccessLevelAttributeCallback,
@@ -964,6 +1003,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaDouble], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readMinimumSamplingIntervalAttribute_async(self.ua_client,
                                                                                node_id._val,
                                                                                lib.python_wrapper_UA_ClientAsyncReadMinimumSamplingIntervalAttributeCallback,
@@ -975,6 +1015,7 @@ class UaClient:
                                          callback: Callable[['UaClient', UaUInt32, UaBoolean], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readHistorizingAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    lib.python_wrapper_UA_ClientAsyncReadHistorizingAttributeCallback,
@@ -986,6 +1027,7 @@ class UaClient:
                                         callback: Callable[['UaClient', UaUInt32, UaBoolean], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_readExecutableAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   lib.python_wrapper_UA_ClientAsyncReadExecutableAttributeCallback,
@@ -997,6 +1039,7 @@ class UaClient:
         ['UaClient', UaUInt32, UaBoolean], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.readUserExecutableAttribute_async(self.ua_client,
                                                             node_id._val,
                                                             lib.python_wrapper_UA_ClientAsyncReadUserExecutableAttributeCallback,
@@ -1009,6 +1052,7 @@ class UaClient:
                                  callback: Callable[['UaClient', UaUInt32, UaWriteResponse], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_sendAsyncWriteRequest(self.ua_client,
                                                           request._ptr,
                                                           lib.python_wrapper_UA_ClientAsyncWriteCallback,
@@ -1016,21 +1060,22 @@ class UaClient:
                                                           req_id._ptr)
         return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
 
-    # todo: how to handle _in (*void)?
     def __write_attribute_async(self, node_id: UaNodeId, attribute_id: UaAttributeId,
                                 _in: Void,
                                 in_data_type: UaDataType,
                                 callback: Callable[['UaClient', UaUInt32, Void], None]):
         req_id = UaUInt32()
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.__UA_Client_writeAttribute_async(self.ua_client,
                                                            node_id._ptr,
                                                            attribute_id._val,
                                                            _in._ptr,
                                                            in_data_type._ptr,
                                                            lib.python_wrapper_UA_ClientAsyncServiceCallback,
-                                                           ffi.new_handle(callback),
+                                                           _handle,
                                                            req_id._ptr)
-        return UaStatusCode(val=status_code)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
 
     def write_value_attribute_async(self, node_id: UaNodeId, new_value: UaVariant,
                                     callback: Callable[
@@ -1050,6 +1095,7 @@ class UaClient:
         req_id = UaUInt32()
         out_node_id = UaNodeId()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeNodeIdAttribute_async(self.ua_client,
                                                                node_id._val,
                                                                out_node_id._ptr,
@@ -1063,6 +1109,7 @@ class UaClient:
         req_id = UaUInt32()
         out_node_class = UaNodeClass()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeNodeClassAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   out_node_class._ptr,
@@ -1076,6 +1123,7 @@ class UaClient:
         req_id = UaUInt32()
         out_browse_name = UaQualifiedName()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeBrowseNameAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    out_browse_name._ptr,
@@ -1089,6 +1137,7 @@ class UaClient:
         req_id = UaUInt32()
         out_display_name = UaLocalizedText()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeDisplayNameAttribute_async(self.ua_client,
                                                                     node_id._val,
                                                                     out_display_name._ptr,
@@ -1102,6 +1151,7 @@ class UaClient:
         req_id = UaUInt32()
         out_description = UaLocalizedText()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeDescriptionAttribute_async(self.ua_client,
                                                                     node_id._val,
                                                                     out_description._ptr,
@@ -1115,6 +1165,7 @@ class UaClient:
         req_id = UaUInt32()
         out_write_mask = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeWriteMaskAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   out_write_mask._ptr,
@@ -1128,6 +1179,7 @@ class UaClient:
         req_id = UaUInt32()
         out_user_write_mask = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeUserWriteMaskAttribute_async(self.ua_client,
                                                                       node_id._val,
                                                                       out_user_write_mask._ptr,
@@ -1141,6 +1193,7 @@ class UaClient:
         req_id = UaUInt32()
         out_is_abstract = UaBoolean()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeIsAbstractAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    out_is_abstract._ptr,
@@ -1154,6 +1207,7 @@ class UaClient:
         req_id = UaUInt32()
         out_symmetric = UaBoolean()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeSymmetricAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   out_symmetric._ptr,
@@ -1167,6 +1221,7 @@ class UaClient:
         req_id = UaUInt32()
         out_inverse_name = UaLocalizedText()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeInverseNameAttribute_async(self.ua_client,
                                                                     node_id._val,
                                                                     out_inverse_name._ptr,
@@ -1180,6 +1235,7 @@ class UaClient:
         req_id = UaUInt32()
         out_contains_no_loops = UaBoolean()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeContainsNoLoopsAttribute_async(self.ua_client,
                                                                         node_id._val,
                                                                         out_contains_no_loops._ptr,
@@ -1193,6 +1249,7 @@ class UaClient:
         req_id = UaUInt32()
         out_event_notifier = UaByte()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeEventNotifierAttribute_async(self.ua_client,
                                                                       node_id._val,
                                                                       out_event_notifier._ptr,
@@ -1206,6 +1263,7 @@ class UaClient:
         req_id = UaUInt32()
         out_data_type = UaNodeId()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeDataTypeAttribute_async(self.ua_client,
                                                                  node_id._val,
                                                                  out_data_type._ptr,
@@ -1219,6 +1277,7 @@ class UaClient:
         req_id = UaUInt32()
         out_value_rank = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeValueRankAttribute_async(self.ua_client,
                                                                   node_id._val,
                                                                   out_value_rank._ptr,
@@ -1232,6 +1291,7 @@ class UaClient:
         req_id = UaUInt32()
         out_access_level = UaByte()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeAccessLevelAttribute_async(self.ua_client,
                                                                     node_id._val,
                                                                     out_access_level._ptr,
@@ -1245,6 +1305,7 @@ class UaClient:
         req_id = UaUInt32()
         out_user_access_level = UaByte()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeUserAccessLevelAttribute_async(self.ua_client,
                                                                         node_id._val,
                                                                         out_user_access_level._ptr,
@@ -1261,6 +1322,7 @@ class UaClient:
                                                         new_min_interval: UaDouble):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeMinimumSamplingIntervalAttribute_async(self.ua_client,
                                                                                 node_id._val,
                                                                                 new_min_interval._val,
@@ -1277,6 +1339,7 @@ class UaClient:
                                           new_historizing: UaBoolean):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeHistorizingAttribute_async(self.ua_client,
                                                                     node_id._val,
                                                                     new_historizing._ptr,
@@ -1290,6 +1353,7 @@ class UaClient:
         req_id = UaUInt32()
         out_executable = UaBoolean()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeExecutableAttribute_async(self.ua_client,
                                                                    node_id._val,
                                                                    out_executable._ptr,
@@ -1303,6 +1367,7 @@ class UaClient:
         req_id = UaUInt32()
         out_user_executable = UaBoolean()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_writeUserExecutableAttribute_async(self.ua_client,
                                                                        node_id._val,
                                                                        out_user_executable._ptr,
@@ -1318,6 +1383,7 @@ class UaClient:
                     callback: Callable[['UaClient', UaUInt32, Void], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.__UA_Client_call_async(self.ua_client,
                                                  object_id._val,
                                                  method_id._val,
@@ -1334,6 +1400,7 @@ class UaClient:
                    callback: Callable[['UaClient', UaUInt32, UaCallResponse], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.__UA_Client_call_async(self.ua_client,
                                                  object_id._val,
                                                  method_id._val,
@@ -1358,6 +1425,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addVariableNode_async(self.ua_client,
                                                           requested_new_node_id._val,
                                                           parent_node_id._val,
@@ -1381,6 +1449,9 @@ class UaClient:
         if requested_new_node_id is None:
             requested_new_node_id = UaNodeId(val=UaNodeId.NULL)
 
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
+
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         status_code = lib.__UA_Client_addNode_async(self.ua_client,
@@ -1394,9 +1465,9 @@ class UaClient:
                                                     attribute_type._ptr,
                                                     out_new_node_id._ptr,
                                                     lib.python_wrapper_UA_ClientAsyncServiceCallback,
-                                                    ffi.new_handle(callback),
+                                                    _handle,
                                                     req_id._ptr)
-        return UaStatusCode(val=status_code)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
 
     def add_variable_type_node_async(self, parent_node_id: UaNodeId,
                                      reference_type_id: UaNodeId, browse_name: UaQualifiedName,
@@ -1414,6 +1485,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addVariableTypeNode_async(self.ua_client,
                                                               requested_new_node_id._val,
                                                               parent_node_id._val,
@@ -1442,6 +1514,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addObjectNode_async(self.ua_client,
                                                         requested_new_node_id._val,
                                                         parent_node_id._val,
@@ -1471,6 +1544,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addObjectTypeNode_async(self.ua_client,
                                                             requested_new_node_id._val,
                                                             parent_node_id._val,
@@ -1498,6 +1572,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addViewNode_async(self.ua_client,
                                                       requested_new_node_id._val,
                                                       parent_node_id._val,
@@ -1525,6 +1600,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addReferenceTypeNode_async(self.ua_client,
                                                                requested_new_node_id._val,
                                                                parent_node_id._val,
@@ -1551,6 +1627,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addDataTypeNode_async(self,
                                                           requested_new_node_id._val,
                                                           parent_node_id._val,
@@ -1578,6 +1655,7 @@ class UaClient:
         out_new_node_id = UaNodeId()
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addMethodNode_async(self.ua_client,
                                                         requested_new_node_id._val,
                                                         parent_node_id._val,
@@ -1595,6 +1673,7 @@ class UaClient:
                                   callback: Callable[['UaClient', UaUInt32, UaBrowseResponse], None]):
         req_id = UaUInt32()
         _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_sendAsyncBrowseRequest(self.ua_client,
                                                            request,
                                                            lib.python_wrapper_UA_ClientAsyncBrowseCallback,
@@ -1605,12 +1684,14 @@ class UaClient:
     # misc
     def add_timed_callback(self, callback: Callable[['UaClient', Void], None],
                            date: UaDateTime, callback_id):
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_addTimedCallback(self.ua_client,
                                                      lib.python_wrapper_UA_ClientCallback,
-                                                     ffi.new_handle(callback),
+                                                     _handle,
                                                      date._val,
                                                      callback_id._ptr)
-        return UaStatusCode(val=status_code)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), None, _handle)
 
     def add_repeated_callback(self, callback: Callable[['UaClient', Void], None],
                               interval_ms: UaDouble,
@@ -1632,21 +1713,21 @@ class UaClient:
         status_code = lib.UA_Client_renewSecureChannel(self.ua_client)
         return UaStatusCode(val=status_code)
 
-    # todo: how to handle void * request? not really usable at the moment
     def __async_service_ex(self, request: Void, request_type: UaDataType,
-                           response_type: UaDataType, callback, timeout: UaInt32):
+                           response_type: UaDataType, callback: Callable[['UaClient', UaUInt32, Void], None],
+                           timeout: UaInt32):
         req_id = UaUInt32()
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.__UA_Client_AsyncServiceEx(self.ua_client,
                                                      request._ptr,
                                                      request_type._ptr,
                                                      lib.python_wrapper_UA_ClientAsyncServiceCallback,
                                                      response_type._ptr,
-                                                     ffi.new_handle(callback),
+                                                     _handle,
                                                      req_id._ptr,
                                                      timeout._val)
-        return UaStatusCode(val=status_code)
-
-        # todo: wrap response
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), None, _handle)
 
     # todo: not not usable at the moment --> fix
     def get_state(self):
@@ -1656,20 +1737,19 @@ class UaClient:
         return lib.UA_Client_getState(self.ua_client, channel_state, session_state,
                                       connect_status)  # todo: create response wrapper
 
-    # todo: wrap response. Problem: return type is void*
     def get_context(self):
-        return Void(val=lib.UA_Client_getContext(self.ua_client))
+        return Void(val=lib.UA_Client_getContext(self.ua_client), is_pointer=True)
 
-    # todo: we don't understand how this function is supposed to work. does it find the correct request via the URL and overwrites the corresponding callback?
     def modify_async_callback(self, req_id: UaUInt32,
                               callback: Callable[['UaClient', UaUInt32, Void], None]):
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_modifyAsyncCallback(self.ua_client,
                                                         req_id._val,
-                                                        ffi.new_handle(callback),
+                                                        _handle,
                                                         lib.python_wrapper_UA_ClientAsyncServiceCallback)
-        return UaStatusCode(val=status_code)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
 
-    # todo: request and response have type void* --> not usable atm
     def __service(self, request: Void, request_type: UaDataType, response: Void,
                   response_type: UaDataType):
         status_code = lib.__UA_Client_Service(self.ua_client,
@@ -1679,18 +1759,19 @@ class UaClient:
                                               response_type._ptr)
         return UaStatusCode(val=status_code)
 
-    # todo: request and response have type void* --> not usable atm
     def __async_service(self, request: Void, request_type: UaDataType, response_type: Void,
                         callback: Callable[['UaClient', UaUInt32, Void], None]):
         req_id = UaUInt32()
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.__UA_Client_AsyncService(self.ua_client,
                                                    request._ptr,
                                                    request_type._ptr,
                                                    lib.python_wrapper_UA_ClientAsyncServiceCallback,
                                                    response_type._ptr,
-                                                   ffi.new_handle(callback),
+                                                   _handle,
                                                    req_id._ptr)
-        return UaStatusCode(val=status_code)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
 
     def namespace_get_index(self, namespace_uri: UaString, namespace_index: UaUInt16):
         status_code = lib.UA_Client_NamespaceGetIndex(self.ua_client,
@@ -1700,8 +1781,10 @@ class UaClient:
 
     def for_each_child_node_call(self, parent_node_id: UaNodeId,
                                  callback: Callable[[UaNodeId, UaBoolean, UaNodeId], None]):
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
         status_code = lib.UA_Client_forEachChildNodeCall(self.ua_client,
                                                          parent_node_id._val,
                                                          lib.python_wrapper_UA_NodeIteratorCallback,
-                                                         ffi.new_handle(callback))
-        return UaStatusCode(val=status_code)
+                                                         _handle)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), None, _handle)

@@ -174,9 +174,9 @@ def generate_api():
     print("finished building intermediateApi")
 
 
-def generate_pdoc():
-    os.chdir(dirname + r"/build/open62541")
-    os.system("pdoc3 --html --output-dir " + dirname + "/doc " + dirname + r"/build/open62541 --force")
+def generate_doc():
+    os.chdir(dirname + r"/sphinx")
+    os.system("make html")
 
 
 if __name__ == "__main__":
@@ -187,4 +187,4 @@ if __name__ == "__main__":
     generate_node_ids()
     generate_data_types()
     generate_type_ids()
-    generate_pdoc()
+    generate_doc()

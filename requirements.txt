@@ -1,3 +1,2 @@
 cffi
-pdoc3
-sphinx_rtd_theme
+python3-sphinx
