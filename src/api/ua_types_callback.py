@@ -363,13 +363,3 @@ class UaDataSource(UaType):
 class UaNodeTypeLifecycle():
     def __init__(self):
         pass
-
-
-class UaTwoStateVariableCallbackType(UaType):
-    def __init__(self):
-        return None
-
-
-class UaTwoStateVariableChangeCallback(UaType):
-    def __init__(self):
-        return None
