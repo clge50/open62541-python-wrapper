@@ -93,6 +93,7 @@ class UaVariantStorageType(UaType):
     def __str__(self, n=0):
         return f"(UaVariantStorageType): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
+
 # +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
 class UaExtensionObjectEncoding(UaType):
     val_to_string = dict([
@@ -142,40 +143,41 @@ class UaExtensionObjectEncoding(UaType):
     def __str__(self, n=0):
         return f"(UaExtensionObjectEncoding): {self.val_to_string[self._val]} ({str(self._val)})\n"
 
+
 # +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
 class UaDataTypeKind(UaType):
     val_to_string = dict([
-            (0, "UA_DATATYPEKIND_BOOLEAN"),
-            (1, "UA_DATATYPEKIND_SBYTE"),
-            (2, "UA_DATATYPEKIND_BYTE"),
-            (3, "UA_DATATYPEKIND_INT16"),
-            (4, "UA_DATATYPEKIND_UINT16"),
-            (5, "UA_DATATYPEKIND_INT32"),
-            (6, "UA_DATATYPEKIND_UINT32"),
-            (7, "UA_DATATYPEKIND_INT64"),
-            (8, "UA_DATATYPEKIND_UINT64"),
-            (9, "UA_DATATYPEKIND_FLOAT"),
-            (10, "UA_DATATYPEKIND_DOUBLE"),
-            (11, "UA_DATATYPEKIND_STRING"),
-            (12, "UA_DATATYPEKIND_DATETIME"),
-            (13, "UA_DATATYPEKIND_GUID"),
-            (14, "UA_DATATYPEKIND_BYTESTRING"),
-            (15, "UA_DATATYPEKIND_XMLELEMENT"),
-            (16, "UA_DATATYPEKIND_NODEID"),
-            (17, "UA_DATATYPEKIND_EXPANDEDNODEID"),
-            (18, "UA_DATATYPEKIND_STATUSCODE"),
-            (19, "UA_DATATYPEKIND_QUALIFIEDNAME"),
-            (20, "UA_DATATYPEKIND_LOCALIZEDTEXT"),
-            (21, "UA_DATATYPEKIND_EXTENSIONOBJECT"),
-            (22, "UA_DATATYPEKIND_DATAVALUE"),
-            (23, "UA_DATATYPEKIND_VARIANT"),
-            (24, "UA_DATATYPEKIND_DIAGNOSTICINFO"),
-            (25, "UA_DATATYPEKIND_DECIMAL"),
-            (26, "UA_DATATYPEKIND_ENUM"),
-            (27, "UA_DATATYPEKIND_STRUCTURE"),
-            (28, "UA_DATATYPEKIND_OPTSTRUCT"),
-            (29, "UA_DATATYPEKIND_UNION"),
-            (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
+        (0, "UA_DATATYPEKIND_BOOLEAN"),
+        (1, "UA_DATATYPEKIND_SBYTE"),
+        (2, "UA_DATATYPEKIND_BYTE"),
+        (3, "UA_DATATYPEKIND_INT16"),
+        (4, "UA_DATATYPEKIND_UINT16"),
+        (5, "UA_DATATYPEKIND_INT32"),
+        (6, "UA_DATATYPEKIND_UINT32"),
+        (7, "UA_DATATYPEKIND_INT64"),
+        (8, "UA_DATATYPEKIND_UINT64"),
+        (9, "UA_DATATYPEKIND_FLOAT"),
+        (10, "UA_DATATYPEKIND_DOUBLE"),
+        (11, "UA_DATATYPEKIND_STRING"),
+        (12, "UA_DATATYPEKIND_DATETIME"),
+        (13, "UA_DATATYPEKIND_GUID"),
+        (14, "UA_DATATYPEKIND_BYTESTRING"),
+        (15, "UA_DATATYPEKIND_XMLELEMENT"),
+        (16, "UA_DATATYPEKIND_NODEID"),
+        (17, "UA_DATATYPEKIND_EXPANDEDNODEID"),
+        (18, "UA_DATATYPEKIND_STATUSCODE"),
+        (19, "UA_DATATYPEKIND_QUALIFIEDNAME"),
+        (20, "UA_DATATYPEKIND_LOCALIZEDTEXT"),
+        (21, "UA_DATATYPEKIND_EXTENSIONOBJECT"),
+        (22, "UA_DATATYPEKIND_DATAVALUE"),
+        (23, "UA_DATATYPEKIND_VARIANT"),
+        (24, "UA_DATATYPEKIND_DIAGNOSTICINFO"),
+        (25, "UA_DATATYPEKIND_DECIMAL"),
+        (26, "UA_DATATYPEKIND_ENUM"),
+        (27, "UA_DATATYPEKIND_STRUCTURE"),
+        (28, "UA_DATATYPEKIND_OPTSTRUCT"),
+        (29, "UA_DATATYPEKIND_UNION"),
+        (30, "UA_DATATYPEKIND_BITFIELDCLUSTER")])
 
     def __init__(self, val: Union[int, Void] = None, is_pointer=False):
         if isinstance(val, UaType):
@@ -1465,9 +1467,6 @@ class UaVariant(UaType):
             if val.ua_type is None:
                 raise TypeError("if 'val' is a UaList the attribute ua_type has to be set correctly.")
             self.set_array(val, len(val), UaDataType(val=val.ua_type._UA_TYPE))
-            # set array dimensions per default to 1-dimensional
-            self.array_dimensions = UaUInt32([len(val)])
-            self.array_dimensions_size = SizeT(1)
         else:
             self.set_scalar(val, UaDataType(val=val._UA_TYPE))
 

@@ -3,19 +3,17 @@ from ua import *
 
 
 def update_current_time(server: UaServer):
-    now = UaDateTime.now()
     value = UaVariant()
-    value.data = now
+    value.data = UaDateTime.now()
     current_node_id = UaNodeId(1, "current-time-value-callback")
     server.write_value(current_node_id, value)
 
 
 def add_current_time_variable(server: UaServer):
-    now = UaDateTime.now()
     attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
     attr.display_name = UaLocalizedText("en-US", "Current time - value callback")
-    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
-    attr.data_value.data = now
+    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE  # todo: accept a list and do the bitwise or internally in the setter.
+    attr.data_value.data = UaDateTime.now()
 
     current_node_id = UaNodeId(1, "current-time-value-callback")
     current_name = UaQualifiedName(1, "current-time-value-callback")
@@ -49,15 +47,13 @@ def add_value_callback_to_current_time_variable(server: UaServer):
 # Variable Data Sources
 def read_current_time(server, session_id, session_context, node_id, node_context, source_time_stamp, numeric_range,
                       data_value: UaDataValue):
-    now = UaDateTime.now()
-    data_value.variant.data = now
+    data_value.variant.data = UaDateTime.now()
     data_value.has_variant = UaBoolean(True)
     return UA_STATUSCODES.GOOD
 
 
 def write_current_time(server, session_id, session_context, node_id, node_context, numeric_range, data):
-    logger = UaLogger()
-    logger.info(UaLogCategory.USERLAND(), "Changing the system time is not implemented")
+    UaLogger().info(UaLogCategory.USERLAND(), "Changing the system time is not implemented")
     return UA_STATUSCODES.BADINTERNALERROR
 
 
@@ -65,7 +61,7 @@ ua_data_value = UaDataValue()
 
 
 def add_current_time_data_source_variable(server: UaServer):
-    attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
+    attr = UA_ATTRIBUTES_DEFAULT.VARIABLE  # todo: make this a method?
     attr.display_name = UaLocalizedText("en-US", "Current time - data source")
     attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
 

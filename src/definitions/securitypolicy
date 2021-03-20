@@ -59,7 +59,7 @@ struct UA_SecurityPolicy {
     void (*clear)(UA_SecurityPolicy *policy);
 };
 
-extern "Python" UA_StatusCode python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey(UA_SecurityPolicy *policy,
+extern "Python" UA_StatusCode _python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey(UA_SecurityPolicy *policy,
                                                     const UA_ByteString newCertificate,
                                                     const UA_ByteString newPrivateKey);
-extern "Python" void python_wrapper_UA_SecurityPolicy_clear(UA_SecurityPolicy *policy);
+extern "Python" void _python_wrapper_UA_SecurityPolicy_clear(UA_SecurityPolicy *policy);

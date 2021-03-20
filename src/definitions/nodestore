@@ -20,11 +20,11 @@ typedef struct {
                        const UA_NodeId *nodeId, void **nodeContext);
 } UA_NodeTypeLifecycle;
 
-extern "Python" UA_StatusCode python_wrapper_UA_NodeTypeLifecycle_constructor(UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_NodeTypeLifecycle_constructor(UA_Server *server,
                                  const UA_NodeId *sessionId, void *sessionContext,
                                  const UA_NodeId *typeNodeId, void *typeNodeContext,
                                  const UA_NodeId *nodeId, void **nodeContext);
-extern "Python" void python_wrapper_UA_NodeTypeLifecycle_destructor(UA_Server *server,
+extern "Python" void _python_wrapper_UA_NodeTypeLifecycle_destructor(UA_Server *server,
                        const UA_NodeId *sessionId, void *sessionContext,
                        const UA_NodeId *typeNodeId, void *typeNodeContext,
                        const UA_NodeId *nodeId, void **nodeContext);
@@ -130,19 +130,19 @@ typedef struct {
                                          UA_NodeId *targetNodeId);
 } UA_GlobalNodeLifecycle;
 
-extern "Python" UA_StatusCode python_wrapper_UA_GlobalNodeLifecycle_constructor(UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_GlobalNodeLifecycle_constructor(UA_Server *server,
                                  const UA_NodeId *sessionId, void *sessionContext,
                                  const UA_NodeId *nodeId, void **nodeContext);
-extern "Python" void python_wrapper_UA_GlobalNodeLifecycle_destructor(UA_Server *server,
+extern "Python" void _python_wrapper_UA_GlobalNodeLifecycle_destructor(UA_Server *server,
                        const UA_NodeId *sessionId, void *sessionContext,
                        const UA_NodeId *nodeId, void *nodeContext);
-extern "Python" UA_Boolean python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(UA_Server *server,
+extern "Python" UA_Boolean _python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(UA_Server *server,
                                       const UA_NodeId *sessionId,
                                       void *sessionContext,
                                       const UA_NodeId *sourceNodeId,
                                       const UA_NodeId *targetParentNodeId,
                                       const UA_NodeId *referenceTypeId);
-extern "Python" UA_StatusCode python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(UA_Server *server,
                                          const UA_NodeId *sessionId, void *sessionContext,
                                          const UA_NodeId *sourceNodeId,
                                          const UA_NodeId *targetParentNodeId,
@@ -396,19 +396,19 @@ typedef struct {
                     void *visitorCtx);
 } UA_Nodestore;
 
-extern "Python" void python_wrapper_UA_Nodestore_clear(void *nsCtx);
-extern "Python" UA_Node python_wrapper_UA_Nodestore_newNode(void *nsCtx, UA_NodeClass nodeClass);
-extern "Python" void python_wrapper_UA_Nodestore_deleteNode(void *nsCtx, UA_Node *node);
-extern "Python" const UA_Node python_wrapper_UA_Nodestore_getNode(void *nsCtx, const UA_NodeId *nodeId);
-extern "Python" void python_wrapper_UA_Nodestore_releaseNode(void *nsCtx, const UA_Node *node);
-extern "Python" UA_StatusCode python_wrapper_UA_Nodestore_getNodeCopy(void *nsCtx, const UA_NodeId *nodeId,
+extern "Python" void _python_wrapper_UA_Nodestore_clear(void *nsCtx);
+extern "Python" UA_Node _python_wrapper_UA_Nodestore_newNode(void *nsCtx, UA_NodeClass nodeClass);
+extern "Python" void _python_wrapper_UA_Nodestore_deleteNode(void *nsCtx, UA_Node *node);
+extern "Python" UA_Node _python_wrapper_UA_Nodestore_getNode(void *nsCtx, const UA_NodeId *nodeId);
+extern "Python" void _python_wrapper_UA_Nodestore_releaseNode(void *nsCtx, const UA_Node *node);
+extern "Python" UA_StatusCode _python_wrapper_UA_Nodestore_getNodeCopy(void *nsCtx, const UA_NodeId *nodeId,
                                  UA_Node **outNode);
-extern "Python" UA_StatusCode python_wrapper_UA_Nodestore_insertNode(void *nsCtx, UA_Node *node,
+extern "Python" UA_StatusCode _python_wrapper_UA_Nodestore_insertNode(void *nsCtx, UA_Node *node,
                                 UA_NodeId *addedNodeId);
-extern "Python" UA_StatusCode python_wrapper_UA_Nodestore_replaceNode(void *nsCtx, UA_Node *node);
-extern "Python" UA_StatusCode python_wrapper_UA_Nodestore_removeNode(void *nsCtx, const UA_NodeId *nodeId);
-extern "Python" const UA_NodeId python_wrapper_UA_Nodestore_getReferenceTypeId(void *nsCtx, UA_Byte refTypeIndex);
-extern "Python" void python_wrapper_UA_Nodestore_iterate(void *nsCtx, UA_NodestoreVisitor visitor,
+extern "Python" UA_StatusCode _python_wrapper_UA_Nodestore_replaceNode(void *nsCtx, UA_Node *node);
+extern "Python" UA_StatusCode _python_wrapper_UA_Nodestore_removeNode(void *nsCtx, const UA_NodeId *nodeId);
+extern "Python" const UA_NodeId _python_wrapper_UA_Nodestore_getReferenceTypeId(void *nsCtx, UA_Byte refTypeIndex);
+extern "Python" void _python_wrapper_UA_Nodestore_iterate(void *nsCtx, UA_NodestoreVisitor visitor,
                     void *visitorCtx);
 
 

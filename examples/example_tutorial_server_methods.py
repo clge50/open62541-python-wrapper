@@ -10,10 +10,7 @@ def hello_world_method_callback(server: UaServer,
                                 object_context: Void,
                                 input_arg: UaList,
                                 output_arg: UaList):
-    string = UaString("Hello " + UaString(input_arg[
-                                           0].data).value)  # todo: implement "magic method" for Ua_String concat. allow user to use Strings and implicitly map to UaStrings when needed
-    output_arg[0].data = string  # todo: can we call set_scalar implicitly to improve UX?
-    # todo: would be nice if the user could just write the following: output_arg[0] = "Hello " + input_arg[0] and we do some "magic" to make it happen
+    output_arg[0].data = UaString("Hello ") + UaString(input_arg[0].data)
     UaLogger().info(UaLogCategory.SERVER(), "Hello World was called")
     return UA_STATUSCODES.GOOD
 
@@ -59,7 +56,7 @@ def inc_int_32_array_method_callback(server: UaServer,
     res_list = UaList(ua_class=UaInt32, size=5)
     for i in range(0, len(lst)):
         res_list[i] = UaInt32(lst[i].value + delta.value)
-    output_arg[0].set_array(res_list, size, UA_TYPES.INT32)
+    output_arg[0].data = res_list
     return UA_STATUSCODES.GOOD
 
 

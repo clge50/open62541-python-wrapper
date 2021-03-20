@@ -18,9 +18,9 @@ struct UA_CertificateVerification{
     void (*clear)(UA_CertificateVerification *cv);
 };
 
-extern "Python" UA_StatusCode python_wrapper_UA_CertificateVerification_verifyCertificate(void *verificationContext,
+extern "Python" UA_StatusCode _python_wrapper_UA_CertificateVerification_verifyCertificate(void *verificationContext,
                                        const UA_ByteString *certificate);
-extern "Python" UA_StatusCode python_wrapper_UA_SecurityPolicy_verifyApplicationURI(void *verificationContext,
+extern "Python" UA_StatusCode _python_wrapper_UA_SecurityPolicy_verifyApplicationURI(void *verificationContext,
                                           const UA_ByteString *certificate,
                                           const UA_String *applicationURI);
-extern "Python" void python_wrapper_UA_CertificateVerification_clear(UA_CertificateVerification *cv);
+extern "Python" void _python_wrapper_UA_CertificateVerification_clear(UA_CertificateVerification *cv);

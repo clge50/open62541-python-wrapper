@@ -316,8 +316,6 @@ class UaDataSource(UaType):
             super().__init__(val=val, is_pointer=is_pointer)
             self._uses_python_read_callback = False
             self._uses_python_write_callback = False
-            self._value.read = val.read
-            self._value.write = val.write
             self._read_callback = lambda a, b, c, d, e, f, g, h: UA_STATUSCODES.GOOD
             self._write_callback = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
 
@@ -363,13 +361,3 @@ class UaDataSource(UaType):
 class UaNodeTypeLifecycle():
     def __init__(self):
         pass
-
-
-class UaTwoStateVariableCallbackType(UaType):
-    def __init__(self):
-        return None
-
-
-class UaTwoStateVariableChangeCallback(UaType):
-    def __init__(self):
-        return None

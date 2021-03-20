@@ -4,15 +4,11 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import ffi, lib
+
+from ua_consts_status_codes import UA_STATUSCODES
 from ua_types_logger import *
 from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
-from typing import Callable
-
-
-# TODO: remove placeholder when implmentaion of callbacks is done
-class c_fun(UaType):
-    def __init__(self, val, is_pointer):
-        super.__init__(val, is_pointer)
+from typing import Callable, Dict
 
 
 # +++++++++++++++++++ aa_entry +++++++++++++++++++++++
@@ -31,17 +27,6 @@ class aa_entry(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "aa_entry")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._left._value = val.left
-            self._right._value = val.right
-            self._int._value[0] = _val(val.int)
 
     @property
     def left(self):
@@ -100,47 +85,50 @@ class UaNode(UaType):
             super().__init__(ffi.new("UA_Node *"), _val(val), is_pointer)
 
 
-# +++++++++++++++++++ UaTwoStateVariableCallbackType +++++++++++++++++++++++
-class UaTwoStateVariableCallbackType(UaType):
-    def __init__(self):
-        super().__init__(None)
-
-
-# +++++++++++++++++++ UaTwoStateVariableChangeCallback +++++++++++++++++++++++
-class UaTwoStateVariableChangeCallback(UaType):
-    def __init__(self):
-        super().__init__(None)
-
-
 # +++++++++++++++++++ UaCertificateVerification +++++++++++++++++++++++
 class UaCertificateVerification(UaType):
+    _verify_certificate = None
+    _verify_application_uri = None
+    _clear = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_CertificateVerification_verifyCertificate(verification_context, certificate):
+        UaCertificateVerification._verify_certificate(Void(val=verification_context, is_pointer=True),
+                                                      UaByteString(val=certificate, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_verifyApplicationURI(verification_context, certificate, application_uri):
+        UaCertificateVerification._verify_application_uri(Void(val=verification_context, is_pointer=True),
+                                                          UaByteString(val=certificate, is_pointer=True),
+                                                          UaString(val=application_uri))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_CertificateVerification_clear(vc):
+        UaCertificateVerification._clear(UaCertificateVerification(val=vc, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_CertificateVerification*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_CertificateVerification*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._context = Void(val=val.context, is_pointer=True)
-            self._verify_certificate = c_fun(val=val.verifyCertificate, is_pointer=True)
-            self._verify_application_uri = c_fun(val=val.verifyApplicationURI, is_pointer=True)
-            self._clear = c_fun(val=val.clear, is_pointer=True)
+            self._verify_certificate = None
+            self._verify_application_uri = None
+            self._clear = None
+
+        elif isinstance(val, UaType):
+            val = ffi.cast("UA_CertificateVerification*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._context = Void(val=val.context, is_pointer=True)
+            self._verify_certificate = lambda a, b: UA_STATUSCODES.GOOD
+            self._verify_application_uri = lambda a, b: UA_STATUSCODES.GOOD
+            self._clear = lambda a: None
+            # todo: raise exeption if neither nor
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_CertificateVerification")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._context._value = val.context
-            self._verify_certificate._value = val.verifyCertificate
-            self._verify_application_uri._value = val.verifyApplicationURI
-            self._clear._value = val.clear
 
     @property
     def context(self):
@@ -176,19 +164,19 @@ class UaCertificateVerification(UaType):
         self._value.context = val._ptr
 
     @verify_certificate.setter
-    def verify_certificate(self, val: c_fun):
-        self._verify_certificate = val
-        self._value.verifyCertificate = val._ptr
+    def verify_certificate(self, val: Callable[[Void, UaByteString], UaStatusCode]):
+        UaCertificateVerification._verify_certificate = val
+        self._value.verifyCertificate = lib._python_wrapper_UA_CertificateVerification_verifyCertificate
 
     @verify_application_uri.setter
-    def verify_application_uri(self, val: c_fun):
-        self._verify_application_uri = val
-        self._value.verifyApplicationURI = val._ptr
+    def verify_application_uri(self, val: Callable[[Void, UaByteString, UaString], UaStatusCode]):
+        UaCertificateVerification._verify_application_uri = val
+        self._value.verifyApplicationURI = lib._python_wrapper_UA_SecurityPolicy_verifyApplicationURI
 
     @clear.setter
-    def clear(self, val: c_fun):
-        self._clear = val
-        self._value.clear = val._ptr
+    def clear(self, val: Callable[[], None]):
+        UaCertificateVerification._clear = val
+        self._value.clear = lib._python_wrapper_UA_CertificateVerification_clear
 
     def __str__(self, n=0):
         if self._null:
@@ -203,49 +191,122 @@ class UaCertificateVerification(UaType):
 
 # +++++++++++++++++++ UaNodestore +++++++++++++++++++++++
 class UaNodestore(UaType):
+    _clear = None
+    _new_node = None
+    _delete_node = None
+    _get_node = None
+    _release_node = None
+    _get_node_copy = None
+    _insert_node = None
+    _replace_node = None
+    _remove_node = None
+    _get_reference_type_id = None
+    _iterate = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_clear(ns_ctx):
+        UaNodestore._clear(Void(val=ns_ctx, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_newNode(ns_ctx, node_class):
+        UaNodestore._new_node(Void(val=ns_ctx, is_pointer=True),
+                              UaNodeClass(val=node_class))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_deleteNode(ns_ctx, node):
+        UaNodestore._delete_node(Void(val=ns_ctx, is_pointer=True),
+                                 UaNode(val=node, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_getNode(ns_ctx, node_id):
+        UaNodestore._get_node(Void(val=ns_ctx, is_pointer=True),
+                              UaNodeId(val=node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_releaseNode(ns_ctx, node):
+        UaNodestore._release_node(Void(val=ns_ctx, is_pointer=True),
+                                  UaNode(val=node, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_getNodeCopy(ns_ctx, node_id, out_node):
+        UaNodestore._get_node_copy(Void(val=ns_ctx, is_pointer=True),
+                                   UaNodeId(val=node_id, is_pointer=True),
+                                   UaList(val=out_node))  # todo: might not work. it's a UA_Node**
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_insertNode(ns_ctx, node, added_node_id):
+        UaNodestore._insert_node(Void(val=ns_ctx, is_pointer=True),
+                                 UaNode(val=node, is_pointer=True),
+                                 UaNodeId(val=added_node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_replaceNode(ns_ctx, node):
+        UaNodestore._replace_node(Void(val=ns_ctx, is_pointer=True),
+                                  UaNode(val=node, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_removeNode(ns_ctx, node_id):
+        UaNodestore._remove_node(Void(val=ns_ctx, is_pointer=True),
+                                 UaNodeId(val=node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_getReferenceTypeId(ns_ctx, ref_type_index):
+        UaNodestore._get_reference_type_id(Void(val=ns_ctx, is_pointer=True),
+                                           UaByte(val=ref_type_index, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_iterate(ns_ctx, visitor, visitor_ctx):
+        UaNodestore._iterate(Void(val=ns_ctx, is_pointer=True),
+                             # todo: add UaNodeStoreVisitor
+                             Void(val=visitor),
+                             Void(val=visitor_ctx, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_Nodestore*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_Nodestore*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._context = Void(val=val.context, is_pointer=True)
-            self._clear = c_fun(val=val.clear, is_pointer=True)
-            self._new_node = c_fun(val=val.newNode, is_pointer=True)
-            self._delete_node = c_fun(val=val.deleteNode, is_pointer=True)
-            self._get_node = c_fun(val=val.getNode, is_pointer=True)
-            self._release_node = c_fun(val=val.releaseNode, is_pointer=True)
-            self._get_node_copy = c_fun(val=val.getNodeCopy, is_pointer=True)
-            self._insert_node = c_fun(val=val.insertNode, is_pointer=True)
-            self._replace_node = c_fun(val=val.replaceNode, is_pointer=True)
-            self._remove_node = c_fun(val=val.removeNode, is_pointer=True)
-            self._get_reference_type_id = c_fun(val=val.getReferenceTypeId, is_pointer=True)
-            self._iterate = c_fun(val=val.iterate, is_pointer=True)
+            UaNodestore._clear = None
+            UaNodestore._new_node = None
+            UaNodestore._delete_node = None
+            UaNodestore._get_node = None
+            UaNodestore._release_node = None
+            UaNodestore._get_node_copy = None
+            UaNodestore._insert_node = None
+            UaNodestore._replace_node = None
+            UaNodestore._remove_node = None
+            UaNodestore._get_reference_type_id = None
+            UaNodestore._iterate = None
+
+        elif isinstance(val, UaType):
+            val = ffi.cast("UA_Nodestore*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._context = Void(val=val.context, is_pointer=True)
+            UaNodestore._clear = lambda a: None
+            UaNodestore._new_node = lambda a, b: UaNode()
+            UaNodestore._delete_node = lambda a, b: None
+            UaNodestore._get_node = lambda a, b: UaNode()
+            UaNodestore._release_node = lambda a, b: None
+            UaNodestore._get_node_copy = lambda a, b, c: UA_STATUSCODES.GOOD
+            UaNodestore._insert_node = lambda a, b, c: UA_STATUSCODES.GOOD
+            UaNodestore._replace_node = lambda a, b: UA_STATUSCODES.GOOD
+            UaNodestore._remove_node = lambda a, b: UA_STATUSCODES.GOOD
+            UaNodestore._get_reference_type_id = lambda a, b: UaNodeId()
+            UaNodestore._iterate = lambda a, b, c: None
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_Nodestore")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._context._value = val.context
-            self._clear._value = val.clear
-            self._new_node._value = val.newNode
-            self._delete_node._value = val.deleteNode
-            self._get_node._value = val.getNode
-            self._release_node._value = val.releaseNode
-            self._get_node_copy._value = val.getNodeCopy
-            self._insert_node._value = val.insertNode
-            self._replace_node._value = val.replaceNode
-            self._remove_node._value = val.removeNode
-            self._get_reference_type_id._value = val.getReferenceTypeId
-            self._iterate._value = val.iterate
 
     @property
     def context(self):
@@ -337,59 +398,60 @@ class UaNodestore(UaType):
         self._value.context = val._ptr
 
     @clear.setter
-    def clear(self, val: c_fun):
+    def clear(self, val: Callable[[Void], None]):
         self._clear = val
-        self._value.clear = val._ptr
+        self._value.clear = lib._python_wrapper_UA_Nodestore_clear
 
     @new_node.setter
-    def new_node(self, val: c_fun):
+    def new_node(self, val: Callable[[Void, UaNodeClass], UaNode]):
         self._new_node = val
-        self._value.newNode = val._ptr
+        self._value.newNode = lib._python_wrapper_UA_Nodestore_newNode
 
     @delete_node.setter
-    def delete_node(self, val: c_fun):
+    def delete_node(self, val: Callable[[Void, UaNodeId], None]):
         self._delete_node = val
-        self._value.deleteNode = val._ptr
+        self._value.deleteNode = lib._python_wrapper_UA_Nodestore_deleteNode
 
     @get_node.setter
-    def get_node(self, val: c_fun):
+    def get_node(self, val: Callable[[Void, UaNodeId], UaNode]):
         self._get_node = val
-        self._value.getNode = val._ptr
+        self._value.getNode = lib._python_wrapper_UA_Nodestore_getNode
 
     @release_node.setter
-    def release_node(self, val: c_fun):
+    def release_node(self, val: Callable[[Void, UaNode], None]):
         self._release_node = val
-        self._value.releaseNode = val._ptr
+        self._value.releaseNode = lib._python_wrapper_UA_Nodestore_releaseNode
 
     @get_node_copy.setter
-    def get_node_copy(self, val: c_fun):
+    def get_node_copy(self, val: Callable[[Void, UaNodeId, UaList], UaStatusCode]):
         self._get_node_copy = val
-        self._value.getNodeCopy = val._ptr
+        self._value.getNodeCopy = lib._python_wrapper_UA_Nodestore_getNodeCopy
 
     @insert_node.setter
-    def insert_node(self, val: c_fun):
+    def insert_node(self, val: Callable[[Void, UaNode, UaNodeId], UaStatusCode]):
         self._insert_node = val
-        self._value.insertNode = val._ptr
+        self._value.insertNode = lib._python_wrapper_UA_Nodestore_insertNode
 
     @replace_node.setter
-    def replace_node(self, val: c_fun):
+    def replace_node(self, val: Callable[[Void, UaNode], UaStatusCode]):
         self._replace_node = val
-        self._value.replaceNode = val._ptr
+        self._value.replaceNode = lib._python_wrapper_UA_Nodestore_replaceNode
 
     @remove_node.setter
-    def remove_node(self, val: c_fun):
+    def remove_node(self, val: Callable[[Void, UaNodeId], UaStatusCode]):
         self._remove_node = val
-        self._value.removeNode = val._ptr
+        self._value.removeNode = lib._python_wrapper_UA_Nodestore_removeNode
 
     @get_reference_type_id.setter
-    def get_reference_type_id(self, val: c_fun):
+    def get_reference_type_id(self, val: Callable[[Void, UaByte], UaNodeId]):
         self._get_reference_type_id = val
-        self._value.getReferenceTypeId = val._ptr
+        self._value.getReferenceTypeId = lib._python_wrapper_UA_Nodestore_getReferenceTypeId
 
     @iterate.setter
-    def iterate(self, val: c_fun):
+    # todo: add UaNodeStoreVisitor instead of Any
+    def iterate(self, val: Callable[[Void, Any, Void], None]):
         self._iterate = val
-        self._value.iterate = val._ptr
+        self._value.iterate = lib._python_wrapper_UA_Nodestore_iterate
 
     def __str__(self, n=0):
         if self._null:
@@ -412,55 +474,185 @@ class UaNodestore(UaType):
 
 # +++++++++++++++++++ UaAccessControl +++++++++++++++++++++++
 class UaAccessControl(UaType):
+    _clear = None
+    _activate_session = None
+    _close_session = None
+    _get_user_rights_mask = None
+    _get_user_access_level = None
+    _get_user_executable = None
+    _get_user_executable_on_object = None
+    _allow_add_node = None
+    _allow_add_reference = None
+    _allow_delete_node = None
+    _allow_delete_reference = None
+    _allow_browse_node = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_clear(ac):
+        UaAccessControl._clear(UaAccessControl(val=ac, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_activateSession(server, ac, endpoint_description,
+                                                         secure_channel_remote_certificate, session_id,
+                                                         user_identity_token, session_context):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._activate_session(server,
+                                                 UaAccessControl(val=ac, is_pointer=True),
+                                                 UaEndpointDescription(val=endpoint_description, is_pointer=True),
+                                                 UaByteString(val=secure_channel_remote_certificate, is_pointer=True),
+                                                 UaNodeId(val=session_id, is_pointer=True),
+                                                 UaList(session_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_closeSession(server, ac, session_id, session_context):
+        # todo: wrap server (cyclical import issue)
+        UaAccessControl._close_session(server,
+                                       UaAccessControl(val=ac, is_pointer=True),
+                                       UaNodeId(val=session_id, is_pointer=True),
+                                       Void(val=session_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserRightsMask(server, ac, session_id, session_context, node_id,
+                                                           node_context):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_rights_mask(server,
+                                                     UaAccessControl(val=ac, is_pointer=True),
+                                                     UaNodeId(val=session_id, is_pointer=True),
+                                                     Void(val=session_context, is_pointer=True),
+                                                     UaNodeId(val=node_id, is_pointer=True),
+                                                     Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserAccessLevel(server, ac, session_id, session_context, node_id,
+                                                            node_context):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_access_level(server,
+                                                      UaAccessControl(val=ac, is_pointer=True),
+                                                      UaNodeId(val=session_id, is_pointer=True),
+                                                      Void(val=session_context, is_pointer=True),
+                                                      UaNodeId(val=node_id, is_pointer=True),
+                                                      Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserExecutable(server, ac, session_id, session_context, method_id,
+                                                           method_context):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_executable(server,
+                                                    UaAccessControl(val=ac, is_pointer=True),
+                                                    UaNodeId(val=session_id, is_pointer=True),
+                                                    Void(val=session_context, is_pointer=True),
+                                                    UaNodeId(val=method_id, is_pointer=True),
+                                                    Void(val=method_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserExecutableOnObject(server, ac, session_id, session_context, method_id,
+                                                                   method_context, object_id, object_context):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_executable_on_object(server,
+                                                              UaAccessControl(val=ac, is_pointer=True),
+                                                              UaNodeId(val=session_id, is_pointer=True),
+                                                              Void(val=session_context, is_pointer=True),
+                                                              UaNodeId(val=method_id, is_pointer=True),
+                                                              Void(val=method_context, is_pointer=True),
+                                                              UaNodeId(val=object_id, is_pointer=True),
+                                                              Void(val=object_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowAddNode(server, ac, session_id, session_context, item):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_add_node(server,
+                                               UaAccessControl(val=ac, is_pointer=True),
+                                               UaNodeId(val=session_id, is_pointer=True),
+                                               Void(val=session_context, is_pointer=True),
+                                               UaAddNodesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowAddReference(server, ac, session_id, session_context, item):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_add_reference(server,
+                                                    UaAccessControl(val=ac, is_pointer=True),
+                                                    UaNodeId(val=session_id, is_pointer=True),
+                                                    Void(val=session_context, is_pointer=True),
+                                                    UaAddReferencesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowDeleteNode(server, ac, session_id, session_context, item):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_delete_node(server,
+                                                  UaAccessControl(val=ac, is_pointer=True),
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True),
+                                                  UaDeleteNodesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowDeleteReference(server, ac, session_id, session_context, item):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_delete_reference(server,
+                                                       UaAccessControl(val=ac, is_pointer=True),
+                                                       UaNodeId(val=session_id, is_pointer=True),
+                                                       Void(val=session_context, is_pointer=True),
+                                                       UaDeleteReferencesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowBrowseNode(server, ac, session_id, session_context):
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_browse_node(server,
+                                                  UaAccessControl(val=ac, is_pointer=True),
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_AccessControl*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_AccessControl*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._context = Void(val=val.context, is_pointer=True)
-            self._clear = c_fun(val=val.clear, is_pointer=True)
+            UaAccessControl._clear = None
             self._user_token_policies_size = SizeT(val=val.userTokenPoliciesSize, is_pointer=False)
             self._user_token_policies = UaUserTokenPolicy(val=val.userTokenPolicies, is_pointer=True)
-            self._activate_session = c_fun(val=val.activateSession, is_pointer=True)
-            self._close_session = c_fun(val=val.closeSession, is_pointer=True)
-            self._get_user_rights_mask = c_fun(val=val.getUserRightsMask, is_pointer=True)
-            self._get_user_access_level = c_fun(val=val.getUserAccessLevel, is_pointer=True)
-            self._get_user_executable = c_fun(val=val.getUserExecutable, is_pointer=True)
-            self._get_user_executable_on_object = c_fun(val=val.getUserExecutableOnObject, is_pointer=True)
-            self._allow_add_node = c_fun(val=val.allowAddNode, is_pointer=True)
-            self._allow_add_reference = c_fun(val=val.allowAddReference, is_pointer=True)
-            self._allow_delete_node = c_fun(val=val.allowDeleteNode, is_pointer=True)
-            self._allow_delete_reference = c_fun(val=val.allowDeleteReference, is_pointer=True)
-            self._allow_browse_node = c_fun(val=val.allowBrowseNode, is_pointer=True)
+            UaAccessControl._activate_session = None
+            UaAccessControl._close_session = None
+            UaAccessControl._get_user_rights_mask = None
+            UaAccessControl._get_user_access_level = None
+            UaAccessControl._get_user_executable = None
+            UaAccessControl._get_user_executable_on_object = None
+            UaAccessControl._allow_add_node = None
+            UaAccessControl._allow_add_reference = None
+            UaAccessControl._allow_delete_node = None
+            UaAccessControl._allow_delete_reference = None
+            UaAccessControl._allow_browse_node = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_AccessControl*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._context = Void(val=val.context, is_pointer=True)
+            UaAccessControl._clear = lambda a: None
+            self._user_token_policies_size = SizeT(val=val.userTokenPoliciesSize, is_pointer=False)
+            self._user_token_policies = UaUserTokenPolicy(val=val.userTokenPolicies, is_pointer=True)
+            UaAccessControl._activate_session = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
+            UaAccessControl._close_session = lambda a, b, c, d: None
+            UaAccessControl._get_user_rights_mask = lambda a, b, c, d, e, f: UaUInt32()
+            UaAccessControl._get_user_access_level = lambda a, b, c, d, e, f: UaBoolean()
+            UaAccessControl._get_user_executable = lambda a, b, c, d, e, f: UaBoolean()
+            UaAccessControl._get_user_executable_on_object = lambda a, b, c, d, e, f, g, h: UaBoolean()
+            UaAccessControl._allow_add_node = lambda a, b, c, d, e: UaBoolean()
+            UaAccessControl._allow_add_reference = lambda a, b, c, d, e: UaBoolean()
+            UaAccessControl._allow_delete_node = lambda a, b, c, d, e: UaBoolean()
+            UaAccessControl._allow_delete_reference = lambda a, b, c, d, e: UaBoolean()
+            UaAccessControl._allow_browse_node = lambda a, b, c, d, e, f: UaBoolean()
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_AccessControl")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._context._value = val.context
-            self._clear._value = val.clear
-            self._user_token_policies_size._value[0] = _val(val.userTokenPoliciesSize)
-            self._user_token_policies._value = val.userTokenPolicies
-            self._activate_session._value = val.activateSession
-            self._close_session._value = val.closeSession
-            self._get_user_rights_mask._value = val.getUserRightsMask
-            self._get_user_access_level._value = val.getUserAccessLevel
-            self._get_user_executable._value = val.getUserExecutable
-            self._get_user_executable_on_object._value = val.getUserExecutableOnObject
-            self._allow_add_node._value = val.allowAddNode
-            self._allow_add_reference._value = val.allowAddReference
-            self._allow_delete_node._value = val.allowDeleteNode
-            self._allow_delete_reference._value = val.allowDeleteReference
-            self._allow_browse_node._value = val.allowBrowseNode
 
     @property
     def context(self):
@@ -573,9 +765,9 @@ class UaAccessControl(UaType):
         self._value.context = val._ptr
 
     @clear.setter
-    def clear(self, val: c_fun):
-        self._clear = val
-        self._value.clear = val._ptr
+    def clear(self, val: Callable[['UaAccessControl'], None]):
+        UaAccessControl._clear = val
+        self._value.clear = lib._python_wrapper_UA_AccessControl_clear
 
     @user_token_policies_size.setter
     def user_token_policies_size(self, val: SizeT):
@@ -588,59 +780,69 @@ class UaAccessControl(UaType):
         self._value.userTokenPolicies = val._ptr
 
     @activate_session.setter
-    def activate_session(self, val: c_fun):
-        self._activate_session = val
-        self._value.activateSession = val._ptr
+    def activate_session(self, val: Callable[
+        ['UaServer', 'UaAccessControl', UaEndpointDescription, UaByteString, UaNodeId, UaExtensionObject,
+         UaList], UaStatusCode]):
+        UaAccessControl._activate_session = val
+        self._value.activateSession = lib._python_wrapper_UA_AccessControl_closeSession
 
     @close_session.setter
-    def close_session(self, val: c_fun):
-        self._close_session = val
-        self._value.closeSession = val._ptr
+    def close_session(self, val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void], None]):
+        UaAccessControl._close_session = val
+        self._value.closeSession = lib._python_wrapper_UA_AccessControl_closeSession
 
     @get_user_rights_mask.setter
-    def get_user_rights_mask(self, val: c_fun):
-        self._get_user_rights_mask = val
-        self._value.getUserRightsMask = val._ptr
+    def get_user_rights_mask(self,
+                             val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void, UaNodeId, Void], UaUInt32]):
+        UaAccessControl._get_user_rights_mask = val
+        self._value.getUserRightsMask = lib._python_wrapper_UA_AccessControl_getUserRightsMask
 
     @get_user_access_level.setter
-    def get_user_access_level(self, val: c_fun):
-        self._get_user_access_level = val
-        self._value.getUserAccessLevel = val._ptr
+    def get_user_access_level(self,
+                              val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void, UaNodeId, Void], UaByte]):
+        UaAccessControl._get_user_access_level = val
+        self._value.getUserAccessLevel = lib._python_wrapper_UA_AccessControl_getUserAccessLevel
 
     @get_user_executable.setter
-    def get_user_executable(self, val: c_fun):
-        self._get_user_executable = val
-        self._value.getUserExecutable = val._ptr
+    def get_user_executable(self,
+                            val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void, UaNodeId, Void], UaBoolean]):
+        UaAccessControl._get_user_executable = val
+        self._value.getUserExecutable = lib._python_wrapper_UA_AccessControl_getUserExecutable
 
     @get_user_executable_on_object.setter
-    def get_user_executable_on_object(self, val: c_fun):
-        self._get_user_executable_on_object = val
-        self._value.getUserExecutableOnObject = val._ptr
+    def get_user_executable_on_object(self, val: Callable[
+        ['UaServer', 'UaAccessControl', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void], UaBoolean]):
+        UaAccessControl._get_user_executable_on_object = val
+        self._value.getUserExecutableOnObject = lib._python_wrapper_UA_AccessControl_getUserExecutableOnObject
 
     @allow_add_node.setter
-    def allow_add_node(self, val: c_fun):
-        self._allow_add_node = val
-        self._value.allowAddNode = val._ptr
+    def allow_add_node(self, val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void, UaAddNodesItem], UaBoolean]):
+        UaAccessControl._allow_add_node = val
+        self._value.allowAddNode = lib._python_wrapper_UA_AccessControl_getUserExecutableOnObject
 
     @allow_add_reference.setter
-    def allow_add_reference(self, val: c_fun):
-        self._allow_add_reference = val
-        self._value.allowAddReference = val._ptr
+    def allow_add_reference(self, val: Callable[
+        ['UaServer', 'UaAccessControl', UaNodeId, Void, UaAddReferencesItem], UaBoolean]):
+        UaAccessControl._allow_add_reference = val
+        self._value.allowAddReference = lib._python_wrapper_UA_AccessControl_allowAddNode
 
     @allow_delete_node.setter
-    def allow_delete_node(self, val: c_fun):
-        self._allow_delete_node = val
-        self._value.allowDeleteNode = val._ptr
+    def allow_delete_node(self,
+                          val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void, UaDeleteNodesItem], UaBoolean]):
+        UaAccessControl._allow_delete_node = val
+        self._value.allowDeleteNode = lib._python_wrapper_UA_AccessControl_allowDeleteNode
 
     @allow_delete_reference.setter
-    def allow_delete_reference(self, val: c_fun):
-        self._allow_delete_reference = val
-        self._value.allowDeleteReference = val._ptr
+    def allow_delete_reference(self, val: Callable[
+        ['UaServer', 'UaAccessControl', UaNodeId, Void, UaDeleteReferencesItem], UaBoolean]):
+        UaAccessControl._allow_delete_reference = val
+        self._value.allowDeleteReference = lib._python_wrapper_UA_AccessControl_allowDeleteReference
 
     @allow_browse_node.setter
-    def allow_browse_node(self, val: c_fun):
-        self._allow_browse_node = val
-        self._value.allowBrowseNode = val._ptr
+    def allow_browse_node(self,
+                          val: Callable[['UaServer', 'UaAccessControl', UaNodeId, Void, UaNodeId, Void], UaBoolean]):
+        UaAccessControl._allow_browse_node = val
+        self._value.allowBrowseNode = lib._python_wrapper_UA_AccessControl_allowBrowseNode
 
     def __str__(self, n=0):
         if self._null:
@@ -666,130 +868,202 @@ class UaAccessControl(UaType):
 
 # +++++++++++++++++++ UaGlobalNodeLifecycle +++++++++++++++++++++++
 class UaGlobalNodeLifecycle(UaType):
+    _constructor = None
+    _destructor = None
+    _create_optional_child = None
+    _generate_child_node_id = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_constructor(server, session_id, session_context, node_id, node_context):
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._constructor(server,
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True),
+                                                  UaNodeId(val=node_id, is_pointer=True),
+                                                  UaList(val=node_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_destructor(server, session_id, session_context, node_id, node_context):
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._destructor(server,
+                                                 UaNodeId(val=session_id, is_pointer=True),
+                                                 Void(val=session_context, is_pointer=True),
+                                                 UaNodeId(val=node_id, is_pointer=True),
+                                                 Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(server, session_id, session_context, source_node_id,
+                                                                   target_parent_node_id, reference_type_id):
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._create_optional_child(server,
+                                                            UaNodeId(val=session_id, is_pointer=True),
+                                                            Void(val=session_context, is_pointer=True),
+                                                            UaNodeId(val=source_node_id, is_pointer=True),
+                                                            UaNodeId(val=target_parent_node_id, is_pointer=True),
+                                                            UaNodeId(val=reference_type_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(server, session_id, session_context, source_node_id,
+                                                                   target_parent_node_id, reference_type_id,
+                                                                   target_node_id):
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._generate_child_node_id(server,
+                                                             UaNodeId(val=session_id, is_pointer=True),
+                                                             Void(val=session_context, is_pointer=True),
+                                                             UaNodeId(val=target_parent_node_id, is_pointer=True),
+                                                             UaNodeId(val=reference_type_id, is_pointer=True),
+                                                             UaNodeId(val=target_node_id, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_GlobalNodeLifecycle*")
+            super().__init__(val=val, is_pointer=is_pointer)
+            UaGlobalNodeLifecycle._constructor = None
+            UaGlobalNodeLifecycle._destructor = None
+            UaGlobalNodeLifecycle._create_optional_child = None
+            UaGlobalNodeLifecycle._generate_child_node_id = None
+
         if isinstance(val, UaType):
             val = ffi.cast("UA_GlobalNodeLifecycle*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
+            super().__init__(val=val, is_pointer=is_pointer)
+            UaGlobalNodeLifecycle._constructor = lambda a, b, c, d, e: UA_STATUSCODES.GOOD
+            UaGlobalNodeLifecycle._destructor = lambda a, b, c, d, e: None
+            UaGlobalNodeLifecycle._create_optional_child = lambda a, b, c, d, e, f: UaBoolean()
+            UaGlobalNodeLifecycle._generate_child_node_id = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
 
-        if not self._null:
-            self._constructor = c_fun(val=val.constructor, is_pointer=True)
-            self._destructor = c_fun(val=val.destructor, is_pointer=True)
-            self._create_optional_child = c_fun(val=val.createOptionalChild, is_pointer=True)
-            self._generate_child_node_id = c_fun(val=val.generateChildNodeId, is_pointer=True)
+    # todo: else -> exception
 
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_GlobalNodeLifecycle")
-        else:
-            self._value[0] = _val(val)
+        @property
+        def constructor(self):
+            if self._null:
+                return None
+            else:
+                return self._constructor
 
-        if not _is_null(val):
-            self._constructor._value = val.constructor
-            self._destructor._value = val.destructor
-            self._create_optional_child._value = val.createOptionalChild
-            self._generate_child_node_id._value = val.generateChildNodeId
+        @property
+        def destructor(self):
+            if self._null:
+                return None
+            else:
+                return self._destructor
 
-    @property
-    def constructor(self):
-        if self._null:
-            return None
-        else:
-            return self._constructor
+        @property
+        def create_optional_child(self):
+            if self._null:
+                return None
+            else:
+                return self._create_optional_child
 
-    @property
-    def destructor(self):
-        if self._null:
-            return None
-        else:
-            return self._destructor
+        @property
+        def generate_child_node_id(self):
+            if self._null:
+                return None
+            else:
+                return self._generate_child_node_id
 
-    @property
-    def create_optional_child(self):
-        if self._null:
-            return None
-        else:
-            return self._create_optional_child
+        @constructor.setter
+        def constructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+            UaGlobalNodeLifecycle._constructor = val
+            self._value.constructor = lib._python_wrapper_UA_GlobalNodeLifecycle_constructor
 
-    @property
-    def generate_child_node_id(self):
-        if self._null:
-            return None
-        else:
-            return self._generate_child_node_id
+        @destructor.setter
+        def destructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void], None]):
+            UaGlobalNodeLifecycle._destructor = val
+            self._value.destructor = lib._python_wrapper_UA_GlobalNodeLifecycle_destructor
 
-    @constructor.setter
-    def constructor(self, val: c_fun):
-        self._constructor = val
-        self._value.constructor = val._ptr
+        @create_optional_child.setter
+        def create_optional_child(self, val: Callable[
+            ['UaServer', UaNodeId, Void, UaNodeId, UaNodeId, UaNodeId], UaStatusCode]):
+            UaGlobalNodeLifecycle._create_optional_child = val
+            self._value.createOptionalChild = lib._python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild
 
-    @destructor.setter
-    def destructor(self, val: c_fun):
-        self._destructor = val
-        self._value.destructor = val._ptr
+        @generate_child_node_id.setter
+        def generate_child_node_id(self, val: Callable[
+            ['UaServer', UaNodeId, Void, UaNodeId, UaNodeId, UaNodeId, UaNodeId], UaStatusCode]):
+            UaGlobalNodeLifecycle._generate_child_node_id = val
+            self._value.generateChildNodeId = lib._python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId
 
-    @create_optional_child.setter
-    def create_optional_child(self, val: c_fun):
-        self._create_optional_child = val
-        self._value.createOptionalChild = val._ptr
+        def __str__(self, n=0):
+            if self._null:
+                return "(UaGlobalNodeLifecycle) : NULL\n"
 
-    @generate_child_node_id.setter
-    def generate_child_node_id(self, val: c_fun):
-        self._generate_child_node_id = val
-        self._value.generateChildNodeId = val._ptr
+            return ("(UaGlobalNodeLifecycle) :\n"
+                    + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
+                    + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1)
+                    + "\t" * (n + 1) + "create_optional_child" + self._create_optional_child.__str__(n + 1)
+                    + "\t" * (n + 1) + "generate_child_node_id" + self._generate_child_node_id.__str__(n + 1))
 
-    def __str__(self, n=0):
-        if self._null:
-            return "(UaGlobalNodeLifecycle) : NULL\n"
-
-        return ("(UaGlobalNodeLifecycle) :\n"
-                + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
-                + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1)
-                + "\t" * (n + 1) + "create_optional_child" + self._create_optional_child.__str__(n + 1)
-                + "\t" * (n + 1) + "generate_child_node_id" + self._generate_child_node_id.__str__(n + 1))
+    # +++++++++++++++++++ UaServerNetworkLayer +++++++++++++++++++++++
 
 
-# +++++++++++++++++++ UaServerNetworkLayer +++++++++++++++++++++++
 class UaServerNetworkLayer(UaType):
+    _start = None
+    _listen = None
+    _stop = None
+    _clear = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ServerNetworkLayer_start(nl, logger, custom_host_name):
+        # todo: implement UA_ServerNetworkLayer
+        return UaServerNetworkLayer._start(nl,
+                                           UaLogger(val=logger, is_pointer=True),
+                                           UaString(val=custom_host_name, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_listen(nl, server, timeout):
+        # todo: implement UA_ServerNetworkLayer
+        # todo: wrap server (cyclical import issue)
+        return UaServerNetworkLayer._listen(nl, server,
+                                            UaUInt16(val=timeout, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_stop(nl, server):
+        # todo: implement UA_ServerNetworkLayer
+        # todo: wrap server (cyclical import issue)
+        return UaServerNetworkLayer._stop(nl, server)
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_clear(nl):
+        # todo: implement UA_ServerNetworkLayer
+        return UaServerNetworkLayer._clear(nl)
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_ServerNetworkLayer*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_ServerNetworkLayer*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._handle = Void(val=val.handle, is_pointer=True)
             self._statistics = UaNetworkStatistics(val=val.statistics, is_pointer=True)
             self._discovery_url = UaString(val=val.discoveryUrl, is_pointer=False)
             self._local_connection_config = UaConnectionConfig(val=val.localConnectionConfig, is_pointer=False)
-            self._start = c_fun(val=val.start, is_pointer=True)
-            self._listen = c_fun(val=val.listen, is_pointer=True)
-            self._stop = c_fun(val=val.stop, is_pointer=True)
-            self._clear = c_fun(val=val.clear, is_pointer=True)
+            self._start = None
+            self._listen = None
+            self._stop = None
+            self._clear = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ServerNetworkLayer*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._handle = Void(val=val.handle, is_pointer=True)
+            self._statistics = UaNetworkStatistics(val=val.statistics, is_pointer=True)
+            self._discovery_url = UaString(val=val.discoveryUrl, is_pointer=False)
+            self._local_connection_config = UaConnectionConfig(val=val.localConnectionConfig, is_pointer=False)
+            self._start = lambda a, b, c: UA_STATUSCODES.GOOD
+            self._listen = lambda a, b, c: UA_STATUSCODES.GOOD
+            self._stop = lambda a, b: None
+            self._clear = lambda a: None
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_ServerNetworkLayer")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._handle._value = val.handle
-            self._statistics._value = val.statistics
-            self._discovery_url._value[0] = _val(val.discoveryUrl)
-            self._local_connection_config._value[0] = _val(val.localConnectionConfig)
-            self._start._value = val.start
-            self._listen._value = val.listen
-            self._stop._value = val.stop
-            self._clear._value = val.clear
 
     @property
     def handle(self):
@@ -868,24 +1142,28 @@ class UaServerNetworkLayer(UaType):
         self._value.localConnectionConfig = val._val
 
     @start.setter
-    def start(self, val: c_fun):
-        self._start = val
-        self._value.start = val._ptr
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def start(self, val: Callable[[Any, UaLogger], UaStatusCode]):
+        UaServerNetworkLayer._start = val
+        self._value.start = lib._python_wrapper_UA_ServerNetworkLayer_start
 
     @listen.setter
-    def listen(self, val: c_fun):
-        self._listen = val
-        self._value.listen = val._ptr
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def listen(self, val: Callable[[Any, 'UaServer'], UaStatusCode]):
+        UaServerNetworkLayer._listen = val
+        self._value.listen = lib._python_wrapper_UA_ServerNetworkLayer_listen
 
     @stop.setter
-    def stop(self, val: c_fun):
-        self._stop = val
-        self._value.stop = val._ptr
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def stop(self, val: Callable[[Any, 'UaServer'], None]):
+        UaServerNetworkLayer._stop = val
+        self._value.stop = lib._python_wrapper_UA_ServerNetworkLayer_stop
 
     @clear.setter
-    def clear(self, val: c_fun):
-        self._clear = val
-        self._value.clear = val._ptr
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def clear(self, val: Callable[[Any], None]):
+        UaServerNetworkLayer._clear = val
+        self._value.clear = lib._python_wrapper_UA_ServerNetworkLayer_clear
 
     def __str__(self, n=0):
         if self._null:
@@ -901,17 +1179,29 @@ class UaServerNetworkLayer(UaType):
                 + "\t" * (n + 1) + "stop" + self._stop.__str__(n + 1)
                 + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
 
+    # +++++++++++++++++++ UaSecurityPolicy +++++++++++++++++++++++
 
-# +++++++++++++++++++ UaSecurityPolicy +++++++++++++++++++++++
+
 class UaSecurityPolicy(UaType):
+    _update_certificate_and_private_key = None
+    _clear = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey(policy, new_certificate, new_private_key):
+        return UaSecurityPolicy._update_certificate_and_private_key(UaSecurityPolicy(val=policy, is_pointer=True),
+                                                                    UaByteString(val=new_certificate, is_pointer=False),
+                                                                    UaByteString(val=new_private_key, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_clear(policy):
+        UaSecurityPolicy._clear(UaSecurityPolicy(val=policy, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicy*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_SecurityPolicy*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._policy_context = Void(val=val.policyContext, is_pointer=True)
             self._policy_uri = UaByteString(val=val.policyUri, is_pointer=False)
             self._local_certificate = UaByteString(val=val.localCertificate, is_pointer=False)
@@ -921,29 +1211,25 @@ class UaSecurityPolicy(UaType):
                 val=val.certificateSigningAlgorithm, is_pointer=False)
             self._channel_module = UaSecurityPolicyChannelModule(val=val.channelModule, is_pointer=False)
             self._logger = UaLogger(val=val.logger, is_pointer=True)
-            self._update_certificate_and_private_key = c_fun(val=val.updateCertificateAndPrivateKey, is_pointer=True)
-            self._clear = c_fun(val=val.clear, is_pointer=True)
+            self._update_certificate_and_private_key = None
+            self._clear = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicy*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._policy_context = Void(val=val.policyContext, is_pointer=True)
+            self._policy_uri = UaByteString(val=val.policyUri, is_pointer=False)
+            self._local_certificate = UaByteString(val=val.localCertificate, is_pointer=False)
+            self._asymmetric_module = UaSecurityPolicyAsymmetricModule(val=val.asymmetricModule, is_pointer=False)
+            self._symmetric_module = UaSecurityPolicySymmetricModule(val=val.symmetricModule, is_pointer=False)
+            self._certificate_signing_algorithm = UaSecurityPolicySignatureAlgorithm(
+                val=val.certificateSigningAlgorithm, is_pointer=False)
+            self._channel_module = UaSecurityPolicyChannelModule(val=val.channelModule, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=True)
+            self._update_certificate_and_private_key = lambda a, b, c: UA_STATUSCODES.GOOD
+            self._clear = lambda a: None
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_SecurityPolicy")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._policy_context._value = val.policyContext
-            self._policy_uri._value[0] = _val(val.policyUri)
-            self._local_certificate._value[0] = _val(val.localCertificate)
-            self._asymmetric_module._value[0] = _val(val.asymmetricModule)
-            self._symmetric_module._value[0] = _val(val.symmetricModule)
-            self._certificate_signing_algorithm._value[0] = _val(val.certificateSigningAlgorithm)
-            self._channel_module._value[0] = _val(val.channelModule)
-            self._logger._value = val.logger
-            self._update_certificate_and_private_key._value = val.updateCertificateAndPrivateKey
-            self._clear._value = val.clear
 
     @property
     def policy_context(self):
@@ -1056,14 +1342,15 @@ class UaSecurityPolicy(UaType):
         self._value.logger = val._ptr
 
     @update_certificate_and_private_key.setter
-    def update_certificate_and_private_key(self, val: c_fun):
-        self._update_certificate_and_private_key = val
-        self._value.updateCertificateAndPrivateKey = val._ptr
+    def update_certificate_and_private_key(self, val: Callable[
+        ['UaSecurityPolicy', UaByteString, UaByteString], UaStatusCode]):
+        UaSecurityPolicy._update_certificate_and_private_key = val
+        self._value.updateCertificateAndPrivateKey = lib._python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey
 
     @clear.setter
-    def clear(self, val: c_fun):
-        self._clear = val
-        self._value.clear = val._ptr
+    def clear(self, val: Callable[['UaSecurityPolicy'], None]):
+        UaSecurityPolicy._clear = val
+        self._value.clear = lib._python_wrapper_UA_SecurityPolicy_clear
 
     def __str__(self, n=0):
         if self._null:
@@ -1075,11 +1362,12 @@ class UaSecurityPolicy(UaType):
                 + "\t" * (n + 1) + "local_certificate" + self._local_certificate.__str__(n + 1)
                 + "\t" * (n + 1) + "asymmetric_module" + self._asymmetric_module.__str__(n + 1)
                 + "\t" * (n + 1) + "symmetric_module" + self._symmetric_module.__str__(n + 1)
-                + "\t" * (n + 1) + "certificate_signing_algorithm" + self._certificate_signing_algorithm.__str__(n + 1)
+                + "\t" * (n + 1) + "certificate_signing_algorithm" + self._certificate_signing_algorithm.__str__(
+                    n + 1)
                 + "\t" * (n + 1) + "channel_module" + self._channel_module.__str__(n + 1)
                 + "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1)
                 + "\t" * (
-                            n + 1) + "update_certificate_and_private_key" + self._update_certificate_and_private_key.__str__(
+                        n + 1) + "update_certificate_and_private_key" + self._update_certificate_and_private_key.__str__(
                     n + 1)
                 + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
 
@@ -1104,21 +1392,6 @@ class UaConnectionConfig(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_ConnectionConfig")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._protocol_version._value[0] = _val(val.protocolVersion)
-            self._recv_buffer_size._value[0] = _val(val.recvBufferSize)
-            self._send_buffer_size._value[0] = _val(val.sendBufferSize)
-            self._local_max_message_size._value[0] = _val(val.localMaxMessageSize)
-            self._remote_max_message_size._value[0] = _val(val.remoteMaxMessageSize)
-            self._local_max_chunk_count._value[0] = _val(val.localMaxChunkCount)
-            self._remote_max_chunk_count._value[0] = _val(val.remoteMaxChunkCount)
 
     @property
     def protocol_version(self):
@@ -1217,8 +1490,9 @@ class UaConnectionConfig(UaType):
                 + "\t" * (n + 1) + "local_max_chunk_count" + self._local_max_chunk_count.__str__(n + 1)
                 + "\t" * (n + 1) + "remote_max_chunk_count" + self._remote_max_chunk_count.__str__(n + 1))
 
+    # +++++++++++++++++++ UaSecurityPolicyAsymmetricModule +++++++++++++++++++++++
 
-# +++++++++++++++++++ UaSecurityPolicyAsymmetricModule +++++++++++++++++++++++
+
 class UaSecurityPolicyAsymmetricModule(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1227,16 +1501,8 @@ class UaSecurityPolicyAsymmetricModule(UaType):
             val = ffi.cast("UA_SecurityPolicyAsymmetricModule*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
-
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_SecurityPolicyAsymmetricModule")
-        else:
-            self._value[0] = _val(val)
-
 
     def __str__(self, n=0):
         if self._null:
@@ -1254,15 +1520,8 @@ class UaSecurityPolicySymmetricModule(UaType):
             val = ffi.cast("UA_SecurityPolicySymmetricModule*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
-
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_SecurityPolicySymmetricModule")
-        else:
-            self._value[0] = _val(val)
 
     def __str__(self, n=0):
         if self._null:
@@ -1280,15 +1539,8 @@ class UaSecurityPolicyChannelModule(UaType):
             val = ffi.cast("UA_SecurityPolicyChannelModule*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
-
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_SecurityPolicyChannelModule")
-        else:
-            self._value[0] = _val(val)
 
     def __str__(self, n=0):
         if self._null:
@@ -1306,15 +1558,9 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
             val = ffi.cast("UA_SecurityPolicySignatureAlgorithm*", val._ptr)
         super().__init__(val=val, is_pointer=is_pointer)
 
-
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_SecurityPolicySignatureAlgorithm")
-        else:
-            self._value[0] = _val(val)
     def __str__(self, n=0):
         if self._null:
             return "(UaSecurityPolicySignatureAlgorithm) : NULL\n"
@@ -1324,29 +1570,49 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
 
 # +++++++++++++++++++ UaNodeTypeLifecycle +++++++++++++++++++++++
 class UaNodeTypeLifecycle(UaType):
+    _constructor = None
+    _destructor = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_NodeTypeLifecycle_constructor(server, session_id, session_context, type_node_id,
+                                                         type_node_context, node_id, node_context):
+        # todo: wrap server (cyclical import issue)
+        return UaNodeTypeLifecycle._constructor(server,
+                                                UaNodeId(val=session_id, is_pointer=True),
+                                                Void(val=session_context, is_pointer=True),
+                                                UaNodeId(val=type_node_id, is_pointer=True),
+                                                Void(val=type_node_context, is_pointer=True),
+                                                UaNodeId(val=node_id, is_pointer=True),
+                                                UaList(val=node_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_NodeTypeLifecycle_destructor(server, session_id, session_context, type_node_id,
+                                                        type_node_context, node_id, node_context):
+        # todo: wrap server (cyclical import issue)
+        UaNodeTypeLifecycle._destructor(server,
+                                        UaNodeId(val=session_id, is_pointer=True),
+                                        Void(val=session_context, is_pointer=True),
+                                        UaNodeId(val=type_node_id, is_pointer=True),
+                                        Void(val=type_node_context, is_pointer=True),
+                                        UaNodeId(val=node_id, is_pointer=True),
+                                        UaList(val=node_context))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NodeTypeLifecycle*")
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._constructor = None
+            self._destructor = None
         if isinstance(val, UaType):
             val = ffi.cast("UA_NodeTypeLifecycle*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
-            self._constructor = c_fun(val=val.constructor, is_pointer=True)
-            self._destructor = c_fun(val=val.destructor, is_pointer=True)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._constructor = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
+            self._destructor = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_NodeTypeLifecycle")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._constructor._value = val.constructor
-            self._destructor._value = val.destructor
 
     @property
     def constructor(self):
@@ -1363,14 +1629,14 @@ class UaNodeTypeLifecycle(UaType):
             return self._destructor
 
     @constructor.setter
-    def constructor(self, val: c_fun):
-        self._constructor = val
-        self._value.constructor = val._ptr
+    def constructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+        UaNodeTypeLifecycle._constructor = val
+        self._value.constructor = lib._python_wrapper_UA_NodeTypeLifecycle_constructor
 
     @destructor.setter
-    def destructor(self, val: c_fun):
-        self._destructor = val
-        self._value.destructor = val._ptr
+    def destructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+        UaNodeTypeLifecycle._destructor = val
+        self._value.destructor = lib._python_wrapper_UA_NodeTypeLifecycle_destructor
 
     def __str__(self, n=0):
         if self._null:
@@ -1398,18 +1664,6 @@ class UaNodeReferenceKind(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_NodeReferenceKind")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._id_tree_root._value = val.idTreeRoot
-            self._name_tree_root._value = val.nameTreeRoot
-            self._reference_type_index._value[0] = _val(val.referenceTypeIndex)
-            self._is_inverse._value[0] = _val(val.isInverse)
 
     @property
     def id_tree_root(self):
@@ -1493,24 +1747,6 @@ class UaNodeHead(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_NodeHead")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._node_id._value[0] = _val(val.nodeId)
-            self._node_class._value[0] = _val(val.nodeClass)
-            self._browse_name._value[0] = _val(val.browseName)
-            self._display_name._value[0] = _val(val.displayName)
-            self._description._value[0] = _val(val.description)
-            self._write_mask._value[0] = _val(val.writeMask)
-            self._references_size._value[0] = _val(val.referencesSize)
-            self._references._value = val.references
-            self._context._value = val.context
-            self._constructed._value[0] = _val(val.constructed)
 
     @property
     def node_id(self):
@@ -1651,31 +1887,24 @@ class UaNodeHead(UaType):
 
 # +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
 class UaMethodNode(UaType):
+    _callbacks_dict: Dict[str, any] = dict()
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MethodNode*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_MethodNode*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._head = UaNodeHead(val=val.head, is_pointer=False)
             self._executable = UaBoolean(val=val.executable, is_pointer=False)
-            self._method = c_fun(val=val.method, is_pointer=False)
+            self._method = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_MethodNode*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._executable = UaBoolean(val=val.executable, is_pointer=False)
+            self._method = lambda a, b, c, d, e, f, g, h, i, j, k: UA_STATUSCODES.GOOD
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_MethodNode")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._head._value[0] = _val(val.head)
-            self._executable._value[0] = _val(val.executable)
-            self._method._value[0] = _val(val.method)
 
     @property
     def head(self):
@@ -1709,9 +1938,12 @@ class UaMethodNode(UaType):
         self._value.executable = val._val
 
     @method.setter
-    def method(self, val: c_fun):
+    def method(self, val: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, UaList,
+         UaList], UaStatusCode]):
         self._method = val
-        self._value.method = val._val
+        UaMethodNode._callbacks_dict[str(self)] = val
+        self._value.method = lib._python_wrapper_UA_MethodCallback
 
     def __str__(self, n=0):
         if self._null:
@@ -1738,16 +1970,6 @@ class UaObjectNode(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_ObjectNode")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._head._value[0] = _val(val.head)
-            self._event_notifier._value[0] = _val(val.eventNotifier)
 
     @property
     def head(self):
@@ -1798,17 +2020,6 @@ class UaObjectTypeNode(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_ObjectTypeNode")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._head._value[0] = _val(val.head)
-            self._is_abstract._value[0] = _val(val.isAbstract)
-            self._lifecycle._value[0] = _val(val.lifecycle)
 
     @property
     def head(self):
@@ -1871,15 +2082,6 @@ class UaReferenceTypeSet(UaType):
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_ReferenceTypeSet")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._bits._value = val.bits
-
     @property
     def bits(self):
         if self._null:
@@ -1899,6 +2101,7 @@ class UaReferenceTypeSet(UaType):
         return ("(UaReferenceTypeSet) :\n"
                 + "\t" * (n + 1) + "bits" + self._bits.__str__(n + 1))
 
+
 # +++++++++++++++++++ UaDataTypeNode +++++++++++++++++++++++
 
 class UaDataTypeNode(UaType):
@@ -1915,16 +2118,6 @@ class UaDataTypeNode(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_DataTypeNode")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._head._value[0] = _val(val.head)
-            self._is_abstract._value[0] = _val(val.isAbstract)
 
     @property
     def head(self):
@@ -1975,17 +2168,6 @@ class UaViewNode(UaType):
 
     def _update(self):
         self.__init__(val=self._ptr)
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_ViewNode")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._head._value[0] = _val(val.head)
-            self._event_notifier._value[0] = _val(val.eventNotifier)
-            self._contains_no_loops._value[0] = _val(val.containsNoLoops)
 
     @property
     def head(self):
