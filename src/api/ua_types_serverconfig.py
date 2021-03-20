@@ -1011,7 +1011,7 @@ class UaServerNetworkLayer(UaType):
 
     @staticmethod
     @ffi.def_extern()
-    def python_wrapper_UA_ServerNetworkLayer_start(nl, logger, custom_host_name):
+    def _python_wrapper_UA_ServerNetworkLayer_start(nl, logger, custom_host_name):
         # todo: implement UA_ServerNetworkLayer
         return UaServerNetworkLayer._start(nl,
                                            UaLogger(val=logger, is_pointer=True),
