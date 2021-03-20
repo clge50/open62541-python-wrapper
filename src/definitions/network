@@ -33,9 +33,9 @@ struct  UA_ServerNetworkLayer{
     void (*clear)(UA_ServerNetworkLayer *nl);
 };
 
-extern "Python" UA_StatusCode python_wrapper_UA_ServerNetworkLayer_start(UA_ServerNetworkLayer *nl, const UA_Logger *logger,
+extern "Python" UA_StatusCode _python_wrapper_UA_ServerNetworkLayer_start(UA_ServerNetworkLayer *nl, const UA_Logger *logger,
                            const UA_String *customHostname);
-extern "Python" UA_StatusCode python_wrapper_UA_ServerNetworkLayer_listen(UA_ServerNetworkLayer *nl, UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_ServerNetworkLayer_listen(UA_ServerNetworkLayer *nl, UA_Server *server,
                             UA_UInt16 timeout);
-extern "Python" void python_wrapper_UA_ServerNetworkLayer_stop(UA_ServerNetworkLayer *nl, UA_Server *server);
-extern "Python" void python_wrapper_UA_ServerNetworkLayer_clear(UA_ServerNetworkLayer *nl);
+extern "Python" void _python_wrapper_UA_ServerNetworkLayer_stop(UA_ServerNetworkLayer *nl, UA_Server *server);
+extern "Python" void _python_wrapper_UA_ServerNetworkLayer_clear(UA_ServerNetworkLayer *nl);

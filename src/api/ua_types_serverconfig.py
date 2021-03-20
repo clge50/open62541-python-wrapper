@@ -867,6 +867,47 @@ class UaGlobalNodeLifecycle(UaType):
     _create_optional_child = None
     _generate_child_node_id = None
 
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_constructor(server, session_id, session_context, node_id, node_context):
+        return UaGlobalNodeLifecycle._constructor(UaServer(val=server),
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True),
+                                                  UaNodeId(val=node_id, is_pointer=True),
+                                                  UaList(val=node_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_destructor(server, session_id, session_context, node_id, node_context):
+        return UaGlobalNodeLifecycle._destructor(UaServer(val=server),
+                                                 UaNodeId(val=session_id, is_pointer=True),
+                                                 Void(val=session_context, is_pointer=True),
+                                                 UaNodeId(val=node_id, is_pointer=True),
+                                                 Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(server, session_id, session_context, source_node_id,
+                                                                   target_parent_node_id, reference_type_id):
+        return UaGlobalNodeLifecycle._create_optional_child(UaServer(val=server),
+                                                            UaNodeId(val=session_id, is_pointer=True),
+                                                            Void(val=session_context, is_pointer=True),
+                                                            UaNodeId(val=source_node_id, is_pointer=True),
+                                                            UaNodeId(val=target_parent_node_id, is_pointer=True),
+                                                            UaNodeId(val=reference_type_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(server, session_id, session_context, source_node_id,
+                                                                   target_parent_node_id, reference_type_id,
+                                                                   target_node_id):
+        return UaGlobalNodeLifecycle._generate_child_node_id(UaServer(val=server),
+                                                             UaNodeId(val=session_id, is_pointer=True),
+                                                             Void(val=session_context, is_pointer=True),
+                                                             UaNodeId(val=target_parent_node_id, is_pointer=True),
+                                                             UaNodeId(val=reference_type_id, is_pointer=True),
+                                                             UaNodeId(val=target_node_id, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_GlobalNodeLifecycle*")
@@ -918,24 +959,26 @@ class UaGlobalNodeLifecycle(UaType):
                 return self._generate_child_node_id
 
         @constructor.setter
-        def constructor(self, val: c_fun):
-            self._constructor = val
-            self._value.constructor = val._ptr
+        def constructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+            UaGlobalNodeLifecycle._constructor = val
+            self._value.constructor = lib._python_wrapper_UA_GlobalNodeLifecycle_constructor
 
         @destructor.setter
-        def destructor(self, val: c_fun):
-            self._destructor = val
-            self._value.destructor = val._ptr
+        def destructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void], None]):
+            UaGlobalNodeLifecycle._destructor = val
+            self._value.destructor = lib._python_wrapper_UA_GlobalNodeLifecycle_destructor
 
         @create_optional_child.setter
-        def create_optional_child(self, val: c_fun):
-            self._create_optional_child = val
-            self._value.createOptionalChild = val._ptr
+        def create_optional_child(self, val: Callable[
+            ['UaServer', UaNodeId, Void, UaNodeId, UaNodeId, UaNodeId], UaStatusCode]):
+            UaGlobalNodeLifecycle._create_optional_child = val
+            self._value.createOptionalChild = lib._python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild
 
         @generate_child_node_id.setter
-        def generate_child_node_id(self, val: c_fun):
-            self._generate_child_node_id = val
-            self._value.generateChildNodeId = val._ptr
+        def generate_child_node_id(self, val: Callable[
+            ['UaServer', UaNodeId, Void, UaNodeId, UaNodeId, UaNodeId, UaNodeId], UaStatusCode]):
+            UaGlobalNodeLifecycle._generate_child_node_id = val
+            self._value.generateChildNodeId = lib._python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId
 
         def __str__(self, n=0):
             if self._null:
@@ -948,1089 +991,1151 @@ class UaGlobalNodeLifecycle(UaType):
                     + "\t" * (n + 1) + "generate_child_node_id" + self._generate_child_node_id.__str__(n + 1))
 
     # +++++++++++++++++++ UaServerNetworkLayer +++++++++++++++++++++++
-    class UaServerNetworkLayer(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_ServerNetworkLayer*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_ServerNetworkLayer*", val._ptr)
+
+
+class UaServerNetworkLayer(UaType):
+    _start = None
+    _listen = None
+    _stop = None
+    _clear = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ServerNetworkLayer_start(nl, logger, custom_host_name):
+        # todo: implement UA_ServerNetworkLayer
+        return UaServerNetworkLayer._start(nl,
+                                           UaLogger(val=logger, is_pointer=True),
+                                           UaString(val=custom_host_name, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_listen(nl, server, timeout):
+        # todo: implement UA_ServerNetworkLayer
+        return UaServerNetworkLayer._listen(nl, UaServer(val=server),
+                                            UaUInt16(val=timeout, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_stop(nl, server):
+        # todo: implement UA_ServerNetworkLayer
+        return UaServerNetworkLayer._stop(nl, UaServer(val=server))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_clear(nl):
+        # todo: implement UA_ServerNetworkLayer
+        return UaServerNetworkLayer._clear(nl)
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ServerNetworkLayer*")
             super().__init__(val=val, is_pointer=is_pointer)
+            self._handle = Void(val=val.handle, is_pointer=True)
+            self._statistics = UaNetworkStatistics(val=val.statistics, is_pointer=True)
+            self._discovery_url = UaString(val=val.discoveryUrl, is_pointer=False)
+            self._local_connection_config = UaConnectionConfig(val=val.localConnectionConfig, is_pointer=False)
+            self._start = None
+            self._listen = None
+            self._stop = None
+            self._clear = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ServerNetworkLayer*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._handle = Void(val=val.handle, is_pointer=True)
+            self._statistics = UaNetworkStatistics(val=val.statistics, is_pointer=True)
+            self._discovery_url = UaString(val=val.discoveryUrl, is_pointer=False)
+            self._local_connection_config = UaConnectionConfig(val=val.localConnectionConfig, is_pointer=False)
+            self._start = lambda a, b, c: UA_STATUSCODES.GOOD
+            self._listen = lambda a, b, c: UA_STATUSCODES.GOOD
+            self._stop = lambda a, b: None
+            self._clear = lambda a: None
 
-            if not self._null:
-                self._handle = Void(val=val.handle, is_pointer=True)
-                self._statistics = UaNetworkStatistics(val=val.statistics, is_pointer=True)
-                self._discovery_url = UaString(val=val.discoveryUrl, is_pointer=False)
-                self._local_connection_config = UaConnectionConfig(val=val.localConnectionConfig, is_pointer=False)
-                self._start = c_fun(val=val.start, is_pointer=True)
-                self._listen = c_fun(val=val.listen, is_pointer=True)
-                self._stop = c_fun(val=val.stop, is_pointer=True)
-                self._clear = c_fun(val=val.clear, is_pointer=True)
+    def _update(self):
+        self.__init__(val=self._ptr)
 
-        def _update(self):
-            self.__init__(val=self._ptr)
+    @property
+    def handle(self):
+        if self._null:
+            return None
+        else:
+            return self._handle
 
-        @property
-        def handle(self):
-            if self._null:
-                return None
-            else:
-                return self._handle
+    @property
+    def statistics(self):
+        if self._null:
+            return None
+        else:
+            return self._statistics
 
-        @property
-        def statistics(self):
-            if self._null:
-                return None
-            else:
-                return self._statistics
+    @property
+    def discovery_url(self):
+        if self._null:
+            return None
+        else:
+            return self._discovery_url
 
-        @property
-        def discovery_url(self):
-            if self._null:
-                return None
-            else:
-                return self._discovery_url
+    @property
+    def local_connection_config(self):
+        if self._null:
+            return None
+        else:
+            return self._local_connection_config
 
-        @property
-        def local_connection_config(self):
-            if self._null:
-                return None
-            else:
-                return self._local_connection_config
+    @property
+    def start(self):
+        if self._null:
+            return None
+        else:
+            return self._start
 
-        @property
-        def start(self):
-            if self._null:
-                return None
-            else:
-                return self._start
+    @property
+    def listen(self):
+        if self._null:
+            return None
+        else:
+            return self._listen
 
-        @property
-        def listen(self):
-            if self._null:
-                return None
-            else:
-                return self._listen
+    @property
+    def stop(self):
+        if self._null:
+            return None
+        else:
+            return self._stop
 
-        @property
-        def stop(self):
-            if self._null:
-                return None
-            else:
-                return self._stop
+    @property
+    def clear(self):
+        if self._null:
+            return None
+        else:
+            return self._clear
 
-        @property
-        def clear(self):
-            if self._null:
-                return None
-            else:
-                return self._clear
+    @handle.setter
+    def handle(self, val: Void):
+        self._handle = val
+        self._value.handle = val._ptr
 
-        @handle.setter
-        def handle(self, val: Void):
-            self._handle = val
-            self._value.handle = val._ptr
+    @statistics.setter
+    def statistics(self, val: UaNetworkStatistics):
+        self._statistics = val
+        self._value.statistics = val._ptr
 
-        @statistics.setter
-        def statistics(self, val: UaNetworkStatistics):
-            self._statistics = val
-            self._value.statistics = val._ptr
+    @discovery_url.setter
+    def discovery_url(self, val: UaString):
+        self._discovery_url = val
+        self._value.discoveryUrl = val._val
 
-        @discovery_url.setter
-        def discovery_url(self, val: UaString):
-            self._discovery_url = val
-            self._value.discoveryUrl = val._val
+    @local_connection_config.setter
+    def local_connection_config(self, val: 'UaConnectionConfig'):
+        self._local_connection_config = val
+        self._value.localConnectionConfig = val._val
 
-        @local_connection_config.setter
-        def local_connection_config(self, val: 'UaConnectionConfig'):
-            self._local_connection_config = val
-            self._value.localConnectionConfig = val._val
+    @start.setter
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def start(self, val: Callable[[Any, UaLogger], UaStatusCode]):
+        UaServerNetworkLayer._start = val
+        self._value.start = lib._python_wrapper_UA_ServerNetworkLayer_start
 
-        @start.setter
-        def start(self, val: c_fun):
-            self._start = val
-            self._value.start = val._ptr
+    @listen.setter
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def listen(self, val: Callable[[Any, 'UaServer'], UaStatusCode]):
+        UaServerNetworkLayer._listen = val
+        self._value.listen = lib._python_wrapper_UA_ServerNetworkLayer_listen
 
-        @listen.setter
-        def listen(self, val: c_fun):
-            self._listen = val
-            self._value.listen = val._ptr
+    @stop.setter
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def stop(self, val: Callable[[Any, 'UaServer'], None]):
+        UaServerNetworkLayer._stop = val
+        self._value.stop = lib._python_wrapper_UA_ServerNetworkLayer_stop
 
-        @stop.setter
-        def stop(self, val: c_fun):
-            self._stop = val
-            self._value.stop = val._ptr
+    @clear.setter
+    # todo: introduce UA_ServerNetworkLayer instead of Any
+    def clear(self, val: Callable[[Any], None]):
+        UaServerNetworkLayer._clear = val
+        self._value.clear = lib._python_wrapper_UA_ServerNetworkLayer_clear
 
-        @clear.setter
-        def clear(self, val: c_fun):
-            self._clear = val
-            self._value.clear = val._ptr
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaServerNetworkLayer) : NULL\n"
 
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaServerNetworkLayer) : NULL\n"
-
-            return ("(UaServerNetworkLayer) :\n"
-                    + "\t" * (n + 1) + "handle" + self._handle.__str__(n + 1)
-                    + "\t" * (n + 1) + "statistics" + self._statistics.__str__(n + 1)
-                    + "\t" * (n + 1) + "discovery_url" + self._discovery_url.__str__(n + 1)
-                    + "\t" * (n + 1) + "local_connection_config" + self._local_connection_config.__str__(n + 1)
-                    + "\t" * (n + 1) + "start" + self._start.__str__(n + 1)
-                    + "\t" * (n + 1) + "listen" + self._listen.__str__(n + 1)
-                    + "\t" * (n + 1) + "stop" + self._stop.__str__(n + 1)
-                    + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
+        return ("(UaServerNetworkLayer) :\n"
+                + "\t" * (n + 1) + "handle" + self._handle.__str__(n + 1)
+                + "\t" * (n + 1) + "statistics" + self._statistics.__str__(n + 1)
+                + "\t" * (n + 1) + "discovery_url" + self._discovery_url.__str__(n + 1)
+                + "\t" * (n + 1) + "local_connection_config" + self._local_connection_config.__str__(n + 1)
+                + "\t" * (n + 1) + "start" + self._start.__str__(n + 1)
+                + "\t" * (n + 1) + "listen" + self._listen.__str__(n + 1)
+                + "\t" * (n + 1) + "stop" + self._stop.__str__(n + 1)
+                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
 
     # +++++++++++++++++++ UaSecurityPolicy +++++++++++++++++++++++
-    class UaSecurityPolicy(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_SecurityPolicy*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_SecurityPolicy*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
 
-            if not self._null:
-                self._policy_context = Void(val=val.policyContext, is_pointer=True)
-                self._policy_uri = UaByteString(val=val.policyUri, is_pointer=False)
-                self._local_certificate = UaByteString(val=val.localCertificate, is_pointer=False)
-                self._asymmetric_module = UaSecurityPolicyAsymmetricModule(val=val.asymmetricModule, is_pointer=False)
-                self._symmetric_module = UaSecurityPolicySymmetricModule(val=val.symmetricModule, is_pointer=False)
-                self._certificate_signing_algorithm = UaSecurityPolicySignatureAlgorithm(
-                    val=val.certificateSigningAlgorithm, is_pointer=False)
-                self._channel_module = UaSecurityPolicyChannelModule(val=val.channelModule, is_pointer=False)
-                self._logger = UaLogger(val=val.logger, is_pointer=True)
-                self._update_certificate_and_private_key = c_fun(val=val.updateCertificateAndPrivateKey,
-                                                                 is_pointer=True)
-                self._clear = c_fun(val=val.clear, is_pointer=True)
 
-        def _update(self):
-            self.__init__(val=self._ptr)
+class UaSecurityPolicy(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecurityPolicy*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicy*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
 
-        @property
-        def policy_context(self):
-            if self._null:
-                return None
-            else:
-                return self._policy_context
+        if not self._null:
+            self._policy_context = Void(val=val.policyContext, is_pointer=True)
+            self._policy_uri = UaByteString(val=val.policyUri, is_pointer=False)
+            self._local_certificate = UaByteString(val=val.localCertificate, is_pointer=False)
+            self._asymmetric_module = UaSecurityPolicyAsymmetricModule(val=val.asymmetricModule, is_pointer=False)
+            self._symmetric_module = UaSecurityPolicySymmetricModule(val=val.symmetricModule, is_pointer=False)
+            self._certificate_signing_algorithm = UaSecurityPolicySignatureAlgorithm(
+                val=val.certificateSigningAlgorithm, is_pointer=False)
+            self._channel_module = UaSecurityPolicyChannelModule(val=val.channelModule, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=True)
+            self._update_certificate_and_private_key = c_fun(val=val.updateCertificateAndPrivateKey,
+                                                             is_pointer=True)
+            self._clear = c_fun(val=val.clear, is_pointer=True)
 
-        @property
-        def policy_uri(self):
-            if self._null:
-                return None
-            else:
-                return self._policy_uri
+    def _update(self):
+        self.__init__(val=self._ptr)
 
-        @property
-        def local_certificate(self):
-            if self._null:
-                return None
-            else:
-                return self._local_certificate
+    @property
+    def policy_context(self):
+        if self._null:
+            return None
+        else:
+            return self._policy_context
 
-        @property
-        def asymmetric_module(self):
-            if self._null:
-                return None
-            else:
-                return self._asymmetric_module
+    @property
+    def policy_uri(self):
+        if self._null:
+            return None
+        else:
+            return self._policy_uri
 
-        @property
-        def symmetric_module(self):
-            if self._null:
-                return None
-            else:
-                return self._symmetric_module
+    @property
+    def local_certificate(self):
+        if self._null:
+            return None
+        else:
+            return self._local_certificate
 
-        @property
-        def certificate_signing_algorithm(self):
-            if self._null:
-                return None
-            else:
-                return self._certificate_signing_algorithm
+    @property
+    def asymmetric_module(self):
+        if self._null:
+            return None
+        else:
+            return self._asymmetric_module
 
-        @property
-        def channel_module(self):
-            if self._null:
-                return None
-            else:
-                return self._channel_module
+    @property
+    def symmetric_module(self):
+        if self._null:
+            return None
+        else:
+            return self._symmetric_module
 
-        @property
-        def logger(self):
-            if self._null:
-                return None
-            else:
-                return self._logger
+    @property
+    def certificate_signing_algorithm(self):
+        if self._null:
+            return None
+        else:
+            return self._certificate_signing_algorithm
 
-        @property
-        def update_certificate_and_private_key(self):
-            if self._null:
-                return None
-            else:
-                return self._update_certificate_and_private_key
+    @property
+    def channel_module(self):
+        if self._null:
+            return None
+        else:
+            return self._channel_module
 
-        @property
-        def clear(self):
-            if self._null:
-                return None
-            else:
-                return self._clear
+    @property
+    def logger(self):
+        if self._null:
+            return None
+        else:
+            return self._logger
 
-        @policy_context.setter
-        def policy_context(self, val: Void):
-            self._policy_context = val
-            self._value.policyContext = val._ptr
+    @property
+    def update_certificate_and_private_key(self):
+        if self._null:
+            return None
+        else:
+            return self._update_certificate_and_private_key
 
-        @policy_uri.setter
-        def policy_uri(self, val: UaByteString):
-            self._policy_uri = val
-            self._value.policyUri = val._val
+    @property
+    def clear(self):
+        if self._null:
+            return None
+        else:
+            return self._clear
 
-        @local_certificate.setter
-        def local_certificate(self, val: UaByteString):
-            self._local_certificate = val
-            self._value.localCertificate = val._val
+    @policy_context.setter
+    def policy_context(self, val: Void):
+        self._policy_context = val
+        self._value.policyContext = val._ptr
 
-        @asymmetric_module.setter
-        def asymmetric_module(self, val: 'UaSecurityPolicyAsymmetricModule'):
-            self._asymmetric_module = val
-            self._value.asymmetricModule = val._val
+    @policy_uri.setter
+    def policy_uri(self, val: UaByteString):
+        self._policy_uri = val
+        self._value.policyUri = val._val
 
-        @symmetric_module.setter
-        def symmetric_module(self, val: 'UaSecurityPolicySymmetricModule'):
-            self._symmetric_module = val
-            self._value.symmetricModule = val._val
+    @local_certificate.setter
+    def local_certificate(self, val: UaByteString):
+        self._local_certificate = val
+        self._value.localCertificate = val._val
 
-        @certificate_signing_algorithm.setter
-        def certificate_signing_algorithm(self, val: 'UaSecurityPolicySignatureAlgorithm'):
-            self._certificate_signing_algorithm = val
-            self._value.certificateSigningAlgorithm = val._val
+    @asymmetric_module.setter
+    def asymmetric_module(self, val: 'UaSecurityPolicyAsymmetricModule'):
+        self._asymmetric_module = val
+        self._value.asymmetricModule = val._val
 
-        @channel_module.setter
-        def channel_module(self, val: 'UaSecurityPolicyChannelModule'):
-            self._channel_module = val
-            self._value.channelModule = val._val
+    @symmetric_module.setter
+    def symmetric_module(self, val: 'UaSecurityPolicySymmetricModule'):
+        self._symmetric_module = val
+        self._value.symmetricModule = val._val
 
-        @logger.setter
-        def logger(self, val: UaLogger):
-            self._logger = val
-            self._value.logger = val._ptr
+    @certificate_signing_algorithm.setter
+    def certificate_signing_algorithm(self, val: 'UaSecurityPolicySignatureAlgorithm'):
+        self._certificate_signing_algorithm = val
+        self._value.certificateSigningAlgorithm = val._val
 
-        @update_certificate_and_private_key.setter
-        def update_certificate_and_private_key(self, val: c_fun):
-            self._update_certificate_and_private_key = val
-            self._value.updateCertificateAndPrivateKey = val._ptr
+    @channel_module.setter
+    def channel_module(self, val: 'UaSecurityPolicyChannelModule'):
+        self._channel_module = val
+        self._value.channelModule = val._val
 
-        @clear.setter
-        def clear(self, val: c_fun):
-            self._clear = val
-            self._value.clear = val._ptr
+    @logger.setter
+    def logger(self, val: UaLogger):
+        self._logger = val
+        self._value.logger = val._ptr
 
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaSecurityPolicy) : NULL\n"
+    @update_certificate_and_private_key.setter
+    def update_certificate_and_private_key(self, val: c_fun):
+        self._update_certificate_and_private_key = val
+        self._value.updateCertificateAndPrivateKey = val._ptr
 
-            return ("(UaSecurityPolicy) :\n"
-                    + "\t" * (n + 1) + "policy_context" + self._policy_context.__str__(n + 1)
-                    + "\t" * (n + 1) + "policy_uri" + self._policy_uri.__str__(n + 1)
-                    + "\t" * (n + 1) + "local_certificate" + self._local_certificate.__str__(n + 1)
-                    + "\t" * (n + 1) + "asymmetric_module" + self._asymmetric_module.__str__(n + 1)
-                    + "\t" * (n + 1) + "symmetric_module" + self._symmetric_module.__str__(n + 1)
-                    + "\t" * (n + 1) + "certificate_signing_algorithm" + self._certificate_signing_algorithm.__str__(
-                        n + 1)
-                    + "\t" * (n + 1) + "channel_module" + self._channel_module.__str__(n + 1)
-                    + "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1)
-                    + "\t" * (
-                            n + 1) + "update_certificate_and_private_key" + self._update_certificate_and_private_key.__str__(
-                        n + 1)
-                    + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
+    @clear.setter
+    def clear(self, val: c_fun):
+        self._clear = val
+        self._value.clear = val._ptr
 
-    # +++++++++++++++++++ UaConnectionConfig +++++++++++++++++++++++
-    class UaConnectionConfig(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_ConnectionConfig*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_ConnectionConfig*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaSecurityPolicy) : NULL\n"
 
-            if not self._null:
-                self._protocol_version = UaUInt32(val=val.protocolVersion, is_pointer=False)
-                self._recv_buffer_size = UaUInt32(val=val.recvBufferSize, is_pointer=False)
-                self._send_buffer_size = UaUInt32(val=val.sendBufferSize, is_pointer=False)
-                self._local_max_message_size = UaUInt32(val=val.localMaxMessageSize, is_pointer=False)
-                self._remote_max_message_size = UaUInt32(val=val.remoteMaxMessageSize, is_pointer=False)
-                self._local_max_chunk_count = UaUInt32(val=val.localMaxChunkCount, is_pointer=False)
-                self._remote_max_chunk_count = UaUInt32(val=val.remoteMaxChunkCount, is_pointer=False)
+        return ("(UaSecurityPolicy) :\n"
+                + "\t" * (n + 1) + "policy_context" + self._policy_context.__str__(n + 1)
+                + "\t" * (n + 1) + "policy_uri" + self._policy_uri.__str__(n + 1)
+                + "\t" * (n + 1) + "local_certificate" + self._local_certificate.__str__(n + 1)
+                + "\t" * (n + 1) + "asymmetric_module" + self._asymmetric_module.__str__(n + 1)
+                + "\t" * (n + 1) + "symmetric_module" + self._symmetric_module.__str__(n + 1)
+                + "\t" * (n + 1) + "certificate_signing_algorithm" + self._certificate_signing_algorithm.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "channel_module" + self._channel_module.__str__(n + 1)
+                + "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1)
+                + "\t" * (
+                        n + 1) + "update_certificate_and_private_key" + self._update_certificate_and_private_key.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
 
-        def _update(self):
-            self.__init__(val=self._ptr)
 
-        @property
-        def protocol_version(self):
-            if self._null:
-                return None
-            else:
-                return self._protocol_version
+# +++++++++++++++++++ UaConnectionConfig +++++++++++++++++++++++
+class UaConnectionConfig(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ConnectionConfig*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ConnectionConfig*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
 
-        @property
-        def recv_buffer_size(self):
-            if self._null:
-                return None
-            else:
-                return self._recv_buffer_size
+        if not self._null:
+            self._protocol_version = UaUInt32(val=val.protocolVersion, is_pointer=False)
+            self._recv_buffer_size = UaUInt32(val=val.recvBufferSize, is_pointer=False)
+            self._send_buffer_size = UaUInt32(val=val.sendBufferSize, is_pointer=False)
+            self._local_max_message_size = UaUInt32(val=val.localMaxMessageSize, is_pointer=False)
+            self._remote_max_message_size = UaUInt32(val=val.remoteMaxMessageSize, is_pointer=False)
+            self._local_max_chunk_count = UaUInt32(val=val.localMaxChunkCount, is_pointer=False)
+            self._remote_max_chunk_count = UaUInt32(val=val.remoteMaxChunkCount, is_pointer=False)
 
-        @property
-        def send_buffer_size(self):
-            if self._null:
-                return None
-            else:
-                return self._send_buffer_size
+    def _update(self):
+        self.__init__(val=self._ptr)
 
-        @property
-        def local_max_message_size(self):
-            if self._null:
-                return None
-            else:
-                return self._local_max_message_size
+    @property
+    def protocol_version(self):
+        if self._null:
+            return None
+        else:
+            return self._protocol_version
 
-        @property
-        def remote_max_message_size(self):
-            if self._null:
-                return None
-            else:
-                return self._remote_max_message_size
+    @property
+    def recv_buffer_size(self):
+        if self._null:
+            return None
+        else:
+            return self._recv_buffer_size
 
-        @property
-        def local_max_chunk_count(self):
-            if self._null:
-                return None
-            else:
-                return self._local_max_chunk_count
+    @property
+    def send_buffer_size(self):
+        if self._null:
+            return None
+        else:
+            return self._send_buffer_size
 
-        @property
-        def remote_max_chunk_count(self):
-            if self._null:
-                return None
-            else:
-                return self._remote_max_chunk_count
+    @property
+    def local_max_message_size(self):
+        if self._null:
+            return None
+        else:
+            return self._local_max_message_size
 
-        @protocol_version.setter
-        def protocol_version(self, val: UaUInt32):
-            self._protocol_version = val
-            self._value.protocolVersion = val._val
+    @property
+    def remote_max_message_size(self):
+        if self._null:
+            return None
+        else:
+            return self._remote_max_message_size
 
-        @recv_buffer_size.setter
-        def recv_buffer_size(self, val: UaUInt32):
-            self._recv_buffer_size = val
-            self._value.recvBufferSize = val._val
+    @property
+    def local_max_chunk_count(self):
+        if self._null:
+            return None
+        else:
+            return self._local_max_chunk_count
 
-        @send_buffer_size.setter
-        def send_buffer_size(self, val: UaUInt32):
-            self._send_buffer_size = val
-            self._value.sendBufferSize = val._val
+    @property
+    def remote_max_chunk_count(self):
+        if self._null:
+            return None
+        else:
+            return self._remote_max_chunk_count
 
-        @local_max_message_size.setter
-        def local_max_message_size(self, val: UaUInt32):
-            self._local_max_message_size = val
-            self._value.localMaxMessageSize = val._val
+    @protocol_version.setter
+    def protocol_version(self, val: UaUInt32):
+        self._protocol_version = val
+        self._value.protocolVersion = val._val
 
-        @remote_max_message_size.setter
-        def remote_max_message_size(self, val: UaUInt32):
-            self._remote_max_message_size = val
-            self._value.remoteMaxMessageSize = val._val
+    @recv_buffer_size.setter
+    def recv_buffer_size(self, val: UaUInt32):
+        self._recv_buffer_size = val
+        self._value.recvBufferSize = val._val
 
-        @local_max_chunk_count.setter
-        def local_max_chunk_count(self, val: UaUInt32):
-            self._local_max_chunk_count = val
-            self._value.localMaxChunkCount = val._val
+    @send_buffer_size.setter
+    def send_buffer_size(self, val: UaUInt32):
+        self._send_buffer_size = val
+        self._value.sendBufferSize = val._val
 
-        @remote_max_chunk_count.setter
-        def remote_max_chunk_count(self, val: UaUInt32):
-            self._remote_max_chunk_count = val
-            self._value.remoteMaxChunkCount = val._val
+    @local_max_message_size.setter
+    def local_max_message_size(self, val: UaUInt32):
+        self._local_max_message_size = val
+        self._value.localMaxMessageSize = val._val
 
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaConnectionConfig) : NULL\n"
+    @remote_max_message_size.setter
+    def remote_max_message_size(self, val: UaUInt32):
+        self._remote_max_message_size = val
+        self._value.remoteMaxMessageSize = val._val
 
-            return ("(UaConnectionConfig) :\n"
-                    + "\t" * (n + 1) + "protocol_version" + self._protocol_version.__str__(n + 1)
-                    + "\t" * (n + 1) + "recv_buffer_size" + self._recv_buffer_size.__str__(n + 1)
-                    + "\t" * (n + 1) + "send_buffer_size" + self._send_buffer_size.__str__(n + 1)
-                    + "\t" * (n + 1) + "local_max_message_size" + self._local_max_message_size.__str__(n + 1)
-                    + "\t" * (n + 1) + "remote_max_message_size" + self._remote_max_message_size.__str__(n + 1)
-                    + "\t" * (n + 1) + "local_max_chunk_count" + self._local_max_chunk_count.__str__(n + 1)
-                    + "\t" * (n + 1) + "remote_max_chunk_count" + self._remote_max_chunk_count.__str__(n + 1))
+    @local_max_chunk_count.setter
+    def local_max_chunk_count(self, val: UaUInt32):
+        self._local_max_chunk_count = val
+        self._value.localMaxChunkCount = val._val
+
+    @remote_max_chunk_count.setter
+    def remote_max_chunk_count(self, val: UaUInt32):
+        self._remote_max_chunk_count = val
+        self._value.remoteMaxChunkCount = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaConnectionConfig) : NULL\n"
+
+        return ("(UaConnectionConfig) :\n"
+                + "\t" * (n + 1) + "protocol_version" + self._protocol_version.__str__(n + 1)
+                + "\t" * (n + 1) + "recv_buffer_size" + self._recv_buffer_size.__str__(n + 1)
+                + "\t" * (n + 1) + "send_buffer_size" + self._send_buffer_size.__str__(n + 1)
+                + "\t" * (n + 1) + "local_max_message_size" + self._local_max_message_size.__str__(n + 1)
+                + "\t" * (n + 1) + "remote_max_message_size" + self._remote_max_message_size.__str__(n + 1)
+                + "\t" * (n + 1) + "local_max_chunk_count" + self._local_max_chunk_count.__str__(n + 1)
+                + "\t" * (n + 1) + "remote_max_chunk_count" + self._remote_max_chunk_count.__str__(n + 1))
 
     # +++++++++++++++++++ UaSecurityPolicyAsymmetricModule +++++++++++++++++++++++
-    class UaSecurityPolicyAsymmetricModule(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_SecurityPolicyAsymmetricModule*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_SecurityPolicyAsymmetricModule*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaSecurityPolicyAsymmetricModule) : NULL\n"
-
-            return ("(UaSecurityPolicyAsymmetricModule) :\n")
-
-    # +++++++++++++++++++ UaSecurityPolicySymmetricModule +++++++++++++++++++++++
-    class UaSecurityPolicySymmetricModule(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_SecurityPolicySymmetricModule*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_SecurityPolicySymmetricModule*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaSecurityPolicySymmetricModule) : NULL\n"
-
-            return ("(UaSecurityPolicySymmetricModule) :\n")
-
-    # +++++++++++++++++++ UaSecurityPolicyChannelModule +++++++++++++++++++++++
-    class UaSecurityPolicyChannelModule(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_SecurityPolicyChannelModule*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_SecurityPolicyChannelModule*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaSecurityPolicyChannelModule) : NULL\n"
-
-            return "(UaSecurityPolicyChannelModule) :\n"
-
-    # +++++++++++++++++++ UaSecurityPolicySignatureAlgorithm +++++++++++++++++++++++
-    class UaSecurityPolicySignatureAlgorithm(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_SecurityPolicySignatureAlgorithm*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_SecurityPolicySignatureAlgorithm*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaSecurityPolicySignatureAlgorithm) : NULL\n"
-
-            return ("(UaSecurityPolicySignatureAlgorithm) :\n")
-
-    # +++++++++++++++++++ UaNodeTypeLifecycle +++++++++++++++++++++++
-    class UaNodeTypeLifecycle(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_NodeTypeLifecycle*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_NodeTypeLifecycle*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._constructor = c_fun(val=val.constructor, is_pointer=True)
-                self._destructor = c_fun(val=val.destructor, is_pointer=True)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def constructor(self):
-            if self._null:
-                return None
-            else:
-                return self._constructor
-
-        @property
-        def destructor(self):
-            if self._null:
-                return None
-            else:
-                return self._destructor
-
-        @constructor.setter
-        def constructor(self, val: c_fun):
-            self._constructor = val
-            self._value.constructor = val._ptr
-
-        @destructor.setter
-        def destructor(self, val: c_fun):
-            self._destructor = val
-            self._value.destructor = val._ptr
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaNodeTypeLifecycle) : NULL\n"
-
-            return ("(UaNodeTypeLifecycle) :\n"
-                    + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
-                    + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1))
-
-    # +++++++++++++++++++ UaNodeReferenceKind +++++++++++++++++++++++
-    class UaNodeReferenceKind(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_NodeReferenceKind*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_NodeReferenceKind*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._id_tree_root = aa_entry(val=val.idTreeRoot, is_pointer=True)
-                self._name_tree_root = aa_entry(val=val.nameTreeRoot, is_pointer=True)
-                self._reference_type_index = UaByte(val=val.referenceTypeIndex, is_pointer=False)
-                self._is_inverse = UaBoolean(val=val.isInverse, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def id_tree_root(self):
-            if self._null:
-                return None
-            else:
-                return self._id_tree_root
-
-        @property
-        def name_tree_root(self):
-            if self._null:
-                return None
-            else:
-                return self._name_tree_root
-
-        @property
-        def reference_type_index(self):
-            if self._null:
-                return None
-            else:
-                return self._reference_type_index
-
-        @property
-        def is_inverse(self):
-            if self._null:
-                return None
-            else:
-                return self._is_inverse
-
-        @id_tree_root.setter
-        def id_tree_root(self, val: aa_entry):
-            self._id_tree_root = val
-            self._value.idTreeRoot = val._ptr
-
-        @name_tree_root.setter
-        def name_tree_root(self, val: aa_entry):
-            self._name_tree_root = val
-            self._value.nameTreeRoot = val._ptr
-
-        @reference_type_index.setter
-        def reference_type_index(self, val: UaByte):
-            self._reference_type_index = val
-            self._value.referenceTypeIndex = val._val
-
-        @is_inverse.setter
-        def is_inverse(self, val: UaBoolean):
-            self._is_inverse = val
-            self._value.isInverse = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaNodeReferenceKind) : NULL\n"
-
-            return ("(UaNodeReferenceKind) :\n"
-                    + "\t" * (n + 1) + "id_tree_root" + self._id_tree_root.__str__(n + 1)
-                    + "\t" * (n + 1) + "name_tree_root" + self._name_tree_root.__str__(n + 1)
-                    + "\t" * (n + 1) + "reference_type_index" + self._reference_type_index.__str__(n + 1)
-                    + "\t" * (n + 1) + "is_inverse" + self._is_inverse.__str__(n + 1))
-
-    # +++++++++++++++++++ UaNodeHead +++++++++++++++++++++++
-    class UaNodeHead(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_NodeHead*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_NodeHead*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
-                self._node_class = UaNodeClass(val=val.nodeClass, is_pointer=False)
-                self._browse_name = UaQualifiedName(val=val.browseName, is_pointer=False)
-                self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
-                self._description = UaLocalizedText(val=val.description, is_pointer=False)
-                self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
-                self._references_size = SizeT(val=val.referencesSize, is_pointer=False)
-                self._references = UaNodeReferenceKind(val=val.references, is_pointer=True)
-                self._context = Void(val=val.context, is_pointer=True)
-                self._constructed = UaBoolean(val=val.constructed, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def node_id(self):
-            if self._null:
-                return None
-            else:
-                return self._node_id
-
-        @property
-        def node_class(self):
-            if self._null:
-                return None
-            else:
-                return self._node_class
-
-        @property
-        def browse_name(self):
-            if self._null:
-                return None
-            else:
-                return self._browse_name
-
-        @property
-        def display_name(self):
-            if self._null:
-                return None
-            else:
-                return self._display_name
-
-        @property
-        def description(self):
-            if self._null:
-                return None
-            else:
-                return self._description
-
-        @property
-        def write_mask(self):
-            if self._null:
-                return None
-            else:
-                return self._write_mask
-
-        @property
-        def references_size(self):
-            if self._null:
-                return None
-            else:
-                return self._references_size
-
-        @property
-        def references(self):
-            if self._null:
-                return None
-            else:
-                return self._references
-
-        @property
-        def context(self):
-            if self._null:
-                return None
-            else:
-                return self._context
-
-        @property
-        def constructed(self):
-            if self._null:
-                return None
-            else:
-                return self._constructed
-
-        @node_id.setter
-        def node_id(self, val: UaNodeId):
-            self._node_id = val
-            self._value.nodeId = val._val
-
-        @node_class.setter
-        def node_class(self, val: UaNodeClass):
-            self._node_class = val
-            self._value.nodeClass = val._val
-
-        @browse_name.setter
-        def browse_name(self, val: UaQualifiedName):
-            self._browse_name = val
-            self._value.browseName = val._val
-
-        @display_name.setter
-        def display_name(self, val: UaLocalizedText):
-            self._display_name = val
-            self._value.displayName = val._val
-
-        @description.setter
-        def description(self, val: UaLocalizedText):
-            self._description = val
-            self._value.description = val._val
-
-        @write_mask.setter
-        def write_mask(self, val: UaUInt32):
-            self._write_mask = val
-            self._value.writeMask = val._val
-
-        @references_size.setter
-        def references_size(self, val: SizeT):
-            self._references_size = val
-            self._value.referencesSize = val._val
-
-        @references.setter
-        def references(self, val: UaNodeReferenceKind):
-            self._references = val
-            self._value.references = val._ptr
-
-        @context.setter
-        def context(self, val: Void):
-            self._context = val
-            self._value.context = val._ptr
-
-        @constructed.setter
-        def constructed(self, val: UaBoolean):
-            self._constructed = val
-            self._value.constructed = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaNodeHead) : NULL\n"
-
-            return ("(UaNodeHead) :\n"
-                    + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
-                    + "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1)
-                    + "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1)
-                    + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
-                    + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
-                    + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
-                    + "\t" * (n + 1) + "references_size" + self._references_size.__str__(n + 1)
-                    + "\t" * (n + 1) + "references" + self._references.__str__(n + 1)
-                    + "\t" * (n + 1) + "context" + self._context.__str__(n + 1)
-                    + "\t" * (n + 1) + "constructed" + self._constructed.__str__(n + 1))
-
-    # +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
-    class UaMethodNode(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_MethodNode*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_MethodNode*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._head = UaNodeHead(val=val.head, is_pointer=False)
-                self._executable = UaBoolean(val=val.executable, is_pointer=False)
-                self._method = c_fun(val=val.method, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def head(self):
-            if self._null:
-                return None
-            else:
-                return self._head
-
-        @property
-        def executable(self):
-            if self._null:
-                return None
-            else:
-                return self._executable
-
-        @property
-        def method(self):
-            if self._null:
-                return None
-            else:
-                return self._method
-
-        @head.setter
-        def head(self, val: UaNodeHead):
-            self._head = val
-            self._value.head = val._val
-
-        @executable.setter
-        def executable(self, val: UaBoolean):
-            self._executable = val
-            self._value.executable = val._val
-
-        @method.setter
-        def method(self, val: c_fun):
-            self._method = val
-            self._value.method = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaMethodNode) : NULL\n"
-
-            return ("(UaMethodNode) :\n"
-                    + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                    + "\t" * (n + 1) + "executable" + self._executable.__str__(n + 1)
-                    + "\t" * (n + 1) + "method" + self._method.__str__(n + 1))
-
-    # +++++++++++++++++++ UaObjectNode +++++++++++++++++++++++
-    class UaObjectNode(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_ObjectNode*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_ObjectNode*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._head = UaNodeHead(val=val.head, is_pointer=False)
-                self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def head(self):
-            if self._null:
-                return None
-            else:
-                return self._head
-
-        @property
-        def event_notifier(self):
-            if self._null:
-                return None
-            else:
-                return self._event_notifier
-
-        @head.setter
-        def head(self, val: UaNodeHead):
-            self._head = val
-            self._value.head = val._val
-
-        @event_notifier.setter
-        def event_notifier(self, val: UaByte):
-            self._event_notifier = val
-            self._value.eventNotifier = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaObjectNode) : NULL\n"
-
-            return ("(UaObjectNode) :\n"
-                    + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                    + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
-
-    # +++++++++++++++++++ UaObjectTypeNode +++++++++++++++++++++++
-    class UaObjectTypeNode(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_ObjectTypeNode*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_ObjectTypeNode*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._head = UaNodeHead(val=val.head, is_pointer=False)
-                self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
-                self._lifecycle = UaNodeTypeLifecycle(val=val.lifecycle, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def head(self):
-            if self._null:
-                return None
-            else:
-                return self._head
-
-        @property
-        def is_abstract(self):
-            if self._null:
-                return None
-            else:
-                return self._is_abstract
-
-        @property
-        def lifecycle(self):
-            if self._null:
-                return None
-            else:
-                return self._lifecycle
-
-        @head.setter
-        def head(self, val: UaNodeHead):
-            self._head = val
-            self._value.head = val._val
-
-        @is_abstract.setter
-        def is_abstract(self, val: UaBoolean):
-            self._is_abstract = val
-            self._value.isAbstract = val._val
-
-        @lifecycle.setter
-        def lifecycle(self, val: UaNodeTypeLifecycle):
-            self._lifecycle = val
-            self._value.lifecycle = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaObjectTypeNode) : NULL\n"
-
-            return ("(UaObjectTypeNode) :\n"
-                    + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                    + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1)
-                    + "\t" * (n + 1) + "lifecycle" + self._lifecycle.__str__(n + 1))
-
-    # +++++++++++++++++++ UaReferenceTypeSet +++++++++++++++++++++++
-    class UaReferenceTypeSet(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_ReferenceTypeSet*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_ReferenceTypeSet*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._bits = UaUInt32(val=val.bits, is_pointer=True)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def bits(self):
-            if self._null:
-                return None
-            else:
-                return self._bits
-
-        @bits.setter
-        def bits(self, val: UaUInt32):
-            self._bits = val
-            self._value.bits = val._ptr
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaReferenceTypeSet) : NULL\n"
-
-            return ("(UaReferenceTypeSet) :\n"
-                    + "\t" * (n + 1) + "bits" + self._bits.__str__(n + 1))
-
-    # +++++++++++++++++++ UaDataTypeNode +++++++++++++++++++++++
-
-    class UaDataTypeNode(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_DataTypeNode*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_DataTypeNode*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._head = UaNodeHead(val=val.head, is_pointer=False)
-                self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def head(self):
-            if self._null:
-                return None
-            else:
-                return self._head
-
-        @property
-        def is_abstract(self):
-            if self._null:
-                return None
-            else:
-                return self._is_abstract
-
-        @head.setter
-        def head(self, val: UaNodeHead):
-            self._head = val
-            self._value.head = val._val
-
-        @is_abstract.setter
-        def is_abstract(self, val: UaBoolean):
-            self._is_abstract = val
-            self._value.isAbstract = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaDataTypeNode) : NULL\n"
-
-            return ("(UaDataTypeNode) :\n"
-                    + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                    + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
-
-    # +++++++++++++++++++ UaViewNode +++++++++++++++++++++++
-    class UaViewNode(UaType):
-        def __init__(self, val=None, is_pointer=False):
-            if val is None:
-                val = ffi.new("UA_ViewNode*")
-            if isinstance(val, UaType):
-                val = ffi.cast("UA_ViewNode*", val._ptr)
-            super().__init__(val=val, is_pointer=is_pointer)
-
-            if not self._null:
-                self._head = UaNodeHead(val=val.head, is_pointer=False)
-                self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
-                self._contains_no_loops = UaBoolean(val=val.containsNoLoops, is_pointer=False)
-
-        def _update(self):
-            self.__init__(val=self._ptr)
-
-        @property
-        def head(self):
-            if self._null:
-                return None
-            else:
-                return self._head
-
-        @property
-        def event_notifier(self):
-            if self._null:
-                return None
-            else:
-                return self._event_notifier
-
-        @property
-        def contains_no_loops(self):
-            if self._null:
-                return None
-            else:
-                return self._contains_no_loops
-
-        @head.setter
-        def head(self, val: UaNodeHead):
-            self._head = val
-            self._value.head = val._val
-
-        @event_notifier.setter
-        def event_notifier(self, val: UaByte):
-            self._event_notifier = val
-            self._value.eventNotifier = val._val
-
-        @contains_no_loops.setter
-        def contains_no_loops(self, val: UaBoolean):
-            self._contains_no_loops = val
-            self._value.containsNoLoops = val._val
-
-        def __str__(self, n=0):
-            if self._null:
-                return "(UaViewNode) : NULL\n"
-
-            return ("(UaViewNode) :\n"
-                    + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                    + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1)
-                    + "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1))
+
+
+class UaSecurityPolicyAsymmetricModule(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecurityPolicyAsymmetricModule*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicyAsymmetricModule*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaSecurityPolicyAsymmetricModule) : NULL\n"
+
+        return ("(UaSecurityPolicyAsymmetricModule) :\n")
+
+
+# +++++++++++++++++++ UaSecurityPolicySymmetricModule +++++++++++++++++++++++
+class UaSecurityPolicySymmetricModule(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecurityPolicySymmetricModule*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicySymmetricModule*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaSecurityPolicySymmetricModule) : NULL\n"
+
+        return ("(UaSecurityPolicySymmetricModule) :\n")
+
+
+# +++++++++++++++++++ UaSecurityPolicyChannelModule +++++++++++++++++++++++
+class UaSecurityPolicyChannelModule(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecurityPolicyChannelModule*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicyChannelModule*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaSecurityPolicyChannelModule) : NULL\n"
+
+        return "(UaSecurityPolicyChannelModule) :\n"
+
+
+# +++++++++++++++++++ UaSecurityPolicySignatureAlgorithm +++++++++++++++++++++++
+class UaSecurityPolicySignatureAlgorithm(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_SecurityPolicySignatureAlgorithm*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicySignatureAlgorithm*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaSecurityPolicySignatureAlgorithm) : NULL\n"
+
+        return ("(UaSecurityPolicySignatureAlgorithm) :\n")
+
+
+# +++++++++++++++++++ UaNodeTypeLifecycle +++++++++++++++++++++++
+class UaNodeTypeLifecycle(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NodeTypeLifecycle*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_NodeTypeLifecycle*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._constructor = c_fun(val=val.constructor, is_pointer=True)
+            self._destructor = c_fun(val=val.destructor, is_pointer=True)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def constructor(self):
+        if self._null:
+            return None
+        else:
+            return self._constructor
+
+    @property
+    def destructor(self):
+        if self._null:
+            return None
+        else:
+            return self._destructor
+
+    @constructor.setter
+    def constructor(self, val: c_fun):
+        self._constructor = val
+        self._value.constructor = val._ptr
+
+    @destructor.setter
+    def destructor(self, val: c_fun):
+        self._destructor = val
+        self._value.destructor = val._ptr
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaNodeTypeLifecycle) : NULL\n"
+
+        return ("(UaNodeTypeLifecycle) :\n"
+                + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
+                + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaNodeReferenceKind +++++++++++++++++++++++
+class UaNodeReferenceKind(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NodeReferenceKind*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_NodeReferenceKind*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._id_tree_root = aa_entry(val=val.idTreeRoot, is_pointer=True)
+            self._name_tree_root = aa_entry(val=val.nameTreeRoot, is_pointer=True)
+            self._reference_type_index = UaByte(val=val.referenceTypeIndex, is_pointer=False)
+            self._is_inverse = UaBoolean(val=val.isInverse, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def id_tree_root(self):
+        if self._null:
+            return None
+        else:
+            return self._id_tree_root
+
+    @property
+    def name_tree_root(self):
+        if self._null:
+            return None
+        else:
+            return self._name_tree_root
+
+    @property
+    def reference_type_index(self):
+        if self._null:
+            return None
+        else:
+            return self._reference_type_index
+
+    @property
+    def is_inverse(self):
+        if self._null:
+            return None
+        else:
+            return self._is_inverse
+
+    @id_tree_root.setter
+    def id_tree_root(self, val: aa_entry):
+        self._id_tree_root = val
+        self._value.idTreeRoot = val._ptr
+
+    @name_tree_root.setter
+    def name_tree_root(self, val: aa_entry):
+        self._name_tree_root = val
+        self._value.nameTreeRoot = val._ptr
+
+    @reference_type_index.setter
+    def reference_type_index(self, val: UaByte):
+        self._reference_type_index = val
+        self._value.referenceTypeIndex = val._val
+
+    @is_inverse.setter
+    def is_inverse(self, val: UaBoolean):
+        self._is_inverse = val
+        self._value.isInverse = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaNodeReferenceKind) : NULL\n"
+
+        return ("(UaNodeReferenceKind) :\n"
+                + "\t" * (n + 1) + "id_tree_root" + self._id_tree_root.__str__(n + 1)
+                + "\t" * (n + 1) + "name_tree_root" + self._name_tree_root.__str__(n + 1)
+                + "\t" * (n + 1) + "reference_type_index" + self._reference_type_index.__str__(n + 1)
+                + "\t" * (n + 1) + "is_inverse" + self._is_inverse.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaNodeHead +++++++++++++++++++++++
+class UaNodeHead(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_NodeHead*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_NodeHead*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._node_id = UaNodeId(val=val.nodeId, is_pointer=False)
+            self._node_class = UaNodeClass(val=val.nodeClass, is_pointer=False)
+            self._browse_name = UaQualifiedName(val=val.browseName, is_pointer=False)
+            self._display_name = UaLocalizedText(val=val.displayName, is_pointer=False)
+            self._description = UaLocalizedText(val=val.description, is_pointer=False)
+            self._write_mask = UaUInt32(val=val.writeMask, is_pointer=False)
+            self._references_size = SizeT(val=val.referencesSize, is_pointer=False)
+            self._references = UaNodeReferenceKind(val=val.references, is_pointer=True)
+            self._context = Void(val=val.context, is_pointer=True)
+            self._constructed = UaBoolean(val=val.constructed, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def node_id(self):
+        if self._null:
+            return None
+        else:
+            return self._node_id
+
+    @property
+    def node_class(self):
+        if self._null:
+            return None
+        else:
+            return self._node_class
+
+    @property
+    def browse_name(self):
+        if self._null:
+            return None
+        else:
+            return self._browse_name
+
+    @property
+    def display_name(self):
+        if self._null:
+            return None
+        else:
+            return self._display_name
+
+    @property
+    def description(self):
+        if self._null:
+            return None
+        else:
+            return self._description
+
+    @property
+    def write_mask(self):
+        if self._null:
+            return None
+        else:
+            return self._write_mask
+
+    @property
+    def references_size(self):
+        if self._null:
+            return None
+        else:
+            return self._references_size
+
+    @property
+    def references(self):
+        if self._null:
+            return None
+        else:
+            return self._references
+
+    @property
+    def context(self):
+        if self._null:
+            return None
+        else:
+            return self._context
+
+    @property
+    def constructed(self):
+        if self._null:
+            return None
+        else:
+            return self._constructed
+
+    @node_id.setter
+    def node_id(self, val: UaNodeId):
+        self._node_id = val
+        self._value.nodeId = val._val
+
+    @node_class.setter
+    def node_class(self, val: UaNodeClass):
+        self._node_class = val
+        self._value.nodeClass = val._val
+
+    @browse_name.setter
+    def browse_name(self, val: UaQualifiedName):
+        self._browse_name = val
+        self._value.browseName = val._val
+
+    @display_name.setter
+    def display_name(self, val: UaLocalizedText):
+        self._display_name = val
+        self._value.displayName = val._val
+
+    @description.setter
+    def description(self, val: UaLocalizedText):
+        self._description = val
+        self._value.description = val._val
+
+    @write_mask.setter
+    def write_mask(self, val: UaUInt32):
+        self._write_mask = val
+        self._value.writeMask = val._val
+
+    @references_size.setter
+    def references_size(self, val: SizeT):
+        self._references_size = val
+        self._value.referencesSize = val._val
+
+    @references.setter
+    def references(self, val: UaNodeReferenceKind):
+        self._references = val
+        self._value.references = val._ptr
+
+    @context.setter
+    def context(self, val: Void):
+        self._context = val
+        self._value.context = val._ptr
+
+    @constructed.setter
+    def constructed(self, val: UaBoolean):
+        self._constructed = val
+        self._value.constructed = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaNodeHead) : NULL\n"
+
+        return ("(UaNodeHead) :\n"
+                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
+                + "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1)
+                + "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1)
+                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
+                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
+                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
+                + "\t" * (n + 1) + "references_size" + self._references_size.__str__(n + 1)
+                + "\t" * (n + 1) + "references" + self._references.__str__(n + 1)
+                + "\t" * (n + 1) + "context" + self._context.__str__(n + 1)
+                + "\t" * (n + 1) + "constructed" + self._constructed.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
+class UaMethodNode(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_MethodNode*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_MethodNode*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._executable = UaBoolean(val=val.executable, is_pointer=False)
+            self._method = c_fun(val=val.method, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def head(self):
+        if self._null:
+            return None
+        else:
+            return self._head
+
+    @property
+    def executable(self):
+        if self._null:
+            return None
+        else:
+            return self._executable
+
+    @property
+    def method(self):
+        if self._null:
+            return None
+        else:
+            return self._method
+
+    @head.setter
+    def head(self, val: UaNodeHead):
+        self._head = val
+        self._value.head = val._val
+
+    @executable.setter
+    def executable(self, val: UaBoolean):
+        self._executable = val
+        self._value.executable = val._val
+
+    @method.setter
+    def method(self, val: c_fun):
+        self._method = val
+        self._value.method = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaMethodNode) : NULL\n"
+
+        return ("(UaMethodNode) :\n"
+                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
+                + "\t" * (n + 1) + "executable" + self._executable.__str__(n + 1)
+                + "\t" * (n + 1) + "method" + self._method.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaObjectNode +++++++++++++++++++++++
+class UaObjectNode(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ObjectNode*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ObjectNode*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def head(self):
+        if self._null:
+            return None
+        else:
+            return self._head
+
+    @property
+    def event_notifier(self):
+        if self._null:
+            return None
+        else:
+            return self._event_notifier
+
+    @head.setter
+    def head(self, val: UaNodeHead):
+        self._head = val
+        self._value.head = val._val
+
+    @event_notifier.setter
+    def event_notifier(self, val: UaByte):
+        self._event_notifier = val
+        self._value.eventNotifier = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaObjectNode) : NULL\n"
+
+        return ("(UaObjectNode) :\n"
+                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
+                + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaObjectTypeNode +++++++++++++++++++++++
+class UaObjectTypeNode(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ObjectTypeNode*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ObjectTypeNode*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
+            self._lifecycle = UaNodeTypeLifecycle(val=val.lifecycle, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def head(self):
+        if self._null:
+            return None
+        else:
+            return self._head
+
+    @property
+    def is_abstract(self):
+        if self._null:
+            return None
+        else:
+            return self._is_abstract
+
+    @property
+    def lifecycle(self):
+        if self._null:
+            return None
+        else:
+            return self._lifecycle
+
+    @head.setter
+    def head(self, val: UaNodeHead):
+        self._head = val
+        self._value.head = val._val
+
+    @is_abstract.setter
+    def is_abstract(self, val: UaBoolean):
+        self._is_abstract = val
+        self._value.isAbstract = val._val
+
+    @lifecycle.setter
+    def lifecycle(self, val: UaNodeTypeLifecycle):
+        self._lifecycle = val
+        self._value.lifecycle = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaObjectTypeNode) : NULL\n"
+
+        return ("(UaObjectTypeNode) :\n"
+                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
+                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1)
+                + "\t" * (n + 1) + "lifecycle" + self._lifecycle.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaReferenceTypeSet +++++++++++++++++++++++
+class UaReferenceTypeSet(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ReferenceTypeSet*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ReferenceTypeSet*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._bits = UaUInt32(val=val.bits, is_pointer=True)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def bits(self):
+        if self._null:
+            return None
+        else:
+            return self._bits
+
+    @bits.setter
+    def bits(self, val: UaUInt32):
+        self._bits = val
+        self._value.bits = val._ptr
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaReferenceTypeSet) : NULL\n"
+
+        return ("(UaReferenceTypeSet) :\n"
+                + "\t" * (n + 1) + "bits" + self._bits.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaDataTypeNode +++++++++++++++++++++++
+
+class UaDataTypeNode(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_DataTypeNode*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_DataTypeNode*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._is_abstract = UaBoolean(val=val.isAbstract, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def head(self):
+        if self._null:
+            return None
+        else:
+            return self._head
+
+    @property
+    def is_abstract(self):
+        if self._null:
+            return None
+        else:
+            return self._is_abstract
+
+    @head.setter
+    def head(self, val: UaNodeHead):
+        self._head = val
+        self._value.head = val._val
+
+    @is_abstract.setter
+    def is_abstract(self, val: UaBoolean):
+        self._is_abstract = val
+        self._value.isAbstract = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaDataTypeNode) : NULL\n"
+
+        return ("(UaDataTypeNode) :\n"
+                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
+                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaViewNode +++++++++++++++++++++++
+class UaViewNode(UaType):
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ViewNode*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ViewNode*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._event_notifier = UaByte(val=val.eventNotifier, is_pointer=False)
+            self._contains_no_loops = UaBoolean(val=val.containsNoLoops, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    @property
+    def head(self):
+        if self._null:
+            return None
+        else:
+            return self._head
+
+    @property
+    def event_notifier(self):
+        if self._null:
+            return None
+        else:
+            return self._event_notifier
+
+    @property
+    def contains_no_loops(self):
+        if self._null:
+            return None
+        else:
+            return self._contains_no_loops
+
+    @head.setter
+    def head(self, val: UaNodeHead):
+        self._head = val
+        self._value.head = val._val
+
+    @event_notifier.setter
+    def event_notifier(self, val: UaByte):
+        self._event_notifier = val
+        self._value.eventNotifier = val._val
+
+    @contains_no_loops.setter
+    def contains_no_loops(self, val: UaBoolean):
+        self._contains_no_loops = val
+        self._value.containsNoLoops = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaViewNode) : NULL\n"
+
+        return ("(UaViewNode) :\n"
+                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
+                + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1)
+                + "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1))

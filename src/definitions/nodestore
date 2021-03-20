@@ -130,19 +130,19 @@ typedef struct {
                                          UA_NodeId *targetNodeId);
 } UA_GlobalNodeLifecycle;
 
-extern "Python" UA_StatusCode python_wrapper_UA_GlobalNodeLifecycle_constructor(UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_GlobalNodeLifecycle_constructor(UA_Server *server,
                                  const UA_NodeId *sessionId, void *sessionContext,
                                  const UA_NodeId *nodeId, void **nodeContext);
-extern "Python" void python_wrapper_UA_GlobalNodeLifecycle_destructor(UA_Server *server,
+extern "Python" void _python_wrapper_UA_GlobalNodeLifecycle_destructor(UA_Server *server,
                        const UA_NodeId *sessionId, void *sessionContext,
                        const UA_NodeId *nodeId, void *nodeContext);
-extern "Python" UA_Boolean python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(UA_Server *server,
+extern "Python" UA_Boolean _python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(UA_Server *server,
                                       const UA_NodeId *sessionId,
                                       void *sessionContext,
                                       const UA_NodeId *sourceNodeId,
                                       const UA_NodeId *targetParentNodeId,
                                       const UA_NodeId *referenceTypeId);
-extern "Python" UA_StatusCode python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(UA_Server *server,
                                          const UA_NodeId *sessionId, void *sessionContext,
                                          const UA_NodeId *sourceNodeId,
                                          const UA_NodeId *targetParentNodeId,
