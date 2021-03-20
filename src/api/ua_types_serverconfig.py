@@ -497,7 +497,8 @@ class UaAccessControl(UaType):
     def _python_wrapper_UA_AccessControl_activateSession(server, ac, endpoint_description,
                                                          secure_channel_remote_certificate, session_id,
                                                          user_identity_token, session_context):
-        return UaAccessControl._activate_session(UaServer(val=server),  # todo: missing import
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._activate_session(server,
                                                  UaAccessControl(val=ac, is_pointer=True),
                                                  UaEndpointDescription(val=endpoint_description, is_pointer=True),
                                                  UaByteString(val=secure_channel_remote_certificate, is_pointer=True),
@@ -507,7 +508,8 @@ class UaAccessControl(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_closeSession(server, ac, session_id, session_context):
-        UaAccessControl._close_session(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        UaAccessControl._close_session(server,
                                        UaAccessControl(val=ac, is_pointer=True),
                                        UaNodeId(val=session_id, is_pointer=True),
                                        Void(val=session_context, is_pointer=True))
@@ -516,7 +518,8 @@ class UaAccessControl(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_getUserRightsMask(server, ac, session_id, session_context, node_id,
                                                            node_context):
-        return UaAccessControl._get_user_rights_mask(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_rights_mask(server,
                                                      UaAccessControl(val=ac, is_pointer=True),
                                                      UaNodeId(val=session_id, is_pointer=True),
                                                      Void(val=session_context, is_pointer=True),
@@ -527,7 +530,8 @@ class UaAccessControl(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_getUserAccessLevel(server, ac, session_id, session_context, node_id,
                                                             node_context):
-        return UaAccessControl._get_user_access_level(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_access_level(server,
                                                       UaAccessControl(val=ac, is_pointer=True),
                                                       UaNodeId(val=session_id, is_pointer=True),
                                                       Void(val=session_context, is_pointer=True),
@@ -538,7 +542,8 @@ class UaAccessControl(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_getUserExecutable(server, ac, session_id, session_context, method_id,
                                                            method_context):
-        return UaAccessControl._get_user_executable(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_executable(server,
                                                     UaAccessControl(val=ac, is_pointer=True),
                                                     UaNodeId(val=session_id, is_pointer=True),
                                                     Void(val=session_context, is_pointer=True),
@@ -549,7 +554,8 @@ class UaAccessControl(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_getUserExecutableOnObject(server, ac, session_id, session_context, method_id,
                                                                    method_context, object_id, object_context):
-        return UaAccessControl._get_user_executable_on_object(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._get_user_executable_on_object(server,
                                                               UaAccessControl(val=ac, is_pointer=True),
                                                               UaNodeId(val=session_id, is_pointer=True),
                                                               Void(val=session_context, is_pointer=True),
@@ -561,7 +567,8 @@ class UaAccessControl(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_allowAddNode(server, ac, session_id, session_context, item):
-        return UaAccessControl._allow_add_node(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_add_node(server,
                                                UaAccessControl(val=ac, is_pointer=True),
                                                UaNodeId(val=session_id, is_pointer=True),
                                                Void(val=session_context, is_pointer=True),
@@ -570,7 +577,8 @@ class UaAccessControl(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_allowAddReference(server, ac, session_id, session_context, item):
-        return UaAccessControl._allow_add_reference(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_add_reference(server,
                                                     UaAccessControl(val=ac, is_pointer=True),
                                                     UaNodeId(val=session_id, is_pointer=True),
                                                     Void(val=session_context, is_pointer=True),
@@ -579,7 +587,8 @@ class UaAccessControl(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_allowDeleteNode(server, ac, session_id, session_context, item):
-        return UaAccessControl._allow_delete_node(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_delete_node(server,
                                                   UaAccessControl(val=ac, is_pointer=True),
                                                   UaNodeId(val=session_id, is_pointer=True),
                                                   Void(val=session_context, is_pointer=True),
@@ -588,7 +597,8 @@ class UaAccessControl(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_allowDeleteReference(server, ac, session_id, session_context, item):
-        return UaAccessControl._allow_delete_reference(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_delete_reference(server,
                                                        UaAccessControl(val=ac, is_pointer=True),
                                                        UaNodeId(val=session_id, is_pointer=True),
                                                        Void(val=session_context, is_pointer=True),
@@ -597,7 +607,8 @@ class UaAccessControl(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_AccessControl_allowBrowseNode(server, ac, session_id, session_context):
-        return UaAccessControl._allow_browse_node(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaAccessControl._allow_browse_node(server,
                                                   UaAccessControl(val=ac, is_pointer=True),
                                                   UaNodeId(val=session_id, is_pointer=True),
                                                   Void(val=session_context, is_pointer=True))
@@ -865,7 +876,8 @@ class UaGlobalNodeLifecycle(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_GlobalNodeLifecycle_constructor(server, session_id, session_context, node_id, node_context):
-        return UaGlobalNodeLifecycle._constructor(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._constructor(server,
                                                   UaNodeId(val=session_id, is_pointer=True),
                                                   Void(val=session_context, is_pointer=True),
                                                   UaNodeId(val=node_id, is_pointer=True),
@@ -874,7 +886,8 @@ class UaGlobalNodeLifecycle(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_GlobalNodeLifecycle_destructor(server, session_id, session_context, node_id, node_context):
-        return UaGlobalNodeLifecycle._destructor(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._destructor(server,
                                                  UaNodeId(val=session_id, is_pointer=True),
                                                  Void(val=session_context, is_pointer=True),
                                                  UaNodeId(val=node_id, is_pointer=True),
@@ -884,7 +897,8 @@ class UaGlobalNodeLifecycle(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(server, session_id, session_context, source_node_id,
                                                                    target_parent_node_id, reference_type_id):
-        return UaGlobalNodeLifecycle._create_optional_child(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._create_optional_child(server,
                                                             UaNodeId(val=session_id, is_pointer=True),
                                                             Void(val=session_context, is_pointer=True),
                                                             UaNodeId(val=source_node_id, is_pointer=True),
@@ -896,7 +910,8 @@ class UaGlobalNodeLifecycle(UaType):
     def _python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(server, session_id, session_context, source_node_id,
                                                                    target_parent_node_id, reference_type_id,
                                                                    target_node_id):
-        return UaGlobalNodeLifecycle._generate_child_node_id(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaGlobalNodeLifecycle._generate_child_node_id(server,
                                                              UaNodeId(val=session_id, is_pointer=True),
                                                              Void(val=session_context, is_pointer=True),
                                                              UaNodeId(val=target_parent_node_id, is_pointer=True),
@@ -1006,14 +1021,16 @@ class UaServerNetworkLayer(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_ServerNetworkLayer_listen(nl, server, timeout):
         # todo: implement UA_ServerNetworkLayer
-        return UaServerNetworkLayer._listen(nl, UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaServerNetworkLayer._listen(nl, val=server,
                                             UaUInt16(val=timeout, is_pointer=False))
 
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_ServerNetworkLayer_stop(nl, server):
         # todo: implement UA_ServerNetworkLayer
-        return UaServerNetworkLayer._stop(nl, UaServer(val=server))
+        # todo: wrap server (cyclical import issue)
+        return UaServerNetworkLayer._stop(nl, server)
 
     @staticmethod
     @ffi.def_extern()
@@ -1560,7 +1577,8 @@ class UaNodeTypeLifecycle(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_NodeTypeLifecycle_constructor(server, session_id, session_context, type_node_id,
                                                          type_node_context, node_id, node_context):
-        return UaNodeTypeLifecycle._constructor(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        return UaNodeTypeLifecycle._constructor(server,
                                                 UaNodeId(val=session_id, is_pointer=True),
                                                 Void(val=session_context, is_pointer=True),
                                                 UaNodeId(val=type_node_id, is_pointer=True),
@@ -1572,7 +1590,8 @@ class UaNodeTypeLifecycle(UaType):
     @ffi.def_extern()
     def _python_wrapper_UA_NodeTypeLifecycle_destructor(server, session_id, session_context, type_node_id,
                                                         type_node_context, node_id, node_context):
-        UaNodeTypeLifecycle._destructor(UaServer(val=server),
+        # todo: wrap server (cyclical import issue)
+        UaNodeTypeLifecycle._destructor(server,
                                         UaNodeId(val=session_id, is_pointer=True),
                                         Void(val=session_context, is_pointer=True),
                                         UaNodeId(val=type_node_id, is_pointer=True),
