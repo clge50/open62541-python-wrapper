@@ -8,13 +8,7 @@ from intermediateApi import ffi, lib
 from ua_consts_status_codes import UA_STATUSCODES
 from ua_types_logger import *
 from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
-from typing import Callable
-
-
-# TODO: remove placeholder when implmentaion of callbacks is done
-class c_fun(UaType):
-    def __init__(self, val, is_pointer):
-        super.__init__(val, is_pointer)
+from typing import Callable, Dict
 
 
 # +++++++++++++++++++ aa_entry +++++++++++++++++++++++
@@ -1171,14 +1165,25 @@ class UaServerNetworkLayer(UaType):
 
 
 class UaSecurityPolicy(UaType):
+    _update_certificate_and_private_key = None
+    _clear = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey(policy, new_certificate, new_private_key):
+        return UaSecurityPolicy._update_certificate_and_private_key(UaSecurityPolicy(val=policy, is_pointer=True),
+                                                                    UaByteString(val=new_certificate, is_pointer=False),
+                                                                    UaByteString(val=new_private_key, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_clear(policy):
+        UaSecurityPolicy._clear(UaSecurityPolicy(val=policy, is_pointer=True))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_SecurityPolicy*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_SecurityPolicy*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._policy_context = Void(val=val.policyContext, is_pointer=True)
             self._policy_uri = UaByteString(val=val.policyUri, is_pointer=False)
             self._local_certificate = UaByteString(val=val.localCertificate, is_pointer=False)
@@ -1188,9 +1193,22 @@ class UaSecurityPolicy(UaType):
                 val=val.certificateSigningAlgorithm, is_pointer=False)
             self._channel_module = UaSecurityPolicyChannelModule(val=val.channelModule, is_pointer=False)
             self._logger = UaLogger(val=val.logger, is_pointer=True)
-            self._update_certificate_and_private_key = c_fun(val=val.updateCertificateAndPrivateKey,
-                                                             is_pointer=True)
-            self._clear = c_fun(val=val.clear, is_pointer=True)
+            self._update_certificate_and_private_key = None
+            self._clear = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_SecurityPolicy*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._policy_context = Void(val=val.policyContext, is_pointer=True)
+            self._policy_uri = UaByteString(val=val.policyUri, is_pointer=False)
+            self._local_certificate = UaByteString(val=val.localCertificate, is_pointer=False)
+            self._asymmetric_module = UaSecurityPolicyAsymmetricModule(val=val.asymmetricModule, is_pointer=False)
+            self._symmetric_module = UaSecurityPolicySymmetricModule(val=val.symmetricModule, is_pointer=False)
+            self._certificate_signing_algorithm = UaSecurityPolicySignatureAlgorithm(
+                val=val.certificateSigningAlgorithm, is_pointer=False)
+            self._channel_module = UaSecurityPolicyChannelModule(val=val.channelModule, is_pointer=False)
+            self._logger = UaLogger(val=val.logger, is_pointer=True)
+            self._update_certificate_and_private_key = lambda a, b, c: UA_STATUSCODES.GOOD
+            self._clear = lambda a: None
 
     def _update(self):
         self.__init__(val=self._ptr)
@@ -1306,14 +1324,15 @@ class UaSecurityPolicy(UaType):
         self._value.logger = val._ptr
 
     @update_certificate_and_private_key.setter
-    def update_certificate_and_private_key(self, val: c_fun):
-        self._update_certificate_and_private_key = val
-        self._value.updateCertificateAndPrivateKey = val._ptr
+    def update_certificate_and_private_key(self, val: Callable[
+        ['UaSecurityPolicy', UaByteString, UaByteString], UaStatusCode]):
+        UaSecurityPolicy._update_certificate_and_private_key = val
+        self._value.updateCertificateAndPrivateKey = lib._python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey
 
     @clear.setter
-    def clear(self, val: c_fun):
-        self._clear = val
-        self._value.clear = val._ptr
+    def clear(self, val: Callable[['UaSecurityPolicy'], None]):
+        UaSecurityPolicy._clear = val
+        self._value.clear = lib._python_wrapper_UA_SecurityPolicy_clear
 
     def __str__(self, n=0):
         if self._null:
@@ -1533,16 +1552,44 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
 
 # +++++++++++++++++++ UaNodeTypeLifecycle +++++++++++++++++++++++
 class UaNodeTypeLifecycle(UaType):
+    _constructor = None
+    _destructor = None
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_NodeTypeLifecycle_constructor(server, session_id, session_context, type_node_id,
+                                                         type_node_context, node_id, node_context):
+        return UaNodeTypeLifecycle._constructor(UaServer(val=server),
+                                                UaNodeId(val=session_id, is_pointer=True),
+                                                Void(val=session_context, is_pointer=True),
+                                                UaNodeId(val=type_node_id, is_pointer=True),
+                                                Void(val=type_node_context, is_pointer=True),
+                                                UaNodeId(val=node_id, is_pointer=True),
+                                                UaList(val=node_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_NodeTypeLifecycle_destructor(server, session_id, session_context, type_node_id,
+                                                        type_node_context, node_id, node_context):
+        UaNodeTypeLifecycle._destructor(UaServer(val=server),
+                                        UaNodeId(val=session_id, is_pointer=True),
+                                        Void(val=session_context, is_pointer=True),
+                                        UaNodeId(val=type_node_id, is_pointer=True),
+                                        Void(val=type_node_context, is_pointer=True),
+                                        UaNodeId(val=node_id, is_pointer=True),
+                                        UaList(val=node_context))
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_NodeTypeLifecycle*")
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._constructor = None
+            self._destructor = None
         if isinstance(val, UaType):
             val = ffi.cast("UA_NodeTypeLifecycle*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
-            self._constructor = c_fun(val=val.constructor, is_pointer=True)
-            self._destructor = c_fun(val=val.destructor, is_pointer=True)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._constructor = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
+            self._destructor = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
 
     def _update(self):
         self.__init__(val=self._ptr)
@@ -1562,14 +1609,14 @@ class UaNodeTypeLifecycle(UaType):
             return self._destructor
 
     @constructor.setter
-    def constructor(self, val: c_fun):
-        self._constructor = val
-        self._value.constructor = val._ptr
+    def constructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+        UaNodeTypeLifecycle._constructor = val
+        self._value.constructor = lib._python_wrapper_UA_NodeTypeLifecycle_constructor
 
     @destructor.setter
-    def destructor(self, val: c_fun):
-        self._destructor = val
-        self._value.destructor = val._ptr
+    def destructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+        UaNodeTypeLifecycle._destructor = val
+        self._value.destructor = lib._python_wrapper_UA_NodeTypeLifecycle_destructor
 
     def __str__(self, n=0):
         if self._null:
@@ -1820,17 +1867,21 @@ class UaNodeHead(UaType):
 
 # +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
 class UaMethodNode(UaType):
+    _callbacks_dict: Dict[str, any] = dict()
+
     def __init__(self, val=None, is_pointer=False):
         if val is None:
             val = ffi.new("UA_MethodNode*")
-        if isinstance(val, UaType):
-            val = ffi.cast("UA_MethodNode*", val._ptr)
-        super().__init__(val=val, is_pointer=is_pointer)
-
-        if not self._null:
+            super().__init__(val=val, is_pointer=is_pointer)
             self._head = UaNodeHead(val=val.head, is_pointer=False)
             self._executable = UaBoolean(val=val.executable, is_pointer=False)
-            self._method = c_fun(val=val.method, is_pointer=False)
+            self._method = None
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_MethodNode*", val._ptr)
+            super().__init__(val=val, is_pointer=is_pointer)
+            self._head = UaNodeHead(val=val.head, is_pointer=False)
+            self._executable = UaBoolean(val=val.executable, is_pointer=False)
+            self._method = lambda a, b, c, d, e, f, g, h, i, j, k: UA_STATUSCODES.GOOD
 
     def _update(self):
         self.__init__(val=self._ptr)
@@ -1867,9 +1918,12 @@ class UaMethodNode(UaType):
         self._value.executable = val._val
 
     @method.setter
-    def method(self, val: c_fun):
+    def method(self, val: Callable[
+        ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void, UaList,
+         UaList], UaStatusCode]):
         self._method = val
-        self._value.method = val._val
+        UaMethodNode._callbacks_dict[str(self)] = val
+        self._value.method = lib._python_wrapper_UA_MethodCallback
 
     def __str__(self, n=0):
         if self._null:

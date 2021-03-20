@@ -20,11 +20,11 @@ typedef struct {
                        const UA_NodeId *nodeId, void **nodeContext);
 } UA_NodeTypeLifecycle;
 
-extern "Python" UA_StatusCode python_wrapper_UA_NodeTypeLifecycle_constructor(UA_Server *server,
+extern "Python" UA_StatusCode _python_wrapper_UA_NodeTypeLifecycle_constructor(UA_Server *server,
                                  const UA_NodeId *sessionId, void *sessionContext,
                                  const UA_NodeId *typeNodeId, void *typeNodeContext,
                                  const UA_NodeId *nodeId, void **nodeContext);
-extern "Python" void python_wrapper_UA_NodeTypeLifecycle_destructor(UA_Server *server,
+extern "Python" void _python_wrapper_UA_NodeTypeLifecycle_destructor(UA_Server *server,
                        const UA_NodeId *sessionId, void *sessionContext,
                        const UA_NodeId *typeNodeId, void *typeNodeContext,
                        const UA_NodeId *nodeId, void **nodeContext);
