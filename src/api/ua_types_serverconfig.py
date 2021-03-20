@@ -267,9 +267,9 @@ class UaNodestore(UaType):
     @staticmethod
     @ffi.def_extern()
     def _python_wrapper_UA_Nodestore_iterate(ns_ctx, visitor, visitor_ctx):
-        # todo: add UaNodeStoreVisitor
         UaNodestore._iterate(Void(val=ns_ctx, is_pointer=True),
-                             UaNodeStoreVisitor(val=visitor, is_pointer=False),
+                             # todo: add UaNodeStoreVisitor
+                             Void(val=visitor),
                              Void(val=visitor_ctx, is_pointer=True))
 
     def __init__(self, val=None, is_pointer=False):
@@ -448,7 +448,8 @@ class UaNodestore(UaType):
         self._value.getReferenceTypeId = lib._python_wrapper_UA_Nodestore_getReferenceTypeId
 
     @iterate.setter
-    def iterate(self, val: Callable[[Void, UaNodeStoreVisitor, Void], None]):
+    # todo: add UaNodeStoreVisitor instead of Any
+    def iterate(self, val: Callable[[Void, Any, Void], None]):
         self._iterate = val
         self._value.iterate = lib._python_wrapper_UA_Nodestore_iterate
 
