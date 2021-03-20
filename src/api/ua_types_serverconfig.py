@@ -1022,7 +1022,7 @@ class UaServerNetworkLayer(UaType):
     def _python_wrapper_UA_ServerNetworkLayer_listen(nl, server, timeout):
         # todo: implement UA_ServerNetworkLayer
         # todo: wrap server (cyclical import issue)
-        return UaServerNetworkLayer._listen(nl, val=server,
+        return UaServerNetworkLayer._listen(nl, server,
                                             UaUInt16(val=timeout, is_pointer=False))
 
     @staticmethod
