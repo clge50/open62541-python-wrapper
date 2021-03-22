@@ -23,17 +23,23 @@ installation
 To install wrappy(06) run the python script `make.py`. It will create a package `build/open62541` which holds all necessary modules to use wrappy(06).
 Simply import the module `ua` and you are good to go!
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-    open62541 <open62541.rst>
+UaType
+====================================================
 
+.. automodule:: ua_types_parent
+   :members:
+   :special-members: __init__
 
+Callbacks
+====================================================
+.. automodule:: ua_client
+   :members:
+    _ClientCallback
 
+.. automodule:: ua_server
+   :members:
+    _ServerCallback
 
-Indices and tables
----------------------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. automodule:: ua_types_serverconfig
+   :members:
+    UaServerConfig

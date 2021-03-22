@@ -3,12 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
-"""
-ua_server.py
-====================================
-This module contains all functionalities related to the server
-"""
-
 import time
 import threading
 from intermediateApi import lib, ffi
@@ -23,7 +17,7 @@ class _ServerCallback:
     """
     This class holds c type callback implementations which are being used to call the actual callback functions which
     have been submitted by the open62541 user. This is a workaround for the problem of not being able to create c
-    function implementations at runtime. See section below for more information about the issue and workaround.
+    function implementations at runtime.
 
     Warning:
         The current handling of server based callback function introduces a multitude of problems. In the longterm

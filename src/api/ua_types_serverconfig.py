@@ -4,11 +4,11 @@
 #    Copyright 2021 Christian Lange, Stella Maidorn, Daniel Nier
 
 from intermediateApi import ffi, lib
-
 from ua_consts_status_codes import UA_STATUSCODES
 from ua_types_logger import *
 from ua_types_parent import _ptr, _val, _is_null, _get_c_type, _is_ptr
 from typing import Callable, Dict
+from ua_types_list import UaList
 
 
 # +++++++++++++++++++ aa_entry +++++++++++++++++++++++
@@ -2213,3 +2213,659 @@ class UaViewNode(UaType):
                 + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
                 + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1)
                 + "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1))
+
+
+# +++++++++++++++++++ UaServerConfig +++++++++++++++++++++++
+class UaServerConfig(UaType):
+    r"""
+
+    Warning:
+        Function pointers that are part of classes that are used by UaServerConfig make use of a workaround in order to
+        work with the CFFI limitation of only being able to attach a single python implementation to a c function
+        which has been defined with 'extern "python"'. While for some other areas it is possible to smuggle functions
+        which have been created by the API user in e.g. via a dictionary or a void* argument user_data, this is not
+        possible for most of the functions used in this module's classes. The way it is handled (solved would be too
+        strong of a word) currently is that per function pointer definition only a single python function can exist
+        at the same time.
+
+    Example:
+        the class `UaNodeTypeLifecycle` has two function pointer based fields, a constructor and a destructor functions.
+        The following extern "Python" definitions have been added to `api/definitions/nodestore`:
+
+    .. code-block:: c
+
+        extern "Python" UA_StatusCode _python_wrapper_UA_NodeTypeLifecycle_constructor(UA_Server *server,
+                                     const UA_NodeId *sessionId, void *sessionContext,
+                                     const UA_NodeId *typeNodeId, void *typeNodeContext,
+                                     const UA_NodeId *nodeId, void **nodeContext);
+        extern "Python" void _python_wrapper_UA_NodeTypeLifecycle_destructor(UA_Server *server,
+                                const UA_NodeId *sessionId, void *sessionContext,
+                                const UA_NodeId *typeNodeId, void *typeNodeContext,
+                                const UA_NodeId *nodeId, void **nodeContext);
+
+    UaNodeTypeLifecycle contains one static python implementation for each of those two functions. When using the setter
+    for any of the two function fields the passed python function pointer will be stored in either of the static
+    variables `_constructor` or `_destructor` on the python side and on the c side of things one of the static
+    functions. `lib._python_wrapper_UA_NodeTypeLifecycle_constructor` or
+    `_python_wrapper_UA_NodeTypeLifecycle_destructor` will be registered. If one of these functions is called by
+    open62541, it will call the corresponding `_constructor` or `_destructor` function. Each time a new
+    `UaNodeTypeLifecycle` is created via it's `__init__` function or if the setter for the function pointers are being
+    called the old global values will be deleted. All instances of `UaNodeTypeLifecycle` which were created via wrappy06
+    rather than being retrieved from a sever will therefore have the same functions attached to them.
+
+    .. code-block:: python
+
+        class UaNodeTypeLifecycle(UaType):
+        # the python functions are stored in these global variables
+        _constructor = None
+        _destructor = None
+
+        # static python methods which call the globally stored python functions
+        @staticmethod
+        @ffi.def_extern()
+        def _python_wrapper_UA_NodeTypeLifecycle_constructor(server, session_id, session_context, type_node_id,
+                                                             type_node_context, node_id, node_context):
+
+            return UaNodeTypeLifecycle._constructor(server,
+                                                    UaNodeId(val=session_id, is_pointer=True),
+                                                    Void(val=session_context, is_pointer=True),
+                                                    UaNodeId(val=type_node_id, is_pointer=True),
+                                                    Void(val=type_node_context, is_pointer=True),
+                                                    UaNodeId(val=node_id, is_pointer=True),
+                                                    UaList(val=node_context))
+
+        @staticmethod
+        @ffi.def_extern()
+        def _python_wrapper_UA_NodeTypeLifecycle_destructor(server, session_id, session_context, type_node_id,
+                                                            type_node_context, node_id, node_context):
+
+            UaNodeTypeLifecycle._destructor(server,
+                                            UaNodeId(val=session_id, is_pointer=True),
+                                            Void(val=session_context, is_pointer=True),
+                                            UaNodeId(val=type_node_id, is_pointer=True),
+                                            Void(val=type_node_context, is_pointer=True),
+                                            UaNodeId(val=node_id, is_pointer=True),
+                                            UaList(val=node_context))
+
+        def __init__(self, val=None, is_pointer=False):
+            if val is None:
+                val = ffi.new("UA_NodeTypeLifecycle*")
+                super().__init__(val=val, is_pointer=is_pointer)
+                self._constructor = None
+                self._destructor = None
+            if isinstance(val, UaType):
+                val = ffi.cast("UA_NodeTypeLifecycle*", val._ptr)
+                super().__init__(val=val, is_pointer=is_pointer)
+                # makeshift functions are stored in the global variables if the `UaNodeTypeLifecycle` instance was created
+                # via an existing c pointer/struct
+                self._constructor = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
+                self._destructor = lambda a, b, c, d, e, f, g: UA_STATUSCODES.GOOD
+
+        def _update(self):
+            self.__init__(val=self._ptr)
+
+        @property
+        def constructor(self):
+            if self._null:
+                return None
+            else:
+                return self._constructor
+
+        @property
+        def destructor(self):
+            if self._null:
+                return None
+            else:
+                return self._destructor
+
+        # the setters register the passed functions in the global variables and register the static functions that call
+        # them in c/open62541
+        @constructor.setter
+        def constructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+            UaNodeTypeLifecycle._constructor = val
+            self._value.constructor = lib._python_wrapper_UA_NodeTypeLifecycle_constructor
+
+        @destructor.setter
+        def destructor(self, val: Callable[['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, UaList], UaStatusCode]):
+            UaNodeTypeLifecycle._destructor = val
+            self._value.destructor = lib._python_wrapper_UA_NodeTypeLifecycle_destructor
+
+        def __str__(self, n=0):
+            if self._null:
+                return "(UaNodeTypeLifecycle) : NULL\n"
+
+            return ("(UaNodeTypeLifecycle) :\n"
+                    + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
+                    + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1))
+
+
+    """
+
+    def __init__(self, val=None, is_pointer=False):
+        if val is None:
+            val = ffi.new("UA_ServerConfig*")
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_ServerConfig*", val._ptr)
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._logger = UaLogger(val=val.logger, is_pointer=False)
+            self._build_info = UaBuildInfo(val=val.buildInfo, is_pointer=False)
+            self._application_description = UaApplicationDescription(val=val.applicationDescription, is_pointer=False)
+            self._server_certificate = UaByteString(val=val.serverCertificate, is_pointer=False)
+            self._shutdown_delay = UaDouble(val=val.shutdownDelay, is_pointer=False)
+            self._verify_request_timestamp = UaRuleHandling(val=val.verifyRequestTimestamp, is_pointer=False)
+            self._allow_empty_variables = UaRuleHandling(val=val.allowEmptyVariables, is_pointer=False)
+            self._custom_data_types = UaDataTypeArray(val=val.customDataTypes, is_pointer=True)
+            self._network_layers_size = SizeT(val=val.networkLayersSize, is_pointer=False)
+            self._network_layers = UaServerNetworkLayer(val=val.networkLayers, is_pointer=True)
+            self._custom_hostname = UaString(val=val.customHostname, is_pointer=False)
+            self._security_policies_size = SizeT(val=val.securityPoliciesSize, is_pointer=False)
+            self._security_policies = UaSecurityPolicy(val=val.securityPolicies, is_pointer=True)
+            self._endpoints_size = SizeT(val=val.endpointsSize, is_pointer=False)
+            self._endpoints = UaEndpointDescription(val=val.endpoints, is_pointer=True)
+            self._security_policy_none_discovery_only = UaBoolean(val=val.securityPolicyNoneDiscoveryOnly,
+                                                                  is_pointer=False)
+            self._node_lifecycle = UaGlobalNodeLifecycle(val=val.nodeLifecycle, is_pointer=False)
+            self._access_control = UaAccessControl(val=val.accessControl, is_pointer=False)
+            self._nodestore = UaNodestore(val=val.nodestore, is_pointer=False)
+            self._certificate_verification = UaCertificateVerification(val=val.certificateVerification,
+                                                                       is_pointer=False)
+            self._max_secure_channels = UaUInt16(val=val.maxSecureChannels, is_pointer=False)
+            self._max_security_token_lifetime = UaUInt32(val=val.maxSecurityTokenLifetime, is_pointer=False)
+            self._max_sessions = UaUInt16(val=val.maxSessions, is_pointer=False)
+            self._max_session_timeout = UaDouble(val=val.maxSessionTimeout, is_pointer=False)
+            self._max_nodes_per_read = UaUInt32(val=val.maxNodesPerRead, is_pointer=False)
+            self._max_nodes_per_write = UaUInt32(val=val.maxNodesPerWrite, is_pointer=False)
+            self._max_nodes_per_method_call = UaUInt32(val=val.maxNodesPerMethodCall, is_pointer=False)
+            self._max_nodes_per_browse = UaUInt32(val=val.maxNodesPerBrowse, is_pointer=False)
+            self._max_nodes_per_register_nodes = UaUInt32(val=val.maxNodesPerRegisterNodes, is_pointer=False)
+            self._max_nodes_per_translate_browse_paths_to_node_ids = UaUInt32(
+                val=val.maxNodesPerTranslateBrowsePathsToNodeIds, is_pointer=False)
+            self._max_nodes_per_node_management = UaUInt32(val=val.maxNodesPerNodeManagement, is_pointer=False)
+            self._max_monitored_items_per_call = UaUInt32(val=val.maxMonitoredItemsPerCall, is_pointer=False)
+            self._max_references_per_node = UaUInt32(val=val.maxReferencesPerNode, is_pointer=False)
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    def _set_value(self, val):
+        if self._is_pointer:
+            self._value = _ptr(val, "UA_ServerConfig")
+        else:
+            self._value[0] = _val(val)
+
+        if not _is_null(val):
+            self._logger._value[0] = _val(val.logger)
+            self._build_info._value[0] = _val(val.buildInfo)
+            self._application_description._value[0] = _val(val.applicationDescription)
+            self._server_certificate._value[0] = _val(val.serverCertificate)
+            self._shutdown_delay._value[0] = _val(val.shutdownDelay)
+            self._verify_request_timestamp._value[0] = _val(val.verifyRequestTimestamp)
+            self._allow_empty_variables._value[0] = _val(val.allowEmptyVariables)
+            self._custom_data_types._value = val.customDataTypes
+            self._network_layers_size._value[0] = _val(val.networkLayersSize)
+            self._network_layers._value = val.networkLayers
+            self._custom_hostname._value[0] = _val(val.customHostname)
+            self._security_policies_size._value[0] = _val(val.securityPoliciesSize)
+            self._security_policies._value = val.securityPolicies
+            self._endpoints_size._value[0] = _val(val.endpointsSize)
+            self._endpoints._value = val.endpoints
+            self._security_policy_none_discovery_only._value[0] = _val(val.securityPolicyNoneDiscoveryOnly)
+            self._node_lifecycle._value[0] = _val(val.nodeLifecycle)
+            self._access_control._value[0] = _val(val.accessControl)
+            self._nodestore._value[0] = _val(val.nodestore)
+            self._certificate_verification._value[0] = _val(val.certificateVerification)
+            self._max_secure_channels._value[0] = _val(val.maxSecureChannels)
+            self._max_security_token_lifetime._value[0] = _val(val.maxSecurityTokenLifetime)
+            self._max_sessions._value[0] = _val(val.maxSessions)
+            self._max_session_timeout._value[0] = _val(val.maxSessionTimeout)
+            self._max_nodes_per_read._value[0] = _val(val.maxNodesPerRead)
+            self._max_nodes_per_write._value[0] = _val(val.maxNodesPerWrite)
+            self._max_nodes_per_method_call._value[0] = _val(val.maxNodesPerMethodCall)
+            self._max_nodes_per_browse._value[0] = _val(val.maxNodesPerBrowse)
+            self._max_nodes_per_register_nodes._value[0] = _val(val.maxNodesPerRegisterNodes)
+            self._max_nodes_per_translate_browse_paths_to_node_ids._value[0] = _val(
+                val.maxNodesPerTranslateBrowsePathsToNodeIds)
+            self._max_nodes_per_node_management._value[0] = _val(val.maxNodesPerNodeManagement)
+            self._max_monitored_items_per_call._value[0] = _val(val.maxMonitoredItemsPerCall)
+            self._max_references_per_node._value[0] = _val(val.maxReferencesPerNode)
+
+    @property
+    def logger(self):
+        if self._null:
+            return None
+        else:
+            return self._logger
+
+    @property
+    def build_info(self):
+        if self._null:
+            return None
+        else:
+            return self._build_info
+
+    @property
+    def application_description(self):
+        if self._null:
+            return None
+        else:
+            return self._application_description
+
+    @property
+    def server_certificate(self):
+        if self._null:
+            return None
+        else:
+            return self._server_certificate
+
+    @property
+    def shutdown_delay(self):
+        if self._null:
+            return None
+        else:
+            return self._shutdown_delay
+
+    @property
+    def verify_request_timestamp(self):
+        if self._null:
+            return None
+        else:
+            return self._verify_request_timestamp
+
+    @property
+    def allow_empty_variables(self):
+        if self._null:
+            return None
+        else:
+            return self._allow_empty_variables
+
+    @property
+    def custom_data_types(self):
+        if self._null:
+            return None
+        else:
+            return self._custom_data_types
+
+    @property
+    def network_layers_size(self):
+        if self._null:
+            return None
+        else:
+            return self._network_layers_size
+
+    @property
+    def network_layers(self):
+        if self._null:
+            return None
+        else:
+            return self._network_layers
+
+    @property
+    def custom_hostname(self):
+        if self._null:
+            return None
+        else:
+            return self._custom_hostname
+
+    @property
+    def security_policies_size(self):
+        if self._null:
+            return None
+        else:
+            return self._security_policies_size
+
+    @property
+    def security_policies(self):
+        if self._null:
+            return None
+        else:
+            return self._security_policies
+
+    @property
+    def endpoints_size(self):
+        if self._null:
+            return None
+        else:
+            return self._endpoints_size
+
+    @property
+    def endpoints(self):
+        if self._null:
+            return None
+        else:
+            return self._endpoints
+
+    @property
+    def security_policy_none_discovery_only(self):
+        if self._null:
+            return None
+        else:
+            return self._security_policy_none_discovery_only
+
+    @property
+    def node_lifecycle(self):
+        if self._null:
+            return None
+        else:
+            return self._node_lifecycle
+
+    @property
+    def access_control(self):
+        if self._null:
+            return None
+        else:
+            return self._access_control
+
+    @property
+    def nodestore(self):
+        if self._null:
+            return None
+        else:
+            return self._nodestore
+
+    @property
+    def certificate_verification(self):
+        if self._null:
+            return None
+        else:
+            return self._certificate_verification
+
+    @property
+    def max_secure_channels(self):
+        if self._null:
+            return None
+        else:
+            return self._max_secure_channels
+
+    @property
+    def max_security_token_lifetime(self):
+        if self._null:
+            return None
+        else:
+            return self._max_security_token_lifetime
+
+    @property
+    def max_sessions(self):
+        if self._null:
+            return None
+        else:
+            return self._max_sessions
+
+    @property
+    def max_session_timeout(self):
+        if self._null:
+            return None
+        else:
+            return self._max_session_timeout
+
+    @property
+    def max_nodes_per_read(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_read
+
+    @property
+    def max_nodes_per_write(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_write
+
+    @property
+    def max_nodes_per_method_call(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_method_call
+
+    @property
+    def max_nodes_per_browse(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_browse
+
+    @property
+    def max_nodes_per_register_nodes(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_register_nodes
+
+    @property
+    def max_nodes_per_translate_browse_paths_to_node_ids(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_translate_browse_paths_to_node_ids
+
+    @property
+    def max_nodes_per_node_management(self):
+        if self._null:
+            return None
+        else:
+            return self._max_nodes_per_node_management
+
+    @property
+    def max_monitored_items_per_call(self):
+        if self._null:
+            return None
+        else:
+            return self._max_monitored_items_per_call
+
+    @property
+    def max_references_per_node(self):
+        if self._null:
+            return None
+        else:
+            return self._max_references_per_node
+
+    @logger.setter
+    def logger(self, val: UaLogger):
+        self._logger = val
+        self._value.logger = val._val
+
+    @build_info.setter
+    def build_info(self, val: UaBuildInfo):
+        self._build_info = val
+        self._value.buildInfo = val._val
+
+    @application_description.setter
+    def application_description(self, val: UaApplicationDescription):
+        self._application_description = val
+        self._value.applicationDescription = val._val
+
+    @server_certificate.setter
+    def server_certificate(self, val: UaByteString):
+        self._server_certificate = val
+        self._value.serverCertificate = val._val
+
+    @shutdown_delay.setter
+    def shutdown_delay(self, val: UaDouble):
+        self._shutdown_delay = val
+        self._value.shutdownDelay = val._val
+
+    @verify_request_timestamp.setter
+    def verify_request_timestamp(self, val: UaRuleHandling):
+        self._verify_request_timestamp = val
+        self._value.verifyRequestTimestamp = val._val
+
+    @allow_empty_variables.setter
+    def allow_empty_variables(self, val: UaRuleHandling):
+        self._allow_empty_variables = val
+        self._value.allowEmptyVariables = val._val
+
+    @custom_data_types.setter
+    def custom_data_types(self, val: UaDataTypeArray):
+        self._custom_data_types = val
+        self._value.customDataTypes = val._ptr
+
+    @network_layers_size.setter
+    def network_layers_size(self, val: SizeT):
+        self._network_layers_size = val
+        self._value.networkLayersSize = val._val
+
+    @network_layers.setter
+    def network_layers(self, val: UaServerNetworkLayer):
+        self._network_layers = val
+        self._value.networkLayers = val._ptr
+
+    @custom_hostname.setter
+    def custom_hostname(self, val: UaString):
+        self._custom_hostname = val
+        self._value.customHostname = val._val
+
+    @security_policies_size.setter
+    def security_policies_size(self, val: SizeT):
+        self._security_policies_size = val
+        self._value.securityPoliciesSize = val._val
+
+    @security_policies.setter
+    def security_policies(self, val: UaSecurityPolicy):
+        self._security_policies = val
+        self._value.securityPolicies = val._ptr
+
+    @endpoints_size.setter
+    def endpoints_size(self, val: SizeT):
+        self._endpoints_size = val
+        self._value.endpointsSize = val._val
+
+    @endpoints.setter
+    def endpoints(self, val: UaEndpointDescription):
+        self._endpoints = val
+        self._value.endpoints = val._ptr
+
+    @security_policy_none_discovery_only.setter
+    def security_policy_none_discovery_only(self, val: UaBoolean):
+        self._security_policy_none_discovery_only = val
+        self._value.securityPolicyNoneDiscoveryOnly = val._val
+
+    @node_lifecycle.setter
+    def node_lifecycle(self, val: UaGlobalNodeLifecycle):
+        self._node_lifecycle = val
+        self._value.nodeLifecycle = val._val
+
+    @access_control.setter
+    def access_control(self, val: UaAccessControl):
+        self._access_control = val
+        self._value.accessControl = val._val
+
+    @nodestore.setter
+    def nodestore(self, val: UaNodestore):
+        self._nodestore = val
+        self._value.nodestore = val._val
+
+    @certificate_verification.setter
+    def certificate_verification(self, val: UaCertificateVerification):
+        self._certificate_verification = val
+        self._value.certificateVerification = val._val
+
+    @max_secure_channels.setter
+    def max_secure_channels(self, val: UaUInt16):
+        self._max_secure_channels = val
+        self._value.maxSecureChannels = val._val
+
+    @max_security_token_lifetime.setter
+    def max_security_token_lifetime(self, val: UaUInt32):
+        self._max_security_token_lifetime = val
+        self._value.maxSecurityTokenLifetime = val._val
+
+    @max_sessions.setter
+    def max_sessions(self, val: UaUInt16):
+        self._max_sessions = val
+        self._value.maxSessions = val._val
+
+    @max_session_timeout.setter
+    def max_session_timeout(self, val: UaDouble):
+        self._max_session_timeout = val
+        self._value.maxSessionTimeout = val._val
+
+    @max_nodes_per_read.setter
+    def max_nodes_per_read(self, val: UaUInt32):
+        self._max_nodes_per_read = val
+        self._value.maxNodesPerRead = val._val
+
+    @max_nodes_per_write.setter
+    def max_nodes_per_write(self, val: UaUInt32):
+        self._max_nodes_per_write = val
+        self._value.maxNodesPerWrite = val._val
+
+    @max_nodes_per_method_call.setter
+    def max_nodes_per_method_call(self, val: UaUInt32):
+        self._max_nodes_per_method_call = val
+        self._value.maxNodesPerMethodCall = val._val
+
+    @max_nodes_per_browse.setter
+    def max_nodes_per_browse(self, val: UaUInt32):
+        self._max_nodes_per_browse = val
+        self._value.maxNodesPerBrowse = val._val
+
+    @max_nodes_per_register_nodes.setter
+    def max_nodes_per_register_nodes(self, val: UaUInt32):
+        self._max_nodes_per_register_nodes = val
+        self._value.maxNodesPerRegisterNodes = val._val
+
+    @max_nodes_per_translate_browse_paths_to_node_ids.setter
+    def max_nodes_per_translate_browse_paths_to_node_ids(self, val: UaUInt32):
+        self._max_nodes_per_translate_browse_paths_to_node_ids = val
+        self._value.maxNodesPerTranslateBrowsePathsToNodeIds = val._val
+
+    @max_nodes_per_node_management.setter
+    def max_nodes_per_node_management(self, val: UaUInt32):
+        self._max_nodes_per_node_management = val
+        self._value.maxNodesPerNodeManagement = val._val
+
+    @max_monitored_items_per_call.setter
+    def max_monitored_items_per_call(self, val: UaUInt32):
+        self._max_monitored_items_per_call = val
+        self._value.maxMonitoredItemsPerCall = val._val
+
+    @max_references_per_node.setter
+    def max_references_per_node(self, val: UaUInt32):
+        self._max_references_per_node = val
+        self._value.maxReferencesPerNode = val._val
+
+    def __str__(self, n=0):
+        if self._null:
+            return "(UaServerConfig) : NULL\n"
+
+        return ("(UaServerConfig) :\n"
+                + "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1)
+                + "\t" * (n + 1) + "build_info" + self._build_info.__str__(n + 1)
+                + "\t" * (n + 1) + "application_description" + self._application_description.__str__(n + 1)
+                + "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1)
+                + "\t" * (n + 1) + "shutdown_delay" + self._shutdown_delay.__str__(n + 1)
+                + "\t" * (n + 1) + "verify_request_timestamp" + self._verify_request_timestamp.__str__(n + 1)
+                + "\t" * (n + 1) + "allow_empty_variables" + self._allow_empty_variables.__str__(n + 1)
+                + "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1)
+                + "\t" * (n + 1) + "network_layers_size" + self._network_layers_size.__str__(n + 1)
+                + "\t" * (n + 1) + "network_layers" + self._network_layers.__str__(n + 1)
+                + "\t" * (n + 1) + "custom_hostname" + self._custom_hostname.__str__(n + 1)
+                + "\t" * (n + 1) + "security_policies_size" + self._security_policies_size.__str__(n + 1)
+                + "\t" * (n + 1) + "security_policies" + self._security_policies.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoints_size" + self._endpoints_size.__str__(n + 1)
+                + "\t" * (n + 1) + "endpoints" + self._endpoints.__str__(n + 1)
+                + "\t" * (
+                        n + 1) + "security_policy_none_discovery_only" + self._security_policy_none_discovery_only.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "node_lifecycle" + self._node_lifecycle.__str__(n + 1)
+                + "\t" * (n + 1) + "access_control" + self._access_control.__str__(n + 1)
+                + "\t" * (n + 1) + "nodestore" + self._nodestore.__str__(n + 1)
+                + "\t" * (n + 1) + "certificate_verification" + self._certificate_verification.__str__(n + 1)
+                + "\t" * (n + 1) + "max_secure_channels" + self._max_secure_channels.__str__(n + 1)
+                + "\t" * (n + 1) + "max_security_token_lifetime" + self._max_security_token_lifetime.__str__(n + 1)
+                + "\t" * (n + 1) + "max_sessions" + self._max_sessions.__str__(n + 1)
+                + "\t" * (n + 1) + "max_session_timeout" + self._max_session_timeout.__str__(n + 1)
+                + "\t" * (n + 1) + "max_nodes_per_read" + self._max_nodes_per_read.__str__(n + 1)
+                + "\t" * (n + 1) + "max_nodes_per_write" + self._max_nodes_per_write.__str__(n + 1)
+                + "\t" * (n + 1) + "max_nodes_per_method_call" + self._max_nodes_per_method_call.__str__(n + 1)
+                + "\t" * (n + 1) + "max_nodes_per_browse" + self._max_nodes_per_browse.__str__(n + 1)
+                + "\t" * (n + 1) + "max_nodes_per_register_nodes" + self._max_nodes_per_register_nodes.__str__(n + 1)
+                + "\t" * (
+                        n + 1) + "max_nodes_per_translate_browse_paths_to_node_ids" + self._max_nodes_per_translate_browse_paths_to_node_ids.__str__(
+                    n + 1)
+                + "\t" * (n + 1) + "max_nodes_per_node_management" + self._max_nodes_per_node_management.__str__(n + 1)
+                + "\t" * (n + 1) + "max_monitored_items_per_call" + self._max_monitored_items_per_call.__str__(n + 1)
+                + "\t" * (n + 1) + "max_references_per_node" + self._max_references_per_node.__str__(n + 1))
