@@ -1,12 +1,9 @@
-import sys
-
-sys.path.append("../build/open62541")
 from ua import *
 
 
 def variables_basics():
     i = UaInt32(5)
-    j = UaInt32(i)
+    j = UaInt32(i)  # todo: adapt constructor type hint
     k = i + j
     print(f"i + j = {k}")
     i = k * j
@@ -16,7 +13,7 @@ def variables_basics():
     print(f"i + l = {i + l}")
 
     s = UaString("test")
-    s2 = UaString(s)
+    s2 = UaString(s)  # todo: adapt constructor type hint
 
     s3 = UaString("test2")
 
@@ -50,7 +47,7 @@ def variables_variants():
     i = UaInt32(42)
     v.data = i
 
-    v2 = UaVariant(v)
+    v2 = UaVariant(v)  # todo: adapt constructor type hint
 
     v3 = UaVariant()
     d = UaList([1.0, 2.0, 3.0,

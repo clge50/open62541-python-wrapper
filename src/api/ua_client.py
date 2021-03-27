@@ -15,7 +15,7 @@ class _ClientCallback:
     """Aggregates static callback functions which execute the actual user submitted python callbacks
 
     _ClientCallback holds c type callback implementations which are being used to call the actual callback
-    functions which have been submitted by the open62541 user. This is a workaround for the problem of not being able 
+    functions which have been submitted by the wrappy(o6) user. This is a workaround for the problem of not being able
     to create c function implementations at runtime.
 
     Note:
@@ -23,9 +23,6 @@ class _ClientCallback:
         This is the case because client callbacks are mostly utilized in asynchronous service calls which support the
         submission of `void* userData`. Through these generic parameters the actual
         python callback are being passed which can then be executed by static callback functions.
-
-    See also:
-         ua_server._ServerCallback
     """
 
     _callbacks = set()

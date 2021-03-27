@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../build/open62541'))
+sys.path.insert(0, os.path.abspath('../../build/wrappy_o6'))
 
 # -- Project information -----------------------------------------------------
 
@@ -20,7 +20,8 @@ release = '1.0'
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.coverage',
               'sphinx.ext.napoleon',
-              'sphinx_rtd_theme']
+              'sphinx_rtd_theme',
+              'sphinx.ext.autosectionlabel']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

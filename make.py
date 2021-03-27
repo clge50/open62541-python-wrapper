@@ -5,7 +5,6 @@
 
 import os
 import os.path
-import re
 from functools import reduce
 from shutil import copytree, rmtree
 
@@ -38,7 +37,7 @@ def generate_status_codes():
         lines.insert(0, "from ua_types import UaStatusCode\n\n\n")
         lines.insert(1, "class UA_STATUSCODES:\n")
 
-    os.chdir(dirname + r"/build/open62541/")
+    os.chdir(dirname + r"/build/wrappy_o6/")
     with open('ua_consts_status_codes.py', 'w+') as file:
         file.writelines(lines)
 
@@ -55,7 +54,7 @@ def generate_node_ids():
         lines.insert(1, "\n")
         lines.insert(1, "\n")
 
-    os.chdir(dirname + r"/build/open62541/")
+    os.chdir(dirname + r"/build/wrappy_o6/")
     with open('ua_consts_ns0ids.py', 'w+') as file:
         file.writelines(lines)
 
@@ -74,7 +73,7 @@ def generate_data_types():
         lines.insert(2, "\n")
         lines.insert(2, "\n")
 
-    os.chdir(dirname + r"/build/open62541/")
+    os.chdir(dirname + r"/build/wrappy_o6/")
     with open('ua_consts_data_types.py', 'w+') as file:
         file.writelines(lines)
 
@@ -91,7 +90,7 @@ def generate_type_ids():
         lines.insert(1, "\n")
         lines.insert(1, "\n")
 
-    os.chdir(dirname + r"/build/open62541/")
+    os.chdir(dirname + r"/build/wrappy_o6/")
     with open('ua_consts_types_raw.py', 'w+') as file:
         file.writelines(lines)
 
@@ -166,17 +165,12 @@ def generate_api():
 
     ffi_builder.cdef(cffi_input)
     # os.mkdir("build")
-    copytree(dirname + r"/src/api", dirname + r"/build/open62541")
-    os.chdir(dirname + r"/build/open62541/")
+    copytree(dirname + r"/src/api", dirname + r"/build/wrappy_o6")
+    os.chdir(dirname + r"/build/wrappy_o6/")
     ffi_builder.compile(verbose=True)
     os.remove("intermediateApi.c")
     os.remove("intermediateApi.o")
     print("finished building intermediateApi")
-
-
-def generate_doc():
-    os.chdir(dirname + r"/sphinx")
-    os.system("make html")
 
 
 if __name__ == "__main__":
@@ -187,4 +181,3 @@ if __name__ == "__main__":
     generate_node_ids()
     generate_data_types()
     generate_type_ids()
-    generate_doc()
