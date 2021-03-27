@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../build/open62541'))
+sys.path.insert(0, os.path.abspath('../../build/wrappy_o6'))
 
 # -- Project information -----------------------------------------------------
 

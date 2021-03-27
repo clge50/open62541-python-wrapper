@@ -40,27 +40,19 @@ Please refer to the `examples` directory to see some examples of the usage of wr
 Information for wrappy(o6) developers
 ====================================================
 
+General structure / architecture
+------------------------------------
+
+* 1:1 mapping of open62541 types to wrapped types
+* A wrapped type has public components (python world) and hidden components (c world)
+* improvements to handling via default values, "type guessing"
+
+UaType
+------------
+
 .. automodule:: ua_types_parent
    :members:
    :special-members: __init__
-
-Open issues
-------------
-
-Currently there still a lot of open issues which need to be addressed in order to ensure a satisfying usability and stability of wrappy(o6):
-
-* tests are still very lacking. There are currently only tests for the UaClient and they are not semantically sound. So there is definitely a need for tests for the UaClient, UaServer and UaTypes.
-* The current handling of callbacks / function pointers has some major issues / restrictions. A reimplementation or adaptions to improve usability should be considered. Please refer to the :ref:`Callbacks<Callbacks>` for additional information.
-* User generated types are not yet supported. Please find a draft / outline of a possible implementation strategy in the chapter :ref:`User generated types<User generated types>`.
-* Historizing is not supported yet
-* Pub/sub is not supported yet
-* build script has not been tested under systems other than Ubuntu 18.04/20.04
-* the documentation needs to be improved to smoothen the experience for new users. Some topics worth mentioning:
-    * UaList handling
-    * Void type handling
-    * casting
-* UaClientConfig is still missing some fields for lower level configurations
-
 
 Callbacks
 -----------
@@ -80,3 +72,25 @@ User generated types
 ---------------------
 
 TODO
+
+Open issues
+------------
+
+Currently there still a lot of open issues which need to be addressed in order to ensure a satisfying usability and stability of wrappy(o6):
+
+* tests are still very lacking. There are currently only tests for the UaClient and they are not semantically sound. So there is definitely a need for tests for the UaClient, UaServer and UaTypes.
+* The current handling of callbacks / function pointers has some major issues / restrictions. A reimplementation or adaptions to improve usability should be considered. Please refer to the :ref:`Callbacks<Callbacks>` for additional information.
+* User generated types are not yet supported. Please find a draft / outline of a possible implementation strategy in the chapter :ref:`User generated types<User generated types>`.
+* Historizing is not supported yet
+* Pub/sub is not supported yet
+* build script has not been tested under systems other than Ubuntu 18.04/20.04
+* the documentation needs to be improved to smoothen the experience for new users. Some topics worth mentioning:
+    * UaList handling
+    * Void type handling
+    * casting
+* UaClientConfig and UaServerConfig are still missing some fields for lower level configurations (e.g. due to opaque type definitions).
+* There is not yet a solution for double pointers (e.g. UA_Variant**).
+* type handling could further be improved
+    * by expanding "type guessing"
+    * Filling variables of UaTypes could be improved, e.g. via additional __init__ parameters / pseudo constructor methods / builder pattern
+    * implicitly applying functions which are explicit in open62541 (see e.g. `setScalar` and `setArray` handling in UaVariant data setter)
