@@ -2354,7 +2354,7 @@ class UaServerConfig(UaType):
         need to know where to find it's implementation which has been defined by the API user. The wrapper functions and
         the implementations could for example be stored in tuples in a ring buffer. Each time a function is registered,
         the current tuple would need to get updated and once the last available tuple has been reached wrappy(o6) would
-        need to start overwritting the oldest entries again. As mentioned, this approach would still be far from perfect
+        need to start overwriting the oldest entries again. As mentioned, this approach would still be far from perfect
         as it would require the user to know upfront how many function pointer of which type they want to be able to use
         in parallel. Not only would it be a hassle to configure it, but it would also lead to problems if the user's
         requirements change. This would require a recompilation and e.g. a restart of a server.
