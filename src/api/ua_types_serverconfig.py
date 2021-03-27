@@ -2344,19 +2344,20 @@ class UaServerConfig(UaType):
     https://cffi.readthedocs.io/en/latest/using.html#callbacks-old-style). Therefore didn't further pursue this
     possibility.
 
-    note: A possibility which could be further explored but which would still would leave a bitter taste would be to
-    implement a ring buffer for each function pointer type: Instead of creating a single `extern "python"` function,
-    wrappy(o6)'s make script could ask users to configure how many function pointers per type they would like to be
-    able to use in parallel. The make script could then generate files containing the `extern "python"`functions and
-    define as many per type (e.g. and e.g. adding incrementing numbers as suffix) as configured by the user and could
-    also create matching python functions with CFFI's `@ffi.def_extern()` decorator. Each `@ffi.def_extern()` would
-    need to know where to find it's implementation which has been defined by the API user. The wrapper functions and
-    the implementations could for example be stored in tuples in a ring buffer. Each time a function is registered,
-    the current tuple would need to get updated and once the last available tuple has been reached wrappy(o6) would
-    need to start overwritting the oldest entries again. As mentioned, this approach would still be far from perfect
-    as it would require the user to know upfront how many function pointer of which type they want to be able to use
-    in parallel. Not only would it be a hassle to configure it, but it would also lead to problems if the user's
-    requirements change. This would require a recompilation and e.g. a restart of a server.
+    note:
+        A possibility which could be further explored but which would still would leave a bitter taste would be to
+        implement a ring buffer for each function pointer type: Instead of creating a single `extern "python"` function,
+        wrappy(o6)'s make script could ask users to configure how many function pointers per type they would like to be
+        able to use in parallel. The make script could then generate files containing the `extern "python"`functions and
+        define as many per type (e.g. and e.g. adding incrementing numbers as suffix) as configured by the user and could
+        also create matching python functions with CFFI's `@ffi.def_extern()` decorator. Each `@ffi.def_extern()` would
+        need to know where to find it's implementation which has been defined by the API user. The wrapper functions and
+        the implementations could for example be stored in tuples in a ring buffer. Each time a function is registered,
+        the current tuple would need to get updated and once the last available tuple has been reached wrappy(o6) would
+        need to start overwritting the oldest entries again. As mentioned, this approach would still be far from perfect
+        as it would require the user to know upfront how many function pointer of which type they want to be able to use
+        in parallel. Not only would it be a hassle to configure it, but it would also lead to problems if the user's
+        requirements change. This would require a recompilation and e.g. a restart of a server.
     """
 
     def __init__(self, val=None, is_pointer=False):
