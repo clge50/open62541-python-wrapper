@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
 UA_Server * UA_Server_new(void);
 
 
@@ -15,7 +16,7 @@ UA_StatusCode UA_Server_run_startup(UA_Server *server);
 UA_UInt16 UA_Server_run_iterate(UA_Server *server, UA_Boolean waitInternal);
 
 void UA_Server_delete(UA_Server *server);
-
+UA_StatusCode UA_Server_addObjectTypeNode(UA_Server *server, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ObjectTypeAttributes attr, void *nodeContext, UA_NodeId *outNewNodeId);
 UA_StatusCode UA_ServerConfig_setMinimal(UA_ServerConfig *config, UA_UInt16 portNumber, const UA_ByteString *certificate);
 UA_StatusCode UA_ServerConfig_setDefault(UA_ServerConfig *config);
 
@@ -62,6 +63,8 @@ UA_StatusCode UA_Server_deleteReference(UA_Server *server, const UA_NodeId sourc
 
 UA_StatusCode UA_Server_addVariableNode(UA_Server *server, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_VariableAttributes attr, void *nodeContext, UA_NodeId *outNewNodeId);
 
+UA_StatusCode UA_Server_addObjectNode(UA_Server *server, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_NodeId typeDefinition, const UA_ObjectAttributes attr, void *nodeContext, UA_NodeId *outNewNodeId);
+
 UA_StatusCode UA_Server_readNodeId(UA_Server *server, const UA_NodeId nodeId, UA_NodeId *outNodeId);
 UA_StatusCode UA_Server_readNodeClass(UA_Server *server, const UA_NodeId nodeId, UA_NodeClass *outNodeClass);
 UA_StatusCode UA_Server_readBrowseName(UA_Server *server, const UA_NodeId nodeId, UA_QualifiedName *outBrowseName);
@@ -80,6 +83,8 @@ UA_StatusCode UA_Server_readArrayDimensions(UA_Server *server, const UA_NodeId n
 UA_StatusCode UA_Server_readAccessLevel(UA_Server *server, const UA_NodeId nodeId, UA_Byte *outAccessLevel);
 UA_StatusCode UA_Server_readMinimumSamplingInterval(UA_Server *server, const UA_NodeId nodeId, UA_Double *outMinimumSamplingInterval);
 UA_StatusCode UA_Server_readExecutable(UA_Server *server, const UA_NodeId nodeId, UA_Boolean *outExecutable);
+
+UA_StatusCode UA_Server_setNodeTypeLifecycle(UA_Server *server, UA_NodeId nodeId, UA_NodeTypeLifecycle lifecycle);
 
 UA_StatusCode UA_Server_setVariableNode_dataSource(UA_Server *server, const UA_NodeId nodeId,
                                      const UA_DataSource dataSource);
@@ -182,3 +187,24 @@ extern "Python" void python_wrapper_UA_ServerConfig_monitoredItemRegisterCallbac
                                           const UA_NodeId *sessionId, void *sessionContext,
                                           const UA_NodeId *nodeId, void *nodeContext,
                                           UA_UInt32 attibuteId, UA_Boolean removed);
+
+typedef void (*UA_Server_DataChangeNotificationCallback)
+    (UA_Server *server, UA_UInt32 monitoredItemId, void *monitoredItemContext,
+     const UA_NodeId *nodeId, void *nodeContext, UA_UInt32 attributeId,
+     const UA_DataValue *value);
+
+extern "Python" void python_wrapper_UA_Server_DataChangeNotificationCallback(
+    UA_Server *server,
+    UA_UInt32 monitoredItemId,
+    void *monitoredItemContext,
+    const UA_NodeId *nodeId,
+    void *nodeContext,
+    UA_UInt32 attributeId,
+    const UA_DataValue *value);
+
+
+UA_MonitoredItemCreateResult UA_Server_createDataChangeMonitoredItem(UA_Server *server,
+          UA_TimestampsToReturn timestampsToReturn,
+          const UA_MonitoredItemCreateRequest item,
+          void *monitoredItemContext,
+          UA_Server_DataChangeNotificationCallback callback);

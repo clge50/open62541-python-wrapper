@@ -1,0 +1,1 @@
+static UA_MonitoredItemCreateRequest UA_MonitoredItemCreateRequest_default(UA_NodeId nodeId);

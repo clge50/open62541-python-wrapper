@@ -6,6 +6,7 @@ def variables_basics():
     j = UaInt32(i)  # todo: adapt constructor type hint
     k = i + j
     print(f"i + j = {k}")
+    print(f"k + 5 = {k+5}")
     i = k * j
     l = UaDouble(3.1416)
     # the first operand determines the type of the expression:

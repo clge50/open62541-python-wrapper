@@ -1,5 +1,6 @@
 // WIP
 
+/*
 struct UA_Server {
     UA_ServerConfig config;
     UA_DateTime startTime;
@@ -67,13 +68,7 @@ typedef struct {
 } UA_Timer;
 
 
-typedef struct UA_SessionHeader {
-    struct {
-        struct UA_SessionHeader *sle_next;
-    } next;
-    UA_NodeId authenticationToken;
-    UA_SecureChannel *channel; /* The pointer back to the SecureChannel in the session. */
-} UA_SessionHeader;
+
 
 
 typedef enum {
@@ -97,33 +92,7 @@ typedef struct {
 } UA_ApplicationDescription;
 
 
-struct ContinuationPoint;
-typedef struct ContinuationPoint ContinuationPoint;
-struct ContinuationPoint {
-    ContinuationPoint *next;
-    UA_ByteString identifier;
-    UA_BrowseDescription browseDescription;
-    UA_UInt32 maxReferences;
-    UA_ReferenceTypeSet relevantReferences;
-    UA_ExpandedNodeId nextTarget;
-    UA_Byte nextRefKindIndex;
-};
 
-typedef struct {
-    UA_SessionHeader  header;
-    UA_ApplicationDescription clientDescription;
-    UA_String         sessionName;
-    UA_Boolean        activated;
-    void             *sessionHandle;
-    UA_NodeId         sessionId;
-    UA_UInt32         maxRequestMessageSize;
-    UA_UInt32         maxResponseMessageSize;
-    UA_Double         timeout;
-    UA_DateTime       validTill;
-    UA_ByteString     serverNonce;
-    UA_UInt16         availableContinuationPoints;
-    ContinuationPoint *continuationPoints;
-} UA_Session;
 
 
 typedef enum {
@@ -144,3 +113,4 @@ typedef struct session_list_entry {
     LIST_ENTRY(session_list_entry) pointers;
     UA_Session session;
 } session_list_entry;
+*/

@@ -348,6 +348,8 @@ class UaString(UaType):
         if not self._null:
             self._length = SizeT(val=val.length, is_pointer=False)
             self._data = UaByte(val=val.data, is_pointer=True)
+            if _is_null(self._data):
+                self._null = True
 
     def _update(self):
         self.__init__(val=self._ptr)
@@ -758,9 +760,10 @@ class UaGuid(UaType):
 
 # +++++++++++++++++++ UaNodeId +++++++++++++++++++++++
 class UaNodeId(UaType):
-    _UA_TYPE = _UA_TYPES._NODEID
 
-    NULL = lib.UA_NODEID_NULL
+    @staticmethod
+    def NULL():
+        return UaNodeId(val=lib.UA_NODEID_NULL)
 
     # TODO: refactor
     # TODO: Memory management

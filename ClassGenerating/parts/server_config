@@ -1,4 +1,18 @@
-
+typedef struct {
+    UA_SessionHeader  header;
+    UA_ApplicationDescription clientDescription;
+    UA_String         sessionName;
+    UA_Boolean        activated;
+    void             *sessionHandle;
+    UA_NodeId         sessionId;
+    UA_UInt32         maxRequestMessageSize;
+    UA_UInt32         maxResponseMessageSize;
+    UA_Double         timeout;
+    UA_DateTime       validTill;
+    UA_ByteString     serverNonce;
+    UA_UInt16         availableContinuationPoints;
+    ContinuationPoint *continuationPoints;
+} UA_Session;
 
 typedef struct {
     void *context;

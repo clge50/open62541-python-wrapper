@@ -21,6 +21,10 @@ class Void(UaType):
     def _set_value(self, val):
         self._value = ffi.cast("void*", _val(val))
 
+    @staticmethod
+    def NULL():
+        return Void(val=ffi.NULL)
+
     @property
     def data(self):
         if type(self._ptr) is type(Void(ffi.NULL)._ptr):
@@ -57,6 +61,48 @@ class SizeT(UaType):
     @property
     def value(self):
         return int(self._val)
+    
+    def __eq__(self, other):
+        return self._val == (other._val if isinstance(other, UaType) else other)
+
+    def __ne__(self, other):
+        return self._val != (other._val if isinstance(other, UaType) else other)
+
+    def __gt__(self, other):
+        return self._val > (other._val if isinstance(other, UaType) else other)
+
+    def __lt__(self, other):
+        return self._val < (other._val if isinstance(other, UaType) else other)
+
+    def __ge__(self, other):
+        return self._val >= (other._val if isinstance(other, UaType) else other)
+
+    def __le__(self, other):
+        return self._val <= (other._val if isinstance(other, UaType) else other)
+
+    def __add__(self, other):
+        return SizeT(self.value + (other._val if isinstance(other, UaType) else other))
+
+    def __sub__(self, other):
+        return SizeT(self.value - (other._val if isinstance(other, UaType) else other))
+
+    def __mul__(self, other):
+        return SizeT(self.value - (other._val if isinstance(other, UaType) else other))
+
+    def __floordiv__(self, other):
+        return SizeT(self.value // (other._val if isinstance(other, UaType) else other))
+
+    def __mod__(self, other):
+        return SizeT(self.value % (other._val if isinstance(other, UaType) else other))
+
+    def __or__(self, other):
+        return SizeT(self._val | (other._val if isinstance(other, UaType) else other))
+
+    def __and__(self, other):
+        return SizeT(self._val & (other._val if isinstance(other, UaType) else other))
+
+    def __xor__(self, other):
+        return SizeT(self._val ^ (other._val if isinstance(other, UaType) else other))
 
     def __str__(self, n=0):
         return "(SizeT): " + str(self._val)
@@ -91,7 +137,19 @@ class CString(UaType):
         return "(CString): " + str(self.value)
 
     def __add__(self, other):
-        return CString(self.value + other.value)
+        if isinstance(other, CString):
+            return CString(self.value + other.value)
+        else:
+            return CString(self.value + other)
 
     def __mul__(self, other: int):
         return CString(self.value * other)
+    
+    def __eq__(self, other):
+        return self.value == other.value
+
+    def __ne__(self, other):
+        if isinstance(other, CString):
+            return self.value != other.value
+        else:
+            return self.value != other

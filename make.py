@@ -115,7 +115,9 @@ def generate_api():
                        "securitypolicy",
                        "pki",
                        "nodestore",
+                       "session",
                        "server",
+                       "client_subscription",
                        "statuscodes"]
     decls_list = []
 
@@ -129,6 +131,59 @@ def generate_api():
     ffi_builder = FFI()
     ffi_builder.set_source("intermediateApi",
                            r"""#include "open62541.h"
+                           
+                           struct ContinuationPoint;
+                            typedef struct ContinuationPoint ContinuationPoint;
+                            struct ContinuationPoint {
+                                ContinuationPoint *next;
+                                UA_ByteString identifier;
+                            
+                                /* Parameters of the Browse Request */
+                                UA_BrowseDescription browseDescription;
+                                UA_UInt32 maxReferences;
+                                UA_ReferenceTypeSet relevantReferences;
+                            
+                                /* The next target to be transmitted to the client */
+                                UA_ExpandedNodeId nextTarget;
+                                UA_Byte nextRefKindIndex;
+                            };
+                            
+                            typedef struct UA_SessionHeader {
+                                struct {
+                                    struct UA_SessionHeader *sle_next;
+                                } next;
+                                UA_NodeId authenticationToken;
+                                UA_SecureChannel *channel; /* The pointer back to the SecureChannel in the session. */
+                            } UA_SessionHeader;
+                            
+                            typedef struct {
+                                UA_SessionHeader  header;
+                                UA_ApplicationDescription clientDescription;
+                                UA_String         sessionName;
+                                UA_Boolean        activated;
+                                void             *sessionHandle; /* pointer assigned in userland-callback */
+                                UA_NodeId         sessionId;
+                                UA_UInt32         maxRequestMessageSize;
+                                UA_UInt32         maxResponseMessageSize;
+                                UA_Double         timeout; /* in ms */
+                                UA_DateTime       validTill;
+                                UA_ByteString     serverNonce;
+                                UA_UInt16         availableContinuationPoints;
+                                ContinuationPoint *continuationPoints;
+                                #ifdef UA_ENABLE_SUBSCRIPTIONS
+                                    size_t subscriptionsSize;
+                                    struct {
+                                        struct UA_Subscription *tqh_first;	
+                                        struct UA_Subscription **tqh_last;
+                                    };
+                                    struct {
+                                        struct UA_PublishResponseEntry *sqh_first;
+                                        struct UA_PublishResponseEntry **sqh_last;
+                                    };
+                                    UA_UInt32 numPublishReq;
+                                    size_t totalRetransmissionQueueSize; /* Retransmissions of all subscriptions */
+                                #endif
+                            } UA_Session;
                            
                             void pseudoFree(void *ptr) {
                                 printf("doing nothing\n");

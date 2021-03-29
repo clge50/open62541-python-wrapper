@@ -44,10 +44,10 @@ class UaBoolean(UaType):
             return "(UaBoolean): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
 
 # +++++++++++++++++++ UaSByte +++++++++++++++++++++++
@@ -84,46 +84,46 @@ class UaSByte(UaType):
             return "(UaSByte): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaSByte(self.value + int(other.value))
+        return UaSByte(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaSByte(self.value - int(other.value))
+        return UaSByte(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaSByte(self.value - int(other.value))
+        return UaSByte(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaSByte(self.value // int(other.value))
+        return UaSByte(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaSByte(self.value % int(other.value))
+        return UaSByte(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaSByte(self._val | other._val)
+        return UaSByte(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaSByte(self._val & other._val)
+        return UaSByte(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaSByte(self._val ^ other._val)
+        return UaSByte(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaByte +++++++++++++++++++++++
@@ -160,46 +160,46 @@ class UaByte(UaType):
             return "(UaByte): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaByte(self.value + int(other.value))
+        return UaByte(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaByte(self.value - int(other.value))
+        return UaByte(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaByte(self.value - int(other.value))
+        return UaByte(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaByte(self.value // int(other.value))
+        return UaByte(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaByte(self.value % int(other.value))
+        return UaByte(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaByte(self._val | other._val)
+        return UaByte(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaByte(self._val & other._val)
+        return UaByte(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaByte(self._val ^ other._val)
+        return UaByte(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaInt16 +++++++++++++++++++++++
@@ -236,46 +236,46 @@ class UaInt16(UaType):
             return "(UaInt16): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaInt16(self.value + int(other.value))
+        return UaInt16(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaInt16(self.value - int(other.value))
+        return UaInt16(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaInt16(self.value - int(other.value))
+        return UaInt16(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaInt16(self.value // int(other.value))
+        return UaInt16(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaInt16(self.value % int(other.value))
+        return UaInt16(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaByte(self._val | other._val)
+        return UaByte(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaByte(self._val & other._val)
+        return UaByte(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaByte(self._val ^ other._val)
+        return UaByte(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaUInt16 +++++++++++++++++++++++
@@ -312,46 +312,46 @@ class UaUInt16(UaType):
             return "(UaUInt16): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaUInt16(self.value + int(other.value))
+        return UaUInt16(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaUInt16(self.value - int(other.value))
+        return UaUInt16(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaUInt16(self.value - int(other.value))
+        return UaUInt16(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaUInt16(self.value // int(other.value))
+        return UaUInt16(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaUInt16(self.value % int(other.value))
+        return UaUInt16(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaUInt16(self._val | other._val)
+        return UaUInt16(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaUInt16(self._val & other._val)
+        return UaUInt16(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaUInt16(self._val ^ other._val)
+        return UaUInt16(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaInt32 +++++++++++++++++++++++
@@ -388,46 +388,46 @@ class UaInt32(UaType):
             return "(UaInt32): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaInt32(self.value + int(other.value))
+        return UaInt32(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaInt32(self.value - int(other.value))
+        return UaInt32(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaInt32(self.value - int(other.value))
+        return UaInt32(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaInt32(self.value // int(other.value))
+        return UaInt32(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaInt32(self.value % int(other.value))
+        return UaInt32(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaInt32(self._val | other._val)
+        return UaInt32(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaInt32(self._val & other._val)
+        return UaInt32(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaInt32(self._val ^ other._val)
+        return UaInt32(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaUInt32 +++++++++++++++++++++++
@@ -462,46 +462,46 @@ class UaUInt32(UaType):
             return "(UaUInt32): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaUInt32(self.value + int(other.value))
+        return UaUInt32(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaUInt32(self.value - int(other.value))
+        return UaUInt32(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaUInt32(self.value - int(other.value))
+        return UaUInt32(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaUInt32(self.value // int(other.value))
+        return UaUInt32(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaUInt32(self.value % int(other.value))
+        return UaUInt32(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaUInt32(self._val | other._val)
+        return UaUInt32(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaUInt32(self._val & other._val)
+        return UaUInt32(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaUInt32(self._val ^ other._val)
+        return UaUInt32(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaInt64 +++++++++++++++++++++++
@@ -538,46 +538,46 @@ class UaInt64(UaType):
             return "(UaInt64): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaInt64(self.value + int(other.value))
+        return UaInt64(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaInt64(self.value - int(other.value))
+        return UaInt64(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaInt64(self.value - int(other.value))
+        return UaInt64(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaInt64(self.value // int(other.value))
+        return UaInt64(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaInt64(self.value % int(other.value))
+        return UaInt64(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaUInt32(self._val | other._val)
+        return UaUInt32(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaUInt32(self._val & other._val)
+        return UaUInt32(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaUInt32(self._val ^ other._val)
+        return UaUInt32(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaUInt64 +++++++++++++++++++++++
@@ -614,46 +614,46 @@ class UaUInt64(UaType):
             return "(UaUInt64): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaUInt64(self.value + int(other.value))
+        return UaUInt64(self.value + (int(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaUInt64(self.value - int(other.value))
+        return UaUInt64(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaUInt64(self.value - int(other.value))
+        return UaUInt64(self.value - (int(other._val) if isinstance(other, UaType) else other))
 
     def __floordiv__(self, other):
-        return UaUInt64(self.value // int(other.value))
+        return UaUInt64(self.value // (int(other._val) if isinstance(other, UaType) else other))
 
     def __mod__(self, other):
-        return UaUInt64(self.value % int(other.value))
+        return UaUInt64(self.value % (int(other._val) if isinstance(other, UaType) else other))
 
     def __or__(self, other):
-        return UaUInt64(self._val | other._val)
+        return UaUInt64(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaUInt64(self._val & other._val)
+        return UaUInt64(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaUInt64(self._val ^ other._val)
+        return UaUInt64(self._val ^ (other._val if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaFloat +++++++++++++++++++++++
@@ -690,34 +690,34 @@ class UaFloat(UaType):
             return "(UaFloat): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaFloat(self.value + other.value)
+        return UaFloat(self.value + (float(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaFloat(self.value - other.value)
+        return UaFloat(self.value - (float(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaFloat(self.value - other.value)
+        return UaFloat(self.value - (float(other._val) if isinstance(other, UaType) else other))
 
     def __truediv__(self, other):
-        return UaFloat(self.value / other.value)
+        return UaFloat(self.value / (float(other._val) if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaDouble +++++++++++++++++++++++
@@ -752,34 +752,34 @@ class UaDouble(UaType):
             return "(UaDouble): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __add__(self, other):
-        return UaDouble(self.value + other.value)
+        return UaDouble(self.value + (float(other._val) if isinstance(other, UaType) else other))
 
     def __sub__(self, other):
-        return UaDouble(self.value - other.value)
+        return UaDouble(self.value - (float(other._val) if isinstance(other, UaType) else other))
 
     def __mul__(self, other):
-        return UaDouble(self.value - other.value)
+        return UaDouble(self.value - (float(other._val) if isinstance(other, UaType) else other))
 
     def __truediv__(self, other):
-        return UaDouble(self.value / other.value)
+        return UaDouble(self.value / (float(other._val) if isinstance(other, UaType) else other))
 
 
 # +++++++++++++++++++ UaStatusCode +++++++++++++++++++++++
@@ -816,31 +816,31 @@ class UaStatusCode(UaType):
             return "(UaStatusCode): " + ffi.string(lib.UA_StatusCode_name(self._val)).decode("utf-8") + ("" if n is None else "\n")
 
     def __eq__(self, other):
-        return self._val == other._val
+        return self._val == (other._val if isinstance(other, UaType) else other)
 
     def __ne__(self, other):
-        return self._val != other._val
+        return self._val != (other._val if isinstance(other, UaType) else other)
 
     def __gt__(self, other):
-        return self._val > other._val
+        return self._val > (other._val if isinstance(other, UaType) else other)
 
     def __lt__(self, other):
-        return self._val < other._val
+        return self._val < (other._val if isinstance(other, UaType) else other)
 
     def __ge__(self, other):
-        return self._val >= other._val
+        return self._val >= (other._val if isinstance(other, UaType) else other)
 
     def __le__(self, other):
-        return self._val <= other._val
+        return self._val <= (other._val if isinstance(other, UaType) else other)
 
     def __or__(self, other):
-        return UaStatusCode(self._val | other._val)
+        return UaStatusCode(self._val | (other._val if isinstance(other, UaType) else other))
 
     def __and__(self, other):
-        return UaStatusCode(self._val & other._val)
+        return UaStatusCode(self._val & (other._val if isinstance(other, UaType) else other))
 
     def __xor__(self, other):
-        return UaStatusCode(self._val ^ other._val)
+        return UaStatusCode(self._val ^ (other._val if isinstance(other, UaType) else other))
 
     def is_bad(self):
         return lib.UA_StatusCode_isBad(self._val)
