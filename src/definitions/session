@@ -1,0 +1,26 @@
+struct ContinuationPoint;
+typedef struct ContinuationPoint ContinuationPoint;
+struct ContinuationPoint {
+    ContinuationPoint *next;
+    UA_ByteString identifier;
+    UA_BrowseDescription browseDescription;
+    UA_UInt32 maxReferences;
+    UA_ReferenceTypeSet relevantReferences;
+    UA_ExpandedNodeId nextTarget;
+    UA_Byte nextRefKindIndex;
+};
+
+struct UA_SecureChannel;
+typedef struct UA_SecureChannel UA_SecureChannel;
+
+typedef struct UA_SessionHeader {
+    struct {
+        struct UA_SessionHeader *sle_next;
+    } next;
+    UA_NodeId authenticationToken;
+    UA_SecureChannel *channel; /* The pointer back to the SecureChannel in the session. */
+} UA_SessionHeader;
+
+typedef struct {
+    ...;
+} UA_Session;

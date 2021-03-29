@@ -1578,13 +1578,14 @@ class UaNodeTypeLifecycle(UaType):
     def _python_wrapper_UA_NodeTypeLifecycle_constructor(server, session_id, session_context, type_node_id,
                                                          type_node_context, node_id, node_context):
         # todo: wrap server (cyclical import issue)
-        return UaNodeTypeLifecycle._constructor(server,
-                                                UaNodeId(val=session_id, is_pointer=True),
-                                                Void(val=session_context, is_pointer=True),
-                                                UaNodeId(val=type_node_id, is_pointer=True),
-                                                Void(val=type_node_context, is_pointer=True),
-                                                UaNodeId(val=node_id, is_pointer=True),
-                                                UaList(val=node_context))
+        status_code = UaNodeTypeLifecycle._constructor(server,
+                                                       UaNodeId(val=session_id, is_pointer=True),
+                                                       Void(val=session_context, is_pointer=True),
+                                                       UaNodeId(val=type_node_id, is_pointer=True),
+                                                       Void(val=type_node_context, is_pointer=True),
+                                                       UaNodeId(val=node_id, is_pointer=True),
+                                                       Void(val=node_context))
+        return status_code._val
 
     @staticmethod
     @ffi.def_extern()
@@ -1597,7 +1598,7 @@ class UaNodeTypeLifecycle(UaType):
                                         UaNodeId(val=type_node_id, is_pointer=True),
                                         Void(val=type_node_context, is_pointer=True),
                                         UaNodeId(val=node_id, is_pointer=True),
-                                        UaList(val=node_context))
+                                        Void(val=node_context))
 
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -1646,6 +1647,47 @@ class UaNodeTypeLifecycle(UaType):
                 + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
                 + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1))
 
+
+# # Only one implementation at a time
+# class UaNodeTypeLifecycle(UaType):
+#     @staticmethod
+#     def _constructor_callback(a, b, c, d, e, f, g): return UA_STATUSCODES.GOOD
+#     @staticmethod
+#     def _destructor_callback(a, b, c, d, e, f, g): pass
+#
+#     def __init__(self, val=None, is_pointer=False):
+#         if val is None:
+#             super().__init__(val=ffi.new("UA_NodeTypeLifecycle*"), is_pointer=is_pointer)
+#             self._uses_python_constructor_callback = True
+#             self._uses_python_destructor_callback = True
+#             self._value.constructor = lib.python_wrapper_UA_NodeTypeLifecycle_constructor
+#             self._value.destructor = lib.python_wrapper_UA_NodeTypeLifecycle_destructor
+#         else:
+#             super().__init__(val=val, is_pointer=is_pointer)
+#             self._uses_python_constructor_callback = False
+#             self._uses_python_destructor_callback = False
+#
+#     @property
+#     def constructor(self):
+#         return UaNodeTypeLifecycle._constructor_callback
+#
+#     @property
+#     def destructor(self):
+#         return UaNodeTypeLifecycle._destructor_callback
+#
+#     @constructor.setter
+#     def constructor(self, val: Callable[
+#         ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void], UaStatusCode]):
+#         UaNodeTypeLifecycle._constructor_callback = val
+#         self._value.constructor = lib.python_wrapper_UA_NodeTypeLifecycle_constructor
+#         self._uses_python_constructor_callback = True
+#
+#     @destructor.setter
+#     def destructor(self, val: Callable[
+#         ['UaServer', UaNodeId, Void, UaNodeId, Void, UaNodeId, Void], None]):
+#         UaNodeTypeLifecycle._destructor_callback = val
+#         self._value.write = lib.python_wrapper_UA_NodeTypeLifecycle_destructor
+#         self._uses_python_destructor_callback = True
 
 # +++++++++++++++++++ UaNodeReferenceKind +++++++++++++++++++++++
 class UaNodeReferenceKind(UaType):

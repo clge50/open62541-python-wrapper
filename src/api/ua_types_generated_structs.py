@@ -7479,6 +7479,9 @@ class UaMonitoredItemCreateRequest(UaType):
                 + "\t" * (n + 1) + "item_to_monitor" + self._item_to_monitor.__str__(n + 1)
                 + "\t" * (n + 1) + "monitoring_mode" + self._monitoring_mode.__str__(n + 1)
                 + "\t" * (n + 1) + "requested_parameters" + self._requested_parameters.__str__(n + 1))
+    @staticmethod
+    def default(node_id: UaNodeId):
+        return UaMonitoredItemCreateRequest(val=lib.UA_MonitoredItemCreateRequest_default(node_id._val))
 
 
 # +++++++++++++++++++ UaComplexNumberType +++++++++++++++++++++++

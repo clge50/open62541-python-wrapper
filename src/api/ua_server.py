@@ -240,7 +240,59 @@ class _ServerCallback:
                                                                   UaList(val=output, size=output_size,
                                                                          ua_class=UaVariant))._val
 
+    @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_Server_DataChangeNotificationCallback(server,
+                                                                monitored_item_id,
+                                                                monitored_item_context,
+                                                                node_id,
+                                                                node_context,
+                                                                attribute_id,
+                                                                value):
+        callbacks_dict_key = str(UaNodeId(val=node_id)) + str(UaUInt32(attribute_id))
+        _ServerCallback.callbacks_dict[callbacks_dict_key](UaServer(val=server),
+                                                           UaUInt32(val=monitored_item_id),
+                                                           Void(val=monitored_item_context, is_pointer=True),
+                                                           UaNodeId(val=node_id, is_pointer=True),
+                                                           Void(val=node_context, is_pointer=True),
+                                                           UaUInt32(val=attribute_id),
+                                                           UaDataValue(val=value, is_pointer=True))
+
     # todo: ExternalValueCallback is missing
+
+    # @staticmethod
+    # @ffi.def_extern()
+    # def python_wrapper_UA_NodeTypeLifecycle_constructor(server,
+    #                                                     session_id,
+    #                                                     session_context,
+    #                                                     type_node_id,
+    #                                                     type_node_context,
+    #                                                     node_id,
+    #                                                     node_context):
+    #     return UaStatusCode(val=UaNodeTypeLifecycle._constructor_callback(UaServer(val=server),
+    #                                                                       UaNodeId(val=session_id),
+    #                                                                       Void(val=session_context),
+    #                                                                       UaNodeId(val=type_node_id),
+    #                                                                       Void(val=type_node_context),
+    #                                                                       UaNodeId(val=node_id),
+    #                                                                       Void(val=node_context)))
+    #
+    # @staticmethod
+    # @ffi.def_extern()
+    # def python_wrapper_UA_NodeTypeLifecycle_destructor(server,
+    #                                                    session_id,
+    #                                                    session_context,
+    #                                                    type_node_id,
+    #                                                    type_node_context,
+    #                                                    node_id,
+    #                                                    node_context):
+    #     UaNodeTypeLifecycle._destructor_callback(UaServer(val=server),
+    #                                              UaNodeId(val=session_id),
+    #                                              Void(val=session_context),
+    #                                              UaNodeId(val=type_node_id),
+    #                                              Void(val=type_node_context),
+    #                                              UaNodeId(val=node_id),
+    #                                              Void(val=node_context))
 
 
 class UaServer:
@@ -579,7 +631,7 @@ class UaServer:
     def add_reference(self,
                       source_id: UaNodeId,
                       ref_type_id: UaNodeId,
-                      target_id: UaNodeId,
+                      target_id: UaExpandedNodeId,
                       is_forward: UaBoolean):
 
         raw_result = lib.UA_Server_addReference(self.ua_server, source_id._val, ref_type_id._val, target_id._val,
@@ -655,7 +707,7 @@ class UaServer:
                         reference_type_id: UaNodeId,
                         browse_name: UaQualifiedName,
                         type_definition: UaNodeId,
-                        attr: UaNodeAttributes = None,
+                        attr: UaObjectAttributes = None,
                         node_context=None):
 
         if attr is None:
@@ -680,8 +732,7 @@ class UaServer:
                              parent_node_id: UaNodeId,
                              reference_type_id: UaNodeId,
                              browse_name: UaQualifiedName,
-                             type_definition: UaNodeId,
-                             attr: UaNodeAttributes = None,
+                             attr: UaObjectTypeAttributes = None,
                              node_context=None):
 
         if attr is None:
@@ -696,7 +747,7 @@ class UaServer:
             node_context = ffi.NULL
 
         status_code = lib.UA_Server_addObjectTypeNode(self.ua_server, requested_new_node_id._val, parent_node_id._val,
-                                                      reference_type_id._val, browse_name._val, type_definition._val,
+                                                      reference_type_id._val, browse_name._val,
                                                       attr._val, node_context, out_node_id._ptr)
 
         out_node_id._update()
@@ -738,12 +789,6 @@ class UaServer:
                                                   output_arg._ptr, node_context, out_new_node_id._ptr)
         return ServerServiceResults.AddMethodNodeResult(output_length, output_arg, UaStatusCode(status_code),
                                                         out_new_node_id)
-
-    def set_node_type_lifecycle(self, node_id: UaNodeId,
-                                lifecycle: UaNodeTypeLifecycle):
-        raw_result = lib.UA_Server_addNodeTypeLifecycle(self.ua_server, node_id._val,
-                                                        lifecycle._val)  # todo: implement lifecycle type
-        return UaStatusCode(val=raw_result)
 
     def trigger_event(self, node_id: UaNodeId, origin_id: UaNodeId,
                       out_event_id: UaByteString, delete_event_node: UaBoolean):
@@ -805,14 +850,40 @@ class UaServer:
         out_event_id._update()
         return ServerServiceResults.EventResult(status_code, out_event_id)
 
-    #
-    # def set_condition_two_state_variable_callback(self,
-    #                                               condition: UaNodeId,
-    #                                               condition_source: UaNodeId,
-    #                                               remove_branch: UaBoolean,
-    #                                               callback: UaTwoStateVariableChangeCallback,
-    #                                               callback_type: UaTwoStateVariableCallbackType):  # TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
-    #
-    #     raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source,
-    #                                                                     remove_branch, callback, callback_type)
-    #     return UaStatusCode(raw_result)
+    def set_condition_two_state_variable_callback(self,
+                                                  condition: UaNodeId,
+                                                  condition_source: UaNodeId,
+                                                  remove_branch: UaBoolean,
+                                                  callback: UaTwoStateVariableChangeCallback,
+                                                  callback_type: UaTwoStateVariableCallbackType):  # TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
+
+        raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source,
+                                                                        remove_branch, callback, callback_type)
+        return UaStatusCode(raw_result)
+
+    def create_data_change_monitored_item(self,
+                                          timestamps_to_return: UaTimestampsToReturn,
+                                          item: UaMonitoredItemCreateRequest,
+                                          monitored_item_context: Void,
+                                          callback: Callable[['UaServer',
+                                                              UaUInt32,
+                                                              Void,
+                                                              UaNodeId,
+                                                              Void,
+                                                              UaUInt32,
+                                                              UaDataValue],
+                                                             None]):
+
+        _ServerCallback.callbacks_dict[str(item.item_to_monitor.node_id) +
+                                       str(item.item_to_monitor.attribute_id)] = callback
+
+        return UaMonitoredItemCreateResult(
+            val=lib.UA_Server_createDataChangeMonitoredItem(
+                self.ua_server,
+                timestamps_to_return._val,
+                item._val,
+                monitored_item_context._ptr,
+                lib.python_wrapper_UA_Server_DataChangeNotificationCallback))
+
+    def set_node_type_lifecycle(self, node_id: UaNodeId, lifecycle: UaNodeTypeLifecycle):
+        return UaStatusCode(val=lib.UA_Server_setNodeTypeLifecycle(self.ua_server, node_id._val, lifecycle._val))

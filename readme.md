@@ -1,14 +1,28 @@
-# open62541 python wrapper
+# Python Wrapper for open62541
 
-## prerequisites
+This project aims to provide a seamless interface for open62541-functions through the Python interpreter to simplify prototyping without the need for constant recompilation.  
 
-make sure you have python 3 installed make sure you have cffi installed (`pip install cffi`)
-pip install flake8 pytest pip install sphinx_rtd_theme
+## Prerequisites
+Notice: Up until now you'll also need to build open62541 during the build process. Thus make sure you have the required tools (e.g.: `cmake`, `gcc`, ...) installed!
 
-## build
+Furthermore, besides the obvious requirement of at least Python3.7, you'll need the following packages, which are best installed through the package manager of your choice:
+ 
+* pip3
+* libffi-dev
+* libffi6
 
-run `python3 make.py`
+Additionally through pip3, you need to install:
+* cffi
+* pdoc
+* sphinx_rtd_theme
+* flake8
+* pytest
 
-## usage
+## Building
 
-please refer to our [documentation](https://htmlpreview.github.io/?https://github.com/clge50/open62541-python-wrapper/blob/master/doc/open62541/index.html)
+Just `cd` into the project's root directory and run `python3 make.py`. This will currently automatically build open62541, too. See `make.py` for details.
+
+
+## Usage
+
+For usage information, please refer to our [documentation](https://htmlpreview.github.io/?https://github.com/clge50/open62541-python-wrapper/blob/master/doc/open62541/index.html).
