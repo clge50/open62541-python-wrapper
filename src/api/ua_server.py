@@ -850,16 +850,16 @@ class UaServer:
         out_event_id._update()
         return ServerServiceResults.EventResult(status_code, out_event_id)
 
-    def set_condition_two_state_variable_callback(self,
-                                                  condition: UaNodeId,
-                                                  condition_source: UaNodeId,
-                                                  remove_branch: UaBoolean,
-                                                  callback: UaTwoStateVariableChangeCallback,
-                                                  callback_type: UaTwoStateVariableCallbackType):  # TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
-
-        raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source,
-                                                                        remove_branch, callback, callback_type)
-        return UaStatusCode(raw_result)
+    # def set_condition_two_state_variable_callback(self,
+    #                                               condition: UaNodeId,
+    #                                               condition_source: UaNodeId,
+    #                                               remove_branch: UaBoolean,
+    #                                               callback: UaTwoStateVariableChangeCallback,
+    #                                               callback_type: UaTwoStateVariableCallbackType):  # TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
+    #
+    #     raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source,
+    #                                                                     remove_branch, callback, callback_type)
+    #     return UaStatusCode(raw_result)
 
     def create_data_change_monitored_item(self,
                                           timestamps_to_return: UaTimestampsToReturn,

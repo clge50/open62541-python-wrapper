@@ -356,8 +356,3 @@ class UaDataSource(UaType):
         return ("(UA_DataSource) :\n" +
                 "\t" * (n + 1) + "read_callback" + str(self._read_callback) +
                 "\t" * (n + 1) + "write_callback" + str(self._write_callback) + "\n")
-
-
-class UaNodeTypeLifecycle():
-    def __init__(self):
-        pass

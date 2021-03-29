@@ -68,7 +68,8 @@ def add_inc_int_32_array_method(server: UaServer):
     input_arguments[0].data_type = UA_TYPES.INT32.type_id
     input_arguments[0].value_rank = UaValueRanks.ONE_DIMENSION
     input_arguments[0].array_dimensions_size = SizeT(1)
-    input_arguments[0].array_dimensions = UaUInt32(5)
+    array_dimensions = UaList([5], 1, UaUInt32)
+    input_arguments[0].array_dimensions = array_dimensions
 
     input_arguments[1].description = UaLocalizedText("en-US", "int32 delta")
     input_arguments[1].name = UaString("int32 delta")
