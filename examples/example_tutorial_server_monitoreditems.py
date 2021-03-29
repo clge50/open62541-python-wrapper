@@ -2,7 +2,7 @@ import sys
 
 from signal import signal, SIGINT, SIGTERM
 
-sys.path.append("../build/open62541")
+sys.path.append("../build/wrappy_o6")
 from ua import *
 
 log_stdout = UaLogger()

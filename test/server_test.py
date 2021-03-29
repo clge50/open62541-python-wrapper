@@ -2,7 +2,7 @@ import sys
 import time
 import pytest
 
-sys.path.append("../build/open62541")
+sys.path.append("../build/wrappy_o6")
 import serverApi
 from intermediateApi import ffi, lib
 

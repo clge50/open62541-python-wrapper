@@ -2,7 +2,7 @@ import sys
 import threading
 import time
 
-sys.path.append("../build/open62541")
+sys.path.append("../build/wrappy_o6")
 from ua import *
 
 
