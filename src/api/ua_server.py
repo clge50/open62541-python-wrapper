@@ -6,6 +6,8 @@
 import time
 import threading
 from intermediateApi import lib, ffi
+from typing import Tuple
+
 import ua_service_results_server as ServerServiceResults
 from ua_types import *
 from ua_types_list import *
@@ -299,16 +301,25 @@ class UaServer:
     """
     This class is used to create and manage servers as well as invoking services
     """
-
-    def __init__(self, config=None, val=None):
+    # Typehint for users. Developers could also set val to a UA_Server.
+    def __init__(self, val: Union[UaServerConfig, int, Tuple[str, int]] = None):
         self._running = UaBoolean(False)
-        if val is not None:
-            self.ua_server = val
-        elif config is None:
+        if val is None:
             self.ua_server = lib.UA_Server_new()
             self.set_default_config()
+        elif type(val) is int:
+            self.ua_server = lib.UA_Server_new()
+            self.set_minimal_config(UaInt16(val))
+        elif type(val) is tuple:
+            hostname = val[0]
+            port = val[1]
+            self.ua_server = lib.UA_Server_new()
+            self.set_minimal_config(UaInt16(port))
+            self.set_hostname(hostname)
+        elif type(val) is UaServerConfig:
+            self.ua_server = lib.UA_Server_newWithConfig(val._ptr)
         else:
-            self.ua_server = lib.UA_Server_newWithConfig(config._ptr)
+            self.ua_server = val
 
     @property
     def running(self):
@@ -320,39 +331,10 @@ class UaServer:
             running = running.value
         self._running._value[0] = running
 
-    # def __set_server_shutdown(self):
-    #     if self.ua_server.endTime != 0:
-    #         return False
-    #     if self.ua_server.config.shutdownDelay == 0:
-    #         return True
-    #     lib.UA_LOG_WARNING(self.ua_server.config.logger, lib.UA_LOGCATEGORY_SERVER,
-    #                        "Shutting down the server with a delay of %i ms",
-    #                        self.ua_server.config.shutdownDelay)
-    #     self.ua_server.endTime = (lib.UA_DateTime_now() +
-    #                               (self.ua_server.config.shutdownDelay * lib.UA_DATETIME_MSEC))
-    #     return False
-    #
-    # def __test_shut_down_condition(self):
-    #     if self.ua_server.endTime == 0:
-    #         return False
-    #     return lib.UA_DateTime_now() > self.ua_server.endTime
-
     def run(self):
         self.running = True
         ret_val = lib.UA_Server_run(self.ua_server, self.running._value)
         return UaStatusCode(val=ret_val)
-        # ret_val = lib.UA_Server_run_startup(self.ua_server)
-        # if ret_val != UA_STATUSCODES.GOOD._val:
-        #     return UaStatusCode(val=ret_val)
-        #
-        # while not self.__test_shut_down_condition():
-        #     lib.UA_Server_run_iterate(self.ua_server, True)
-        #     if not self._running.value:
-        #         if self.__set_server_shutdown():
-        #             break
-        #
-        # ret_val = lib.UA_Server_run_shutdown(self.ua_server)
-        # return UaStatusCode(val=ret_val)
 
     def run_async(self):
         t = threading.Thread(target=self.run, daemon=True)
@@ -363,9 +345,13 @@ class UaServer:
         raw_result = lib.UA_Server_run_shutdown(self.ua_server)
         return UaStatusCode(val=raw_result)
 
-    def getConfig(self):
-        # TODO: UaServerConfig is missing
-        return lib.UA_Server_getConfig(self.ua_server)
+    def set_hostname(self, hostname: Union[UaString, str]):
+        if type(hostname) is str:
+            hostname = UaString(hostname)
+        self.get_config().custom_hostname = hostname
+
+    def get_config(self):
+        return UaServerConfig(val=lib.UA_Server_getConfig(self.ua_server))
 
     def run_startup(self):
         raw_value = lib.UA_Server_run_startup(self.ua_server)
@@ -379,13 +365,14 @@ class UaServer:
     #    def delete(self):
     #        return lib.UA_Server_delete(self.ua_server)
 
-    def set_minimal_config(self, port_number: UaInt16, certificate: UaByteString):
-        raw_result = lib.UA_ServerConfig_setMinimal(self.getConfig(), port_number._val, certificate._ptr)
+    def set_minimal_config(self, port_number: UaInt16, certificate: UaByteString = None):
+        if certificate is None:
+            certificate = Void.NULL()
+        raw_result = lib.UA_ServerConfig_setMinimal(self.get_config()._ptr, port_number._val, certificate._ptr)
         return UaStatusCode(val=raw_result)
 
     def set_default_config(self):
-        raw_result = lib.UA_ServerConfig_setDefault(self.getConfig())
-        return UaStatusCode(val=raw_result)
+        raw_result = lib.UA_ServerConfig_setDefault(self.get_config()._ptr)
 
     ###
     ### Write Functions

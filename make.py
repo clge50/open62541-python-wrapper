@@ -117,6 +117,7 @@ def generate_api():
                        "nodestore",
                        "session",
                        "server",
+                       "server_config_default",
                        "client_subscription",
                        "statuscodes"]
     decls_list = []

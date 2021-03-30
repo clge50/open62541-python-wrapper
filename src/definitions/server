@@ -17,8 +17,6 @@ UA_UInt16 UA_Server_run_iterate(UA_Server *server, UA_Boolean waitInternal);
 
 void UA_Server_delete(UA_Server *server);
 UA_StatusCode UA_Server_addObjectTypeNode(UA_Server *server, const UA_NodeId requestedNewNodeId, const UA_NodeId parentNodeId, const UA_NodeId referenceTypeId, const UA_QualifiedName browseName, const UA_ObjectTypeAttributes attr, void *nodeContext, UA_NodeId *outNewNodeId);
-UA_StatusCode UA_ServerConfig_setMinimal(UA_ServerConfig *config, UA_UInt16 portNumber, const UA_ByteString *certificate);
-UA_StatusCode UA_ServerConfig_setDefault(UA_ServerConfig *config);
 
 UA_Server * UA_Server_newWithConfig(UA_ServerConfig *config);
 
