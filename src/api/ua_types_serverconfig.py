@@ -2888,6 +2888,28 @@ class UaServerConfig(UaType):
         self._max_references_per_node = val
         self._value.maxReferencesPerNode = val._val
 
+    @staticmethod
+    def get_default_with_port(self, port_number: UaInt16, certificate: UaByteString = None):
+        if certificate is None:
+            certificate = Void.NULL()
+        config = UaServerConfig()
+        status_code = UaStatusCode(val=lib.UA_ServerConfig_setMinimal(config._ptr, port_number._val, certificate._ptr))
+        if status_code.is_bad():
+            # TODO: what's the correct error?
+            raise SystemError("UA_ServerConfig_setDefault returned with " + str(status_code))
+        config._update()
+        return config
+
+    @staticmethod
+    def get_default(self):
+        config = UaServerConfig()
+        status_code = UaStatusCode(val=lib.UA_ServerConfig_setDefault(config._ptr))
+        if status_code.is_bad():
+            # TODO: what's the correct error?
+            raise SystemError("UA_ServerConfig_setDefault returned with " + str(status_code))
+        config._update()
+        return config
+
     def __str__(self, n=0):
         if self._null:
             return "(UaServerConfig) : NULL\n"

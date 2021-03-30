@@ -1,0 +1,5 @@
+static UA_StatusCode UA_ServerConfig_setDefault(UA_ServerConfig *config);
+
+static UA_StatusCode UA_ServerConfig_setMinimal(UA_ServerConfig *config,
+        UA_UInt16 portNumber,
+        const UA_ByteString *certificate);

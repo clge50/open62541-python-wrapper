@@ -2,17 +2,26 @@ from ua import *
 
 # new client with default config
 client = UaClient()
-ret_val = client.connect("opc.tcp://127.0.0.1:4840/")
+ret_val = client.connect("opc.tcp://127.0.0.1:4841/")
 print(ret_val)
 
-result = client.read_value_attribute(UA_NS0ID.SERVER_SERVERSTATUS_CURRENTTIME)
 
-ret_val = result.status_code
-variant = result.value
+def read_time():
+    result = client.read_value_attribute(UA_NS0ID.SERVER_SERVERSTATUS_CURRENTTIME)
 
-print(ret_val)
+    status_code = result.status_code
+    variant = result.value
 
-if variant.has_scalar_type(UA_TYPES.DATETIME):
-    now = UaDateTime(variant.data)
+    print(status_code)
 
-UaLogger().info(UaLogCategory.USERLAND(), "date is "+str(now.to_struct()))
+    if variant.has_scalar_type(UA_TYPES.DATETIME):
+        now = UaDateTime(variant.data)
+
+    UaLogger().info(UaLogCategory.USERLAND(), "date is " + str(now.to_struct()))
+
+
+iterate = True
+while iterate:
+    if input() == "x":
+        iterate = False
+    read_time()
