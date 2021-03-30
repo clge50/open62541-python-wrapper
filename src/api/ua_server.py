@@ -336,10 +336,11 @@ class UaServer:
         ret_val = lib.UA_Server_run(self.ua_server, self.running._value)
         return UaStatusCode(val=ret_val)
 
-    def run_async(self):
-        t = threading.Thread(target=self.run, daemon=True)
+    def run_async(self, daemon=False):
+        t = threading.Thread(target=self.run, daemon=daemon)
         t.start()
         time.sleep(0.50)
+        return t
 
     def run_shutdown(self):
         raw_result = lib.UA_Server_run_shutdown(self.ua_server)
