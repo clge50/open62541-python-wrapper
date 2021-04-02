@@ -1,4 +1,4 @@
-from ua_types import *
+from ua_types_clientconfig import *
 
 
 class NodeIdResult:

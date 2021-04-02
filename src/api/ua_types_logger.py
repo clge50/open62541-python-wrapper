@@ -64,8 +64,8 @@ class UaLogCategory(UaType):
     def SECURITYPOLICY():
         return UaLogCategory(6)
 
-    def __str__(self, n=0):
-        return f"(UaLogCategory): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaLogCategory): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaLogLevel +++++++++++++++++++++++
@@ -119,8 +119,8 @@ class UaLogLevel(UaType):
     def FATAL():
         return UaLogLevel(5)
 
-    def __str__(self, n=0):
-        return f"(UaLogLevel): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaLogLevel): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaLogger +++++++++++++++++++++++
@@ -141,7 +141,7 @@ class UaLogger(UaType):
         else:
             self._value[0] = _val(val)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         return "\t" * n + str(self._val)
 
     def trace(self, category: UaLogCategory, msg: str):

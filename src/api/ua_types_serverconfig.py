@@ -63,14 +63,14 @@ class aa_entry(UaType):
         self._int = val
         self._value.int = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(aa_entry) : NULL\n"
+            return "(aa_entry) : NULL" + ("" if n is None else "\n")
 
         return ("(aa_entry) :\n"
-                + "\t" * (n + 1) + "left" + self._left.__str__(n + 1)
-                + "\t" * (n + 1) + "right" + self._right.__str__(n + 1)
-                + "\t" * (n + 1) + "int" + self._int.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "left " + self._left.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "right " + self._right.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "int " + self._int.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaNode +++++++++++++++++++++++
@@ -177,15 +177,15 @@ class UaCertificateVerification(UaType):
         UaCertificateVerification._clear = val
         self._value.clear = lib._python_wrapper_UA_CertificateVerification_clear
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaCertificateVerification) : NULL\n"
+            return "(UaCertificateVerification) : NULL" + ("" if n is None else "\n")
 
         return ("(UaCertificateVerification) :\n"
-                + "\t" * (n + 1) + "context" + self._context.__str__(n + 1)
-                + "\t" * (n + 1) + "verify_certificate" + self._verify_certificate.__str__(n + 1)
-                + "\t" * (n + 1) + "verify_application_uri" + self._verify_application_uri.__str__(n + 1)
-                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "verify_certificate " + self._verify_certificate.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "verify_application_uri " + self._verify_application_uri.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "clear " + self._clear.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaNodestore +++++++++++++++++++++++
@@ -452,23 +452,23 @@ class UaNodestore(UaType):
         self._iterate = val
         self._value.iterate = lib._python_wrapper_UA_Nodestore_iterate
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaNodestore) : NULL\n"
+            return "(UaNodestore) : NULL" + ("" if n is None else "\n")
 
         return ("(UaNodestore) :\n"
-                + "\t" * (n + 1) + "context" + self._context.__str__(n + 1)
-                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1)
-                + "\t" * (n + 1) + "new_node" + self._new_node.__str__(n + 1)
-                + "\t" * (n + 1) + "delete_node" + self._delete_node.__str__(n + 1)
-                + "\t" * (n + 1) + "get_node" + self._get_node.__str__(n + 1)
-                + "\t" * (n + 1) + "release_node" + self._release_node.__str__(n + 1)
-                + "\t" * (n + 1) + "get_node_copy" + self._get_node_copy.__str__(n + 1)
-                + "\t" * (n + 1) + "insert_node" + self._insert_node.__str__(n + 1)
-                + "\t" * (n + 1) + "replace_node" + self._replace_node.__str__(n + 1)
-                + "\t" * (n + 1) + "remove_node" + self._remove_node.__str__(n + 1)
-                + "\t" * (n + 1) + "get_reference_type_id" + self._get_reference_type_id.__str__(n + 1)
-                + "\t" * (n + 1) + "iterate" + self._iterate.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "clear " + self._clear.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "new_node " + self._new_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "delete_node " + self._delete_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_node " + self._get_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "release_node " + self._release_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_node_copy " + self._get_node_copy.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "insert_node " + self._insert_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "replace_node " + self._replace_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "remove_node " + self._remove_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_reference_type_id " + self._get_reference_type_id.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "iterate " + self._iterate.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaAccessControl +++++++++++++++++++++++
@@ -843,26 +843,26 @@ class UaAccessControl(UaType):
         UaAccessControl._allow_browse_node = val
         self._value.allowBrowseNode = lib._python_wrapper_UA_AccessControl_allowBrowseNode
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaAccessControl) : NULL\n"
+            return "(UaAccessControl) : NULL" + ("" if n is None else "\n")
 
         return ("(UaAccessControl) :\n"
-                + "\t" * (n + 1) + "context" + self._context.__str__(n + 1)
-                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1)
-                + "\t" * (n + 1) + "user_token_policies_size" + self._user_token_policies_size.__str__(n + 1)
-                + "\t" * (n + 1) + "user_token_policies" + self._user_token_policies.__str__(n + 1)
-                + "\t" * (n + 1) + "activate_session" + self._activate_session.__str__(n + 1)
-                + "\t" * (n + 1) + "close_session" + self._close_session.__str__(n + 1)
-                + "\t" * (n + 1) + "get_user_rights_mask" + self._get_user_rights_mask.__str__(n + 1)
-                + "\t" * (n + 1) + "get_user_access_level" + self._get_user_access_level.__str__(n + 1)
-                + "\t" * (n + 1) + "get_user_executable" + self._get_user_executable.__str__(n + 1)
-                + "\t" * (n + 1) + "get_user_executable_on_object" + self._get_user_executable_on_object.__str__(n + 1)
-                + "\t" * (n + 1) + "allow_add_node" + self._allow_add_node.__str__(n + 1)
-                + "\t" * (n + 1) + "allow_add_reference" + self._allow_add_reference.__str__(n + 1)
-                + "\t" * (n + 1) + "allow_delete_node" + self._allow_delete_node.__str__(n + 1)
-                + "\t" * (n + 1) + "allow_delete_reference" + self._allow_delete_reference.__str__(n + 1)
-                + "\t" * (n + 1) + "allow_browse_node" + self._allow_browse_node.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "clear " + self._clear.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "user_token_policies_size " + self._user_token_policies_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "user_token_policies " + self._user_token_policies.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "activate_session " + self._activate_session.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "close_session " + self._close_session.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_user_rights_mask " + self._get_user_rights_mask.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_user_access_level " + self._get_user_access_level.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_user_executable " + self._get_user_executable.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "get_user_executable_on_object " + self._get_user_executable_on_object.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "allow_add_node " + self._allow_add_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "allow_add_reference " + self._allow_add_reference.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "allow_delete_node " + self._allow_delete_node.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "allow_delete_reference " + self._allow_delete_reference.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "allow_browse_node " + self._allow_browse_node.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaGlobalNodeLifecycle +++++++++++++++++++++++
@@ -989,15 +989,15 @@ class UaGlobalNodeLifecycle(UaType):
             UaGlobalNodeLifecycle._generate_child_node_id = val
             self._value.generateChildNodeId = lib._python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId
 
-        def __str__(self, n=0):
+        def __str__(self, n=None):
             if self._null:
-                return "(UaGlobalNodeLifecycle) : NULL\n"
+                return "(UaGlobalNodeLifecycle) : NULL" + ("" if n is None else "\n")
 
             return ("(UaGlobalNodeLifecycle) :\n"
-                    + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
-                    + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1)
-                    + "\t" * (n + 1) + "create_optional_child" + self._create_optional_child.__str__(n + 1)
-                    + "\t" * (n + 1) + "generate_child_node_id" + self._generate_child_node_id.__str__(n + 1))
+                    + "\t" * (1 if n is None else n+1) + "constructor " + self._constructor.__str__(1 if n is None else n+1)
+                    + "\t" * (1 if n is None else n+1) + "destructor " + self._destructor.__str__(1 if n is None else n+1)
+                    + "\t" * (1 if n is None else n+1) + "create_optional_child " + self._create_optional_child.__str__(1 if n is None else n+1)
+                    + "\t" * (1 if n is None else n+1) + "generate_child_node_id " + self._generate_child_node_id.__str__(1 if n is None else n+1))
 
     # +++++++++++++++++++ UaServerNetworkLayer +++++++++++++++++++++++
 
@@ -1164,19 +1164,19 @@ class UaServerNetworkLayer(UaType):
         UaServerNetworkLayer._clear = val
         self._value.clear = lib._python_wrapper_UA_ServerNetworkLayer_clear
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaServerNetworkLayer) : NULL\n"
+            return "(UaServerNetworkLayer) : NULL" + ("" if n is None else "\n")
 
         return ("(UaServerNetworkLayer) :\n"
-                + "\t" * (n + 1) + "handle" + self._handle.__str__(n + 1)
-                + "\t" * (n + 1) + "statistics" + self._statistics.__str__(n + 1)
-                + "\t" * (n + 1) + "discovery_url" + self._discovery_url.__str__(n + 1)
-                + "\t" * (n + 1) + "local_connection_config" + self._local_connection_config.__str__(n + 1)
-                + "\t" * (n + 1) + "start" + self._start.__str__(n + 1)
-                + "\t" * (n + 1) + "listen" + self._listen.__str__(n + 1)
-                + "\t" * (n + 1) + "stop" + self._stop.__str__(n + 1)
-                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "handle " + self._handle.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "statistics " + self._statistics.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "discovery_url " + self._discovery_url.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "local_connection_config " + self._local_connection_config.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "start " + self._start.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "listen " + self._listen.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "stop " + self._stop.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "clear " + self._clear.__str__(1 if n is None else n+1))
 
     # +++++++++++++++++++ UaSecurityPolicy +++++++++++++++++++++++
 
@@ -1351,24 +1351,24 @@ class UaSecurityPolicy(UaType):
         UaSecurityPolicy._clear = val
         self._value.clear = lib._python_wrapper_UA_SecurityPolicy_clear
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicy) : NULL\n"
+            return "(UaSecurityPolicy) : NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicy) :\n"
-                + "\t" * (n + 1) + "policy_context" + self._policy_context.__str__(n + 1)
-                + "\t" * (n + 1) + "policy_uri" + self._policy_uri.__str__(n + 1)
-                + "\t" * (n + 1) + "local_certificate" + self._local_certificate.__str__(n + 1)
-                + "\t" * (n + 1) + "asymmetric_module" + self._asymmetric_module.__str__(n + 1)
-                + "\t" * (n + 1) + "symmetric_module" + self._symmetric_module.__str__(n + 1)
-                + "\t" * (n + 1) + "certificate_signing_algorithm" + self._certificate_signing_algorithm.__str__(
+                + "\t" * (1 if n is None else n+1) + "policy_context " + self._policy_context.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "policy_uri " + self._policy_uri.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "local_certificate " + self._local_certificate.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "asymmetric_module " + self._asymmetric_module.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "symmetric_module " + self._symmetric_module.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "certificate_signing_algorithm " + self._certificate_signing_algorithm.__str__(
                     n + 1)
-                + "\t" * (n + 1) + "channel_module" + self._channel_module.__str__(n + 1)
-                + "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1)
+                + "\t" * (1 if n is None else n+1) + "channel_module " + self._channel_module.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "logger " + self._logger.__str__(1 if n is None else n+1)
                 + "\t" * (
-                        n + 1) + "update_certificate_and_private_key" + self._update_certificate_and_private_key.__str__(
+                        n + 1) + "update_certificate_and_private_key " + self._update_certificate_and_private_key.__str__(
                     n + 1)
-                + "\t" * (n + 1) + "clear" + self._clear.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "clear " + self._clear.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaConnectionConfig +++++++++++++++++++++++
@@ -1476,18 +1476,18 @@ class UaConnectionConfig(UaType):
         self._remote_max_chunk_count = val
         self._value.remoteMaxChunkCount = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaConnectionConfig) : NULL\n"
+            return "(UaConnectionConfig) : NULL" + ("" if n is None else "\n")
 
         return ("(UaConnectionConfig) :\n"
-                + "\t" * (n + 1) + "protocol_version" + self._protocol_version.__str__(n + 1)
-                + "\t" * (n + 1) + "recv_buffer_size" + self._recv_buffer_size.__str__(n + 1)
-                + "\t" * (n + 1) + "send_buffer_size" + self._send_buffer_size.__str__(n + 1)
-                + "\t" * (n + 1) + "local_max_message_size" + self._local_max_message_size.__str__(n + 1)
-                + "\t" * (n + 1) + "remote_max_message_size" + self._remote_max_message_size.__str__(n + 1)
-                + "\t" * (n + 1) + "local_max_chunk_count" + self._local_max_chunk_count.__str__(n + 1)
-                + "\t" * (n + 1) + "remote_max_chunk_count" + self._remote_max_chunk_count.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "protocol_version " + self._protocol_version.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "recv_buffer_size " + self._recv_buffer_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "send_buffer_size " + self._send_buffer_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "local_max_message_size " + self._local_max_message_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "remote_max_message_size " + self._remote_max_message_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "local_max_chunk_count " + self._local_max_chunk_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "remote_max_chunk_count " + self._remote_max_chunk_count.__str__(1 if n is None else n+1))
 
     # +++++++++++++++++++ UaSecurityPolicyAsymmetricModule +++++++++++++++++++++++
 
@@ -1503,9 +1503,9 @@ class UaSecurityPolicyAsymmetricModule(UaType):
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicyAsymmetricModule) : NULL\n"
+            return "(UaSecurityPolicyAsymmetricModule) : NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicyAsymmetricModule) :\n")
 
@@ -1522,9 +1522,9 @@ class UaSecurityPolicySymmetricModule(UaType):
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicySymmetricModule) : NULL\n"
+            return "(UaSecurityPolicySymmetricModule) : NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicySymmetricModule) :\n")
 
@@ -1541,9 +1541,9 @@ class UaSecurityPolicyChannelModule(UaType):
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicyChannelModule) : NULL\n"
+            return "(UaSecurityPolicyChannelModule) : NULL" + ("" if n is None else "\n")
 
         return "(UaSecurityPolicyChannelModule) :\n"
 
@@ -1560,9 +1560,9 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
     def _update(self):
         self.__init__(val=self._ptr)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicySignatureAlgorithm) : NULL\n"
+            return "(UaSecurityPolicySignatureAlgorithm) : NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicySignatureAlgorithm) :\n")
 
@@ -1638,13 +1638,13 @@ class UaNodeTypeLifecycle(UaType):
         UaNodeTypeLifecycle._destructor = val
         self._value.destructor = lib._python_wrapper_UA_NodeTypeLifecycle_destructor
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaNodeTypeLifecycle) : NULL\n"
+            return "(UaNodeTypeLifecycle) : NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeTypeLifecycle) :\n"
-                + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
-                + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "constructor " + self._constructor.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "destructor " + self._destructor.__str__(1 if n is None else n+1))
 
 
 # # Only one implementation at a time
@@ -1754,15 +1754,15 @@ class UaNodeReferenceKind(UaType):
         self._is_inverse = val
         self._value.isInverse = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaNodeReferenceKind) : NULL\n"
+            return "(UaNodeReferenceKind) : NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeReferenceKind) :\n"
-                + "\t" * (n + 1) + "id_tree_root" + self._id_tree_root.__str__(n + 1)
-                + "\t" * (n + 1) + "name_tree_root" + self._name_tree_root.__str__(n + 1)
-                + "\t" * (n + 1) + "reference_type_index" + self._reference_type_index.__str__(n + 1)
-                + "\t" * (n + 1) + "is_inverse" + self._is_inverse.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "id_tree_root " + self._id_tree_root.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "name_tree_root " + self._name_tree_root.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "reference_type_index " + self._reference_type_index.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "is_inverse " + self._is_inverse.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaNodeHead +++++++++++++++++++++++
@@ -1909,21 +1909,21 @@ class UaNodeHead(UaType):
         self._constructed = val
         self._value.constructed = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaNodeHead) : NULL\n"
+            return "(UaNodeHead) : NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeHead) :\n"
-                + "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1)
-                + "\t" * (n + 1) + "node_class" + self._node_class.__str__(n + 1)
-                + "\t" * (n + 1) + "browse_name" + self._browse_name.__str__(n + 1)
-                + "\t" * (n + 1) + "display_name" + self._display_name.__str__(n + 1)
-                + "\t" * (n + 1) + "description" + self._description.__str__(n + 1)
-                + "\t" * (n + 1) + "write_mask" + self._write_mask.__str__(n + 1)
-                + "\t" * (n + 1) + "references_size" + self._references_size.__str__(n + 1)
-                + "\t" * (n + 1) + "references" + self._references.__str__(n + 1)
-                + "\t" * (n + 1) + "context" + self._context.__str__(n + 1)
-                + "\t" * (n + 1) + "constructed" + self._constructed.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "node_class " + self._node_class.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "browse_name " + self._browse_name.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "display_name " + self._display_name.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "description " + self._description.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "write_mask " + self._write_mask.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "references_size " + self._references_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "references " + self._references.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "constructed " + self._constructed.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaMethodNode +++++++++++++++++++++++
@@ -1986,14 +1986,14 @@ class UaMethodNode(UaType):
         UaMethodNode._callbacks_dict[str(self)] = val
         self._value.method = lib._python_wrapper_UA_MethodCallback
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaMethodNode) : NULL\n"
+            return "(UaMethodNode) : NULL" + ("" if n is None else "\n")
 
         return ("(UaMethodNode) :\n"
-                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                + "\t" * (n + 1) + "executable" + self._executable.__str__(n + 1)
-                + "\t" * (n + 1) + "method" + self._method.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "executable " + self._executable.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "method " + self._method.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaObjectNode +++++++++++++++++++++++
@@ -2036,13 +2036,13 @@ class UaObjectNode(UaType):
         self._event_notifier = val
         self._value.eventNotifier = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaObjectNode) : NULL\n"
+            return "(UaObjectNode) : NULL" + ("" if n is None else "\n")
 
         return ("(UaObjectNode) :\n"
-                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "event_notifier " + self._event_notifier.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaObjectTypeNode +++++++++++++++++++++++
@@ -2098,14 +2098,14 @@ class UaObjectTypeNode(UaType):
         self._lifecycle = val
         self._value.lifecycle = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaObjectTypeNode) : NULL\n"
+            return "(UaObjectTypeNode) : NULL" + ("" if n is None else "\n")
 
         return ("(UaObjectTypeNode) :\n"
-                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1)
-                + "\t" * (n + 1) + "lifecycle" + self._lifecycle.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "is_abstract " + self._is_abstract.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "lifecycle " + self._lifecycle.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaReferenceTypeSet +++++++++++++++++++++++
@@ -2135,12 +2135,12 @@ class UaReferenceTypeSet(UaType):
         self._bits = val
         self._value.bits = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaReferenceTypeSet) : NULL\n"
+            return "(UaReferenceTypeSet) : NULL" + ("" if n is None else "\n")
 
         return ("(UaReferenceTypeSet) :\n"
-                + "\t" * (n + 1) + "bits" + self._bits.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "bits " + self._bits.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaDataTypeNode +++++++++++++++++++++++
@@ -2184,13 +2184,13 @@ class UaDataTypeNode(UaType):
         self._is_abstract = val
         self._value.isAbstract = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaDataTypeNode) : NULL\n"
+            return "(UaDataTypeNode) : NULL" + ("" if n is None else "\n")
 
         return ("(UaDataTypeNode) :\n"
-                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                + "\t" * (n + 1) + "is_abstract" + self._is_abstract.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "is_abstract " + self._is_abstract.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaViewNode +++++++++++++++++++++++
@@ -2246,14 +2246,14 @@ class UaViewNode(UaType):
         self._contains_no_loops = val
         self._value.containsNoLoops = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaViewNode) : NULL\n"
+            return "(UaViewNode) : NULL" + ("" if n is None else "\n")
 
         return ("(UaViewNode) :\n"
-                + "\t" * (n + 1) + "head" + self._head.__str__(n + 1)
-                + "\t" * (n + 1) + "event_notifier" + self._event_notifier.__str__(n + 1)
-                + "\t" * (n + 1) + "contains_no_loops" + self._contains_no_loops.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "event_notifier " + self._event_notifier.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "contains_no_loops " + self._contains_no_loops.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaServerConfig +++++++++++++++++++++++
@@ -2371,13 +2371,13 @@ class UaServerConfig(UaType):
             UaNodeTypeLifecycle._destructor = val
             self._value.destructor = lib._python_wrapper_UA_NodeTypeLifecycle_destructor
 
-        def __str__(self, n=0):
+        def __str__(self, n=None):
             if self._null:
-                return "(UaNodeTypeLifecycle) : NULL\n"
+                return "(UaNodeTypeLifecycle) : NULL" + ("" if n is None else "\n")
 
             return ("(UaNodeTypeLifecycle) :\n"
-                    + "\t" * (n + 1) + "constructor" + self._constructor.__str__(n + 1)
-                    + "\t" * (n + 1) + "destructor" + self._destructor.__str__(n + 1))
+                    + "\t" * (1 if n is None else n+1) + "constructor " + self._constructor.__str__(1 if n is None else n+1)
+                    + "\t" * (1 if n is None else n+1) + "destructor " + self._destructor.__str__(1 if n is None else n+1))
 
     Addressing this issue is all but trivial. CFFI offers a way to dynamically create function pointers at runtime
     via the deprecated `Callbacks (old style)` approach but heavily urges developers not to use it as it supposedly
@@ -2909,45 +2909,45 @@ class UaServerConfig(UaType):
         config._update()
         return config
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaServerConfig) : NULL\n"
+            return "(UaServerConfig) : NULL" + ("" if n is None else "\n")
 
         return ("(UaServerConfig) :\n"
-                + "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1)
-                + "\t" * (n + 1) + "build_info" + self._build_info.__str__(n + 1)
-                + "\t" * (n + 1) + "application_description" + self._application_description.__str__(n + 1)
-                + "\t" * (n + 1) + "server_certificate" + self._server_certificate.__str__(n + 1)
-                + "\t" * (n + 1) + "shutdown_delay" + self._shutdown_delay.__str__(n + 1)
-                + "\t" * (n + 1) + "verify_request_timestamp" + self._verify_request_timestamp.__str__(n + 1)
-                + "\t" * (n + 1) + "allow_empty_variables" + self._allow_empty_variables.__str__(n + 1)
-                + "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1)
-                + "\t" * (n + 1) + "network_layers_size" + self._network_layers_size.__str__(n + 1)
-                + "\t" * (n + 1) + "network_layers" + self._network_layers.__str__(n + 1)
-                + "\t" * (n + 1) + "custom_hostname" + self._custom_hostname.__str__(n + 1)
-                + "\t" * (n + 1) + "security_policies_size" + self._security_policies_size.__str__(n + 1)
-                + "\t" * (n + 1) + "security_policies" + self._security_policies.__str__(n + 1)
-                + "\t" * (n + 1) + "endpoints_size" + self._endpoints_size.__str__(n + 1)
-                + "\t" * (n + 1) + "endpoints" + self._endpoints.__str__(n + 1)
+                + "\t" * (1 if n is None else n+1) + "logger " + self._logger.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "build_info " + self._build_info.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "application_description " + self._application_description.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "server_certificate " + self._server_certificate.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "shutdown_delay " + self._shutdown_delay.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "verify_request_timestamp " + self._verify_request_timestamp.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "allow_empty_variables " + self._allow_empty_variables.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "custom_data_types " + self._custom_data_types.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "network_layers_size " + self._network_layers_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "network_layers " + self._network_layers.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "custom_hostname " + self._custom_hostname.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "security_policies_size " + self._security_policies_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "security_policies " + self._security_policies.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "endpoints_size " + self._endpoints_size.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "endpoints " + self._endpoints.__str__(1 if n is None else n+1)
                 + "\t" * (
-                        n + 1) + "security_policy_none_discovery_only" + self._security_policy_none_discovery_only.__str__(
+                        n + 1) + "security_policy_none_discovery_only " + self._security_policy_none_discovery_only.__str__(
                     n + 1)
-                + "\t" * (n + 1) + "node_lifecycle" + self._node_lifecycle.__str__(n + 1)
-                + "\t" * (n + 1) + "access_control" + self._access_control.__str__(n + 1)
-                + "\t" * (n + 1) + "nodestore" + self._nodestore.__str__(n + 1)
-                + "\t" * (n + 1) + "certificate_verification" + self._certificate_verification.__str__(n + 1)
-                + "\t" * (n + 1) + "max_secure_channels" + self._max_secure_channels.__str__(n + 1)
-                + "\t" * (n + 1) + "max_security_token_lifetime" + self._max_security_token_lifetime.__str__(n + 1)
-                + "\t" * (n + 1) + "max_sessions" + self._max_sessions.__str__(n + 1)
-                + "\t" * (n + 1) + "max_session_timeout" + self._max_session_timeout.__str__(n + 1)
-                + "\t" * (n + 1) + "max_nodes_per_read" + self._max_nodes_per_read.__str__(n + 1)
-                + "\t" * (n + 1) + "max_nodes_per_write" + self._max_nodes_per_write.__str__(n + 1)
-                + "\t" * (n + 1) + "max_nodes_per_method_call" + self._max_nodes_per_method_call.__str__(n + 1)
-                + "\t" * (n + 1) + "max_nodes_per_browse" + self._max_nodes_per_browse.__str__(n + 1)
-                + "\t" * (n + 1) + "max_nodes_per_register_nodes" + self._max_nodes_per_register_nodes.__str__(n + 1)
+                + "\t" * (1 if n is None else n+1) + "node_lifecycle " + self._node_lifecycle.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "access_control " + self._access_control.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "nodestore " + self._nodestore.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "certificate_verification " + self._certificate_verification.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_secure_channels " + self._max_secure_channels.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_security_token_lifetime " + self._max_security_token_lifetime.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_sessions " + self._max_sessions.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_session_timeout " + self._max_session_timeout.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_nodes_per_read " + self._max_nodes_per_read.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_nodes_per_write " + self._max_nodes_per_write.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_nodes_per_method_call " + self._max_nodes_per_method_call.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_nodes_per_browse " + self._max_nodes_per_browse.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_nodes_per_register_nodes " + self._max_nodes_per_register_nodes.__str__(1 if n is None else n+1)
                 + "\t" * (
-                        n + 1) + "max_nodes_per_translate_browse_paths_to_node_ids" + self._max_nodes_per_translate_browse_paths_to_node_ids.__str__(
+                        n + 1) + "max_nodes_per_translate_browse_paths_to_node_ids " + self._max_nodes_per_translate_browse_paths_to_node_ids.__str__(
                     n + 1)
-                + "\t" * (n + 1) + "max_nodes_per_node_management" + self._max_nodes_per_node_management.__str__(n + 1)
-                + "\t" * (n + 1) + "max_monitored_items_per_call" + self._max_monitored_items_per_call.__str__(n + 1)
-                + "\t" * (n + 1) + "max_references_per_node" + self._max_references_per_node.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "max_nodes_per_node_management " + self._max_nodes_per_node_management.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_monitored_items_per_call " + self._max_monitored_items_per_call.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "max_references_per_node " + self._max_references_per_node.__str__(1 if n is None else n+1))

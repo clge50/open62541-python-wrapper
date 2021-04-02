@@ -57,8 +57,8 @@ class UaMessageSecurityMode(UaType):
     def UA_MESSAGESECURITYMODE_FORCE32BIT():
         return UaMessageSecurityMode(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaMessageSecurityMode): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaMessageSecurityMode): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaStructureType +++++++++++++++++++++++
@@ -104,8 +104,8 @@ class UaStructureType(UaType):
     def UA_STRUCTURETYPE_FORCE32BIT():
         return UaStructureType(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaStructureType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaStructureType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaMonitoringMode +++++++++++++++++++++++
@@ -151,8 +151,8 @@ class UaMonitoringMode(UaType):
     def UA_MONITORINGMODE_FORCE32BIT():
         return UaMonitoringMode(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaMonitoringMode): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaMonitoringMode): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaBrowseResultMask +++++++++++++++++++++++
@@ -233,8 +233,8 @@ class UaBrowseResultMask(UaType):
     def UA_BROWSERESULTMASK_FORCE32BIT():
         return UaBrowseResultMask(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaBrowseResultMask): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaBrowseResultMask): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaAxisScaleEnumeration +++++++++++++++++++++++
@@ -280,8 +280,8 @@ class UaAxisScaleEnumeration(UaType):
     def UA_AXISSCALEENUMERATION_FORCE32BIT():
         return UaAxisScaleEnumeration(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaAxisScaleEnumeration): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaAxisScaleEnumeration): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaBrowseDirection +++++++++++++++++++++++
@@ -332,8 +332,8 @@ class UaBrowseDirection(UaType):
     def UA_BROWSEDIRECTION_FORCE32BIT():
         return UaBrowseDirection(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaBrowseDirection): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaBrowseDirection): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaTimestampsToReturn +++++++++++++++++++++++
@@ -389,8 +389,8 @@ class UaTimestampsToReturn(UaType):
     def UA_TIMESTAMPSTORETURN_FORCE32BIT():
         return UaTimestampsToReturn(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaTimestampsToReturn): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaTimestampsToReturn): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaNodeClass +++++++++++++++++++++++
@@ -466,8 +466,8 @@ class UaNodeClass(UaType):
     def UA_NODECLASS_FORCE32BIT():
         return UaNodeClass(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaNodeClass): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaNodeClass): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaSecurityTokenRequestType +++++++++++++++++++++++
@@ -508,8 +508,8 @@ class UaSecurityTokenRequestType(UaType):
     def UA_SECURITYTOKENREQUESTTYPE_FORCE32BIT():
         return UaSecurityTokenRequestType(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaSecurityTokenRequestType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaSecurityTokenRequestType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaApplicationType +++++++++++++++++++++++
@@ -560,8 +560,8 @@ class UaApplicationType(UaType):
     def UA_APPLICATIONTYPE_FORCE32BIT():
         return UaApplicationType(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaApplicationType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaApplicationType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaDeadbandType +++++++++++++++++++++++
@@ -607,8 +607,8 @@ class UaDeadbandType(UaType):
     def UA_DEADBANDTYPE_FORCE32BIT():
         return UaDeadbandType(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaDeadbandType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaDeadbandType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaDataChangeTrigger +++++++++++++++++++++++
@@ -654,8 +654,8 @@ class UaDataChangeTrigger(UaType):
     def UA_DATACHANGETRIGGER_FORCE32BIT():
         return UaDataChangeTrigger(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaDataChangeTrigger): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaDataChangeTrigger): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaUserTokenType +++++++++++++++++++++++
@@ -706,8 +706,8 @@ class UaUserTokenType(UaType):
     def UA_USERTOKENTYPE_FORCE32BIT():
         return UaUserTokenType(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaUserTokenType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaUserTokenType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaNodeAttributesMask +++++++++++++++++++++++
@@ -913,8 +913,8 @@ class UaNodeAttributesMask(UaType):
     def UA_NODEATTRIBUTESMASK_FORCE32BIT():
         return UaNodeAttributesMask(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaNodeAttributesMask): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaNodeAttributesMask): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaServerState +++++++++++++++++++++++
@@ -985,8 +985,8 @@ class UaServerState(UaType):
     def UA_SERVERSTATE_FORCE32BIT():
         return UaServerState(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaServerState): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaServerState): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaFilterOperator +++++++++++++++++++++++
@@ -1107,8 +1107,8 @@ class UaFilterOperator(UaType):
     def UA_FILTEROPERATOR_FORCE32BIT():
         return UaFilterOperator(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaFilterOperator): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaFilterOperator): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaRedundancySupport +++++++++++++++++++++++
@@ -1169,5 +1169,5 @@ class UaRedundancySupport(UaType):
     def UA_REDUNDANCYSUPPORT_FORCE32BIT():
         return UaRedundancySupport(2147483647)
 
-    def __str__(self, n=0):
-        return f"(UaRedundancySupport): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaRedundancySupport): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")

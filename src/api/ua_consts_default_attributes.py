@@ -7,7 +7,7 @@ from intermediateApi import ffi, lib
 from typing import Callable
 
 import ua_service_results_client as ClientServiceResult
-from ua_types import *
+from ua_types_clientconfig import *
 
 
 class UA_ATTRIBUTES_DEFAULT:

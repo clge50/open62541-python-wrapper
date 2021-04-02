@@ -9,7 +9,7 @@ from intermediateApi import lib, ffi
 from typing import Tuple
 
 import ua_service_results_server as ServerServiceResults
-from ua_types import *
+from ua_types_clientconfig import *
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 import typing
 

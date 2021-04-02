@@ -89,4 +89,4 @@ class UaList(UaType):
             raise AttributeError("invalid indexing")
 
     def __str__(self, n=None):
-        return str(self.value)
+        return str(self.value) + ("" if n is None else "\n")

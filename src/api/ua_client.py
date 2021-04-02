@@ -8,7 +8,7 @@ from typing import Callable
 
 import ua_service_results_client as ClientServiceResult
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
-from ua_types import *
+from ua_types_clientconfig import *
 
 
 class _ClientCallback:

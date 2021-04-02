@@ -1,4 +1,4 @@
-from ua_types_primitve import UaByte, UaUInt32
+from ua_types_primitive import UaByte, UaUInt32
 
 class UaAccessLevelMasks:
     READ = UaByte(1)

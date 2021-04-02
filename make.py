@@ -34,7 +34,7 @@ def generate_status_codes():
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define"))
         lines = list(map(lambda l: "\t" + l.split()[0].replace("UA_STATUSCODE_", "") +
                                    " = UaStatusCode(" + l.split()[1] + ")\n", lines))
-        lines.insert(0, "from ua_types import UaStatusCode\n\n\n")
+        lines.insert(0, "from ua_types_primitive import UaStatusCode\n\n\n")
         lines.insert(1, "class UA_STATUSCODES:\n")
 
     os.chdir(dirname + r"/build/wrappy_o6/")
@@ -50,7 +50,7 @@ def generate_node_ids():
         lines = list(map(lambda l: "\t" + l.split()[0].replace("UA_NS0ID_", "") +
                                    " = UaNodeId(0, " + l.split()[1] + ")\n", lines))
         lines.insert(0, "class UA_NS0ID:\n")
-        lines.insert(0, "from ua_types import UaNodeId\n")
+        lines.insert(0, "from ua_types_base import UaNodeId\n")
         lines.insert(1, "\n")
         lines.insert(1, "\n")
 
@@ -68,7 +68,7 @@ def generate_data_types():
         count = lines.pop(0)
         lines.insert(0, count.replace("UaDataType(val=lib.UA_TYPES[", "").replace("])", ""))
         lines.insert(0, "class UA_TYPES:\n")
-        lines.insert(0, "from ua_types import UaDataType\n")
+        lines.insert(0, "from ua_types_base import UaDataType\n")
         lines.insert(0, "from intermediateApi import ffi, lib\n")
         lines.insert(2, "\n")
         lines.insert(2, "\n")

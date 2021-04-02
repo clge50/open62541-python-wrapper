@@ -170,7 +170,7 @@ class UaAttributeId(UaType):
         return UaAttributeId(27)
 
     def __str__(self, n=0):
-        return f"(UaAttributeId): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaAttributeId): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaRuleHandling +++++++++++++++++++++++
@@ -215,7 +215,7 @@ class UaRuleHandling(UaType):
         return UaRuleHandling(3)
 
     def __str__(self, n=0):
-        return f"(UaRuleHandling): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaRuleHandling): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaOrder +++++++++++++++++++++++
@@ -255,7 +255,7 @@ class UaOrder(UaType):
         return UaOrder(1)
 
     def __str__(self, n=0):
-        return f"(UaOrder): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaOrder): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaSecureChannelState +++++++++++++++++++++++
@@ -320,7 +320,7 @@ class UaSecureChannelState(UaType):
         return UaSecureChannelState(7)
 
     def __str__(self, n=0):
-        return f"(UaSecureChannelState): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaSecureChannelState): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaSessionState +++++++++++++++++++++++
@@ -375,7 +375,7 @@ class UaSessionState(UaType):
         return UaSessionState(5)
 
     def __str__(self, n=0):
-        return f"(UaSessionState): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaSessionState): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # -------------------------------------------------------------
@@ -476,14 +476,14 @@ class UaNetworkStatistics(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaNetworkStatistics) : NULL\n"
+            return "(UaNetworkStatistics) : NULL" + ("" if n is None else "\n")
 
         return ("(UaNetworkStatistics) :\n"
-                + "\t" * (n + 1) + "current_connection_count" + self._current_connection_count.__str__(n + 1)
-                + "\t" * (n + 1) + "cumulated_connection_count" + self._cumulated_connection_count.__str__(n + 1)
-                + "\t" * (n + 1) + "rejected_connection_count" + self._rejected_connection_count.__str__(n + 1)
-                + "\t" * (n + 1) + "connection_timeout_count" + self._connection_timeout_count.__str__(n + 1)
-                + "\t" * (n + 1) + "connection_abort_count" + self._connection_abort_count.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "current_connection_count " + self._current_connection_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "cumulated_connection_count " + self._cumulated_connection_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "rejected_connection_count " + self._rejected_connection_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "connection_timeout_count " + self._connection_timeout_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "connection_abort_count " + self._connection_abort_count.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaSecureChannelStatistics +++++++++++++++++++++++
@@ -594,12 +594,12 @@ class UaSecureChannelStatistics(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaSecureChannelStatistics) : NULL\n"
+            return "(UaSecureChannelStatistics) : NULL" + ("" if n is None else "\n")
 
         return ("(UaSecureChannelStatistics) :\n"
-                + "\t" * (n + 1) + "current_channel_count" + self._current_channel_count.__str__(n + 1)
-                + "\t" * (n + 1) + "cumulated_channel_count" + self._cumulated_channel_count.__str__(n + 1)
-                + "\t" * (n + 1) + "rejected_channel_count" + self._rejected_channel_count.__str__(n + 1)
-                + "\t" * (n + 1) + "channel_timeout_count" + self._channel_timeout_count.__str__(n + 1)
-                + "\t" * (n + 1) + "channel_abort_count" + self._channel_abort_count.__str__(n + 1)
-                + "\t" * (n + 1) + "channel_purge_count" + self._channel_purge_count.__str__(n + 1))
+                + "\t" * (1 if n is None else n+1) + "current_channel_count " + self._current_channel_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "cumulated_channel_count " + self._cumulated_channel_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "rejected_channel_count " + self._rejected_channel_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "channel_timeout_count " + self._channel_timeout_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "channel_abort_count " + self._channel_abort_count.__str__(1 if n is None else n+1)
+                + "\t" * (1 if n is None else n+1) + "channel_purge_count " + self._channel_purge_count.__str__(1 if n is None else n+1))

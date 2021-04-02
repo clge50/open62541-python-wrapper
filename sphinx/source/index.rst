@@ -1,11 +1,11 @@
 Introduction
 ====================================================
 
-What is wrappy(06)?
+What is wrappy(o6)?
 ----------------------
 Wrappy(o6) is a python binding for open62541 (http://open62541.org).
-While wrappy(06) tries to be truthful to it's roots in terms of handling it still aims at offering some quality of life improvements and getting rid of certain c typical conventions which feel weird in python.
-If you are already familiar with open62541 and know some basic python you'll hopefully feel right at home in wrappy(06) we hope you'll feel right at home in Wrappy(06) and can make use of the vast range of available python libraries while still being able to use the well established open62541 as a backend.
+While wrappy(o6) tries to be truthful to it's roots in terms of handling it still aims at offering some quality of life improvements and getting rid of certain c typical conventions which feel weird in python.
+If you are already familiar with open62541 and know some basic python you'll hopefully feel right at home in wrappy(o6) we hope you'll feel right at home in Wrappy(o6) and can make use of the vast range of available python libraries while still being able to use the well established open62541 as a backend.
 
 License
 --------
@@ -15,7 +15,7 @@ open62541 python wrapper Features
 ---------------------------------
 
 .. Warning::
-    Please be aware that wrappy(06) is still in an early development phase. Please refer to :ref:`Open issues<Open issues>` for more information regarding open62541 features which are not available yet as well as general limitations and issues.
+    Please be aware that wrappy(o6) is still in an early development phase. Please refer to :ref:`Open issues<Open issues>` for more information regarding open62541 features which are not available yet as well as general limitations and issues.
 
 Getting started
 =================
@@ -28,14 +28,14 @@ Dependencies
 
 Installation
 ---------------------------------
-After you made sure that all dependencies are installed, to install wrappy(06) run the python script `make.py`.
-It will create a package `build/wrappy_o6` which holds all necessary modules to use wrappy(06).
+After you made sure that all dependencies are installed, to install wrappy(o6) run the python script `make.py`.
+It will create a package `build/wrappy_o6` which holds all necessary modules to use wrappy(o6).
 Simply import the module `ua` from `build/wrappy_o6` and you are good to go!
 
 
-First steps / learning how to use wrappy(06)
+First steps / learning how to use wrappy(o6)
 -------------------------------------------------
-Please refer to the `examples` directory to see some examples of the usage of wrappy(06). The tutorials named `example_tutorial_` aim to stick closely to the tutorials of open62541.
+Please refer to the `examples` directory to see some examples of the usage of wrappy(o6). The tutorials named `example_tutorial_` aim to stick closely to the tutorials of open62541.
 
 Information for wrappy(o6) developers
 ====================================================
