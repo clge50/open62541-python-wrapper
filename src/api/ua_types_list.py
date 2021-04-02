@@ -37,6 +37,8 @@ class UaList(UaType):
         else:
             if isinstance(ua_class(), UaType):
                 c_type = _get_c_type(ua_class()._ptr)
+                if c_type=="void":
+                    c_type = "void*"
             else:
                 raise AttributeError("'ua_class' has do be None or a subclass of UaType.")
 
@@ -76,7 +78,7 @@ class UaList(UaType):
         if 0 > index or index > self._size:
             raise KeyError("index out of bound")
         if isinstance(value, UaType):
-            self._ptr[index] = value._val
+            self._ptr[index] = value._ptr if self.ua_type is Void else value._val
 
     def __getitem__(self, index):
         if isinstance(index, int):
