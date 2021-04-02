@@ -68,29 +68,128 @@ Callbacks
    :members:
     UaServerConfig
 
-User generated types
+Custom Data Types
 ---------------------
 
-TODO
+Wrappy(o6) lacks sufficient support of custom data types. To a limited extend it is already possible to create custom data types since all necessary c types (namely
+``UA_DataType``, ``UA_DataTypeArray``, ``UA_ClientConfig.customDataTypes``, ``UA_DataTypeMember``, ``UA_DataType``) are available in wrappy(o6). Nevertheless an intuitive an efficient
+handling has yet to be accomplished.
+
+To achieve a satisfactory usability there are several issues to face, mostly regarding the typing in Python. In the following, the problems should be outlined and
+possible approaches to their solution should be discussed.
+
+In open62541 custom data types are representations of (structured) types such as structs, enums and unions. Mapping those types onto ``UA_DataTypeMembers`` and ``UA_DataTypes``
+is quite straight forward. In python there is much more work to do.
+Since python is highly dynamically typed it is harder to determine the structure of an object (and hence the offsets and paddings of its fields) by its class definition.
+Even with the typing library, most of the type hints do not apply at runtime (they mostly are really just *hints*). As a consequence there is no equivalent to the c function
+``offsetof()``. If the user should not be left with calculating the paddings all by themselves, a similar method – meaning a method which takes a class and returns the offsets
+or rather paddings of the fields (instance variables) – must be implemented in Python.
+We want to make a rough suggestion how this could be done (at least for custom data types based on namespace zero) and how to proceed to obtain the ``UaDataType``.
+
+For sake of the following explanations let uns suppose we want to build a custom data type corresponding to a struct like this.
+
+.. code-block:: c
+
+    typedef struct {
+        UA_Xxx field1;
+        UA_Yyy field2;
+        ...
+    } SomeType;
+
+How could this be translated to Python? One strategy could be using *NamedTuples*.
+
+
+Calculate the paddings
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The class `typing.NamedTuple <https://docs.python.org/3/library/typing.html>`_ provides struct-like easy to write objects with type hints.
+
+.. code-block:: python
+
+    class SomeType(NamedTuple):
+        field1: UaXxx
+        field2: UaYyy
+        ...
+
+It has to be examined whether and to which extend the type hints can be accessed via inflection at runtime.
+
+What we want for the calculation of the offset and the further procedure, are the entries in ``UA_TYPES`` related to the UaType classes of the NamedTuple's fields.
+Since every UaType class related to an entry in ``UA_TYPES`` knows that entry it would suffice to just get the UaType classes which are type hinted.
+In terms of our example this is ``UaXxx._UA_TYPE`` (which would be a c macro like ``UA_TYPES_XXX``), ``UaYyy._UA_TYPE`` and so on.
+
+If it is not possible to get these information via inflecting the type hints, there is another way to get the necessary information: The user has to provide default values for all fields.
+
+.. code-block:: python
+
+    class SomeType(NamedTuple):
+        field1: UaXxx = UaXxx()
+        field2: UaYyy = UaYyy()
+        ...
+
+Then ``SomeType`` can be passed to our method ``get_offset(...)``. The method ``get_offset(...)`` could invoke ``SomeType()`` which returns a NamedTuple – we call this instance ``some_type`` –
+with all the default values. The fields of ``some_type`` could now be inflected with ``type(some_type.fieldX)``. We get the UaType classes and by this the ``UA_TYPES``.
+Now we just need a mapping from the entries of ``UA_TYPES`` to the corresponding sizes. With this we could compute the paddings for all fields of our NamedTuple ``SomeType``
+and return them as a dict of pairs ``fieldX: <padding in bytes>``.
+
+
+With this information a user would be able to construct the ``UaDataTypeMembers`` and ``UaDataTypes`` similar to open62541. But still this would not feel like Python.
+We rather want a static method – let us call it ``from_data_type_model(...)`` – in ``UaDataType`` which takes a class (f.e. a NamedTuple) and returns an instance of ``UaDataType``.
+
+Construct the UaDataTypeMembers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Our method ``from_data_type_model(...)`` at first has to construct the UaDataTypeMembers. Therefore the following fields need to be determined.
+
+* *padding*: Already discussed above
+* *member_type_index*: Extracted for calculation of the padding as described above
+* *namespace_zero*: ``UaBoolean(True)`` since the proposed procedure can only be applied on types from namespace zero (a transfer should be possible)
+* *is_array*: The user has to use ``UaList`` in the NamedTuple to indicate that the field is an array. Since ``UaList`` knows its base type class *member_type_index* and *padding* (size of a pointer) can still be inferred
+* *is_optional*: Somehow this has to be encoded in the NamedTuple
+
+    * One option is to write some kind of UaDataType interface – let's call this class *UaDataTypeModel* – such that every class representing a custom data type has to implement *UaDataTypeModel*. One could also think of implementing annotations for optional fields.
+
+* *member_name*: Can be inflected from the NamedTuple
+
+Construct the UaDataType
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In a second step our method ``from_data_type_model(...)`` has to build a ``UaDataType`` from those ``UaDataTypeMembers``. Therefore we need the following fields:
+
+* *type_id*: Could be an argument passed to the method and determined by the user (might also be Null and requested from the server)
+* *binary_encoding_id*: As well determined by the user (could be passed as a separate argument or encoded via our interface  *UaDataTypeModel* from above)
+* *mem_size*: Can be calculated together with the paddings
+* *type_index*: Either determined by the user or as the next free index of global list of custom data types
+* *type_kind*: This again could be encoded in our in our interface *UaDataTypeModel*
+
+    * Note that the described procedure using NamedTuples applies to structures and structures with optional fields. With some adjustments it could be used for unions as well. It might also be used to represent enums. Nonetheless, this would be counterintuitive since one would expect static fields instead of the instance variables provided by NamedTuple.
+
+* *member_size*: Length of the ``UaList`` with the ``UaDataTypeMembers``
+* *type_name*: Can be inflected from the NamedTuple
+
+*Good Luck! :)*
+
 
 Open issues
 ------------
 
-Currently there still a lot of open issues which need to be addressed in order to ensure a satisfying usability and stability of wrappy(o6):
+Currently there are still a lot of open issues which need to be addressed in order to ensure a satisfying usability and stability of wrappy(o6):
 
 * tests are still very lacking. There are currently only tests for the UaClient and they are not semantically sound. So there is definitely a need for tests for the UaClient, UaServer and UaTypes.
 * The current handling of callbacks / function pointers has some major issues / restrictions. A reimplementation or adaptions to improve usability should be considered. Please refer to the :ref:`Callbacks<Callbacks>` for additional information.
-* User generated types are not yet supported. Please find a draft / outline of a possible implementation strategy in the chapter :ref:`User generated types<User generated types>`.
+* Custom data types are not yet supported. Please find a draft / outline of a possible implementation strategy in the chapter :ref:`Custom Data Types<Custom Data Types>`.
 * Historizing is not supported yet
 * Pub/sub is not supported yet
 * build script has not been tested under systems other than Ubuntu 18.04/20.04
 * the documentation needs to be improved to smoothen the experience for new users. Some topics worth mentioning:
+
     * UaList handling
     * Void type handling
     * casting
+
 * UaClientConfig and UaServerConfig are still missing some fields for lower level configurations (e.g. due to opaque type definitions).
 * There is not yet a solution for double pointers (e.g. UA_Variant**).
 * type handling could further be improved
+
     * by expanding "type guessing"
     * Filling variables of UaTypes could be improved, e.g. via additional __init__ parameters / pseudo constructor methods / builder pattern
     * implicitly applying functions which are explicit in open62541 (see e.g. `setScalar` and `setArray` handling in UaVariant data setter)
