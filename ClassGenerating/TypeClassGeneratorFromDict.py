@@ -69,14 +69,14 @@ class {to_python_class_name(struct_name)}(UaType):
          tab * 2 + f"self._value.{attr} = val._val"),
         attribute_to_type.keys()))}
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "({to_python_class_name(struct_name)}) : NULL\\n"
+            return "({to_python_class_name(struct_name)}) : NULL" + ("" if n is None else "\\n")
 
-        return ("({to_python_class_name(struct_name)}) :\\n"
+        return ("({to_python_class_name(struct_name)})" + ("" if n is None else "\\n")
 {new_line.join(map(
         lambda attr:
-        tab * 4 + "+ " + f"{quote}{backslash}t{quote}*(n+1) + {quote}{to_python_ident(attr)}{quote} + self._{to_python_ident(attr)}.__str__(n+1)",
+        tab * 4 + "+ " + f"{quote}{backslash}t{quote}*(1 if n is None else n+1) + {quote}{to_python_ident(attr)} {quote} + self._{to_python_ident(attr)}.__str__(1 if n is None else n+1)",
         attribute_to_type.keys()))})
 
 
@@ -121,12 +121,12 @@ class {to_python_class_name(enum_name)}(UaType):
 {new_line.join(map(
         lambda attr:
         f"{tab}@staticmethod" +
-        f"{new_line}{tab}def {strip_enum_ident(attr)}():" +
+        f"{new_line}{tab}def {strip_enum_ident(attr)}(): " +
         f"{new_line}{tab}{tab}return {to_python_class_name(enum_name)}({ident_to_val[attr]}){new_line}",
         ident_to_val.keys()))}
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         return f"({to_python_class_name(enum_name)
-    }): {l_brace}self.val_to_string[self._val]{r_brace} ({l_brace}str(self._val){r_brace})\\n"
+    }): {l_brace}self.val_to_string[self._val]{r_brace} ({l_brace}str(self._val){r_brace})" + ("" if n is None else "\\n")
 
 
 """
