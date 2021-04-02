@@ -52,7 +52,7 @@ class UaValueBackendType(UaType):
         return UaValueBackendType(3)
 
     def __str__(self, n=0):
-        return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaValueCallback +++++++++++++++++++++++
@@ -109,11 +109,11 @@ class UaValueCallback(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaValueCallback): NULL\n"
+            return "(UaValueCallback): NULL" + ("" if n is None else "\n")
 
         return ("(UaValueCallback):\n" +
-                "\t" * (n + 1) + "read_callback" + str(self._read_callback) +
-                "\t" * (n + 1) + "write_callback" + str(self._write_callback) + "\n")
+                "\t" * (1 if n is None else n+1) + "read_callback" + str(self._read_callback) +
+                "\t" * (1 if n is None else n+1) + "write_callback" + str(self._write_callback) + "\n")
 
 
 class UaValueBackend(UaType):
@@ -203,13 +203,13 @@ class UaValueBackend(UaType):
     # todo: check backend type and only print relevant fields
     def __str__(self, n=0):
         if self._null:
-            return "(UaValueBackend): NULL\n"
+            return "(UaValueBackend): NULL" + ("" if n is None else "\n")
 
         return ("(UaValueBackend):\n" +
-                "\t" * (n + 1) + "backend_type" + str(self._backend_type) +
-                "\t" * (n + 1) + "data_value" + str(self._data_value) +
-                "\t" * (n + 1) + "callback" + str(self._callback) +
-                "\t" * (n + 1) + "data_source" + str(self._data_source) + "\n")
+                "\t" * (1 if n is None else n+1) + "backend_type" + str(self._backend_type) +
+                "\t" * (1 if n is None else n+1) + "data_value" + str(self._data_value) +
+                "\t" * (1 if n is None else n+1) + "callback" + str(self._callback) +
+                "\t" * (1 if n is None else n+1) + "data_source" + str(self._data_source) + "\n")
 
 
 class UaExternalValueCallback(UaType):
@@ -299,7 +299,7 @@ class UaValueBackendType(UaType):
         return UaValueBackendType(3)
 
     def __str__(self, n=0):
-        return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+        return f"(UaValueBackendType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 class UaDataSource(UaType):
@@ -351,8 +351,8 @@ class UaDataSource(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UA_DataSource) : NULL\n"
+            return "(UA_DataSource) : NULL" + ("" if n is None else "\n")
 
         return ("(UA_DataSource) :\n" +
-                "\t" * (n + 1) + "read_callback" + str(self._read_callback) +
-                "\t" * (n + 1) + "write_callback" + str(self._write_callback) + "\n")
+                "\t" * (1 if n is None else n+1) + "read_callback" + str(self._read_callback) +
+                "\t" * (1 if n is None else n+1) + "write_callback" + str(self._write_callback) + "\n")

@@ -31,6 +31,10 @@ class UaBoolean(UaType):
     def value(self):
         return bool(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_Boolean")
@@ -70,6 +74,10 @@ class UaSByte(UaType):
     @property
     def value(self):
         return int(self._val)
+
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -147,6 +155,10 @@ class UaByte(UaType):
     def value(self):
         return int(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_Byte")
@@ -222,6 +234,10 @@ class UaInt16(UaType):
     @property
     def value(self):
         return int(self._val)
+
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -299,6 +315,10 @@ class UaUInt16(UaType):
     def value(self):
         return int(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_UInt16")
@@ -375,6 +395,10 @@ class UaInt32(UaType):
     def value(self):
         return int(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_Int32")
@@ -448,6 +472,10 @@ class UaUInt32(UaType):
     @property
     def value(self):
         return int(self._val)
+
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -525,6 +553,10 @@ class UaInt64(UaType):
     def value(self):
         return int(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_Int64")
@@ -600,6 +632,10 @@ class UaUInt64(UaType):
     @property
     def value(self):
         return int(self._val)
+
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -677,6 +713,10 @@ class UaFloat(UaType):
     def value(self):
         return float(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_Float")
@@ -738,6 +778,10 @@ class UaDouble(UaType):
     @property
     def value(self):
         return float(self._val)
+
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
 
     def _set_value(self, val):
         if self._is_pointer:
@@ -803,6 +847,10 @@ class UaStatusCode(UaType):
     def value(self):
         return int(self._val)
 
+    @value.setter
+    def value(self, val):
+        self._value[0] = val
+
     def _set_value(self, val):
         if self._is_pointer:
             self._value = _ptr(val, "UA_StatusCode")
@@ -813,7 +861,8 @@ class UaStatusCode(UaType):
         if self._null:
             return "(UaStatusCode) : NULL" + ("" if n is None else "\n")
         else:
-            return "(UaStatusCode): " + ffi.string(lib.UA_StatusCode_name(self._val)).decode("utf-8") + ("" if n is None else "\n")
+            return "(UaStatusCode): " + ffi.string(lib.UA_StatusCode_name(self._val)).decode("utf-8") + (
+                "" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == (other._val if isinstance(other, UaType) else other)

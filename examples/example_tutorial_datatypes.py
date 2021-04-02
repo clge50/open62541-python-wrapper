@@ -2,6 +2,7 @@ from ua import *
 
 
 def variables_basics():
+    print(UaInt32(l[0]))
     i = UaInt32(5)
     j = UaInt32(i)  # todo: adapt constructor type hint
     k = i + j
@@ -13,11 +14,16 @@ def variables_basics():
     print(f"l + i = {l + i}")
     print(f"i + l = {i + l}")
 
+    # For primitive types is the python type with .value accessible.
+    k.value = 42
+    print(f"k = {k}")
+
     s = UaString("test")
-    s2 = UaString(s)  # todo: adapt constructor type hint
-
+    s2 = UaString(s)
+    # For UaString .value only allows read access. Since for a longer string ne memory must be allocated
+    # the object would not stay "the same" for writing the value.
     s3 = UaString("test2")
-
+    print(f"s3.value is: {s3.value}")
     print(f"s == s2: {s == s2}")
     print(f"s2 == s3: {s3 == s2}")
     print(f"s2 + s3: {s3 + s2}")
@@ -48,7 +54,7 @@ def variables_variants():
     i = UaInt32(42)
     v.data = i
 
-    v2 = UaVariant(v)  # todo: adapt constructor type hint
+    v2 = UaVariant(v)
 
     v3 = UaVariant()
     d = UaList([1.0, 2.0, 3.0,

@@ -218,19 +218,19 @@ class UaClientConfig(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaClientConfig) : NULL\n"
+            return "(UaClientConfig) : NULL" + ("" if n is None else "\n")
 
         return ("(UaClientConfig) :\n" +
-                "\t" * (n + 1) + "logger" + self._logger.__str__(n + 1) +
-                "\t" * (n + 1) + "timeout" + self._timeout.__str__(n + 1) +
-                "\t" * (n + 1) + "client_description" + self._client_description.__str__(n + 1) +
-                "\t" * (n + 1) + "user_identity_token" + self._user_identity_token.__str__(n + 1) +
-                "\t" * (n + 1) + "security_mode." + self._security_mode.__str__(n + 1) +
-                "\t" * (n + 1) + "security_policy_uri" + self._security_policy_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "endpoint" + self._endpoint.__str__(n + 1) +
-                "\t" * (n + 1) + "user_token_policy" + self._user_token_policy.__str__(n + 1) +
-                "\t" * (n + 1) + "secure_channel_life_time" + self._secure_channel_life_time.__str__(n + 1) +
-                "\t" * (n + 1) + "requested_session_timeout" + self._requested_session_timeout.__str__(n + 1) +
-                "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "connectivity_check_interval" + self._connectivity_check_interval.__str__(n + 1) +
-                "\t" * (n + 1) + "custom_data_types" + self._custom_data_types.__str__(n + 1))
+                "\t" * (1 if n is None else n+1) + "logger " + self._logger.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "timeout " + self._timeout.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "client_description " + self._client_description.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "user_identity_token " + self._user_identity_token.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "security_mode. " + self._security_mode.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "security_policy_uri " + self._security_policy_uri.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "endpoint " + self._endpoint.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "user_token_policy " + self._user_token_policy.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "secure_channel_life_time " + self._secure_channel_life_time.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "requested_session_timeout " + self._requested_session_timeout.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "connectivity_check_interval " + self._connectivity_check_interval.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "connectivity_check_interval " + self._connectivity_check_interval.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "custom_data_types " + self._custom_data_types.__str__(1 if n is None else n+1))

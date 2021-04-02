@@ -5,7 +5,7 @@
 from typing import Any
 from ua_consts_types_raw import _UA_TYPES
 from intermediateApi import ffi, lib
-from ua_types_primitve import *
+from ua_types_primitive import *
 from ua_types_list import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
@@ -55,8 +55,8 @@ class UaNodeIdType(UaType):
     def BYTESTRING():
         return UaNodeIdType(5)
 
-    def __str__(self, n=0):
-        return f"(UaNodeIdType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaNodeIdType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaVariantStorageType +++++++++++++++++++++++
@@ -90,8 +90,8 @@ class UaVariantStorageType(UaType):
     def DATA_NODELETE():
         return UaVariantStorageType(1)
 
-    def __str__(self, n=0):
-        return f"(UaVariantStorageType): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaVariantStorageType): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaExtensionObjectEncoding +++++++++++++++++++++++
@@ -140,8 +140,8 @@ class UaExtensionObjectEncoding(UaType):
     def DECODED_NODELETE():
         return UaExtensionObjectEncoding(4)
 
-    def __str__(self, n=0):
-        return f"(UaExtensionObjectEncoding): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaExtensionObjectEncoding): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaDataTypeKind +++++++++++++++++++++++
@@ -320,8 +320,8 @@ class UaDataTypeKind(UaType):
     def BITFIELDCLUSTER():
         return UaDataTypeKind(30)
 
-    def __str__(self, n=0):
-        return f"(UaDataTypeKind): {self.val_to_string[self._val]} ({str(self._val)})\n"
+    def __str__(self, n=None):
+        return f"(UaDataTypeKind): {self.val_to_string[self._val]} ({str(self._val)})" + ("" if n is None else "\n")
 
 
 # -------------------------------------------------------------
@@ -403,8 +403,8 @@ class UaString(UaType):
             return "NULL"
         return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val).decode("utf-8")
 
-    def __str__(self, n=0):
-        return "(UaString): " + self.value
+    def __str__(self, n=None):
+        return "(UaString): " + self.value + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
@@ -444,8 +444,8 @@ class UaDateTime(UaType):
         else:
             self._value[0] = ffi.cast("UA_DateTime", _val(val))
 
-    def __str__(self, n=0):
-        return "(UaDateTime): " + str(self._val)
+    def __str__(self, n=None):
+        return "(UaDateTime): " + str(self._val) + ("" if n is None else "\n")
 
     def __eq__(self, other):
         return self._val == other._val
@@ -622,14 +622,14 @@ class UaDateTimeStruct(UaType):
         self._year = val
         self._value.year = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(UaDateTimeStruct) : NULL"
+            return "(UaDateTimeStruct) : NULL" + ("" if n is None else "\n")
 
-        return ("(UaDateTimeStruct) :\n" +
-                "\t" * (n + 1) + f"{self._year.value}-{self._month.value:02d}-{self._day.value:02d} " +
+        return ("(UaDateTimeStruct):\n" +
+                "\t" * (1 if n is None else n+1) + f"{self._year.value}-{self._month.value:02d}-{self._day.value:02d} " +
                 f"{self._hour.value:02d}:{self._min.value:02d}:{self._sec.value:02d}." +
-                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}")
+                f"{self._milli_sec.value:03d}.{self._micro_sec.value:03d}.{self._nano_sec.value:03d}" + ("" if n is None else "\n"))
 
     def to_primitive(self):
         return UaDateTime(lib.UA_DateTime_fromStruct(self._val))
@@ -736,7 +736,7 @@ class UaGuid(UaType):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaGuid) : NULL"
 
@@ -750,7 +750,7 @@ class UaGuid(UaType):
         for i in range(2, 8):
             d5 += '{0:0{1}X}'.format(self._data4._ptr[i], 2)
 
-        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}"
+        return "(UaGuid): " + f"{d1}-{d2}-{d3}-{d4}-{d5}" + ("" if n is None else "\n")
 
     @staticmethod
     def random():
@@ -891,13 +891,13 @@ class UaNodeId(UaType):
     #     self._identifier = val
     #     self._value.identifier = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "NULL"
-        return ("(UaNodeId) :\n" +
-                "\t" * (n + 1) + "namespace_index" + self._namespace_index.__str__(n + 1) +
-                "\t" * (n + 1) + "identifier_type" + self._identifier_type.__str__(n + 1) +
-                "\t" * (n + 1) + "identifier" + self._identifier.__str__(n + 1))
+        return ("(UaNodeId):\n" +
+                "\t" * (1 if n is None else n+1) + "namespace_index" + self._namespace_index.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "identifier_type" + self._identifier_type.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "identifier" + self._identifier.__str__(1 if n is None else n+1))
 
     def __eq__(self, other):
         return lib.UA_NodeId_equal(self._ptr, other._ptr)
@@ -1026,14 +1026,14 @@ class UaExpandedNodeId(UaType):
         self._server_index = val
         self._value.serverIndex = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaExpandedNodeId) : NULL"
 
-        return ("(UaExpandedNodeId) :\n" +
-                "\t" * (n + 1) + "node_id" + self._node_id.__str__(n + 1) +
-                "\t" * (n + 1) + "namespace_uri" + self._namespace_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "server_index" + self._server_index.__str__(n + 1))
+        return ("(UaExpandedNodeId):\n" +
+                "\t" * (1 if n is None else n+1) + "node_id" + self._node_id.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "namespace_uri" + self._namespace_uri.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "server_index" + self._server_index.__str__(1 if n is None else n+1))
 
     def is_local(self):
         return lib.UA_ExpandedNodeId_isLocal(self._ptr)
@@ -1138,13 +1138,13 @@ class UaQualifiedName(UaType):
         self._name = val
         self._value.name = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaQualifiedName) : NULL"
 
-        return ("(UaQualifiedName) :\n" +
-                "\t" * (n + 1) + "namespace_index" + self._namespace_index.__str__(n + 1) +
-                "\t" * (n + 1) + "name" + self._name.__str__(n + 1))
+        return ("(UaQualifiedName):\n" +
+                "\t" * (1 if n is None else n+1) + "namespace_index" + self._namespace_index.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "name" + self._name.__str__(1 if n is None else n+1))
 
     def is_null(self):
         return lib.UA_QualifiedName_isNull(self._ptr)
@@ -1235,13 +1235,13 @@ class UaLocalizedText(UaType):
         self._text = val
         self._value.text = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaLocalizedText) : NULL"
 
-        return ("(UaLocalizedText) :\n" +
-                "\t" * (n + 1) + "locale" + self._locale.__str__(n + 1) +
-                "\t" * (n + 1) + "text" + self._text.__str__(n + 1))
+        return ("(UaLocalizedText):\n" +
+                "\t" * (1 if n is None else n+1) + "locale" + self._locale.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "text" + self._text.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaNumericRangeDimension +++++++++++++++++++++++
@@ -1295,13 +1295,13 @@ class UaNumericRangeDimension(UaType):
         self._max = val
         self._value.max = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaNumericRangeDimension) : NULL"
 
-        return ("(UaNumericRangeDimension) :\n" +
-                "\t" * (n + 1) + "min" + self._min.__str__(n + 1) +
-                "\t" * (n + 1) + "max" + self._max.__str__(n + 1))
+        return ("(UaNumericRangeDimension):\n" +
+                "\t" * (1 if n is None else n+1) + "min" + self._min.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "max" + self._max.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaNumericRange +++++++++++++++++++++++
@@ -1354,13 +1354,13 @@ class UaNumericRange(UaType):
         self._dimensions = val
         self._value.dimensions = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaNumericRange) : NULL"
 
-        return ("(UaNumericRange) :\n" +
-                "\t" * (n + 1) + "dimensions_size" + self._dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "dimensions" + self._dimensions.__str__(n + 1))
+        return ("(UaNumericRange):\n" +
+                "\t" * (1 if n is None else n+1) + "dimensions_size" + self._dimensions_size.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "dimensions" + self._dimensions.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaVariant +++++++++++++++++++++++
@@ -1483,17 +1483,17 @@ class UaVariant(UaType):
         self._array_dimensions = val
         self._value.arrayDimensions = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaVariant) : NULL"
 
-        return ("(UaVariant) :\n" +
-                "\t" * (n + 1) + "type" + self._type.__str__(n + 1) +
-                "\t" * (n + 1) + "storage_type" + self._storage_type.__str__(n + 1) +
-                "\t" * (n + 1) + "array_length" + self._array_length.__str__(n + 1) +
-                "\t" * (n + 1) + "data" + self._data.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions_size" + self._array_dimensions_size.__str__(n + 1) +
-                "\t" * (n + 1) + "array_dimensions" + self._array_dimensions.__str__(n + 1))
+        return ("(UaVariant):\n" +
+                "\t" * (1 if n is None else n+1) + "type" + self._type.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "storage_type" + self._storage_type.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "array_length" + self._array_length.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "data" + self._data.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "array_dimensions_size" + self._array_dimensions_size.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "array_dimensions" + self._array_dimensions.__str__(1 if n is None else n+1))
 
     def is_empty(self):
         return lib.UA_Variant_isEmpty(self._ptr)
@@ -1754,23 +1754,23 @@ class UaDataValue(UaType):
         self._has_server_picoseconds = val
         self._value.hasServerPicoseconds = val._val
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaDataValue) : NULL"
 
-        return ("(UaDataValue) :\n" +
-                "\t" * (n + 1) + "variant" + self._variant.__str__(n + 1) +
-                "\t" * (n + 1) + "source_timestamp" + self._source_timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "server_timestamp" + self._server_timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "source_picoseconds" + self._source_picoseconds.__str__(n + 1) +
-                "\t" * (n + 1) + "server_picoseconds" + self._server_picoseconds.__str__(n + 1) +
-                "\t" * (n + 1) + "status" + self._status.__str__(n + 1) +
-                "\t" * (n + 1) + "has_variant" + self._has_variant.__str__(n + 1) +
-                "\t" * (n + 1) + "has_status" + self._has_status.__str__(n + 1) +
-                "\t" * (n + 1) + "has_source_timestamp" + self._has_source_timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "has_server_timestamp" + self._has_server_timestamp.__str__(n + 1) +
-                "\t" * (n + 1) + "has_source_picoseconds" + self._has_source_picoseconds.__str__(n + 1) +
-                "\t" * (n + 1) + "has_server_picoseconds" + self._has_server_picoseconds.__str__(n + 1))
+        return ("(UaDataValue):\n" +
+                "\t" * (1 if n is None else n+1) + "variant" + self._variant.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "source_timestamp" + self._source_timestamp.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "server_timestamp" + self._server_timestamp.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "source_picoseconds" + self._source_picoseconds.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "server_picoseconds" + self._server_picoseconds.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "status" + self._status.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_variant" + self._has_variant.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_status" + self._has_status.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_source_timestamp" + self._has_source_timestamp.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_server_timestamp" + self._has_server_timestamp.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_source_picoseconds" + self._has_source_picoseconds.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_server_picoseconds" + self._has_server_picoseconds.__str__(1 if n is None else n+1))
 
 
 class UaExtensionObject(UaType):
@@ -1845,14 +1845,14 @@ class UaExtensionObject(UaType):
     #     self._data = val
     #     self._value.data = val._val if self._encoding._value < 3 else val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaExtensionObject) : NULL"
 
-        return ("(UaExtensionObject) :\n" +
-                "\t" * (n + 1) + "encoding" + self._encoding.__str__(n + 1) +
-                "\t" * (n + 1) + "type" + self._type.__str__(n + 1) +
-                "\t" * (n + 1) + "data" + self._data.__str__(n + 1))
+        return ("(UaExtensionObject):\n" +
+                "\t" * (1 if n is None else n+1) + "encoding" + self._encoding.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "type" + self._type.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "data" + self._data.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaDiagnosticInfo +++++++++++++++++++++++
@@ -2077,25 +2077,25 @@ class UaDiagnosticInfo(UaType):
     #     self._inner_diagnostic_info = val
     #     self._value.innerDiagnosticInfo = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaDiagnosticInfo) : NULL"
 
-        return ("(UaDiagnosticInfo) :\n" +
-                "\t" * (n + 1) + "has_symbolic_id" + self._has_symbolic_id.__str__(n + 1) +
-                "\t" * (n + 1) + "has_namespace_uri" + self._has_namespace_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "has_localized_text" + self._has_localized_text.__str__(n + 1) +
-                "\t" * (n + 1) + "has_locale" + self._has_locale.__str__(n + 1) +
-                "\t" * (n + 1) + "has_additional_info" + self._has_additional_info.__str__(n + 1) +
-                "\t" * (n + 1) + "has_inner_status_code" + self._has_inner_status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "has_inner_diagnostic_info" + self._has_inner_diagnostic_info.__str__(n + 1) +
-                "\t" * (n + 1) + "symbolic_id" + self._symbolic_id.__str__(n + 1) +
-                "\t" * (n + 1) + "namespace_uri" + self._namespace_uri.__str__(n + 1) +
-                "\t" * (n + 1) + "localized_text" + self._localized_text.__str__(n + 1) +
-                "\t" * (n + 1) + "locale" + self._locale.__str__(n + 1) +
-                "\t" * (n + 1) + "additional_info" + self._additional_info.__str__(n + 1) +
-                "\t" * (n + 1) + "inner_status_code" + self._inner_status_code.__str__(n + 1) +
-                "\t" * (n + 1) + "inner_diagnostic_info" + self._inner_diagnostic_info.__str__(n + 1))
+        return ("(UaDiagnosticInfo):\n" +
+                "\t" * (1 if n is None else n+1) + "has_symbolic_id" + self._has_symbolic_id.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_namespace_uri" + self._has_namespace_uri.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_localized_text" + self._has_localized_text.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_locale" + self._has_locale.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_additional_info" + self._has_additional_info.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_inner_status_code" + self._has_inner_status_code.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "has_inner_diagnostic_info" + self._has_inner_diagnostic_info.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "symbolic_id" + self._symbolic_id.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "namespace_uri" + self._namespace_uri.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "localized_text" + self._localized_text.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "locale" + self._locale.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "additional_info" + self._additional_info.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "inner_status_code" + self._inner_status_code.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "inner_diagnostic_info" + self._inner_diagnostic_info.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaDataTypeMember +++++++++++++++++++++++
@@ -2205,17 +2205,17 @@ class UaDataTypeMember(UaType):
         self._member_name = val
         self._value.memberName = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaDataTypeMember) : NULL"
 
-        return ("(UaDataTypeMember) :\n" +
-                "\t" * (n + 1) + "member_type_index" + self._member_type_index.__str__(n + 1) +
-                "\t" * (n + 1) + "padding" + self._padding.__str__(n + 1) +
-                "\t" * (n + 1) + "namespace_zero" + self._namespace_zero.__str__(n + 1) +
-                "\t" * (n + 1) + "is_array" + self._is_array.__str__(n + 1) +
-                "\t" * (n + 1) + "is_optional" + self._is_optional.__str__(n + 1) +
-                "\t" * (n + 1) + "member_name" + self._member_name.__str__(n + 1))
+        return ("(UaDataTypeMember):\n" +
+                "\t" * (1 if n is None else n+1) + "member_type_index" + self._member_type_index.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "padding" + self._padding.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "namespace_zero" + self._namespace_zero.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "is_array" + self._is_array.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "is_optional" + self._is_optional.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "member_name" + self._member_name.__str__(1 if n is None else n+1))
 
 
 # +++++++++++++++++++ UaDataType +++++++++++++++++++++++
@@ -2381,21 +2381,21 @@ class UaDataType(UaType):
         self._type_name = val
         self._value.typeName = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaDataType) : NULL"
 
-        return ("(UaDataType) :\n" +
-                "\t" * (n + 1) + "type_id" + self._type_id.__str__(n + 1) +
-                "\t" * (n + 1) + "binary_encoding_id" + self._binary_encoding_id.__str__(n + 1) +
-                "\t" * (n + 1) + "mem_size" + self._mem_size.__str__(n + 1) +
-                "\t" * (n + 1) + "type_index" + self._type_index.__str__(n + 1) +
-                "\t" * (n + 1) + "type_kind" + self._type_kind.__str__(n + 1) +
-                "\t" * (n + 1) + "pointer_free" + self._pointer_free.__str__(n + 1) +
-                "\t" * (n + 1) + "overlayable" + self._overlayable.__str__(n + 1) +
-                "\t" * (n + 1) + "members_size" + self._members_size.__str__(n + 1) +
-                "\t" * (n + 1) + "members" + self._members.__str__(n + 1) +
-                "\t" * (n + 1) + "type_name" + self._type_name.__str__(n + 1))
+        return ("(UaDataType):\n" +
+                "\t" * (1 if n is None else n+1) + "type_id" + self._type_id.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "binary_encoding_id" + self._binary_encoding_id.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "mem_size" + self._mem_size.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "type_index" + self._type_index.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "type_kind" + self._type_kind.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "pointer_free" + self._pointer_free.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "overlayable" + self._overlayable.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "members_size" + self._members_size.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "members" + self._members.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "type_name" + self._type_name.__str__(1 if n is None else n+1))
 
     def is_numeric(self):
         return lib.UA_DataType_isNumeric(self._ptr)
@@ -2481,14 +2481,14 @@ class UaDataTypeArray(UaType):
         self._types = val
         self._value.types = val._ptr
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
             return "(UaDataTypeArray) : NULL"
 
-        return ("(UaDataTypeArray) :\n" +
-                "\t" * (n + 1) + "next" + self._next.__str__(n + 1) +
-                "\t" * (n + 1) + "types_size" + self._types_size.__str__(n + 1) +
-                "\t" * (n + 1) + "types" + self._types.__str__(n + 1))
+        return ("(UaDataTypeArray):\n" +
+                "\t" * (1 if n is None else n+1) + "next" + self._next.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "types_size" + self._types_size.__str__(1 if n is None else n+1) +
+                "\t" * (1 if n is None else n+1) + "types" + self._types.__str__(1 if n is None else n+1))
 
 
 class Randomize:

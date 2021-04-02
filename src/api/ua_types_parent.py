@@ -108,5 +108,5 @@ class UaType:
         """
         return self._value
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         return str(self._val)

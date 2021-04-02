@@ -1,4 +1,4 @@
-from ua_types import *
+from ua_types_clientconfig import *
 from ua_types_list import *
 from ua_server import UaServer
 from ua_client import UaClient
