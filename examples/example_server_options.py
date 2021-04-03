@@ -1,41 +1,40 @@
 from time import sleep
-import sys
 from signal import signal, SIGINT, SIGTERM
 
-sys.path.append("../build/wrappy_o6")
 from ua import *
 
 
-# per default one endpoint on localhost, port 4840
 def get_default_server():
+    """Per Default this returns a server with exactly one endpoint on localhost, port 4840."""
     return UaServer()
 
 
-# server with one endpoint with specified port on localhost
 def get_server_with_port():
+    """This returns a server with exactly one endpoint with specified port on localhost."""
     return UaServer(4841)
 
 
-# server with one endpoint with specified port and hostname
 def get_server_with_hostname_and_port():
+    """This returns a server with exactly one endpoint with specified port and hostname."""
     return UaServer(("localhost", 4841))
 
 
-# server from server config
 def get_server_from_config():
+    """This returns a server with a specified config.
+    Unfortunately the open62541 builder functions for server configs are not supported yet."""
     config = UaServerConfig.get_default()
     return UaServer(config)
 
 
 def use_server_run(server: UaServer):
-    # run() is blocking so it has to be called at the end of a script.
-    # With the the signal handler the server can be stopped via sigint
+    """The method ``run()`` is blocking so it has to be called at the end of a script.
+    With a signal handler the server can be stopped (in this example via sigint)"""
     server.run()
 
 
 def use_server_run_async(server: UaServer):
-    # run_async() invokes run() in a another thread (returned by the method) so it it is non-blocking.
-    # per default the thread is not a daemon (this can be changed by passing True)
+    """The method ``run_async()`` invokes ``run()`` in another thread (returned by the method) so it is non-blocking.
+    Per default the thread is not a daemon (this can be changed by passing True as second argument)"""
     t = server.run_async()
     print("press enter if you want to stop")
     input()
@@ -43,6 +42,8 @@ def use_server_run_async(server: UaServer):
     t.join()
 
 def use_server_run_iterate(server: UaServer):
+    """To the method ``run()`` implicitly calls ``run_startup()`` and then in a loop ``run_iterate()``
+    as long as ``running`` is True. This can also be done explicitly as follows."""
     server.run_startup()
     server.running = True
     while server.running:

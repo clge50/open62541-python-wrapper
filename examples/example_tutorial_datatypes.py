@@ -2,7 +2,6 @@ from ua import *
 
 
 def variables_basics():
-    print(UaInt32(l[0]))
     i = UaInt32(5)
     j = UaInt32(i)  # todo: adapt constructor type hint
     k = i + j
