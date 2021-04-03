@@ -168,6 +168,65 @@ In a second step our method ``from_data_type_model(...)`` has to build a ``UaDat
 
 *Good Luck! :)*
 
+Memory management
+---------------------
+
+To make life easier for developers, CFFI automatically does a lot of memory management for them. For the most part, you e.g. don't have to worry to much about freeing memory yourself:
+If the python garbage collector collects an object, CFFI will automatically free the memory of any referenced c value/struct if the owner of the reference is no longer around.
+Nice, right? For the most part...yes! Still, you have to keep in mind some things in regards to the concept of ownership or else you might create segmentation faults!
+
+Take a look at this early version of one of the asynchronous client service calls we had implemented. In this example, the `callback` argument is being transformed into a ``void*`` ``_handle``
+which is then passed to the open62541 ``UA_Client_readDataTypeAttribute_async``. Once the server has processed the request, the client will trigger the `callback`. There is a problem though:
+`_handle` is the owner of the heap memory which CFFI allocated to store our function pointer for the callback. Because ``_handle`` is a local variable, it lives in a stack frame and also dies with the stack frame.
+Yes, the reference to our handle has been passed to open62541, but CFFI doesn't really care about that. After the function ``read_data_type_attribute_async`` stack frame was deallocated there is no longer a owner of the reference of `_handle`
+in Python. The Python garbage collector will kick in and as there is no longer an owner for the callback handle, CFFI will free the memory on the heap.
+
+.. code-block:: python
+
+    def read_data_type_attribute_async(self, node_id: UaNodeId,
+                                       callback: Callable[['UaClient', UaUInt32, UaNodeId], None]):
+        req_id = UaUInt32()
+        _handle = ffi.new_handle(callback)
+        status_code = lib.UA_Client_readDataTypeAttribute_async(self.ua_client,
+                                                                node_id._val,
+                                                                lib.python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback,
+                                                                _handle,
+                                                                req_id._ptr)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id)
+
+When the wrapper function ``lib.python_wrapper_UA_ClientAsyncBrowseCallback`` will call our callback, it will encounter a segmentation fault.
+
+.. code-block:: python
+
+ @staticmethod
+    @ffi.def_extern()
+    def python_wrapper_UA_ClientAsyncBrowseCallback(client, fun, request_id, wr):
+        ffi.from_handle(fun)(UaClient(val=client), UaUInt32(val=request_id, is_pointer=False),
+                             UaBrowseResponse(val=wr, is_pointer=True))
+
+So how can we address this? By making sure there is still an owner of the memory alive by the time ``python_wrapper_UA_ClientAsyncBrowseCallback`` is called!
+There are different ways how this can be achieved. The following example illustrates two of them. On one hand this time we return ``_handle`` in the result of the functon.
+As long as the wrappy(o6) user stores it in a variable and keeps it alive, the callback can be called without any issues. But this is not very intuitive and probably would cause some frustration with users.
+Therefore we decided to also store a reference to the memory which is owned by ``_handle`` in a global list (``_ClientCallback._callbacks``) which acts as a kind of shelter for all references that might have lost their home.
+Now, even if the wrappy(o6) user is heartless and abandons the poor result, the owner of the callback handle still has a place to live and we are safe from segfaults.
+
+.. code-block:: python
+
+ def read_data_type_attribute_async(self, node_id: UaNodeId,
+                                       callback: Callable[['UaClient', UaUInt32, UaNodeId], None]):
+        req_id = UaUInt32()
+        _handle = ffi.new_handle(callback)
+        _ClientCallback._callbacks.add(_handle)
+        status_code = lib.UA_Client_readDataTypeAttribute_async(self.ua_client,
+                                                                node_id._val,
+                                                                lib.python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback,
+                                                                _handle,
+                                                                req_id._ptr)
+        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
+
+So when working with CFFI always ask yourself this one question: Is it guaranteed that the owner of the memory is still alive by the time it is dereferenced?
+If not, be so kind and built some shelters. Once the references are no longer needed developers should also think about throwing them out of the shelter to make room for new owners, life is rough as a reference and there is only so much memory!
+Let the garbage collector lead them to the afterlife.
 
 Open issues
 ------------
