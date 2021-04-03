@@ -3,13 +3,14 @@ Introduction
 
 What is wrappy(o6)?
 ----------------------
-Wrappy(o6) is a python binding for open62541 (http://open62541.org).
+Wrappy(o6) is a python binding for `open62541 <http://open62541.org`_.
 While wrappy(o6) tries to be truthful to it's roots in terms of handling it still aims at offering some quality of life improvements and getting rid of certain c typical conventions which feel weird in python.
 If you are already familiar with open62541 and know some basic python you'll hopefully feel right at home in wrappy(o6) we hope you'll feel right at home in Wrappy(o6) and can make use of the vast range of available python libraries while still being able to use the well established open62541 as a backend.
 
 License
 --------
-wrappy(o6) (same as open62541 itself) is licensed under the Mozilla Public License v2.0 (MPLv2)(https://www.mozilla.org/en-US/MPL/2.0/).
+wrappy(o6) (same as open62541 itself) is licensed under the `Mozilla Public License v2.0 (MPLv2) <https://www.mozilla.org/en-US/MPL/2.0/>`_.
+The examples and tutorials are licensed under a `Creative Commons CCZero 1.0 Universal License <http://creativecommons.org/publicdomain/zero/1.0/>`_.
 
 open62541 python wrapper Features
 ---------------------------------
@@ -239,16 +240,21 @@ Currently there are still a lot of open issues which need to be addressed in ord
 * Historizing is not supported yet
 * Pub/sub is not supported yet
 * build script has not been tested under systems other than Ubuntu 18.04/20.04
-* the documentation needs to be improved to smoothen the experience for new users. Some topics worth mentioning:
+* the documentation needs to be improved to smoothen the experience for new users (e.g. a user guide leading through the provided examples as well as additional example)
+* ``UaServer`` (as well as ``UaClient``) are not available as UaTypes with accessible fields (e.g. due to opaque type definitions in open62541).
+* ``UaClientConfig`` and ``UaServerConfig`` are still missing some fields for lower level configurations
 
-    * UaList handling
-    * Void type handling
-    * casting
+    * there are functions available in open62541 (open62541/plugins/include/open62541/server_config_default.h) for building a UA_ServerConfig from a basic default config. They easily could be wrapped as methods of ``UaServerConfig`` and as such provide an comfortable way to further customize the server's configurations.
 
-* UaClientConfig and UaServerConfig are still missing some fields for lower level configurations (e.g. due to opaque type definitions).
-* There is not yet a solution for double pointers (e.g. UA_Variant**).
+* There is not yet a satisfying solution for double pointers (e.g. ``UA_Variant**``).
+
+    * ``UaList`` could be used for this purpose but should be reworked for a more intuitive and coherent handling
+
 * type handling could further be improved
 
     * by expanding "type guessing"
-    * Filling variables of UaTypes could be improved, e.g. via additional __init__ parameters / pseudo constructor methods / builder pattern
-    * implicitly applying functions which are explicit in open62541 (see e.g. `setScalar` and `setArray` handling in UaVariant data setter)
+    * filling variables of UaTypes could be improved, e.g. via additional __init__ parameters / pseudo constructor methods / builder pattern
+    * implicitly applying functions which are explicit in open62541 (see e.g. ``setScalar`` and ``setArray`` handling in UaVariant data setter)
+    * struct fields in UA_Types which are supposed to hold arrays should in the wrapping UaType be implemented with UaList type instead of the array's base type. (This should be no problem since ``_value`` of a UaList is the same c type as the lists base type.)
+    * by providing a generic deep copy method for UaTypes
+
