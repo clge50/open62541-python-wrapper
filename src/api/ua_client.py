@@ -9,6 +9,7 @@ from typing import Callable
 import ua_service_results_client as ClientServiceResult
 from ua_consts_default_attributes import UA_ATTRIBUTES_DEFAULT
 from ua_types_clientconfig import *
+from ua_types_list import *
 
 
 class _ClientCallback:
@@ -537,15 +538,16 @@ class UaClient:
     # misc high level service
 
     def call(self, object_id: UaNodeId, method_id: UaNodeId, input_size: SizeT,
-             call_input: UaVariant):
+             call_input: Union[UaList, UaVariant]):
         output_size = SizeT()
         # Todo: use UaList
         output = ffi.new("UA_Variant **")
         status_code = lib.UA_Client_call(self.ua_client, object_id._val, method_id._val, input_size._val,
                                          call_input._ptr, output_size._ptr,
                                          output)
+        print(UaStatusCode(val=status_code))
         return ClientServiceResult.CallResult(UaStatusCode(val=status_code), output_size,
-                                              UaVariant(val=output[0][0]))
+                                              UaList(val=output[0], size=1, ua_class=UaVariant))
 
     def add_reference(self, source_node_id: UaNodeId, reference_type_id: UaNodeId,
                       is_forward: UaBoolean,
