@@ -14,6 +14,8 @@ class Void(UaType):
     def __init__(self, data=None, val=None, is_pointer=True):
         if data is not None:
             val = ffi.new_handle(data)
+        elif val is None:
+            val = ffi.NULL
 
         super().__init__(ffi.cast("void*", _ptr(val)), is_pointer)
 
