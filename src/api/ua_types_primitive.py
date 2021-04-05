@@ -909,8 +909,10 @@ class UaString(UaType):
     def __init__(self, val: Union[str, Void] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_String*", val._ptr)
-        elif type(val) is str or type(val) is bytes:
+        elif type(val) is str:
             val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
+        elif type(val) is bytes:
+            val = ffi.new("UA_String*", lib.UA_String_fromChars(val))
         elif type(val) is not None:
             if not is_pointer:
                 val = ffi.new("UA_String*", val)
