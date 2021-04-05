@@ -357,7 +357,7 @@ class UaServer:
         raw_value = lib.UA_Server_run_startup(self.ua_server)
         return UaStatusCode(val=raw_value)
 
-    def run_iterate(self, wait_internal: UaBoolean):
+    def run_iterate(self, wait_internal: UaBoolean = UaBoolean(True)):
         raw_value = lib.UA_Server_run_iterate(self.ua_server, wait_internal._val)
         return UaUInt16(val=raw_value)
 

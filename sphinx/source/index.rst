@@ -246,13 +246,14 @@ Currently there are still a lot of open issues which need to be addressed in ord
 
     * there are functions available in open62541 (open62541/plugins/include/open62541/server_config_default.h) for building a UA_ServerConfig from a basic default config. They easily could be wrapped as methods of ``UaServerConfig`` and as such provide an comfortable way to further customize the server's configurations.
 
-* There is not yet a satisfying solution for double pointers (e.g. ``UA_Variant**``).
-
-    * ``UaList`` could be used for this purpose but should be reworked for a more intuitive and coherent handling
+* The behavior of double pointers (e.g. ``UA_Variant**``) as UaLists of pointers is not yet tested extensively.
+``UaList`` could be improved for a more intuitive and coherent handling. See example_list_cast for an introduction on UaList.
 
 * type handling could further be improved
 
     * by expanding "type guessing"
+    * by refining the methods typehints and documentation
+    * allow Python values as well as UaTypes for primitive input types where possible (already done in a few rather arbitrary cases)
     * filling variables of UaTypes could be improved, e.g. via additional __init__ parameters / pseudo constructor methods / builder pattern
     * implicitly applying functions which are explicit in open62541 (see e.g. ``setScalar`` and ``setArray`` handling in UaVariant data setter)
     * struct fields in UA_Types which are supposed to hold arrays should in the wrapping UaType be implemented with UaList type instead of the array's base type. (This should be no problem since ``_value`` of a UaList is the same c type as the lists base type.)

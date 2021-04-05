@@ -65,7 +65,7 @@ class aa_entry(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(aa_entry) : NULL" + ("" if n is None else "\n")
+            return "(aa_entry): NULL" + ("" if n is None else "\n")
 
         return ("(aa_entry) :\n"
                 + "\t" * (1 if n is None else n+1) + "left " + self._left.__str__(1 if n is None else n+1)
@@ -179,7 +179,7 @@ class UaCertificateVerification(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCertificateVerification) : NULL" + ("" if n is None else "\n")
+            return "(UaCertificateVerification): NULL" + ("" if n is None else "\n")
 
         return ("(UaCertificateVerification) :\n"
                 + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
@@ -454,7 +454,7 @@ class UaNodestore(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaNodestore) : NULL" + ("" if n is None else "\n")
+            return "(UaNodestore): NULL" + ("" if n is None else "\n")
 
         return ("(UaNodestore) :\n"
                 + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
@@ -845,7 +845,7 @@ class UaAccessControl(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAccessControl) : NULL" + ("" if n is None else "\n")
+            return "(UaAccessControl): NULL" + ("" if n is None else "\n")
 
         return ("(UaAccessControl) :\n"
                 + "\t" * (1 if n is None else n+1) + "context " + self._context.__str__(1 if n is None else n+1)
@@ -991,7 +991,7 @@ class UaGlobalNodeLifecycle(UaType):
 
         def __str__(self, n=None):
             if self._null:
-                return "(UaGlobalNodeLifecycle) : NULL" + ("" if n is None else "\n")
+                return "(UaGlobalNodeLifecycle): NULL" + ("" if n is None else "\n")
 
             return ("(UaGlobalNodeLifecycle) :\n"
                     + "\t" * (1 if n is None else n+1) + "constructor " + self._constructor.__str__(1 if n is None else n+1)
@@ -1166,7 +1166,7 @@ class UaServerNetworkLayer(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaServerNetworkLayer) : NULL" + ("" if n is None else "\n")
+            return "(UaServerNetworkLayer): NULL" + ("" if n is None else "\n")
 
         return ("(UaServerNetworkLayer) :\n"
                 + "\t" * (1 if n is None else n+1) + "handle " + self._handle.__str__(1 if n is None else n+1)
@@ -1353,7 +1353,7 @@ class UaSecurityPolicy(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicy) : NULL" + ("" if n is None else "\n")
+            return "(UaSecurityPolicy): NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicy) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_context " + self._policy_context.__str__(1 if n is None else n+1)
@@ -1478,7 +1478,7 @@ class UaConnectionConfig(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaConnectionConfig) : NULL" + ("" if n is None else "\n")
+            return "(UaConnectionConfig): NULL" + ("" if n is None else "\n")
 
         return ("(UaConnectionConfig) :\n"
                 + "\t" * (1 if n is None else n+1) + "protocol_version " + self._protocol_version.__str__(1 if n is None else n+1)
@@ -1505,7 +1505,7 @@ class UaSecurityPolicyAsymmetricModule(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicyAsymmetricModule) : NULL" + ("" if n is None else "\n")
+            return "(UaSecurityPolicyAsymmetricModule): NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicyAsymmetricModule) :\n")
 
@@ -1524,7 +1524,7 @@ class UaSecurityPolicySymmetricModule(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicySymmetricModule) : NULL" + ("" if n is None else "\n")
+            return "(UaSecurityPolicySymmetricModule): NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicySymmetricModule) :\n")
 
@@ -1543,7 +1543,7 @@ class UaSecurityPolicyChannelModule(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicyChannelModule) : NULL" + ("" if n is None else "\n")
+            return "(UaSecurityPolicyChannelModule): NULL" + ("" if n is None else "\n")
 
         return "(UaSecurityPolicyChannelModule) :\n"
 
@@ -1562,7 +1562,7 @@ class UaSecurityPolicySignatureAlgorithm(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSecurityPolicySignatureAlgorithm) : NULL" + ("" if n is None else "\n")
+            return "(UaSecurityPolicySignatureAlgorithm): NULL" + ("" if n is None else "\n")
 
         return ("(UaSecurityPolicySignatureAlgorithm) :\n")
 
@@ -1640,7 +1640,7 @@ class UaNodeTypeLifecycle(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaNodeTypeLifecycle) : NULL" + ("" if n is None else "\n")
+            return "(UaNodeTypeLifecycle): NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeTypeLifecycle) :\n"
                 + "\t" * (1 if n is None else n+1) + "constructor " + self._constructor.__str__(1 if n is None else n+1)
@@ -1756,7 +1756,7 @@ class UaNodeReferenceKind(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaNodeReferenceKind) : NULL" + ("" if n is None else "\n")
+            return "(UaNodeReferenceKind): NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeReferenceKind) :\n"
                 + "\t" * (1 if n is None else n+1) + "id_tree_root " + self._id_tree_root.__str__(1 if n is None else n+1)
@@ -1911,7 +1911,7 @@ class UaNodeHead(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaNodeHead) : NULL" + ("" if n is None else "\n")
+            return "(UaNodeHead): NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeHead) :\n"
                 + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
@@ -1988,7 +1988,7 @@ class UaMethodNode(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMethodNode) : NULL" + ("" if n is None else "\n")
+            return "(UaMethodNode): NULL" + ("" if n is None else "\n")
 
         return ("(UaMethodNode) :\n"
                 + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
@@ -2038,7 +2038,7 @@ class UaObjectNode(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaObjectNode) : NULL" + ("" if n is None else "\n")
+            return "(UaObjectNode): NULL" + ("" if n is None else "\n")
 
         return ("(UaObjectNode) :\n"
                 + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
@@ -2100,7 +2100,7 @@ class UaObjectTypeNode(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaObjectTypeNode) : NULL" + ("" if n is None else "\n")
+            return "(UaObjectTypeNode): NULL" + ("" if n is None else "\n")
 
         return ("(UaObjectTypeNode) :\n"
                 + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
@@ -2137,7 +2137,7 @@ class UaReferenceTypeSet(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaReferenceTypeSet) : NULL" + ("" if n is None else "\n")
+            return "(UaReferenceTypeSet): NULL" + ("" if n is None else "\n")
 
         return ("(UaReferenceTypeSet) :\n"
                 + "\t" * (1 if n is None else n+1) + "bits " + self._bits.__str__(1 if n is None else n+1))
@@ -2186,7 +2186,7 @@ class UaDataTypeNode(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDataTypeNode) : NULL" + ("" if n is None else "\n")
+            return "(UaDataTypeNode): NULL" + ("" if n is None else "\n")
 
         return ("(UaDataTypeNode) :\n"
                 + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
@@ -2248,7 +2248,7 @@ class UaViewNode(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaViewNode) : NULL" + ("" if n is None else "\n")
+            return "(UaViewNode): NULL" + ("" if n is None else "\n")
 
         return ("(UaViewNode) :\n"
                 + "\t" * (1 if n is None else n+1) + "head " + self._head.__str__(1 if n is None else n+1)
@@ -2373,7 +2373,7 @@ class UaServerConfig(UaType):
 
         def __str__(self, n=None):
             if self._null:
-                return "(UaNodeTypeLifecycle) : NULL" + ("" if n is None else "\n")
+                return "(UaNodeTypeLifecycle): NULL" + ("" if n is None else "\n")
 
             return ("(UaNodeTypeLifecycle) :\n"
                     + "\t" * (1 if n is None else n+1) + "constructor " + self._constructor.__str__(1 if n is None else n+1)
@@ -2911,7 +2911,7 @@ class UaServerConfig(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaServerConfig) : NULL" + ("" if n is None else "\n")
+            return "(UaServerConfig): NULL" + ("" if n is None else "\n")
 
         return ("(UaServerConfig) :\n"
                 + "\t" * (1 if n is None else n+1) + "logger " + self._logger.__str__(1 if n is None else n+1)

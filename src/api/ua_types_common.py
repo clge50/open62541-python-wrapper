@@ -476,7 +476,7 @@ class UaNetworkStatistics(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaNetworkStatistics) : NULL" + ("" if n is None else "\n")
+            return "(UaNetworkStatistics): NULL" + ("" if n is None else "\n")
 
         return ("(UaNetworkStatistics) :\n"
                 + "\t" * (1 if n is None else n+1) + "current_connection_count " + self._current_connection_count.__str__(1 if n is None else n+1)
@@ -594,7 +594,7 @@ class UaSecureChannelStatistics(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaSecureChannelStatistics) : NULL" + ("" if n is None else "\n")
+            return "(UaSecureChannelStatistics): NULL" + ("" if n is None else "\n")
 
         return ("(UaSecureChannelStatistics) :\n"
                 + "\t" * (1 if n is None else n+1) + "current_channel_count " + self._current_channel_count.__str__(1 if n is None else n+1)
