@@ -92,6 +92,5 @@ UA_StatusCode UA_Client_renewSecureChannel(UA_Client *client);
 UA_StatusCode __UA_Client_AsyncServiceEx(UA_Client *client, const void *request, const UA_DataType *requestType, UA_ClientAsyncServiceCallback callback, const UA_DataType *responseType, void *userdata, UA_UInt32 *requestId, UA_UInt32 timeout);
 void UA_Client_getState(UA_Client *client, UA_SecureChannelState *channelState, UA_SessionState *sessionState, UA_StatusCode *connectStatus);
 void * UA_Client_getContext(UA_Client *client);
-UA_StatusCode UA_Client_modifyAsyncCallback(UA_Client *client, UA_UInt32 requestId, void *userdata, UA_ClientAsyncServiceCallback callback);
 void __UA_Client_Service(UA_Client *client, const void *request,  const UA_DataType *requestType, void *response, const UA_DataType *responseType);
 UA_StatusCode __UA_Client_AsyncService(UA_Client *client, const void *request, const UA_DataType *requestType, UA_ClientAsyncServiceCallback callback, const UA_DataType *responseType, void *userdata, UA_UInt32 *requestId);

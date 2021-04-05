@@ -14,14 +14,16 @@ dirname = os.path.dirname(os.path.abspath(__file__))
 
 
 def setup_open62541():
-    if not os.path.isdir(dirname + r"/open62541"):
-        open62541_repo = r"https://github.com/open62541/open62541.git"
-        os.chdir(dirname)
-        os.system("git clone " + open62541_repo)
+    # if not os.path.isdir(dirname + r"/open62541"):
+    #     open62541_repo = r"https://github.com/open62541/open62541.git"
+    #     os.chdir(dirname)
+    #     os.system("git clone " + open62541_repo)
 
-    if not os.path.isdir(dirname + r"/open62541/build"):
-        os.mkdir(dirname + r"/open62541/build")
-        os.chdir(dirname + r"/open62541/build")
+    # todo: currently we force version open62541-1.2 to ensure that a version is used for the amalgamated files that wrappy(o6) can work with
+    # https://github.com/open62541/open62541/releases/tag/v1.2
+    if not os.path.isdir(dirname + r"/open62541-1.2/build"):
+        os.mkdir(dirname + r"/open62541-1.2/build")
+        os.chdir(dirname + r"/open62541-1.2/build")
         os.system("cmake .. -DUA_ENABLE_AMALGAMATION=TRUE")
         os.system("make")
         os.chdir(dirname)
@@ -29,7 +31,7 @@ def setup_open62541():
 
 # todo: create a generic generate function instead of multiple functions that do basically the same
 def generate_status_codes():
-    with open(dirname + r"/open62541/build/src_generated/open62541/statuscodes.h") as file_handler:
+    with open(dirname + r"/open62541-1.2/build/src_generated/open62541/statuscodes.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define"))
         lines = list(map(lambda l: "\t" + l.split()[0].replace("UA_STATUSCODE_", "") +
@@ -43,7 +45,7 @@ def generate_status_codes():
 
 
 def generate_node_ids():
-    with open(dirname + r"/open62541/build/src_generated/open62541/nodeids.h") as file_handler:
+    with open(dirname + r"/open62541-1.2/build/src_generated/open62541/nodeids.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if
                  line.startswith("#define") and "#define UA_NODEIDS_NS0_H_" not in line)
@@ -60,7 +62,7 @@ def generate_node_ids():
 
 
 def generate_data_types():
-    with open(dirname + r"/open62541/build/src_generated/open62541/types_generated.h") as file_handler:
+    with open(dirname + r"/open62541-1.2/build/src_generated/open62541/types_generated.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define UA_TYPES_"))
         lines = list(map(lambda l: "\t" + l.split()[0].split("_")[2] + " = UaDataType(val=lib.UA_TYPES[" +
@@ -79,7 +81,7 @@ def generate_data_types():
 
 
 def generate_type_ids():
-    with open(dirname + r"/open62541/build/src_generated/open62541/types_generated.h") as file_handler:
+    with open(dirname + r"/open62541-1.2/build/src_generated/open62541/types_generated.h") as file_handler:
         lines = (line.rstrip() for line in file_handler)
         lines = (line.replace("#define ", "") for line in lines if line.startswith("#define UA_TYPES_"))
         lines = list(map(lambda l: "\t_" + l.split()[0].split("_")[2] + " = lib.UA_TYPES[" +
@@ -215,8 +217,8 @@ def generate_api():
                             }*/
                            
                            """,
-                           include_dirs=[dirname + r"/open62541/build"],
-                           library_dirs=[dirname + r"/open62541/build/bin"],
+                           include_dirs=[dirname + r"/open62541-1.2/build"],
+                           library_dirs=[dirname + r"/open62541-1.2/build/bin"],
                            libraries=['open62541'])
 
     ffi_builder.cdef(cffi_input)

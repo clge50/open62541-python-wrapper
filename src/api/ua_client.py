@@ -1742,16 +1742,6 @@ class UaClient:
     def get_context(self):
         return Void(val=lib.UA_Client_getContext(self.ua_client), is_pointer=True)
 
-    def modify_async_callback(self, req_id: UaUInt32,
-                              callback: Callable[['UaClient', UaUInt32, Void], None]):
-        _handle = ffi.new_handle(callback)
-        _ClientCallback._callbacks.add(_handle)
-        status_code = lib.UA_Client_modifyAsyncCallback(self.ua_client,
-                                                        req_id._val,
-                                                        _handle,
-                                                        lib.python_wrapper_UA_ClientAsyncServiceCallback)
-        return ClientServiceResult.AsyncResponse(UaStatusCode(val=status_code), req_id, _handle)
-
     def __service(self, request: Void, request_type: UaDataType, response: Void,
                   response_type: UaDataType):
         status_code = lib.__UA_Client_Service(self.ua_client,
