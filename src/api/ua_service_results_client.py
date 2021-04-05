@@ -145,9 +145,9 @@ class ReadAttributeResult:
 
 
 # misc service
-# todo: output should be UA_Variant **
+# misc service
 class CallResult:
-    def __init__(self, status_code: ua_types_clientconfig.UaStatusCode, output_size: ua_types_clientconfig.SizeT, output: ua_types_clientconfig.UaVariant):
+    def __init__(self, status_code: ua_types_clientconfig.UaStatusCode, output_size: ua_types_clientconfig.SizeT, output: ua_types_clientconfig.UaList):
         self.status_code = status_code
         self.output_size = output_size
         self.output = output
