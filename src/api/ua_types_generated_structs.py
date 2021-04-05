@@ -133,7 +133,7 @@ class UaViewAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaViewAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaViewAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaViewAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -199,7 +199,7 @@ class UaXVType(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaXVType) : NULL" + ("" if n is None else "\n")
+            return "(UaXVType): NULL" + ("" if n is None else "\n")
 
         return ("(UaXVType) :\n"
                 + "\t" * (1 if n is None else n+1) + "x " + self._x.__str__(1 if n is None else n+1)
@@ -246,7 +246,7 @@ class UaElementOperand(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaElementOperand) : NULL" + ("" if n is None else "\n")
+            return "(UaElementOperand): NULL" + ("" if n is None else "\n")
 
         return ("(UaElementOperand) :\n"
                 + "\t" * (1 if n is None else n+1) + "index " + self._index.__str__(1 if n is None else n+1))
@@ -474,7 +474,7 @@ class UaVariableAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaVariableAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaVariableAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaVariableAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -561,7 +561,7 @@ class UaEnumValueType(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEnumValueType) : NULL" + ("" if n is None else "\n")
+            return "(UaEnumValueType): NULL" + ("" if n is None else "\n")
 
         return ("(UaEnumValueType) :\n"
                 + "\t" * (1 if n is None else n+1) + "data_value " + self._data_value.__str__(1 if n is None else n+1)
@@ -637,7 +637,7 @@ class UaEventFieldList(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEventFieldList) : NULL" + ("" if n is None else "\n")
+            return "(UaEventFieldList): NULL" + ("" if n is None else "\n")
 
         return ("(UaEventFieldList) :\n"
                 + "\t" * (1 if n is None else n+1) + "client_handle " + self._client_handle.__str__(1 if n is None else n+1)
@@ -741,7 +741,7 @@ class UaMonitoredItemCreateResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMonitoredItemCreateResult) : NULL" + ("" if n is None else "\n")
+            return "(UaMonitoredItemCreateResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaMonitoredItemCreateResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -833,7 +833,7 @@ class UaEUInformation(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEUInformation) : NULL" + ("" if n is None else "\n")
+            return "(UaEUInformation): NULL" + ("" if n is None else "\n")
 
         return ("(UaEUInformation) :\n"
                 + "\t" * (1 if n is None else n+1) + "namespace_uri " + self._namespace_uri.__str__(1 if n is None else n+1)
@@ -1036,7 +1036,7 @@ class UaServerDiagnosticsSummaryDataType(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaServerDiagnosticsSummaryDataType) : NULL" + ("" if n is None else "\n")
+            return "(UaServerDiagnosticsSummaryDataType): NULL" + ("" if n is None else "\n")
 
         return ("(UaServerDiagnosticsSummaryDataType) :\n"
                 + "\t" * (1 if n is None else n+1) + "server_view_count " + self._server_view_count.__str__(1 if n is None else n+1)
@@ -1151,7 +1151,7 @@ class UaContentFilterElementResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaContentFilterElementResult) : NULL" + ("" if n is None else "\n")
+            return "(UaContentFilterElementResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaContentFilterElementResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -1201,7 +1201,7 @@ class UaLiteralOperand(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaLiteralOperand) : NULL" + ("" if n is None else "\n")
+            return "(UaLiteralOperand): NULL" + ("" if n is None else "\n")
 
         return ("(UaLiteralOperand) :\n"
                 + "\t" * (1 if n is None else n+1) + "data_value " + self._data_value.__str__(1 if n is None else n+1))
@@ -1247,7 +1247,7 @@ class UaUserIdentityToken(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaUserIdentityToken) : NULL" + ("" if n is None else "\n")
+            return "(UaUserIdentityToken): NULL" + ("" if n is None else "\n")
 
         return ("(UaUserIdentityToken) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_id " + self._policy_id.__str__(1 if n is None else n+1))
@@ -1307,7 +1307,7 @@ class UaX509IdentityToken(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaX509IdentityToken) : NULL" + ("" if n is None else "\n")
+            return "(UaX509IdentityToken): NULL" + ("" if n is None else "\n")
 
         return ("(UaX509IdentityToken) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_id " + self._policy_id.__str__(1 if n is None else n+1)
@@ -1368,7 +1368,7 @@ class UaMonitoredItemNotification(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMonitoredItemNotification) : NULL" + ("" if n is None else "\n")
+            return "(UaMonitoredItemNotification): NULL" + ("" if n is None else "\n")
 
         return ("(UaMonitoredItemNotification) :\n"
                 + "\t" * (1 if n is None else n+1) + "client_handle " + self._client_handle.__str__(1 if n is None else n+1)
@@ -1499,7 +1499,7 @@ class UaResponseHeader(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaResponseHeader) : NULL" + ("" if n is None else "\n")
+            return "(UaResponseHeader): NULL" + ("" if n is None else "\n")
 
         return ("(UaResponseHeader) :\n"
                 + "\t" * (1 if n is None else n+1) + "timestamp " + self._timestamp.__str__(1 if n is None else n+1)
@@ -1565,7 +1565,7 @@ class UaSignatureData(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSignatureData) : NULL" + ("" if n is None else "\n")
+            return "(UaSignatureData): NULL" + ("" if n is None else "\n")
 
         return ("(UaSignatureData) :\n"
                 + "\t" * (1 if n is None else n+1) + "algorithm " + self._algorithm.__str__(1 if n is None else n+1)
@@ -1654,7 +1654,7 @@ class UaModifySubscriptionResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaModifySubscriptionResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaModifySubscriptionResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaModifySubscriptionResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -1759,7 +1759,7 @@ class UaNodeAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaNodeAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaNodeAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaNodeAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -1879,7 +1879,7 @@ class UaActivateSessionResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaActivateSessionResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaActivateSessionResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaActivateSessionResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -1972,7 +1972,7 @@ class UaEnumField(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEnumField) : NULL" + ("" if n is None else "\n")
+            return "(UaEnumField): NULL" + ("" if n is None else "\n")
 
         return ("(UaEnumField) :\n"
                 + "\t" * (1 if n is None else n+1) + "data_value " + self._data_value.__str__(1 if n is None else n+1)
@@ -2161,7 +2161,7 @@ class UaVariableTypeAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaVariableTypeAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaVariableTypeAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaVariableTypeAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -2303,7 +2303,7 @@ class UaCallMethodResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCallMethodResult) : NULL" + ("" if n is None else "\n")
+            return "(UaCallMethodResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaCallMethodResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -2414,7 +2414,7 @@ class UaSetMonitoringModeResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSetMonitoringModeResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaSetMonitoringModeResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaSetMonitoringModeResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -2548,7 +2548,7 @@ class UaRequestHeader(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRequestHeader) : NULL" + ("" if n is None else "\n")
+            return "(UaRequestHeader): NULL" + ("" if n is None else "\n")
 
         return ("(UaRequestHeader) :\n"
                 + "\t" * (1 if n is None else n+1) + "authentication_token " + self._authentication_token.__str__(1 if n is None else n+1)
@@ -2642,7 +2642,7 @@ class UaMonitoredItemModifyResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMonitoredItemModifyResult) : NULL" + ("" if n is None else "\n")
+            return "(UaMonitoredItemModifyResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaMonitoredItemModifyResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -2691,7 +2691,7 @@ class UaCloseSecureChannelRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCloseSecureChannelRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCloseSecureChannelRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCloseSecureChannelRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1))
@@ -2779,7 +2779,7 @@ class UaNotificationMessage(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaNotificationMessage) : NULL" + ("" if n is None else "\n")
+            return "(UaNotificationMessage): NULL" + ("" if n is None else "\n")
 
         return ("(UaNotificationMessage) :\n"
                 + "\t" * (1 if n is None else n+1) + "sequence_number " + self._sequence_number.__str__(1 if n is None else n+1)
@@ -2884,7 +2884,7 @@ class UaCreateSubscriptionResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCreateSubscriptionResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaCreateSubscriptionResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaCreateSubscriptionResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -2948,7 +2948,7 @@ class UaEnumDefinition(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEnumDefinition) : NULL" + ("" if n is None else "\n")
+            return "(UaEnumDefinition): NULL" + ("" if n is None else "\n")
 
         return ("(UaEnumDefinition) :\n"
                 + "\t" * (1 if n is None else n+1) + "fields_size " + self._fields_size.__str__(1 if n is None else n+1)
@@ -3037,7 +3037,7 @@ class UaCallMethodRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCallMethodRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCallMethodRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCallMethodRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "object_id " + self._object_id.__str__(1 if n is None else n+1)
@@ -3142,7 +3142,7 @@ class UaReadResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaReadResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaReadResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaReadResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -3262,7 +3262,7 @@ class UaObjectTypeAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaObjectTypeAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaObjectTypeAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaObjectTypeAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -3313,7 +3313,7 @@ class UaCloseSessionResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCloseSessionResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaCloseSessionResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaCloseSessionResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1))
@@ -3401,7 +3401,7 @@ class UaSetPublishingModeRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSetPublishingModeRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaSetPublishingModeRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaSetPublishingModeRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -3478,7 +3478,7 @@ class UaIssuedIdentityToken(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaIssuedIdentityToken) : NULL" + ("" if n is None else "\n")
+            return "(UaIssuedIdentityToken): NULL" + ("" if n is None else "\n")
 
         return ("(UaIssuedIdentityToken) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_id " + self._policy_id.__str__(1 if n is None else n+1)
@@ -3582,7 +3582,7 @@ class UaDeleteMonitoredItemsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteMonitoredItemsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteMonitoredItemsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteMonitoredItemsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -3674,7 +3674,7 @@ class UaBrowseNextRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowseNextRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowseNextRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowseNextRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -3807,7 +3807,7 @@ class UaModifySubscriptionRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaModifySubscriptionRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaModifySubscriptionRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaModifySubscriptionRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -3930,7 +3930,7 @@ class UaBrowseDescription(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowseDescription) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowseDescription): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowseDescription) :\n"
                 + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
@@ -3995,7 +3995,7 @@ class UaSignedSoftwareCertificate(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSignedSoftwareCertificate) : NULL" + ("" if n is None else "\n")
+            return "(UaSignedSoftwareCertificate): NULL" + ("" if n is None else "\n")
 
         return ("(UaSignedSoftwareCertificate) :\n"
                 + "\t" * (1 if n is None else n+1) + "certificate_data " + self._certificate_data.__str__(1 if n is None else n+1)
@@ -4056,7 +4056,7 @@ class UaBrowsePathTarget(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowsePathTarget) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowsePathTarget): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowsePathTarget) :\n"
                 + "\t" * (1 if n is None else n+1) + "target_id " + self._target_id.__str__(1 if n is None else n+1)
@@ -4159,7 +4159,7 @@ class UaWriteResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaWriteResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaWriteResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaWriteResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -4223,7 +4223,7 @@ class UaAddNodesResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddNodesResult) : NULL" + ("" if n is None else "\n")
+            return "(UaAddNodesResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddNodesResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -4340,7 +4340,7 @@ class UaAddReferencesItem(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddReferencesItem) : NULL" + ("" if n is None else "\n")
+            return "(UaAddReferencesItem): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddReferencesItem) :\n"
                 + "\t" * (1 if n is None else n+1) + "source_node_id " + self._source_node_id.__str__(1 if n is None else n+1)
@@ -4447,7 +4447,7 @@ class UaDeleteReferencesResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteReferencesResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteReferencesResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteReferencesResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -4539,7 +4539,7 @@ class UaRelativePathElement(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRelativePathElement) : NULL" + ("" if n is None else "\n")
+            return "(UaRelativePathElement): NULL" + ("" if n is None else "\n")
 
         return ("(UaRelativePathElement) :\n"
                 + "\t" * (1 if n is None else n+1) + "reference_type_id " + self._reference_type_id.__str__(1 if n is None else n+1)
@@ -4602,7 +4602,7 @@ class UaSubscriptionAcknowledgement(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSubscriptionAcknowledgement) : NULL" + ("" if n is None else "\n")
+            return "(UaSubscriptionAcknowledgement): NULL" + ("" if n is None else "\n")
 
         return ("(UaSubscriptionAcknowledgement) :\n"
                 + "\t" * (1 if n is None else n+1) + "subscription_id " + self._subscription_id.__str__(1 if n is None else n+1)
@@ -4677,7 +4677,7 @@ class UaTransferResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaTransferResult) : NULL" + ("" if n is None else "\n")
+            return "(UaTransferResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaTransferResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -4782,7 +4782,7 @@ class UaCreateMonitoredItemsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCreateMonitoredItemsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaCreateMonitoredItemsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaCreateMonitoredItemsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -4888,7 +4888,7 @@ class UaDeleteReferencesItem(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteReferencesItem) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteReferencesItem): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteReferencesItem) :\n"
                 + "\t" * (1 if n is None else n+1) + "source_node_id " + self._source_node_id.__str__(1 if n is None else n+1)
@@ -4980,7 +4980,7 @@ class UaWriteValue(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaWriteValue) : NULL" + ("" if n is None else "\n")
+            return "(UaWriteValue): NULL" + ("" if n is None else "\n")
 
         return ("(UaWriteValue) :\n"
                 + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
@@ -5099,7 +5099,7 @@ class UaDataTypeAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDataTypeAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaDataTypeAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaDataTypeAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -5206,7 +5206,7 @@ class UaTransferSubscriptionsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaTransferSubscriptionsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaTransferSubscriptionsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaTransferSubscriptionsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -5312,7 +5312,7 @@ class UaAddReferencesResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddReferencesResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaAddReferencesResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddReferencesResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -5432,7 +5432,7 @@ class UaBuildInfo(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBuildInfo) : NULL" + ("" if n is None else "\n")
+            return "(UaBuildInfo): NULL" + ("" if n is None else "\n")
 
         return ("(UaBuildInfo) :\n"
                 + "\t" * (1 if n is None else n+1) + "product_uri " + self._product_uri.__str__(1 if n is None else n+1)
@@ -5539,7 +5539,7 @@ class UaMonitoringParameters(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMonitoringParameters) : NULL" + ("" if n is None else "\n")
+            return "(UaMonitoringParameters): NULL" + ("" if n is None else "\n")
 
         return ("(UaMonitoringParameters) :\n"
                 + "\t" * (1 if n is None else n+1) + "client_handle " + self._client_handle.__str__(1 if n is None else n+1)
@@ -5603,7 +5603,7 @@ class UaDoubleComplexNumberType(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDoubleComplexNumberType) : NULL" + ("" if n is None else "\n")
+            return "(UaDoubleComplexNumberType): NULL" + ("" if n is None else "\n")
 
         return ("(UaDoubleComplexNumberType) :\n"
                 + "\t" * (1 if n is None else n+1) + "real " + self._real.__str__(1 if n is None else n+1)
@@ -5664,7 +5664,7 @@ class UaDeleteNodesItem(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteNodesItem) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteNodesItem): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteNodesItem) :\n"
                 + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
@@ -5753,7 +5753,7 @@ class UaReadValueId(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaReadValueId) : NULL" + ("" if n is None else "\n")
+            return "(UaReadValueId): NULL" + ("" if n is None else "\n")
 
         return ("(UaReadValueId) :\n"
                 + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
@@ -5830,7 +5830,7 @@ class UaCallRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCallRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCallRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCallRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -5892,7 +5892,7 @@ class UaRelativePath(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRelativePath) : NULL" + ("" if n is None else "\n")
+            return "(UaRelativePath): NULL" + ("" if n is None else "\n")
 
         return ("(UaRelativePath) :\n"
                 + "\t" * (1 if n is None else n+1) + "elements_size " + self._elements_size.__str__(1 if n is None else n+1)
@@ -5967,7 +5967,7 @@ class UaDeleteNodesRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteNodesRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteNodesRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteNodesRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -6029,7 +6029,7 @@ class UaMonitoredItemModifyRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMonitoredItemModifyRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaMonitoredItemModifyRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaMonitoredItemModifyRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "monitored_item_id " + self._monitored_item_id.__str__(1 if n is None else n+1)
@@ -6132,7 +6132,7 @@ class UaAggregateConfiguration(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAggregateConfiguration) : NULL" + ("" if n is None else "\n")
+            return "(UaAggregateConfiguration): NULL" + ("" if n is None else "\n")
 
         return ("(UaAggregateConfiguration) :\n"
                 + "\t" * (1 if n is None else n+1) + "use_server_capabilities_defaults " + self._use_server_capabilities_defaults.__str__(
@@ -6183,7 +6183,7 @@ class UaUnregisterNodesResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaUnregisterNodesResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaUnregisterNodesResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaUnregisterNodesResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1))
@@ -6271,7 +6271,7 @@ class UaContentFilterResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaContentFilterResult) : NULL" + ("" if n is None else "\n")
+            return "(UaContentFilterResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaContentFilterResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "element_results_size " + self._element_results_size.__str__(1 if n is None else n+1)
@@ -6376,7 +6376,7 @@ class UaUserTokenPolicy(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaUserTokenPolicy) : NULL" + ("" if n is None else "\n")
+            return "(UaUserTokenPolicy): NULL" + ("" if n is None else "\n")
 
         return ("(UaUserTokenPolicy) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_id " + self._policy_id.__str__(1 if n is None else n+1)
@@ -6468,7 +6468,7 @@ class UaDeleteMonitoredItemsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteMonitoredItemsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteMonitoredItemsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteMonitoredItemsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -6573,7 +6573,7 @@ class UaSetMonitoringModeRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSetMonitoringModeRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaSetMonitoringModeRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaSetMonitoringModeRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -6721,7 +6721,7 @@ class UaReferenceTypeAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaReferenceTypeAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaReferenceTypeAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaReferenceTypeAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -6844,7 +6844,7 @@ class UaGetEndpointsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaGetEndpointsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaGetEndpointsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaGetEndpointsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -6895,7 +6895,7 @@ class UaCloseSecureChannelResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCloseSecureChannelResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaCloseSecureChannelResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaCloseSecureChannelResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1))
@@ -6969,7 +6969,7 @@ class UaViewDescription(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaViewDescription) : NULL" + ("" if n is None else "\n")
+            return "(UaViewDescription): NULL" + ("" if n is None else "\n")
 
         return ("(UaViewDescription) :\n"
                 + "\t" * (1 if n is None else n+1) + "view_id " + self._view_id.__str__(1 if n is None else n+1)
@@ -7073,7 +7073,7 @@ class UaSetPublishingModeResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSetPublishingModeResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaSetPublishingModeResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaSetPublishingModeResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -7137,7 +7137,7 @@ class UaStatusChangeNotification(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaStatusChangeNotification) : NULL" + ("" if n is None else "\n")
+            return "(UaStatusChangeNotification): NULL" + ("" if n is None else "\n")
 
         return ("(UaStatusChangeNotification) :\n"
                 + "\t" * (1 if n is None else n+1) + "status " + self._status.__str__(1 if n is None else n+1)
@@ -7282,7 +7282,7 @@ class UaStructureField(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaStructureField) : NULL" + ("" if n is None else "\n")
+            return "(UaStructureField): NULL" + ("" if n is None else "\n")
 
         return ("(UaStructureField) :\n"
                 + "\t" * (1 if n is None else n+1) + "name " + self._name.__str__(1 if n is None else n+1)
@@ -7392,7 +7392,7 @@ class UaEventFilterResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEventFilterResult) : NULL" + ("" if n is None else "\n")
+            return "(UaEventFilterResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaEventFilterResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "select_clause_results_size " + self._select_clause_results_size.__str__(1 if n is None else n+1)
@@ -7473,7 +7473,7 @@ class UaMonitoredItemCreateRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMonitoredItemCreateRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaMonitoredItemCreateRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaMonitoredItemCreateRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "item_to_monitor " + self._item_to_monitor.__str__(1 if n is None else n+1)
@@ -7538,7 +7538,7 @@ class UaComplexNumberType(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaComplexNumberType) : NULL" + ("" if n is None else "\n")
+            return "(UaComplexNumberType): NULL" + ("" if n is None else "\n")
 
         return ("(UaComplexNumberType) :\n"
                 + "\t" * (1 if n is None else n+1) + "real " + self._real.__str__(1 if n is None else n+1)
@@ -7599,7 +7599,7 @@ class UaRange(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRange) : NULL" + ("" if n is None else "\n")
+            return "(UaRange): NULL" + ("" if n is None else "\n")
 
         return ("(UaRange) :\n"
                 + "\t" * (1 if n is None else n+1) + "low " + self._low.__str__(1 if n is None else n+1)
@@ -7688,7 +7688,7 @@ class UaDataChangeNotification(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDataChangeNotification) : NULL" + ("" if n is None else "\n")
+            return "(UaDataChangeNotification): NULL" + ("" if n is None else "\n")
 
         return ("(UaDataChangeNotification) :\n"
                 + "\t" * (1 if n is None else n+1) + "monitored_items_size " + self._monitored_items_size.__str__(1 if n is None else n+1)
@@ -7807,7 +7807,7 @@ class UaArgument(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaArgument) : NULL" + ("" if n is None else "\n")
+            return "(UaArgument): NULL" + ("" if n is None else "\n")
 
         return ("(UaArgument) :\n"
                 + "\t" * (1 if n is None else n+1) + "name " + self._name.__str__(1 if n is None else n+1)
@@ -7900,7 +7900,7 @@ class UaTransferSubscriptionsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaTransferSubscriptionsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaTransferSubscriptionsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaTransferSubscriptionsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -7991,7 +7991,7 @@ class UaChannelSecurityToken(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaChannelSecurityToken) : NULL" + ("" if n is None else "\n")
+            return "(UaChannelSecurityToken): NULL" + ("" if n is None else "\n")
 
         return ("(UaChannelSecurityToken) :\n"
                 + "\t" * (1 if n is None else n+1) + "channel_id " + self._channel_id.__str__(1 if n is None else n+1)
@@ -8054,7 +8054,7 @@ class UaEventNotificationList(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEventNotificationList) : NULL" + ("" if n is None else "\n")
+            return "(UaEventNotificationList): NULL" + ("" if n is None else "\n")
 
         return ("(UaEventNotificationList) :\n"
                 + "\t" * (1 if n is None else n+1) + "events_size " + self._events_size.__str__(1 if n is None else n+1)
@@ -8101,7 +8101,7 @@ class UaAnonymousIdentityToken(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAnonymousIdentityToken) : NULL" + ("" if n is None else "\n")
+            return "(UaAnonymousIdentityToken): NULL" + ("" if n is None else "\n")
 
         return ("(UaAnonymousIdentityToken) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_id " + self._policy_id.__str__(1 if n is None else n+1))
@@ -8189,7 +8189,7 @@ class UaAggregateFilter(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAggregateFilter) : NULL" + ("" if n is None else "\n")
+            return "(UaAggregateFilter): NULL" + ("" if n is None else "\n")
 
         return ("(UaAggregateFilter) :\n"
                 + "\t" * (1 if n is None else n+1) + "start_time " + self._start_time.__str__(1 if n is None else n+1)
@@ -8252,7 +8252,7 @@ class UaRepublishResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRepublishResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaRepublishResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaRepublishResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -8355,7 +8355,7 @@ class UaDeleteSubscriptionsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteSubscriptionsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteSubscriptionsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteSubscriptionsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -8433,7 +8433,7 @@ class UaRegisterNodesRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRegisterNodesRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaRegisterNodesRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaRegisterNodesRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -8537,7 +8537,7 @@ class UaStructureDefinition(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaStructureDefinition) : NULL" + ("" if n is None else "\n")
+            return "(UaStructureDefinition): NULL" + ("" if n is None else "\n")
 
         return ("(UaStructureDefinition) :\n"
                 + "\t" * (1 if n is None else n+1) + "default_encoding_id " + self._default_encoding_id.__str__(1 if n is None else n+1)
@@ -8671,7 +8671,7 @@ class UaMethodAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaMethodAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaMethodAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaMethodAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -8765,7 +8765,7 @@ class UaUserNameIdentityToken(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaUserNameIdentityToken) : NULL" + ("" if n is None else "\n")
+            return "(UaUserNameIdentityToken): NULL" + ("" if n is None else "\n")
 
         return ("(UaUserNameIdentityToken) :\n"
                 + "\t" * (1 if n is None else n+1) + "policy_id " + self._policy_id.__str__(1 if n is None else n+1)
@@ -8842,7 +8842,7 @@ class UaUnregisterNodesRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaUnregisterNodesRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaUnregisterNodesRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaUnregisterNodesRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -8932,7 +8932,7 @@ class UaOpenSecureChannelResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaOpenSecureChannelResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaOpenSecureChannelResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaOpenSecureChannelResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -9093,7 +9093,7 @@ class UaSetTriggeringResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSetTriggeringResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaSetTriggeringResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaSetTriggeringResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -9203,7 +9203,7 @@ class UaSimpleAttributeOperand(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSimpleAttributeOperand) : NULL" + ("" if n is None else "\n")
+            return "(UaSimpleAttributeOperand): NULL" + ("" if n is None else "\n")
 
         return ("(UaSimpleAttributeOperand) :\n"
                 + "\t" * (1 if n is None else n+1) + "type_definition_id " + self._type_definition_id.__str__(1 if n is None else n+1)
@@ -9281,7 +9281,7 @@ class UaRepublishRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRepublishRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaRepublishRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaRepublishRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -9357,7 +9357,7 @@ class UaRegisterNodesResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaRegisterNodesResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaRegisterNodesResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaRegisterNodesResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -9461,7 +9461,7 @@ class UaModifyMonitoredItemsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaModifyMonitoredItemsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaModifyMonitoredItemsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaModifyMonitoredItemsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -9539,7 +9539,7 @@ class UaDeleteSubscriptionsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteSubscriptionsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteSubscriptionsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteSubscriptionsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -9601,7 +9601,7 @@ class UaBrowsePath(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowsePath) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowsePath): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowsePath) :\n"
                 + "\t" * (1 if n is None else n+1) + "starting_node " + self._starting_node.__str__(1 if n is None else n+1)
@@ -9718,7 +9718,7 @@ class UaObjectAttributes(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaObjectAttributes) : NULL" + ("" if n is None else "\n")
+            return "(UaObjectAttributes): NULL" + ("" if n is None else "\n")
 
         return ("(UaObjectAttributes) :\n"
                 + "\t" * (1 if n is None else n+1) + "specified_attributes " + self._specified_attributes.__str__(1 if n is None else n+1)
@@ -9798,7 +9798,7 @@ class UaPublishRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaPublishRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaPublishRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaPublishRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -9918,7 +9918,7 @@ class UaFindServersRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaFindServersRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaFindServersRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaFindServersRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -10053,7 +10053,7 @@ class UaReferenceDescription(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaReferenceDescription) : NULL" + ("" if n is None else "\n")
+            return "(UaReferenceDescription): NULL" + ("" if n is None else "\n")
 
         return ("(UaReferenceDescription) :\n"
                 + "\t" * (1 if n is None else n+1) + "reference_type_id " + self._reference_type_id.__str__(1 if n is None else n+1)
@@ -10189,7 +10189,7 @@ class UaCreateSubscriptionRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCreateSubscriptionRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCreateSubscriptionRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCreateSubscriptionRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -10298,7 +10298,7 @@ class UaCallResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCallResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaCallResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaCallResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -10404,7 +10404,7 @@ class UaDeleteNodesResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteNodesResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteNodesResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteNodesResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -10510,7 +10510,7 @@ class UaModifyMonitoredItemsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaModifyMonitoredItemsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaModifyMonitoredItemsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaModifyMonitoredItemsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -10560,7 +10560,7 @@ class UaServiceFault(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaServiceFault) : NULL" + ("" if n is None else "\n")
+            return "(UaServiceFault): NULL" + ("" if n is None else "\n")
 
         return ("(UaServiceFault) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1))
@@ -10732,7 +10732,7 @@ class UaPublishResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaPublishResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaPublishResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaPublishResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -10844,7 +10844,7 @@ class UaCreateMonitoredItemsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCreateMonitoredItemsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCreateMonitoredItemsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCreateMonitoredItemsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -10964,7 +10964,7 @@ class UaOpenSecureChannelRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaOpenSecureChannelRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaOpenSecureChannelRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaOpenSecureChannelRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -11029,7 +11029,7 @@ class UaCloseSessionRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCloseSessionRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCloseSessionRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCloseSessionRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -11160,7 +11160,7 @@ class UaSetTriggeringRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaSetTriggeringRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaSetTriggeringRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaSetTriggeringRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -11254,7 +11254,7 @@ class UaBrowseResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowseResult) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowseResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowseResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -11331,7 +11331,7 @@ class UaAddReferencesRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddReferencesRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaAddReferencesRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddReferencesRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -11463,7 +11463,7 @@ class UaAddNodesItem(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddNodesItem) : NULL" + ("" if n is None else "\n")
+            return "(UaAddNodesItem): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddNodesItem) :\n"
                 + "\t" * (1 if n is None else n+1) + "parent_node_id " + self._parent_node_id.__str__(1 if n is None else n+1)
@@ -11585,7 +11585,7 @@ class UaServerStatusDataType(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaServerStatusDataType) : NULL" + ("" if n is None else "\n")
+            return "(UaServerStatusDataType): NULL" + ("" if n is None else "\n")
 
         return ("(UaServerStatusDataType) :\n"
                 + "\t" * (1 if n is None else n+1) + "start_time " + self._start_time.__str__(1 if n is None else n+1)
@@ -11692,7 +11692,7 @@ class UaBrowseNextResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowseNextResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowseNextResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowseNextResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -11812,7 +11812,7 @@ class UaAxisInformation(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAxisInformation) : NULL" + ("" if n is None else "\n")
+            return "(UaAxisInformation): NULL" + ("" if n is None else "\n")
 
         return ("(UaAxisInformation) :\n"
                 + "\t" * (1 if n is None else n+1) + "engineering_units " + self._engineering_units.__str__(1 if n is None else n+1)
@@ -11961,7 +11961,7 @@ class UaApplicationDescription(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaApplicationDescription) : NULL" + ("" if n is None else "\n")
+            return "(UaApplicationDescription): NULL" + ("" if n is None else "\n")
 
         return ("(UaApplicationDescription) :\n"
                 + "\t" * (1 if n is None else n+1) + "application_uri " + self._application_uri.__str__(1 if n is None else n+1)
@@ -12070,7 +12070,7 @@ class UaReadRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaReadRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaReadRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaReadRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -12219,7 +12219,7 @@ class UaActivateSessionRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaActivateSessionRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaActivateSessionRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaActivateSessionRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -12302,7 +12302,7 @@ class UaBrowsePathResult(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowsePathResult) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowsePathResult): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowsePathResult) :\n"
                 + "\t" * (1 if n is None else n+1) + "status_code " + self._status_code.__str__(1 if n is None else n+1)
@@ -12378,7 +12378,7 @@ class UaAddNodesRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddNodesRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaAddNodesRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddNodesRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -12482,7 +12482,7 @@ class UaBrowseRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowseRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowseRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowseRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -12562,7 +12562,7 @@ class UaWriteRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaWriteRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaWriteRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaWriteRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -12666,7 +12666,7 @@ class UaAddNodesResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAddNodesResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaAddNodesResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaAddNodesResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -12772,7 +12772,7 @@ class UaAttributeOperand(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaAttributeOperand) : NULL" + ("" if n is None else "\n")
+            return "(UaAttributeOperand): NULL" + ("" if n is None else "\n")
 
         return ("(UaAttributeOperand) :\n"
                 + "\t" * (1 if n is None else n+1) + "node_id " + self._node_id.__str__(1 if n is None else n+1)
@@ -12850,7 +12850,7 @@ class UaDataChangeFilter(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDataChangeFilter) : NULL" + ("" if n is None else "\n")
+            return "(UaDataChangeFilter): NULL" + ("" if n is None else "\n")
 
         return ("(UaDataChangeFilter) :\n"
                 + "\t" * (1 if n is None else n+1) + "trigger " + self._trigger.__str__(1 if n is None else n+1)
@@ -13010,7 +13010,7 @@ class UaEndpointDescription(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEndpointDescription) : NULL" + ("" if n is None else "\n")
+            return "(UaEndpointDescription): NULL" + ("" if n is None else "\n")
 
         return ("(UaEndpointDescription) :\n"
                 + "\t" * (1 if n is None else n+1) + "endpoint_url " + self._endpoint_url.__str__(1 if n is None else n+1)
@@ -13092,7 +13092,7 @@ class UaDeleteReferencesRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaDeleteReferencesRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaDeleteReferencesRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaDeleteReferencesRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -13168,7 +13168,7 @@ class UaTranslateBrowsePathsToNodeIdsRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaTranslateBrowsePathsToNodeIdsRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaTranslateBrowsePathsToNodeIdsRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaTranslateBrowsePathsToNodeIdsRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -13244,7 +13244,7 @@ class UaFindServersResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaFindServersResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaFindServersResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaFindServersResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -13404,7 +13404,7 @@ class UaCreateSessionRequest(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCreateSessionRequest) : NULL" + ("" if n is None else "\n")
+            return "(UaCreateSessionRequest): NULL" + ("" if n is None else "\n")
 
         return ("(UaCreateSessionRequest) :\n"
                 + "\t" * (1 if n is None else n+1) + "request_header " + self._request_header.__str__(1 if n is None else n+1)
@@ -13486,7 +13486,7 @@ class UaContentFilterElement(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaContentFilterElement) : NULL" + ("" if n is None else "\n")
+            return "(UaContentFilterElement): NULL" + ("" if n is None else "\n")
 
         return ("(UaContentFilterElement) :\n"
                 + "\t" * (1 if n is None else n+1) + "filter_operator " + self._filter_operator.__str__(1 if n is None else n+1)
@@ -13590,7 +13590,7 @@ class UaTranslateBrowsePathsToNodeIdsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaTranslateBrowsePathsToNodeIdsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaTranslateBrowsePathsToNodeIdsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaTranslateBrowsePathsToNodeIdsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -13696,7 +13696,7 @@ class UaBrowseResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaBrowseResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaBrowseResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaBrowseResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -13901,7 +13901,7 @@ class UaCreateSessionResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaCreateSessionResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaCreateSessionResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaCreateSessionResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -13972,7 +13972,7 @@ class UaContentFilter(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaContentFilter) : NULL" + ("" if n is None else "\n")
+            return "(UaContentFilter): NULL" + ("" if n is None else "\n")
 
         return ("(UaContentFilter) :\n"
                 + "\t" * (1 if n is None else n+1) + "elements_size " + self._elements_size.__str__(1 if n is None else n+1)
@@ -14047,7 +14047,7 @@ class UaGetEndpointsResponse(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaGetEndpointsResponse) : NULL" + ("" if n is None else "\n")
+            return "(UaGetEndpointsResponse): NULL" + ("" if n is None else "\n")
 
         return ("(UaGetEndpointsResponse) :\n"
                 + "\t" * (1 if n is None else n+1) + "response_header " + self._response_header.__str__(1 if n is None else n+1)
@@ -14123,7 +14123,7 @@ class UaEventFilter(UaType):
 
     def __str__(self, n=None):
         if self._null:
-            return "(UaEventFilter) : NULL" + ("" if n is None else "\n")
+            return "(UaEventFilter): NULL" + ("" if n is None else "\n")
 
         return ("(UaEventFilter) :\n"
                 + "\t" * (1 if n is None else n+1) + "select_clauses_size " + self._select_clauses_size.__str__(1 if n is None else n+1)

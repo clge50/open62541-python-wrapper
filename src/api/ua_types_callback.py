@@ -351,7 +351,7 @@ class UaDataSource(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UA_DataSource) : NULL" + ("" if n is None else "\n")
+            return "(UA_DataSource): NULL" + ("" if n is None else "\n")
 
         return ("(UA_DataSource) :\n" +
                 "\t" * (1 if n is None else n+1) + "read_callback" + str(self._read_callback) +

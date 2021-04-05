@@ -34,11 +34,11 @@ class Void(UaType):
         else:
             return ffi.from_handle(self._ptr)
 
-    def __str__(self, n=0):
+    def __str__(self, n=None):
         if self._null:
-            return "(Void): NULL\n"
+            return "(Void): NULL" + ("" if n is None else "\n")
         else:
-            return "(Void): " + str(self.data) + "\n"
+            return "(Void): " + str(self.data) + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ SizeT +++++++++++++++++++++++
@@ -106,8 +106,8 @@ class SizeT(UaType):
     def __xor__(self, other):
         return SizeT(self._val ^ (other._val if isinstance(other, UaType) else other))
 
-    def __str__(self, n=0):
-        return "(SizeT): " + str(self._val)
+    def __str__(self, n=None):
+        return "(SizeT): " + str(self._val) + ("" if n is None else "\n")
 
 
 # +++++++++++++++++++ CString +++++++++++++++++++++++
@@ -135,8 +135,8 @@ class CString(UaType):
         self._p_value = val
         self._value = ffi.new("char[]", self._p_value)
 
-    def __str__(self, n=0):
-        return "(CString): " + str(self.value)
+    def __str__(self, n=None):
+        return "(CString): " + str(self.value) + ("" if n is None else "\n")
 
     def __add__(self, other):
         if isinstance(other, CString):

@@ -459,6 +459,8 @@ class UaUInt32(UaType):
     _UA_TYPE = _UA_TYPES._UINT32
 
     def __init__(self, val=None, is_pointer=False):
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_UInt32*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
         else:
@@ -765,6 +767,8 @@ class UaDouble(UaType):
     _UA_TYPE = _UA_TYPES._DOUBLE
 
     def __init__(self, val=None, is_pointer=False):
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_Double*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
@@ -896,3 +900,105 @@ class UaStatusCode(UaType):
 
     def is_good(self):
         return not lib.UA_StatusCode_isBad(self._val)
+
+
+# +++++++++++++++++++ UaString +++++++++++++++++++++++
+class UaString(UaType):
+    _UA_TYPE = _UA_TYPES._STRING
+
+    def __init__(self, val: Union[str, Void] = None, is_pointer=False):
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_String*", val._ptr)
+        elif type(val) is str or type(val) is bytes:
+            val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
+        elif type(val) is not None:
+            if not is_pointer:
+                val = ffi.new("UA_String*", val)
+        else:
+            val = ffi.new("UA_String*")
+
+        super().__init__(val=val, is_pointer=is_pointer)
+
+        if not self._null:
+            self._length = SizeT(val=val.length, is_pointer=False)
+            self._data = UaByte(val=val.data, is_pointer=True)
+            if _is_null(self._data):
+                self._null = True
+
+    def _update(self):
+        self.__init__(val=self._ptr)
+
+    # TODO: Rather make new UaString?
+    #   -> not sure where the pointer is directed and if there is enough memory for evtually more bytes than befor
+    #   -> memory management for alloced memory from UA_String_fromChars
+
+    def _set_value(self, val):
+        if self._is_pointer:
+            self._value = _ptr(val, "UA_String")
+        else:
+            self._value[0] = _val(val)
+
+        if not _is_null(val):
+            self._length._value[0] = _val(val.length)
+            self._data._value = val.data
+
+    @property
+    def length(self):
+        if self._null:
+            return None
+        else:
+            return self._length
+
+    @property
+    def data(self):
+        if self._null:
+            return None
+        else:
+            return self._data
+
+    def __eq__(self, ua_string):
+        return lib.UA_String_equal(self._ptr, ua_string._ptr)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __add__(self, other):
+        return UaString(self.value + other.value)
+
+    def __mul__(self, other: int):
+        return UaString(self.value * other)
+
+    def equal_ignore_case(self, ua_string):
+        return lib.UA_String_equal_ignorecase(self._ptr, ua_string._ptr)
+
+    @property
+    def value(self) -> str:
+        if self._null:
+            return "NULL"
+        return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val).decode("utf-8")
+
+    def __str__(self, n=None):
+        return "(UaString): " + self.value + ("" if n is None else "\n")
+
+
+# +++++++++++++++++++ UaByteString +++++++++++++++++++++++
+class UaByteString(UaString):
+    _UA_TYPE = _UA_TYPES._BYTESTRING
+
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
+        super().__init__(val, is_pointer)
+
+    @property
+    def value(self) -> bytes:
+        if self._null:
+            return "NULL"
+        return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val)
+
+
+# +++++++++++++++++++ UaXmlElement +++++++++++++++++++++++
+class UaXmlElement(UaString):
+    _UA_TYPE = _UA_TYPES._XMLELEMENT
+
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
+        super().__init__(val, is_pointer)
+

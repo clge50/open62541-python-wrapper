@@ -218,7 +218,7 @@ class UaClientConfig(UaType):
 
     def __str__(self, n=0):
         if self._null:
-            return "(UaClientConfig) : NULL" + ("" if n is None else "\n")
+            return "(UaClientConfig): NULL" + ("" if n is None else "\n")
 
         return ("(UaClientConfig) :\n" +
                 "\t" * (1 if n is None else n+1) + "logger " + self._logger.__str__(1 if n is None else n+1) +
