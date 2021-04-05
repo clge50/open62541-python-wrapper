@@ -3,3 +3,9 @@ open62541
 deprecated/build
 deprecated/open62541
 .idea
+.vscode
+.pytest_cache
+examples/other/cat_detector/haarcascade_frontalcatface.xml
+.vscode/
+test/.pytest_cache
+examples/__init__.py
