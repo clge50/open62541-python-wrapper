@@ -928,19 +928,19 @@ class UaString(UaType):
     def _update(self):
         self.__init__(val=self._ptr)
 
-    # TODO: Rather make new UaString?
+    # Rather make new UaString?
     #   -> not sure where the pointer is directed and if there is enough memory for evtually more bytes than befor
     #   -> memory management for alloced memory from UA_String_fromChars
-
-    def _set_value(self, val):
-        if self._is_pointer:
-            self._value = _ptr(val, "UA_String")
-        else:
-            self._value[0] = _val(val)
-
-        if not _is_null(val):
-            self._length._value[0] = _val(val.length)
-            self._data._value = val.data
+    #
+    # def _set_value(self, val):
+    #     if self._is_pointer:
+    #         self._value = _ptr(val, "UA_String")
+    #     else:
+    #         self._value[0] = _val(val)
+    #
+    #     if not _is_null(val):
+    #         self._length._value[0] = _val(val.length)
+    #         self._data._value = val.data
 
     @property
     def length(self):

@@ -8,7 +8,6 @@ from ua_types_parent import *
 from ua_types_parent import _ptr, _val, _is_null, _is_ptr
 
 
-# TODO: use from and new_handle
 # +++++++++++++++++++ Void +++++++++++++++++++++++
 class Void(UaType):
     def __init__(self, data=None, val=None, is_pointer=True):
@@ -19,7 +18,6 @@ class Void(UaType):
 
         super().__init__(ffi.cast("void*", _ptr(val)), is_pointer)
 
-    # TODO: Should this be possible? Where/which references will be changed?
     def _set_value(self, val):
         self._value = ffi.cast("void*", _val(val))
 

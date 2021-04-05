@@ -388,7 +388,6 @@ class UaDateTime(UaType):
 
 
 # +++++++++++++++++++ UaDateTimeStruct +++++++++++++++++++++++
-# TODO: Methods from types.h
 class UaDateTimeStruct(UaType):
     def __init__(self, val=None, is_pointer=False):
         if val is None:
@@ -679,8 +678,6 @@ class UaNodeId(UaType):
     def NULL():
         return UaNodeId(val=lib.UA_NODEID_NULL)
 
-    # TODO: refactor
-    # TODO: Memory management
     def __init__(self,
                  ns_index: Union[int, UaUInt16] = None,
                  ident: Union[int, UaUInt32, str, bytearray, UaString, UaGuid, UaByteString] = None,
@@ -739,7 +736,6 @@ class UaNodeId(UaType):
             self._namespace_index = UaUInt16(val=val.namespaceIndex, is_pointer=False)
             self._identifier_type = UaNodeIdType(val=val.identifierType, is_pointer=False)
 
-            # TODO: refactor
             if self._identifier_type._val == 0:
                 self._identifier = UaUInt32(val=val.identifier.numeric)
             elif self._identifier_type._val == 1:
@@ -831,8 +827,6 @@ class UaExpandedNodeId(UaType):
 
     NULL = lib.UA_EXPANDEDNODEID_NULL
 
-    # TODO: refactor
-    # TODO: Memory management
     def __init__(self,
                  ns_index: Union[int, UaUInt16] = None,
                  ident: Union[int, UaUInt32, str, bytearray, UaString, UaGuid, UaByteString] = None,
@@ -989,8 +983,7 @@ class UaQualifiedName(UaType):
                  is_pointer=False):
         if val is None:
             val = ffi.new("UA_QualifiedName*")
-        # TODO: refactor
-        # TODO: Memory management
+
         if isinstance(val, UaType):
             val = ffi.cast("UA_QualifiedName*", val._ptr)
         elif ns_index is not None and string is not None:
@@ -1078,8 +1071,6 @@ class UaQualifiedName(UaType):
 class UaLocalizedText(UaType):
     _UA_TYPE = _UA_TYPES._LOCALIZEDTEXT
 
-    # TODO: refactor
-    # TODO: Memory management
     def __init__(self,
                  locale: Union[str, UaString] = None,
                  text: Union[str, UaString] = None,
@@ -1377,7 +1368,6 @@ class UaVariant(UaType):
         self._array_length = val
         self._value.arrayLength = val._val
 
-    # TODO: Document this!
     # ---> it only works if val is of the correct subclass of uatype or ualist with correctly
     # set class attribute respectively
     @data.setter
@@ -1447,7 +1437,6 @@ class UaVariant(UaType):
             raise Exception(f"An Error occured - {str(status_code)}")
 
     def copy_range_to(self, variant: 'UaVariant', num_range: UaNumericRange):
-        # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copyRange(self._ptr, variant._ptr, num_range._val)
         status_code = UaStatusCode(val=status_code)
         if not status_code.is_bad():
@@ -1457,7 +1446,6 @@ class UaVariant(UaType):
             raise AttributeError(f"An Error occured - {str(status_code)}")
 
     def copy(self, variant: 'UaVariant'):
-        # TODO: might cause memory problems!
         status_code = lib.UA_Variant_copy(self._ptr, variant._ptr)
         status_code = UaStatusCode(val=status_code)
         if not status_code.is_bad():
@@ -1710,7 +1698,7 @@ class UaExtensionObject(UaType):
             else:
                 raise ValueError(f"Encoding does not exist.")
 
-        # TODO: might cause trouble since at _value[0] might not be enough memory for an other encoding type
+        # might cause trouble since at _value[0] might not be enough memory for an other encoding type
 
     def _update(self):
         self.__init__(val=self._ptr)
@@ -1826,7 +1814,6 @@ class UaDiagnosticInfo(UaType):
             self._inner_status_code._value[0] = _val(val.innerStatusCode)
             self._inner_diagnostic_info._value = val.innerDiagnosticInfo
 
-    # TODO: probably there is null if there is a property has_... -> if primitive no problem
     @property
     def has_symbolic_id(self):
         if self._null:
@@ -2322,14 +2309,12 @@ class UaDataType(UaType):
     def find_by_node_id(type_id: UaNodeId):
         return UaDataType(val=ffi.new("UA_DataType*", lib.UA_findDataType(type_id._ptr)), is_pointer=True)
 
-    # TODO: generic type handling!!!
     # ----> init, copy, new, array_new, array_copy should be methods of a class, which represent members of an in an
     # attribute provided UaDataType
     # returns void ptr
     def new_instance(self):
         return lib.UA_new(self._ptr)
 
-    # TODO: handling difficult, cast to something?
     def new_array(self, size: SizeT):
         return Void(val=lib.UA_Array_new(size._val, self._ptr))
 

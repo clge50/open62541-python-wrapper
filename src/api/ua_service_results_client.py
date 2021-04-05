@@ -98,12 +98,10 @@ class ReadValueRankAttribute:
         self.value = out_value_rank
 
 
-# todo: out_array_dimensions is UA_UInt32 **
 class ReadArrayDimensionsAttributeResult:
-    def __init__(self, status_code: ua_types_clientconfig.UaStatusCode, out_array_dimensions_size: ua_types_clientconfig.SizeT,
-                 out_array_dimensions: ua_types_clientconfig.UaUInt32):
+    def __init__(self, status_code: ua_types_clientconfig.UaStatusCode,
+                 out_array_dimensions: ua_types_clientconfig.UaList):
         self.status_code = status_code
-        self.out_array_dimensions_size = out_array_dimensions_size
         self.out_array_dimensions = out_array_dimensions
 
 
@@ -161,7 +159,6 @@ class AddNodeResult:
         self.out_new_node_id = out_new_node_id
 
 
-# todo: add type of _handle
 # async simple service
 class AsyncResponse:
     def __init__(self, status_code: ua_types_clientconfig.UaStatusCode, req_id: ua_types_clientconfig.UaUInt32, _handle):

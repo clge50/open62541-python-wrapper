@@ -399,16 +399,15 @@ class UaClient:
         status_code = lib.UA_Client_readValueRankAttribute(self.ua_client, node_id._val, out_value_rank._ptr)
         return ClientServiceResult.ReadValueRankAttribute(UaStatusCode(val=status_code), out_value_rank)
 
-    # todo: use UaList for out_array_dimensions"
     def read_array_dimensions_attribute(self, node_id: UaNodeId):
         out_array_dimensions_size = SizeT()
         out_array_dimensions = ffi.new("UA_UInt32 **")
         status_code = lib.UA_Client_readArrayDimensionsAttribute(self.ua_client, node_id._val,
                                                                  out_array_dimensions_size._ptr,
                                                                  out_array_dimensions)
+        out_array_dimensions = UaList(out_array_dimensions, out_array_dimensions_size, UaUInt32, True)
         return ClientServiceResult.ReadArrayDimensionsAttributeResult(UaStatusCode(val=status_code),
-                                                                      out_array_dimensions_size,
-                                                                      out_array_dimensions)  # todo: fix return value
+                                                                      out_array_dimensions)
 
     def read_access_level_attribute(self, node_id: UaNodeId):
         out_access_level = UaByte()
@@ -545,14 +544,13 @@ class UaClient:
         if type(call_input) is UaList:
             input_size = SizeT(call_input._size)
 
-        # Todo: use UaList
         output = ffi.new("UA_Variant **")
         status_code = lib.UA_Client_call(self.ua_client, object_id._val, method_id._val, input_size._val,
                                          call_input._ptr, output_size._ptr,
                                          output)
         return ClientServiceResult.CallResult(UaStatusCode(val=status_code), output_size,
                                               UaList(val=output[0], size=output_size,
-                                                     ua_class=UaVariant))  # todo: list handling has to be adapted here
+                                                 ua_class=UaVariant))  # todo: list handling has to be adapted here
 
     def add_reference(self, source_node_id: UaNodeId, reference_type_id: UaNodeId,
                       is_forward: UaBoolean,
@@ -727,11 +725,11 @@ class UaClient:
         return ClientServiceResult.AddNodeResult(UaStatusCode(val=status_code), out_new_node_id)
 
     # utils
-    # todo: wrap config once UA_Logger type is available
+    # todo: use UaServerConfig
     def get_config(self):
         return lib.UA_Client_getConfig(self.ua_client)
 
-    # todo: adapt once UA_Logger type is available and get_config has been wrapped
+    # todo: use adapted get_config
     def set_default_config(self):
         lib.UA_ClientConfig_setDefault(self.get_config())
 

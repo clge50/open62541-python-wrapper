@@ -161,7 +161,7 @@ class UaLogger(UaType):
 
     # see definitions/log -> Problem with va_list
     # @staticmethod
-    # #the context seems to be an open todo in open62541
+    # #the context seems to be an open to do in open62541
     # def stdout_log(level: UaLogLevel, category: UaLogCategory, msg: str, context=ffi.NULL):
-    #     # TODO: something like: pass msg as format string and parse to bytestring + va_list
+    #     # TO DO something like: pass msg as format string and parse to bytestring + va_list
     #     lib.UA_Log_Stdout_log(context, level._val, category._val, UaString(msg)._ptr, ffi.NULL)

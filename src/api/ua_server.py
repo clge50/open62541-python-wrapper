@@ -259,42 +259,326 @@ class _ServerCallback:
                                                            UaUInt32(val=attribute_id),
                                                            UaDataValue(val=value, is_pointer=True))
 
-    # todo: ExternalValueCallback is missing
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_CertificateVerification_verifyCertificate(verification_context, certificate):
+        UaCertificateVerification._verify_certificate(Void(val=verification_context, is_pointer=True),
+                                                      UaByteString(val=certificate, is_pointer=True))
+    
+    
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_verifyApplicationURI(verification_context, certificate, application_uri):
+        UaCertificateVerification._verify_application_uri(Void(val=verification_context, is_pointer=True),
+                                                          UaByteString(val=certificate, is_pointer=True),
+                                                          UaString(val=application_uri))
+    
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_CertificateVerification_clear(vc):
+        UaCertificateVerification._clear(UaCertificateVerification(val=vc, is_pointer=True))
 
-    # @staticmethod
-    # @ffi.def_extern()
-    # def python_wrapper_UA_NodeTypeLifecycle_constructor(server,
-    #                                                     session_id,
-    #                                                     session_context,
-    #                                                     type_node_id,
-    #                                                     type_node_context,
-    #                                                     node_id,
-    #                                                     node_context):
-    #     return UaStatusCode(val=UaNodeTypeLifecycle._constructor_callback(UaServer(val=server),
-    #                                                                       UaNodeId(val=session_id),
-    #                                                                       Void(val=session_context),
-    #                                                                       UaNodeId(val=type_node_id),
-    #                                                                       Void(val=type_node_context),
-    #                                                                       UaNodeId(val=node_id),
-    #                                                                       Void(val=node_context)))
-    #
-    # @staticmethod
-    # @ffi.def_extern()
-    # def python_wrapper_UA_NodeTypeLifecycle_destructor(server,
-    #                                                    session_id,
-    #                                                    session_context,
-    #                                                    type_node_id,
-    #                                                    type_node_context,
-    #                                                    node_id,
-    #                                                    node_context):
-    #     UaNodeTypeLifecycle._destructor_callback(UaServer(val=server),
-    #                                              UaNodeId(val=session_id),
-    #                                              Void(val=session_context),
-    #                                              UaNodeId(val=type_node_id),
-    #                                              Void(val=type_node_context),
-    #                                              UaNodeId(val=node_id),
-    #                                              Void(val=node_context))
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_clear(ns_ctx):
+        UaNodestore._clear(Void(val=ns_ctx, is_pointer=True))
 
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_newNode(ns_ctx, node_class):
+        UaNodestore._new_node(Void(val=ns_ctx, is_pointer=True),
+                              UaNodeClass(val=node_class))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_deleteNode(ns_ctx, node):
+        UaNodestore._delete_node(Void(val=ns_ctx, is_pointer=True),
+                                 UaNode(val=node, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_getNode(ns_ctx, node_id):
+        UaNodestore._get_node(Void(val=ns_ctx, is_pointer=True),
+                              UaNodeId(val=node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_releaseNode(ns_ctx, node):
+        UaNodestore._release_node(Void(val=ns_ctx, is_pointer=True),
+                                  UaNode(val=node, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_getNodeCopy(ns_ctx, node_id, out_node):
+        UaNodestore._get_node_copy(Void(val=ns_ctx, is_pointer=True),
+                                   UaNodeId(val=node_id, is_pointer=True),
+                                   UaList(val=out_node))  # todo: might not work. it's a UA_Node**
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_insertNode(ns_ctx, node, added_node_id):
+        UaNodestore._insert_node(Void(val=ns_ctx, is_pointer=True),
+                                 UaNode(val=node, is_pointer=True),
+                                 UaNodeId(val=added_node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_replaceNode(ns_ctx, node):
+        UaNodestore._replace_node(Void(val=ns_ctx, is_pointer=True),
+                                  UaNode(val=node, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_removeNode(ns_ctx, node_id):
+        UaNodestore._remove_node(Void(val=ns_ctx, is_pointer=True),
+                                 UaNodeId(val=node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_getReferenceTypeId(ns_ctx, ref_type_index):
+        UaNodestore._get_reference_type_id(Void(val=ns_ctx, is_pointer=True),
+                                           UaByte(val=ref_type_index, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_Nodestore_iterate(ns_ctx, visitor, visitor_ctx):
+        UaNodestore._iterate(Void(val=ns_ctx, is_pointer=True),
+                             # todo: add UaNodeStoreVisitor
+                             Void(val=visitor),
+                             Void(val=visitor_ctx, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_clear(ac):
+        UaAccessControl._clear(UaAccessControl(val=ac, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_activateSession(server, ac, endpoint_description,
+                                                         secure_channel_remote_certificate, session_id,
+                                                         user_identity_token, session_context):
+        
+        return UaAccessControl._activate_session(UaServer(val=server),
+                                                 UaAccessControl(val=ac, is_pointer=True),
+                                                 UaEndpointDescription(val=endpoint_description, is_pointer=True),
+                                                 UaByteString(val=secure_channel_remote_certificate, is_pointer=True),
+                                                 UaNodeId(val=session_id, is_pointer=True),
+                                                 UaList(session_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_closeSession(server, ac, session_id, session_context):
+        
+        UaAccessControl._close_session(UaServer(val=server),
+                                       UaAccessControl(val=ac, is_pointer=True),
+                                       UaNodeId(val=session_id, is_pointer=True),
+                                       Void(val=session_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserRightsMask(server, ac, session_id, session_context, node_id,
+                                                           node_context):
+        
+        return UaAccessControl._get_user_rights_mask(UaServer(val=server),
+                                                     UaAccessControl(val=ac, is_pointer=True),
+                                                     UaNodeId(val=session_id, is_pointer=True),
+                                                     Void(val=session_context, is_pointer=True),
+                                                     UaNodeId(val=node_id, is_pointer=True),
+                                                     Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserAccessLevel(server, ac, session_id, session_context, node_id,
+                                                            node_context):
+
+        return UaAccessControl._get_user_access_level(UaServer(val=server),
+                                                      UaAccessControl(val=ac, is_pointer=True),
+                                                      UaNodeId(val=session_id, is_pointer=True),
+                                                      Void(val=session_context, is_pointer=True),
+                                                      UaNodeId(val=node_id, is_pointer=True),
+                                                      Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserExecutable(server, ac, session_id, session_context, method_id,
+                                                           method_context):
+
+        return UaAccessControl._get_user_executable(UaServer(val=server),
+                                                    UaAccessControl(val=ac, is_pointer=True),
+                                                    UaNodeId(val=session_id, is_pointer=True),
+                                                    Void(val=session_context, is_pointer=True),
+                                                    UaNodeId(val=method_id, is_pointer=True),
+                                                    Void(val=method_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_getUserExecutableOnObject(server, ac, session_id, session_context, method_id,
+                                                                   method_context, object_id, object_context):
+
+        return UaAccessControl._get_user_executable_on_object(UaServer(val=server),
+                                                              UaAccessControl(val=ac, is_pointer=True),
+                                                              UaNodeId(val=session_id, is_pointer=True),
+                                                              Void(val=session_context, is_pointer=True),
+                                                              UaNodeId(val=method_id, is_pointer=True),
+                                                              Void(val=method_context, is_pointer=True),
+                                                              UaNodeId(val=object_id, is_pointer=True),
+                                                              Void(val=object_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowAddNode(server, ac, session_id, session_context, item):
+
+        return UaAccessControl._allow_add_node(UaServer(val=server),
+                                               UaAccessControl(val=ac, is_pointer=True),
+                                               UaNodeId(val=session_id, is_pointer=True),
+                                               Void(val=session_context, is_pointer=True),
+                                               UaAddNodesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowAddReference(server, ac, session_id, session_context, item):
+
+        return UaAccessControl._allow_add_reference(UaServer(val=server),
+                                                    UaAccessControl(val=ac, is_pointer=True),
+                                                    UaNodeId(val=session_id, is_pointer=True),
+                                                    Void(val=session_context, is_pointer=True),
+                                                    UaAddReferencesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowDeleteNode(server, ac, session_id, session_context, item):
+
+        return UaAccessControl._allow_delete_node(UaServer(val=server),
+                                                  UaAccessControl(val=ac, is_pointer=True),
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True),
+                                                  UaDeleteNodesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowDeleteReference(server, ac, session_id, session_context, item):
+
+        return UaAccessControl._allow_delete_reference(UaServer(val=server),
+                                                       UaAccessControl(val=ac, is_pointer=True),
+                                                       UaNodeId(val=session_id, is_pointer=True),
+                                                       Void(val=session_context, is_pointer=True),
+                                                       UaDeleteReferencesItem(val=item, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_AccessControl_allowBrowseNode(server, ac, session_id, session_context):
+
+        return UaAccessControl._allow_browse_node(UaServer(val=server),
+                                                  UaAccessControl(val=ac, is_pointer=True),
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_constructor(server, session_id, session_context, node_id, node_context):
+
+        return UaGlobalNodeLifecycle._constructor(UaServer(val=server),
+                                                  UaNodeId(val=session_id, is_pointer=True),
+                                                  Void(val=session_context, is_pointer=True),
+                                                  UaNodeId(val=node_id, is_pointer=True),
+                                                  UaList(val=node_context))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_destructor(server, session_id, session_context, node_id, node_context):
+
+        return UaGlobalNodeLifecycle._destructor(UaServer(val=server),
+                                                 UaNodeId(val=session_id, is_pointer=True),
+                                                 Void(val=session_context, is_pointer=True),
+                                                 UaNodeId(val=node_id, is_pointer=True),
+                                                 Void(val=node_context, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_createOptionalChild(server, session_id, session_context, source_node_id,
+                                                                   target_parent_node_id, reference_type_id):
+
+        return UaGlobalNodeLifecycle._create_optional_child(UaServer(val=server),
+                                                            UaNodeId(val=session_id, is_pointer=True),
+                                                            Void(val=session_context, is_pointer=True),
+                                                            UaNodeId(val=source_node_id, is_pointer=True),
+                                                            UaNodeId(val=target_parent_node_id, is_pointer=True),
+                                                            UaNodeId(val=reference_type_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_GlobalNodeLifecycle_generateChildNodeId(server, session_id, session_context, source_node_id,
+                                                                   target_parent_node_id, reference_type_id,
+                                                                   target_node_id):
+
+        return UaGlobalNodeLifecycle._generate_child_node_id(UaServer(val=server),
+                                                             UaNodeId(val=session_id, is_pointer=True),
+                                                             Void(val=session_context, is_pointer=True),
+                                                             UaNodeId(val=target_parent_node_id, is_pointer=True),
+                                                             UaNodeId(val=reference_type_id, is_pointer=True),
+                                                             UaNodeId(val=target_node_id, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_start(nl, logger, custom_host_name):
+        return UaServerNetworkLayer._start(UaServerNetworkLayer(val=nl),
+                                           UaLogger(val=logger, is_pointer=True),
+                                           UaString(val=custom_host_name, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_listen(nl, server, timeout):
+        return UaServerNetworkLayer._listen(UaServerNetworkLayer(val=nl), UaServer(val=server),
+                                            UaUInt16(val=timeout, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_stop(nl, server):
+        return UaServerNetworkLayer._stop(UaServerNetworkLayer(val=nl, is_pointer=True), UaServer(val=server))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_ServerNetworkLayer_clear(nl):
+        return UaServerNetworkLayer._clear(UaServerNetworkLayer(val=nl))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_updateCertificateAndPrivateKey(policy, new_certificate, new_private_key):
+        return UaSecurityPolicy._update_certificate_and_private_key(UaSecurityPolicy(val=policy, is_pointer=True),
+                                                                    UaByteString(val=new_certificate, is_pointer=False),
+                                                                    UaByteString(val=new_private_key, is_pointer=False))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_SecurityPolicy_clear(policy):
+        UaSecurityPolicy._clear(UaSecurityPolicy(val=policy, is_pointer=True))
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_NodeTypeLifecycle_constructor(server, session_id, session_context, type_node_id,
+                                                         type_node_context, node_id, node_context):
+
+        status_code = UaNodeTypeLifecycle._constructor(UaServer(val=server),
+                                                       UaNodeId(val=session_id, is_pointer=True),
+                                                       Void(val=session_context, is_pointer=True),
+                                                       UaNodeId(val=type_node_id, is_pointer=True),
+                                                       Void(val=type_node_context, is_pointer=True),
+                                                       UaNodeId(val=node_id, is_pointer=True),
+                                                       Void(val=node_context))
+        return status_code._val
+
+    @staticmethod
+    @ffi.def_extern()
+    def _python_wrapper_UA_NodeTypeLifecycle_destructor(server, session_id, session_context, type_node_id,
+                                                        type_node_context, node_id, node_context):
+
+        UaNodeTypeLifecycle._destructor(UaServer(val=server),
+                                        UaNodeId(val=session_id, is_pointer=True),
+                                        Void(val=session_context, is_pointer=True),
+                                        UaNodeId(val=type_node_id, is_pointer=True),
+                                        Void(val=type_node_context, is_pointer=True),
+                                        UaNodeId(val=node_id, is_pointer=True),
+                                        Void(val=node_context))
 
 class UaServer:
     """
@@ -360,10 +644,6 @@ class UaServer:
     def run_iterate(self, wait_internal: UaBoolean = UaBoolean(True)):
         raw_value = lib.UA_Server_run_iterate(self.ua_server, wait_internal._val)
         return UaUInt16(val=raw_value)
-
-    # TODO:
-    #    def delete(self):
-    #        return lib.UA_Server_delete(self.ua_server)
 
     def set_minimal_config(self, port_number: UaInt16, certificate: UaByteString = None):
         if certificate is None:
@@ -549,7 +829,7 @@ class UaServer:
     ### Browse Functions
     ###
 
-    def browse(self, max_refs: UaUInt32):  # TODO: implement UaBrowseDescription
+    def browse(self, max_refs: UaUInt32):
         out_bd = UaBrowseDescription()
         status_code = lib.UA_Server_browse(self.ua_server, max_refs._val, out_bd._ptr)
         out_bd._update()
@@ -606,10 +886,8 @@ class UaServer:
                                                               data_source._val, node_context, out_node_id._ptr)
         out_node_id._update()
 
-        # todo: update dict entry with out node id
-
         return ServerServiceResults.NodeIdResult(UaStatusCode(status_code),
-                                                 out_node_id)  # TODO: out_node not None?
+                                                 out_node_id)  # out_node must not be None
 
     def delete_node(self, node_id: UaNodeId, delete_references: UaBoolean):
         raw_result = lib.UA_Server_deleteNode(self.ua_server, node_id._val, delete_references._val)
@@ -650,7 +928,6 @@ class UaServer:
 
         out_node_id = UaNodeId()
 
-        # TODO: test
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
         else:
@@ -676,7 +953,6 @@ class UaServer:
 
         out_node_id = UaNodeId()
 
-        # TODO: test
         if node_context is not ffi.NULL:
             node_context = ffi.new_handle(node_context)
         else:
@@ -702,7 +978,6 @@ class UaServer:
 
         out_node_id = UaNodeId()
 
-        # TODO: test
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
         else:
@@ -727,7 +1002,6 @@ class UaServer:
 
         out_node_id = UaNodeId()
 
-        # TODO: test
         if node_context is not None:
             node_context = ffi.new_handle(node_context)
         else:
@@ -836,17 +1110,6 @@ class UaServer:
                                                           out_event_id._ptr)
         out_event_id._update()
         return ServerServiceResults.EventResult(status_code, out_event_id)
-
-    # def set_condition_two_state_variable_callback(self,
-    #                                               condition: UaNodeId,
-    #                                               condition_source: UaNodeId,
-    #                                               remove_branch: UaBoolean,
-    #                                               callback: UaTwoStateVariableChangeCallback,
-    #                                               callback_type: UaTwoStateVariableCallbackType):  # TODO: implement UaTwoStateVariableCallbackType and UaTwoStateVariableChangeCallback
-    #
-    #     raw_result = lib.UA_Server_setConditionTwoStateVariableCallback(self.ua_server, condition, condition_source,
-    #                                                                     remove_branch, callback, callback_type)
-    #     return UaStatusCode(raw_result)
 
     def create_data_change_monitored_item(self,
                                           timestamps_to_return: UaTimestampsToReturn,

@@ -103,8 +103,6 @@ def add_pump_object_instance(server: UaServer, name):
 
 def pump_type_constructor(server: UaServer, session_id: UaNodeId, session_context: Void, type_id: UaNodeId,
                           type_context: Void, node_id: UaNodeId, node_context: Void):
-    # TODO: hacky, change this for callback types in Serverconfig
-    ua_server = UaServer(val=server)
     UaLogger().info(UaLogCategory.USERLAND(), "New pump created")
     rpe = UaRelativePathElement()
     rpe.reference_type_id = UA_NS0ID.HASCOMPONENT
@@ -117,13 +115,13 @@ def pump_type_constructor(server: UaServer, session_id: UaNodeId, session_contex
     bp.relative_path.elements_size = SizeT(1)
     bp.relative_path.elements = rpe
 
-    bpr = ua_server.translate_browse_path_to_node_ids(bp)
+    bpr = server.translate_browse_path_to_node_ids(bp)
     if bpr.status_code != UA_STATUSCODES.GOOD or bpr.targets_size < 1:
         return UaStatusCode(bpr.status_code)
 
     value = UaVariant()
     value.data = UaBoolean(True)
-    ua_server.write_value(bpr.targets.target_id.node_id, value)
+    server.write_value(bpr.targets.target_id.node_id, value)
 
     return UA_STATUSCODES.GOOD
 

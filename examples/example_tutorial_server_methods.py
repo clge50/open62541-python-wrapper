@@ -16,7 +16,7 @@ def hello_world_method_callback(server: UaServer,
 
 
 def add_hello_world_method(server: UaServer):
-    input_argument = UaArgument()  # todo: introduce builder pattern for UA types to allow for concise code? --> UaArgument().description(...).name(...)
+    input_argument = UaArgument()
     input_argument.description = UaLocalizedText("en-US", "A String")
     input_argument.name = UaString("MyInput")
     input_argument.data_type = UA_TYPES.STRING.type_id
@@ -90,7 +90,7 @@ def add_inc_int_32_array_method(server: UaServer):
     inc_attr = UA_ATTRIBUTES_DEFAULT.METHOD
     inc_attr.description = UaLocalizedText("en-US", "IncInt32ArrayValues")
     inc_attr.display_name = UaLocalizedText("en-US", "IncInt32ArrayValues")
-    inc_attr.executable = UaBoolean(True)  # todo: adapt setter to allow to pass python bool instead of UaBoolean
+    inc_attr.executable = UaBoolean(True)
     inc_attr.user_executable = UaBoolean(True)
     server.add_method_node(UaNodeId(1, "IncInt32ArrayValues"),
                            UA_NS0ID.OBJECTSFOLDER,

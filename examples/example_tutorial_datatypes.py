@@ -3,7 +3,7 @@ from ua import *
 
 def variables_basics():
     i = UaInt32(5)
-    j = UaInt32(i)  # todo: adapt constructor type hint
+    j = UaInt32(i)
     k = i + j
     print(f"i + j = {k}")
     print(f"k + 5 = {k+5}")

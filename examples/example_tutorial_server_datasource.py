@@ -12,7 +12,7 @@ def update_current_time(server: UaServer):
 def add_current_time_variable(server: UaServer):
     attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
     attr.display_name = UaLocalizedText("en-US", "Current time - value callback")
-    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE  # todo: accept a list and do the bitwise or internally in the setter.
+    attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
     attr.data_value.data = UaDateTime.now()
 
     current_node_id = UaNodeId(1, "current-time-value-callback")
@@ -61,7 +61,7 @@ ua_data_value = UaDataValue()
 
 
 def add_current_time_data_source_variable(server: UaServer):
-    attr = UA_ATTRIBUTES_DEFAULT.VARIABLE  # todo: make this a method?
+    attr = UA_ATTRIBUTES_DEFAULT.VARIABLE
     attr.display_name = UaLocalizedText("en-US", "Current time - data source")
     attr.access_level = UaAccessLevelMasks.READ | UaAccessLevelMasks.WRITE
 
