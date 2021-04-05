@@ -233,7 +233,7 @@ class UaClient:
 
     # connection
 
-    def connect(self, endpoint_url: str):
+    def connect(self, endpoint_url: str = 'opc.tcp://localhost:4840'):
         status_code = lib.UA_Client_connect(self.ua_client, bytes(endpoint_url, 'utf-8'))
         return UaStatusCode(val=status_code)
 
@@ -241,7 +241,7 @@ class UaClient:
         status_code = lib.UA_Client_disconnect(self.ua_client)
         return UaStatusCode(val=status_code)
 
-    def connect_secure_channel(self, endpoint_url: str):
+    def connect_secure_channel(self, endpoint_url: str = 'opc.tcp://localhost:4840'):
         status_code = lib.UA_Client_connectSecureChannel(self.ua_client, bytes(endpoint_url, 'utf-8'))
         return UaStatusCode(val=status_code)
 
@@ -537,17 +537,22 @@ class UaClient:
 
     # misc high level service
 
-    def call(self, object_id: UaNodeId, method_id: UaNodeId, input_size: SizeT,
+    def call(self, object_id: UaNodeId, method_id: UaNodeId,
              call_input: Union[UaList, UaVariant]):
         output_size = SizeT()
+
+        input_size = SizeT(1)
+        if type(call_input) is UaList:
+            input_size = SizeT(call_input._size)
+
         # Todo: use UaList
         output = ffi.new("UA_Variant **")
         status_code = lib.UA_Client_call(self.ua_client, object_id._val, method_id._val, input_size._val,
                                          call_input._ptr, output_size._ptr,
                                          output)
-        print(UaStatusCode(val=status_code))
         return ClientServiceResult.CallResult(UaStatusCode(val=status_code), output_size,
-                                              UaList(val=output[0], size=1, ua_class=UaVariant))
+                                              UaList(val=output[0], size=output_size,
+                                                     ua_class=UaVariant))  # todo: list handling has to be adapted here
 
     def add_reference(self, source_node_id: UaNodeId, reference_type_id: UaNodeId,
                       is_forward: UaBoolean,

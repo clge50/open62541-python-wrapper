@@ -332,11 +332,13 @@ class UaDataTypeKind(UaType):
 class UaString(UaType):
     _UA_TYPE = _UA_TYPES._STRING
 
-    def __init__(self, val: Union[str, Void] = None, is_pointer=False):
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
         if isinstance(val, UaType):
             val = ffi.cast("UA_String*", val._ptr)
-        elif type(val) is str or type(val) is bytes:
+        elif type(val) is str:
             val = ffi.new("UA_String*", lib.UA_String_fromChars(bytes(val, 'utf-8')))
+        elif type(val) is bytes:
+            val = ffi.new("UA_String*", lib.UA_String_fromChars(val))
         elif type(val) is not None:
             if not is_pointer:
                 val = ffi.new("UA_String*", val)
@@ -408,10 +410,25 @@ class UaString(UaType):
 
 
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
-UaByteString = UaString
+class UaByteString(UaString):
+    _UA_TYPE = _UA_TYPES._BYTESTRING
+
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
+        super().__init__(val, is_pointer)
+
+    @property
+    def value(self) -> bytes:
+        if self._null:
+            return "NULL"
+        return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val)
+
 
 # +++++++++++++++++++ UaXmlElement +++++++++++++++++++++++
-UaXmlElement = UaString
+class UaXmlElement(UaString):
+    _UA_TYPE = _UA_TYPES._XMLELEMENT
+
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
+        super().__init__(val, is_pointer)
 
 
 # +++++++++++++++++++ UaDateTime +++++++++++++++++++++++
