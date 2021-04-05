@@ -1,2 +1,1 @@
 cffi
-python3-sphinx
