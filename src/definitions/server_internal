@@ -1,4 +1,4 @@
-// WIP
+// TODO: This is a draft, not included in the make file. Since might be of use some time it's still here.
 
 /*
 struct UA_Server {
