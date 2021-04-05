@@ -29,7 +29,7 @@ class UaList(UaType):
                     c_type = "UA_String"
                     ua_class = UaString
                     val = list(map(lambda string:
-                                   UaString(string)._ptr if self._list_of_pointers else UaString(string)._ptr, val))
+                                   UaString(string)._ptr if self._list_of_pointers else UaString(string)._val, val))
                 elif type(val[0]) is bool:
                     c_type = "UA_Boolean"
                     ua_class = UaBoolean
@@ -86,7 +86,7 @@ class UaList(UaType):
         return self._size
 
     def __setitem__(self, index: int, value):
-        if 0 > index or index > self._size:
+        if 0 > index or index >= self._size:
             raise KeyError("index out of bound")
         if isinstance(value, UaType):
             self._ptr[index] = value._ptr if self._list_of_pointers else value._val

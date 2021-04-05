@@ -6,25 +6,52 @@ from ua import *
 # UaType subclass.
 # Not all those attributes have to be passed to the init method. There are several options of creating a list.
 
-# UaLists from Lists of Python primitives and strings.
-int_list = UaList([1, 2, 3])
-print(int_list)
+# When a UaLists from is created from a lists of Python primitives or strings neither ua_class nor size has to be passed
+# the init method.
+int64_list = UaList([1, 2, 3])
+# Per default the type of integers is set to UaInt64, the type of floats to UaDouble and of strings to UaString.
+# The default can be changed by setting the ua_class parameter.
+bytes_list = UaList([1, 2, 3], ua_class=UaByte)
+print(int64_list[2])
+print(bytes_list[2])
+
 string_list = UaList(["abc", "def"])
-# The UaList wraps an array of c type instances.
+bytes_list = UaList(["abc", "def"], UaByteString)
+print(string_list[1])
+print(bytes_list[1])
+
+
+# The UaList wraps an array of c type instances. For primitive types cffi automatically interprets them as python
+# primitives:
+print(int64_list)
+# This does not work for other types:
 print(string_list)
 # Only once an indexed access is performed the array's entry is wrapped in an UaType.
 print(string_list[1])
-
 # For developers, this allows an easy usage coherent to other UaTypes by just using ._ptr to get the pointer
 # to the first array item. Also UaLists can be created from c types. Then size and ua_class has to be provided
 # as well since they cannot be guessed from the raw c type. There is an optional parameter list_of_pointers which
-# is False per default. It encodes whether the content of the wrapped array are pointers to instances or the instances
+# is False per default. It encodes whether the content of the wrapped array are pointers to instances
+# or the instances themselves. As a consequence list_of_pointers has to be set true if using void.
 
-# Void is the only exception for this. In this case it's an array of void pointers. Any type instance can be assigned
-# since it is internally processed as a pointer.
+list_void = UaList(size=3, ua_class=Void, list_of_pointers=True)
+variant = UaVariant()
+variant.data = UaInt32(42)
+list_void[1] = variant
+# This: l[1].data = UaInt32(42)
+# does not work since l[1] here in Python is a Void a as such has no attribute data
 
-# lists
-l = UaList(size=5, ua_class=UaVariant, list_of_pointers=True)
-l[0] = UaVariant()
-print(UaVariant(l[0]))
-UaInt32()
+node_id = UaNodeId(2, "a_node_id")
+list_void[0] = node_id
+number = UaDouble(3.141593)
+list_void[2] = number
+# For reasons of memory protection the variables have to be saved explicitly in local variables.
+# See the documentation regarding memory management.
+
+
+# for the same reason all entries have to be casted to print them.
+print(f"list_void[0] {UaNodeId(list_void[0])}")
+print(f"list_void[1] {UaVariant(list_void[1])}")
+print(f"list_void[2] {UaDouble(list_void[2])}")
+
+

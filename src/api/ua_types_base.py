@@ -690,6 +690,8 @@ class UaNodeId(UaType):
             val = ffi.new("UA_NodeId*")
         if isinstance(val, UaType):
             val = ffi.cast("UA_NodeId*", val._ptr)
+        if isinstance(ns_index, UaType):
+            val = ffi.cast("UA_NodeId*", ns_index._ptr)
         elif ns_index is not None and ident is not None:
             if type(ns_index) is int:
                 if type(ident) is int:
@@ -841,6 +843,8 @@ class UaExpandedNodeId(UaType):
             val = ffi.new("UA_ExpandedNodeId*")
         if isinstance(val, UaType):
             val = ffi.cast("UA_ExpandedNodeId*", val._ptr)
+        if isinstance(ns_index, UaType):
+            val = ffi.cast("UA_NodeId*", ns_index._ptr)
         elif ns_index is not None and ident is not None:
             if type(ns_index) is int:
                 if type(ident) is int:

@@ -459,6 +459,8 @@ class UaUInt32(UaType):
     _UA_TYPE = _UA_TYPES._UINT32
 
     def __init__(self, val=None, is_pointer=False):
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_UInt32*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_UInt32*"), is_pointer)
         else:
@@ -765,6 +767,8 @@ class UaDouble(UaType):
     _UA_TYPE = _UA_TYPES._DOUBLE
 
     def __init__(self, val=None, is_pointer=False):
+        if isinstance(val, UaType):
+            val = ffi.cast("UA_Double*", val._ptr)
         if val is None:
             super().__init__(ffi.new("UA_Double*"), is_pointer)
         else:
@@ -978,7 +982,23 @@ class UaString(UaType):
 
 
 # +++++++++++++++++++ UaByteString +++++++++++++++++++++++
-UaByteString = UaString
+class UaByteString(UaString):
+    _UA_TYPE = _UA_TYPES._BYTESTRING
+
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
+        super().__init__(val, is_pointer)
+
+    @property
+    def value(self) -> bytes:
+        if self._null:
+            return "NULL"
+        return ffi.string(ffi.cast(f"char[{self.length._val}]", self.data._ptr), self.length._val)
+
 
 # +++++++++++++++++++ UaXmlElement +++++++++++++++++++++++
-UaXmlElement = UaString
+class UaXmlElement(UaString):
+    _UA_TYPE = _UA_TYPES._XMLELEMENT
+
+    def __init__(self, val: Union[str, bytes, Void] = None, is_pointer=False):
+        super().__init__(val, is_pointer)
+
