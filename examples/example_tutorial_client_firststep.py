@@ -5,11 +5,6 @@
 
 from ua import *
 
-# new client with default config
-client = UaClient()
-ret_val = client.connect("opc.tcp://127.0.0.1:4841/")
-print(ret_val)
-
 
 def read_time():
     result = client.read_value_attribute(UA_NS0ID.SERVER_SERVERSTATUS_CURRENTTIME)
@@ -25,8 +20,8 @@ def read_time():
     UaLogger().info(UaLogCategory.USERLAND(), "date is " + str(now.to_struct()))
 
 
-iterate = True
-while iterate:
-    if input() == "x":
-        iterate = False
-    read_time()
+# new client with default config
+client = UaClient()
+ret_val = client.connect("opc.tcp://127.0.0.1:4840/")
+print(ret_val)
+read_time()
