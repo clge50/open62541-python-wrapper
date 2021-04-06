@@ -38,4 +38,4 @@ To build the documentation, also run `python3 make_sphinx.py`. Please make sure 
 
 Notice: Since wrappy(o6) is still in an early stage of development, some features are not yet considered stable. Also, some features of open62541 (e.g. Historizing, PubSub) are still missing.   
 
-For usage information, please refer to our [documentation](https://htmlpreview.github.io/?https://github.com/clge50/open62541-python-wrapper/blob/master/sphinx/build/html/index.html).
+For usage information, please refer to our [documentation](https://github.com/clge50/open62541-python-wrapper/tree/master/sphinx/build/html/index.html).
