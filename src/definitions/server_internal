@@ -1,4 +1,8 @@
-// TODO: This is a draft, not included in the make file. Since might be of use some time it's still here.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// TODO: This is a draft, not included in the make file. Since it might be of use some time it's still here.
 
 /*
 struct UA_Server {
