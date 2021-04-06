@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Introduction &mdash; wrappy(o6) 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> wrappy(o6)
+          
+
+          
+            
+            <img src="_static/wrappyo6.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#what-is-wrappy-o6">What is wrappy(o6)?</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#open62541-python-wrapper-features">open62541 python wrapper Features</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-started">Getting started</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#first-steps-learning-how-to-use-wrappy-o6">First steps / learning how to use wrappy(o6)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#information-for-wrappy-o6-developers">Information for wrappy(o6) developers</a><ul>
+<li><a class="reference internal" href="#general-structure-architecture">General structure / architecture</a></li>
+<li><a class="reference internal" href="#module-ua_types_parent">UaType</a></li>
+<li><a class="reference internal" href="#module-ua_client">Callbacks</a></li>
+<li><a class="reference internal" href="#custom-data-types">Custom Data Types</a></li>
+<li><a class="reference internal" href="#memory-management">Memory Management</a></li>
+<li><a class="reference internal" href="#open-issues">Open issues</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">wrappy(o6)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-wrappy-o6">
+<h2>What is wrappy(o6)?<a class="headerlink" href="#what-is-wrappy-o6" title="Permalink to this headline">¶</a></h2>
+<p>Wrappy(o6) is a python binding for <a class="reference external" href="http://open62541.org">open62541</a>.
+While wrappy(o6) tries to be truthful to it’s roots in terms of handling it still aims at offering some quality of life
+improvements and getting rid of certain c typical conventions which feel weird in python.
+If you are already familiar with open62541 and know some basic python you’ll hopefully feel right at home in wrappy(o6)
+we hope you’ll feel right at home in Wrappy(o6) and can make use of the vast range of available python libraries while
+still being able to use the well established open62541 as a backend.</p>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>wrappy(o6) (same as open62541 itself) is licensed under the <a class="reference external" href="https://www.mozilla.org/en-US/MPL/2.0/">Mozilla Public License v2.0 (MPLv2)</a>.
+The examples and tutorials are licensed under a <a class="reference external" href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CCZero 1.0 Universal License</a>.</p>
+</div>
+<div class="section" id="open62541-python-wrapper-features">
+<h2>open62541 python wrapper Features<a class="headerlink" href="#open62541-python-wrapper-features" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please be aware that wrappy(o6) is still in an early development phase.
+Please refer to <a class="reference internal" href="#open-issues"><span class="std std-ref">Open issues</span></a> for more information regarding open62541 features which are not
+available yet as well as general limitations and issues.</p>
+</div>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>python 3.6 or newer (tested with 3.6, 3.7, 3.8)</p></li>
+<li><p>pip</p></li>
+<li><p>cffi (installable via pip)</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>After you made sure that all dependencies are installed, to install wrappy(o6) run the python script <cite>make.py</cite>.
+It will create a package <cite>build/wrappy_o6</cite> which holds all necessary modules to use wrappy(o6).
+Simply import the module <cite>ua</cite> from <cite>build/wrappy_o6</cite> and you are good to go!</p>
+</div>
+<div class="section" id="first-steps-learning-how-to-use-wrappy-o6">
+<h2>First steps / learning how to use wrappy(o6)<a class="headerlink" href="#first-steps-learning-how-to-use-wrappy-o6" title="Permalink to this headline">¶</a></h2>
+<p>Please refer to the <cite>examples</cite> directory to see some examples of the usage of wrappy(o6). The tutorials named
+<cite>example_tutorial_</cite> aim to stick closely to the tutorials of open62541.</p>
+</div>
+</div>
+<div class="section" id="information-for-wrappy-o6-developers">
+<h1>Information for wrappy(o6) developers<a class="headerlink" href="#information-for-wrappy-o6-developers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-structure-architecture">
+<h2>General structure / architecture<a class="headerlink" href="#general-structure-architecture" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>1:1 mapping of open62541 types to wrapped types</p></li>
+<li><p>A wrapped type has public components (python world) and hidden components (c world)</p></li>
+<li><p>improvements to handling via default values, “type guessing”</p></li>
+</ul>
+</div>
+<div class="section" id="module-ua_types_parent">
+<span id="uatype"></span><h2>UaType<a class="headerlink" href="#module-ua_types_parent" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="ua_types_parent.UaType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">ua_types_parent.</span></code><code class="sig-name descname"><span class="pre">UaType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pointer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ua_types_parent.UaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Root Wrapper class for all c/open62541 types</p>
+<p>UaType is the parent wrapper class for all non trivial c based open62541 types (native c types such as size_t and
+void* as well as ua types e.g. <cite>UA_Int32</cite>. The general idea of the UaType-system is that it in order to guarantee
+that both pointer types (e.g. <cite>UA_Int32*</cite>) as well as non pointer values (e.g. <cite>UA_Int32</cite>) all open62541 based values
+are stored as a pointer in _value.</p>
+<p>Developers that work on the open62541 python wrapper can work with UaTypes by using the <cite>._ptr</cite> method to get a
+pointer to the c value or <cite>._val</cite> to get a dereferenced value. CFFI should take care of the memory management by
+itself in most cases: once the “owner” of a pointer is no longer referenced (e.g. when setting a new value in
+_value) the garbage collector will take care of it. This does however not mean that developers don’t have to
+think about memory management. Developers always have to consider what is happening to the owner of memory.
+Especially when working with delayed access to pointers, e.g. callback functions, developers always need to make
+sure that the owner of the memory that the pointer points to survives until it was made sure that open62541 will
+no longer attempt to access the memory. Else there will be segmentation faults and other memory errors/bugs.</p>
+<dl class="py method">
+<dt id="ua_types_parent.UaType.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pointer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ua_types_parent.UaType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Root constructor for c/open62541 types</p>
+<p>When working on the open62541 python wrapper itself rather than interacting with it as a user you will often
+encounter cases in which you have to wrap c/open62541 types. All classes which inherit from UaType will allow
+you to do so via this root constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> (<em>c/open62541 type</em>) – The c/open62541 based type as retrieved via CFFI which shall be wrapped. The
+specialised constructors of non abstract types will allow you to omit <cite>val</cite> in order to instanciate a new
+object without pre existing c value counterpart</p></li>
+<li><p><strong>is_pointer</strong> (<em>bool</em>) – indicates if the passed val is in pointer
+or dereferenced form to allow the constructor to store the data consistently. The standard value is <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt><cite>raw_value = UaStatusCode(val=lib.UA_Server_writeDataValue(…))</cite></dt><dd><p>here the <cite>lib.UA_Server_writeDataValue(…)</cite> function returns a <cite>UA_StatusCode</cite>. To wrap it we use the
+constructor of UaStatusCode which inherits from UaType. We assign the c based value to <cite>val</cite> and don’t
+explicitly set <cite>is_pointer</cite> because <cite>val</cite> is of type <cite>UA_StatusCode</cite> rather than <cite>UA_StatusCode*</cite>
+and the default value for <cite>is_pointer</cite> is <cite>False</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Wrappy(o6) import dependency schema</strong></p>
+<p>To avoid cyclic imports, the following diagram provides insight about the structure of interdependence between wrappy(o6)’s modules.</p>
+<img alt="module interdependence of wrappy(o6)" src="_images/dependencies.png" />
+</div>
+<div class="section" id="module-ua_client">
+<span id="callbacks"></span><h2>Callbacks<a class="headerlink" href="#module-ua_client" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="ua_client._ClientCallback">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">ua_client.</span></code><code class="sig-name descname"><span class="pre">_ClientCallback</span></code><a class="headerlink" href="#ua_client._ClientCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregates static callback functions which execute the actual user submitted python callbacks</p>
+<p>_ClientCallback holds c type callback implementations which are being used to call the actual callback
+functions which have been submitted by the wrappy(o6) user. This is a workaround for the problem of not being able
+to create c function implementations at runtime.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Client callbacks are handled differently than server callbacks by wrappy(o6).
+This is the case because client callbacks are mostly utilized in asynchronous service calls which support the
+submission of <cite>void* userData</cite>. Through these generic parameters the actual
+python callback are being passed which can then be executed by static callback functions.</p>
+</div>
+</dd></dl>
+
+<span class="target" id="module-ua_server"></span><dl class="py class">
+<dt id="ua_server._ServerCallback">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">ua_server.</span></code><code class="sig-name descname"><span class="pre">_ServerCallback</span></code><a class="headerlink" href="#ua_server._ServerCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class holds c type callback implementations which are being used to call the actual callback functions which
+have been submitted by the open62541 user. This is a workaround for the problem of not being able to create c
+function implementations at runtime.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The current handling of server based callback function introduces a multitude of problems. In the longterm
+it should probably be reimplemented. The issue is the following: In terms of creating function pointers CFFI
+offers multiple approached (see <a class="reference external" href="https://cffi.readthedocs.io/en/latest/using.html#extern-python-new-style-callbacks">https://cffi.readthedocs.io/en/latest/using.html#extern-python-new-style-callbacks</a>).
+The recommended way is outlined in “Extern ‘Python’ and void* arguments. The basic concept is to add
+a function definition with the desired parameters and return type for the callback to ffi.cdef() and mark it as
+<cite>extern “Python”</cite>. This definition can then be implemented in python by defining a function which uses the same
+name and annotating it with <cite>&#64;ffi.def_extern()</cite>. The problem is that per function that has been defined via
+<cite>ffi.cdef(…)</cite> only one implementation can be created via python. Any attempt to create a second implementation
+using the same name and annotating it with <cite>&#64;ffi.def_extern()</cite> will lead to the prior implementation being
+overwritten.</p>
+<p>In theory it could be possible to solve the issue by using “Callbacks (old style)” (
+<a class="reference external" href="https://cffi.readthedocs.io/en/latest/using.html#callbacks-old-style">https://cffi.readthedocs.io/en/latest/using.html#callbacks-old-style</a>) but CFFI strongly advises against using
+this as it introduces numerous security issues and can lead to the program crashing, especially when forking.</p>
+<p>In the initial implementation we have utilized the recommended “Extern ‘Python’ (new-style callbacks)” (can
+be found in the “definitions” files, e.g. “nodestore” and created a single static callback implementation for
+each required open62541 c callback type. The sole purpose of these static functions is to call the actual
+dynamic python callback function which has been passed by the API user and to wrap all function parameters to
+ensure usability. As the functions are static and most of them do not have any parameters that can be used to
+“smuggle in” python function pointers, the current workaround for server callbacks involves storing the
+python callbacks that shall be called in a global dictionary and retrieving them via a unique key (often
+bound to node_ids). There is currently no implicit memory management for it and the API user has to clean it
+up manually if needed. Furthermore, at the time of the implementation there was a lack of resources to test a
+lot of different flows of registering callback methods. It can therefore very well be the cases that there
+are flows in which the registration in the map or the retrieval does not work properly which will lead to
+exceptions. Also, the callback data is not stored within the corresponding nodes, e.g. the method node and
+therefore cannot be persisted even if the node structure is preserved and would be needed to be persisted
+separatly.</p>
+<p>It could very well be the case that CFFI will offer a solution to the general problem in the future (
+&gt;v1.14.5) or that there is a better way of handling the issue with what is there already.</p>
+</div>
+<p class="rubric">Example</p>
+<p>Let’s illustrate how the server callback workaround works by using an example (method node): When
+calling <cite>add_method_node</cite> the passed python callback is stored in <cite>_ServerCallback.callbacks_dict</cite> (ua_server
+module). meanwhile we pass only <cite>lib.python_wrapper_UA_MethodCallback</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">def</span> <span class="nf">add_method_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requested_new_node_id</span><span class="p">:</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">parent_node_id</span><span class="p">:</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">reference_type_id</span><span class="p">:</span> <span class="n">UaNodeId</span><span class="p">,</span>
+             <span class="n">browse_name</span><span class="p">:</span> <span class="n">UaQualifiedName</span><span class="p">,</span>
+             <span class="n">method</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+                 <span class="p">[</span><span class="s1">&#39;UaServer&#39;</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaList</span><span class="p">,</span>
+                     <span class="n">UaList</span><span class="p">],</span> <span class="n">UaStatusCode</span><span class="p">],</span> <span class="n">input_arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">UaArgument</span><span class="p">,</span> <span class="n">UaList</span><span class="p">],</span>
+             <span class="n">output_arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">UaArgument</span><span class="p">,</span> <span class="n">UaList</span><span class="p">],</span> <span class="n">attr</span><span class="p">:</span> <span class="n">UaVariableAttributes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="n">node_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+     <span class="k">if</span> <span class="n">attr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="n">attr</span> <span class="o">=</span> <span class="n">UA_ATTRIBUTES_DEFAULT</span><span class="o">.</span><span class="n">VARIABLE</span>
+
+     <span class="n">out_new_node_id</span> <span class="o">=</span> <span class="n">UaNodeId</span><span class="p">()</span>
+
+     <span class="k">if</span> <span class="n">node_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="n">node_context</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="n">node_context</span><span class="p">)</span>
+     <span class="k">else</span><span class="p">:</span>
+         <span class="n">node_context</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span>
+
+     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_arg</span><span class="p">,</span> <span class="n">UaList</span><span class="p">):</span>
+         <span class="n">input_length</span> <span class="o">=</span> <span class="n">SizeT</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_arg</span><span class="p">))</span>
+     <span class="k">else</span><span class="p">:</span>
+         <span class="n">input_length</span> <span class="o">=</span> <span class="n">SizeT</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_arg</span><span class="p">,</span> <span class="n">UaList</span><span class="p">):</span>
+         <span class="n">output_length</span> <span class="o">=</span> <span class="n">SizeT</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output_arg</span><span class="p">))</span>
+     <span class="k">else</span><span class="p">:</span>
+         <span class="n">output_length</span> <span class="o">=</span> <span class="n">SizeT</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+     <span class="c1"># add python callback in dict using the requested_new_node_id as the key</span>
+<span class="hll">     <span class="n">_ServerCallback</span><span class="o">.</span><span class="n">callbacks_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">requested_new_node_id</span><span class="p">)]</span> <span class="o">=</span> <span class="n">method</span>
+</span>
+     <span class="n">status_code</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">UA_Server_addMethodNode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ua_server</span><span class="p">,</span> <span class="n">requested_new_node_id</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span> <span class="n">parent_node_id</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span>
+                                               <span class="n">reference_type_id</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span> <span class="n">browse_name</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span>
+<span class="hll">                                               <span class="n">lib</span><span class="o">.</span><span class="n">python_wrapper_UA_MethodCallback</span><span class="p">,</span>
+</span>                                               <span class="n">input_length</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span> <span class="n">input_arg</span><span class="o">.</span><span class="n">_ptr</span><span class="p">,</span> <span class="n">output_length</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span>
+                                               <span class="n">output_arg</span><span class="o">.</span><span class="n">_ptr</span><span class="p">,</span> <span class="n">node_context</span><span class="p">,</span> <span class="n">out_new_node_id</span><span class="o">.</span><span class="n">_ptr</span><span class="p">)</span>
+     <span class="k">return</span> <span class="n">ServerServiceResults</span><span class="o">.</span><span class="n">AddMethodNodeResult</span><span class="p">(</span><span class="n">output_length</span><span class="p">,</span> <span class="n">output_arg</span><span class="p">,</span> <span class="n">UaStatusCode</span><span class="p">(</span><span class="n">status_code</span><span class="p">),</span>
+                                                     <span class="n">out_new_node_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When it is time for triggering the callback, open62541 will call the static
+<cite>lib.python_wrapper_UA_MethodCallback</cite> which has been defined in the definitions file “nodestore”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">UA_StatusCode</span> <span class="p">(</span><span class="o">*</span><span class="n">UA_MethodCallback</span><span class="p">)(</span><span class="n">UA_Server</span> <span class="o">*</span><span class="n">server</span><span class="p">,</span> <span class="n">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">sessionId</span><span class="p">,</span>
+             <span class="n">void</span> <span class="o">*</span><span class="n">sessionContext</span><span class="p">,</span> <span class="n">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">methodId</span><span class="p">,</span>
+             <span class="n">void</span> <span class="o">*</span><span class="n">methodContext</span><span class="p">,</span> <span class="n">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">objectId</span><span class="p">,</span>
+             <span class="n">void</span> <span class="o">*</span><span class="n">objectContext</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">inputSize</span><span class="p">,</span>
+             <span class="n">const</span> <span class="n">UA_Variant</span> <span class="o">*</span><span class="nb">input</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">outputSize</span><span class="p">,</span>
+             <span class="n">UA_Variant</span> <span class="o">*</span><span class="n">output</span><span class="p">);</span>
+
+<span class="n">extern</span> <span class="s2">&quot;Python&quot;</span> <span class="n">UA_StatusCode</span> <span class="n">python_wrapper_UA_MethodCallback</span><span class="p">(</span><span class="n">UA_Server</span> <span class="o">*</span><span class="n">server</span><span class="p">,</span> <span class="n">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">sessionId</span><span class="p">,</span>
+             <span class="n">void</span> <span class="o">*</span><span class="n">sessionContext</span><span class="p">,</span> <span class="n">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">methodId</span><span class="p">,</span>
+             <span class="n">void</span> <span class="o">*</span><span class="n">methodContext</span><span class="p">,</span> <span class="n">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">objectId</span><span class="p">,</span>
+             <span class="n">void</span> <span class="o">*</span><span class="n">objectContext</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">inputSize</span><span class="p">,</span>
+             <span class="n">const</span> <span class="n">UA_Variant</span> <span class="o">*</span><span class="nb">input</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">outputSize</span><span class="p">,</span>
+             <span class="n">UA_Variant</span> <span class="o">*</span><span class="n">output</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function is implemented in python by <cite>python_wrapper_UA_MethodCallback</cite> in _ServerCallback. It’s only purpose
+is to perform a lookup in <cite>_ServerCallback.callbacks_dict</cite> to find the python callback and then call it while
+wrapping all c/open62541 cffi parameters.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="nd">@ffi</span><span class="o">.</span><span class="n">def_extern</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">python_wrapper_UA_MethodCallback</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">session_context</span><span class="p">,</span> <span class="n">method_id</span><span class="p">,</span> <span class="n">method_context</span><span class="p">,</span> <span class="n">object_id</span><span class="p">,</span>
+                            <span class="n">object_context</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">_input</span><span class="p">,</span> <span class="n">output_size</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+<span class="c1"># lookup python callback function</span>
+<span class="n">callbacks_dict_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">method_id</span><span class="p">))</span>
+
+<span class="c1"># call python callback function and wrap all c/open62541 cffi parameters</span>
+<span class="k">return</span> <span class="n">_ServerCallback</span><span class="o">.</span><span class="n">callbacks_dict</span><span class="p">[</span><span class="n">callbacks_dict_key</span><span class="p">](</span><span class="n">UaServer</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">server</span><span class="p">),</span>
+                                            <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">session_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">method_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">method_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">object_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">object_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">UaList</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">_input</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">input_size</span><span class="p">,</span>
+                                                    <span class="n">ua_class</span><span class="o">=</span><span class="n">UaVariant</span><span class="p">),</span>
+                                            <span class="n">UaList</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">output_size</span><span class="p">,</span>
+                                                    <span class="n">ua_class</span><span class="o">=</span><span class="n">UaVariant</span><span class="p">))</span><span class="o">.</span><span class="n">_val</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt id="ua_server._ServerCallback.callbacks_dict">
+<code class="sig-name descname"><span class="pre">callbacks_dict</span></code><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#ua_server._ServerCallback.callbacks_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>This dictionary is used to register and lookup callback functions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-ua_types_serverconfig"></span><dl class="py class">
+<dt id="ua_types_serverconfig.UaServerConfig">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">ua_types_serverconfig.</span></code><code class="sig-name descname"><span class="pre">UaServerConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pointer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ua_types_serverconfig.UaServerConfig" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Function pointers that are part of classes that are used by UaServerConfig make use of a workaround in order to
+work with the CFFI limitation of only being able to attach a single python implementation to a c function
+which has been defined with ‘extern “python”’. While for some other areas it is possible to smuggle functions
+which have been created by the API user in e.g. via a dictionary or a void* argument user_data, this is not
+possible for most of the functions used in this module’s classes. The way it is handled (solved would be too
+strong of a word) currently is that per function pointer definition only a single python function can exist
+at the same time.</p>
+</div>
+<p class="rubric">Example</p>
+<p>the class <cite>UaNodeTypeLifecycle</cite> has two function pointer based fields, a constructor and a destructor functions.
+The following extern “Python” definitions have been added to <cite>api/definitions/nodestore</cite>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span> <span class="s">&quot;Python&quot;</span> <span class="n">UA_StatusCode</span> <span class="n">_python_wrapper_UA_NodeTypeLifecycle_constructor</span><span class="p">(</span><span class="n">UA_Server</span> <span class="o">*</span><span class="n">server</span><span class="p">,</span>
+                             <span class="k">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">sessionId</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">sessionContext</span><span class="p">,</span>
+                             <span class="k">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">typeNodeId</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">typeNodeContext</span><span class="p">,</span>
+                             <span class="k">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">nodeId</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span><span class="n">nodeContext</span><span class="p">);</span>
+<span class="k">extern</span> <span class="s">&quot;Python&quot;</span> <span class="kt">void</span> <span class="n">_python_wrapper_UA_NodeTypeLifecycle_destructor</span><span class="p">(</span><span class="n">UA_Server</span> <span class="o">*</span><span class="n">server</span><span class="p">,</span>
+                        <span class="k">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">sessionId</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">sessionContext</span><span class="p">,</span>
+                        <span class="k">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">typeNodeId</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">typeNodeContext</span><span class="p">,</span>
+                        <span class="k">const</span> <span class="n">UA_NodeId</span> <span class="o">*</span><span class="n">nodeId</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span><span class="n">nodeContext</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>UaNodeTypeLifecycle contains one static python implementation for each of those two functions. When using the setter
+for any of the two function fields the passed python function pointer will be stored in either of the static
+variables <cite>_constructor</cite> or <cite>_destructor</cite> on the python side and on the c side of things one of the static
+functions. <cite>lib._python_wrapper_UA_NodeTypeLifecycle_constructor</cite> or
+<cite>_python_wrapper_UA_NodeTypeLifecycle_destructor</cite> will be registered. If one of these functions is called by
+open62541, it will call the corresponding <cite>_constructor</cite> or <cite>_destructor</cite> function. Each time a new
+<cite>UaNodeTypeLifecycle</cite> is created via it’s <cite>__init__</cite> function or if the setter for the function pointers are being
+called the old global values will be deleted. All instances of <cite>UaNodeTypeLifecycle</cite> which were created via wrappy(o6)
+rather than being retrieved from a sever will therefore have the same functions attached to them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UaNodeTypeLifecycle</span><span class="p">(</span><span class="n">UaType</span><span class="p">):</span>
+<span class="c1"># the python functions are stored in these global variables</span>
+<span class="n">_constructor</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_destructor</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># static python methods which call the globally stored python functions</span>
+<span class="nd">@staticmethod</span>
+<span class="nd">@ffi</span><span class="o">.</span><span class="n">def_extern</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_python_wrapper_UA_NodeTypeLifecycle_constructor</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">session_context</span><span class="p">,</span> <span class="n">type_node_id</span><span class="p">,</span>
+                                                     <span class="n">type_node_context</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">node_context</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">UaNodeTypeLifecycle</span><span class="o">.</span><span class="n">_constructor</span><span class="p">(</span><span class="n">server</span><span class="p">,</span>
+                                            <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">session_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">type_node_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">type_node_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">node_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                            <span class="n">UaList</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">node_context</span><span class="p">))</span>
+
+<span class="nd">@staticmethod</span>
+<span class="nd">@ffi</span><span class="o">.</span><span class="n">def_extern</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_python_wrapper_UA_NodeTypeLifecycle_destructor</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">session_context</span><span class="p">,</span> <span class="n">type_node_id</span><span class="p">,</span>
+                                                    <span class="n">type_node_context</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">node_context</span><span class="p">):</span>
+
+    <span class="n">UaNodeTypeLifecycle</span><span class="o">.</span><span class="n">_destructor</span><span class="p">(</span><span class="n">server</span><span class="p">,</span>
+                                    <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">session_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">type_node_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">Void</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">type_node_context</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">UaNodeId</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">node_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">UaList</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">node_context</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;UA_NodeTypeLifecycle*&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="n">is_pointer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constructor</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_destructor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">UaType</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;UA_NodeTypeLifecycle*&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">_ptr</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="n">is_pointer</span><span class="p">)</span>
+        <span class="c1"># makeshift functions are stored in the global variables if the `UaNodeTypeLifecycle` instance was created</span>
+        <span class="c1"># via an existing c pointer/struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constructor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">UA_STATUSCODES</span><span class="o">.</span><span class="n">GOOD</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_destructor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">UA_STATUSCODES</span><span class="o">.</span><span class="n">GOOD</span>
+
+<span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ptr</span><span class="p">)</span>
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_null</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructor</span>
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">destructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_null</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_destructor</span>
+
+<span class="c1"># the setters register the passed functions in the global variables and register the static functions that call</span>
+<span class="c1"># them in c/open62541</span>
+<span class="nd">@constructor</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span> <span class="nf">constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;UaServer&#39;</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">UaList</span><span class="p">],</span> <span class="n">UaStatusCode</span><span class="p">]):</span>
+    <span class="n">UaNodeTypeLifecycle</span><span class="o">.</span><span class="n">_constructor</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="o">.</span><span class="n">constructor</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">_python_wrapper_UA_NodeTypeLifecycle_constructor</span>
+
+<span class="nd">@destructor</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span> <span class="nf">destructor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;UaServer&#39;</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">,</span> <span class="n">UaList</span><span class="p">],</span> <span class="n">UaStatusCode</span><span class="p">]):</span>
+    <span class="n">UaNodeTypeLifecycle</span><span class="o">.</span><span class="n">_destructor</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="o">.</span><span class="n">destructor</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">_python_wrapper_UA_NodeTypeLifecycle_destructor</span>
+
+<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_null</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;(UaNodeTypeLifecycle): NULL&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;(UaNodeTypeLifecycle) :</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;constructor &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructor</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;destructor &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_destructor</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Addressing this issue is all but trivial. CFFI offers a way to dynamically create function pointers at runtime
+via the deprecated <cite>Callbacks (old style)</cite> approach but heavily urges developers not to use it as it supposedly
+can be abused for code injection, is not stable on certain systems and can crash in multi threaded programs (see
+<a class="reference external" href="https://cffi.readthedocs.io/en/latest/using.html#callbacks-old-style">https://cffi.readthedocs.io/en/latest/using.html#callbacks-old-style</a>). Therefore didn’t further pursue this
+possibility.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A possibility which could be further explored but which would still would leave a bitter taste would be to
+implement a ring buffer for each function pointer type: Instead of creating a single <cite>extern “python”</cite> function,
+wrappy(o6)’s make script could ask users to configure how many function pointers per type they would like to be
+able to use in parallel. The make script could then generate files containing the <cite>extern “python”`functions and
+define as many per type (e.g. and e.g. adding incrementing numbers as suffix) as configured by the user and could
+also create matching python functions with CFFI’s `&#64;ffi.def_extern()</cite> decorator. Each <cite>&#64;ffi.def_extern()</cite> would
+need to know where to find it’s implementation which has been defined by the API user. The wrapper functions and
+the implementations could for example be stored in tuples in a ring buffer. Each time a function is registered,
+the current tuple would need to get updated and once the last available tuple has been reached wrappy(o6) would
+need to start overwriting the oldest entries again. As mentioned, this approach would still be far from perfect
+as it would require the user to know upfront how many function pointer of which type they want to be able to use
+in parallel. Not only would it be a hassle to configure it, but it would also lead to problems if the user’s
+requirements change. This would require a recompilation and e.g. a restart of a server.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="custom-data-types">
+<h2>Custom Data Types<a class="headerlink" href="#custom-data-types" title="Permalink to this headline">¶</a></h2>
+<p>Wrappy(o6) lacks sufficient support of custom data types. To a limited extend it is already possible to create custom
+data types since all necessary c types (namely <code class="docutils literal notranslate"><span class="pre">UA_DataType</span></code>, <code class="docutils literal notranslate"><span class="pre">UA_DataTypeArray</span></code>,
+<code class="docutils literal notranslate"><span class="pre">UA_ClientConfig.customDataTypes</span></code>, <code class="docutils literal notranslate"><span class="pre">UA_DataTypeMember</span></code>, <code class="docutils literal notranslate"><span class="pre">UA_DataType</span></code>) are available in wrappy(o6).
+Nevertheless an intuitive an efficient handling has yet to be accomplished.</p>
+<p>To achieve a satisfactory usability there are several issues to face, mostly regarding the typing in Python.
+In the following, the problems should be outlined and possible approaches to their solution should be discussed.</p>
+<p>In open62541 custom data types are representations of (structured) types such as structs, enums and unions. Mapping
+those types onto <code class="docutils literal notranslate"><span class="pre">UA_DataTypeMembers</span></code> and <code class="docutils literal notranslate"><span class="pre">UA_DataTypes</span></code> is quite straight forward.
+In python there is much more work to do.
+Since python is highly dynamically typed it is harder to determine the structure of an object (and hence the offsets and
+paddings of its fields) by its class definition.
+Even with the typing library, most of the type hints do not apply at runtime (they mostly are really just <em>hints</em>).
+As a consequence there is no equivalent to the c function
+<code class="docutils literal notranslate"><span class="pre">offsetof()</span></code>. If the user should not be left with calculating the paddings all by themselves, a similar method –
+meaning a method which takes a class and returns the offsets or rather paddings of the fields (instance variables) –
+must be implemented in Python.
+We want to make a rough suggestion how this could be done (at least for custom data types based on namespace zero) and
+how to proceed to obtain the <code class="docutils literal notranslate"><span class="pre">UaDataType</span></code>.</p>
+<p>For sake of the following explanations let uns suppose we want to build a custom data type corresponding to a struct
+like this.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">UA_Xxx</span> <span class="n">field1</span><span class="p">;</span>
+    <span class="n">UA_Yyy</span> <span class="n">field2</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">}</span> <span class="n">SomeType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>How could this be translated to Python? One strategy could be using <em>NamedTuples</em>.</p>
+<p><strong>Calculate the paddings</strong></p>
+<p>The class <a class="reference external" href="https://docs.python.org/3/library/typing.html">typing.NamedTuple</a> provides struct-like easy to write
+objects with type hints.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeType</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">field1</span><span class="p">:</span> <span class="n">UaXxx</span>
+    <span class="n">field2</span><span class="p">:</span> <span class="n">UaYyy</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>It has to be examined whether and to which extend the type hints can be accessed via inflection at runtime.</p>
+<p>What we want for the calculation of the offset and the further procedure, are the entries in <code class="docutils literal notranslate"><span class="pre">UA_TYPES</span></code> related to the
+UaType classes of the NamedTuple’s fields.
+Since every UaType class related to an entry in <code class="docutils literal notranslate"><span class="pre">UA_TYPES</span></code> knows that entry it would suffice to just get the UaType
+classes which are type hinted.
+In terms of our example this is <code class="docutils literal notranslate"><span class="pre">UaXxx._UA_TYPE</span></code> (which would be a c macro like <code class="docutils literal notranslate"><span class="pre">UA_TYPES_XXX</span></code>), <code class="docutils literal notranslate"><span class="pre">UaYyy._UA_TYPE</span></code>
+and so on.</p>
+<p>If it is not possible to get these information via inflecting the type hints, there is another way to get the necessary
+information: The user has to provide default values for all fields.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeType</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">field1</span><span class="p">:</span> <span class="n">UaXxx</span> <span class="o">=</span> <span class="n">UaXxx</span><span class="p">()</span>
+    <span class="n">field2</span><span class="p">:</span> <span class="n">UaYyy</span> <span class="o">=</span> <span class="n">UaYyy</span><span class="p">()</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Then <code class="docutils literal notranslate"><span class="pre">SomeType</span></code> can be passed to our method <code class="docutils literal notranslate"><span class="pre">get_offset(...)</span></code>. The method <code class="docutils literal notranslate"><span class="pre">get_offset(...)</span></code> could invoke
+<code class="docutils literal notranslate"><span class="pre">SomeType()</span></code> which returns a NamedTuple – we call this instance <code class="docutils literal notranslate"><span class="pre">some_type</span></code> – with all the default values.
+The fields of <code class="docutils literal notranslate"><span class="pre">some_type</span></code> could now be inflected with <code class="docutils literal notranslate"><span class="pre">type(some_type.fieldX)</span></code>. We get the UaType classes and
+by this the <code class="docutils literal notranslate"><span class="pre">UA_TYPES</span></code>.
+Now we just need a mapping from the entries of <code class="docutils literal notranslate"><span class="pre">UA_TYPES</span></code> to the corresponding sizes.
+With this we could compute the paddings for all fields of our NamedTuple <code class="docutils literal notranslate"><span class="pre">SomeType</span></code> and return them as a dict of pairs
+<code class="docutils literal notranslate"><span class="pre">fieldX:</span> <span class="pre">&lt;padding</span> <span class="pre">in</span> <span class="pre">bytes&gt;</span></code>.</p>
+<p>With this information a user would be able to construct the <code class="docutils literal notranslate"><span class="pre">UaDataTypeMembers</span></code> and <code class="docutils literal notranslate"><span class="pre">UaDataTypes</span></code> similar to
+open62541. But still this would not feel like Python.
+We rather want a static method – let us call it <code class="docutils literal notranslate"><span class="pre">from_data_type_model(...)</span></code> – in <code class="docutils literal notranslate"><span class="pre">UaDataType</span></code> which takes a class
+(f.e. a NamedTuple) and returns an instance of <code class="docutils literal notranslate"><span class="pre">UaDataType</span></code>.</p>
+<p><strong>Construct the UaDataTypeMembers</strong></p>
+<p>Our method <code class="docutils literal notranslate"><span class="pre">from_data_type_model(...)</span></code> at first has to construct the UaDataTypeMembers. Therefore the following fields
+need to be determined.</p>
+<ul>
+<li><p><em>padding</em>: Already discussed above</p></li>
+<li><p><em>member_type_index</em>: Extracted for calculation of the padding as described above</p></li>
+<li><p><em>namespace_zero</em>: <code class="docutils literal notranslate"><span class="pre">UaBoolean(True)</span></code> since the proposed procedure can only be applied on types from namespace zero
+(a transfer should be possible)</p></li>
+<li><p><em>is_array</em>: The user has to use <code class="docutils literal notranslate"><span class="pre">UaList</span></code> in the NamedTuple to indicate that the field is an array. Since
+<code class="docutils literal notranslate"><span class="pre">UaList</span></code> knows its base type class <em>member_type_index</em> and <em>padding</em> (size of a pointer) can still be inferred</p></li>
+<li><p><em>is_optional</em>: Somehow this has to be encoded in the NamedTuple</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>One option is to write some kind of UaDataType interface – let’s call this class <em>UaDataTypeModel</em> – such that
+every class representing a custom data type has to implement <em>UaDataTypeModel</em>. One could also think of
+implementing annotations for optional fields.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><em>member_name</em>: Can be inflected from the NamedTuple</p></li>
+</ul>
+<p><strong>Construct the UaDataType</strong></p>
+<p>In a second step our method <code class="docutils literal notranslate"><span class="pre">from_data_type_model(...)</span></code> has to build a <code class="docutils literal notranslate"><span class="pre">UaDataType</span></code> from those
+<code class="docutils literal notranslate"><span class="pre">UaDataTypeMembers</span></code>. Therefore we need the following fields:</p>
+<ul class="simple">
+<li><p><em>type_id</em>: Could be an argument passed to the method and determined by the user (might also be Null and
+requested from the server)</p></li>
+<li><p><em>binary_encoding_id</em>: As well determined by the user (could be passed as a separate argument or encoded via our
+interface  <em>UaDataTypeModel</em> from above)</p></li>
+<li><p><em>mem_size</em>: Can be calculated together with the paddings</p></li>
+<li><p><em>type_index</em>: Either determined by the user or as the next free index of global list of custom data types</p></li>
+<li><p><em>type_kind</em>: This again could be encoded in our in our interface <em>UaDataTypeModel</em></p>
+<ul>
+<li><p>Note that the described procedure using NamedTuples applies to structures and structures with optional fields.
+With some adjustments it could be used for unions as well. It might also be used to represent enums. Nonetheless,
+this would be counterintuitive since one would expect static fields instead of the instance variables provided by
+NamedTuple.</p></li>
+</ul>
+</li>
+<li><p><em>member_size</em>: Length of the <code class="docutils literal notranslate"><span class="pre">UaList</span></code> with the <code class="docutils literal notranslate"><span class="pre">UaDataTypeMembers</span></code></p></li>
+<li><p><em>type_name</em>: Can be inflected from the NamedTuple</p></li>
+</ul>
+<p><em>Good Luck! :)</em></p>
+</div>
+<div class="section" id="memory-management">
+<h2>Memory Management<a class="headerlink" href="#memory-management" title="Permalink to this headline">¶</a></h2>
+<p>To make life easier for developers, CFFI automatically does a lot of memory management for them. For the most part,
+you e.g. don’t have to worry to much about freeing memory yourself:
+If the python garbage collector collects an object, CFFI will automatically free the memory of any referenced c
+value/struct if the owner of the reference is no longer around.
+Nice, right? For the most part…yes! Still, you have to keep in mind some things in regards to the concept of
+ownership or else you might create segmentation faults!</p>
+<p>Take a look at this early version of one of the asynchronous client service calls we had implemented. In this example,
+the <cite>callback</cite> argument is being transformed into a <code class="docutils literal notranslate"><span class="pre">void*</span></code> <code class="docutils literal notranslate"><span class="pre">_handle</span></code>
+which is then passed to the open62541 <code class="docutils literal notranslate"><span class="pre">UA_Client_readDataTypeAttribute_async</span></code>. Once the server has processed the
+request, the client will trigger the <cite>callback</cite>. There is a problem though:
+<cite>_handle</cite> is the owner of the heap memory which CFFI allocated to store our function pointer for the callback.
+Because <code class="docutils literal notranslate"><span class="pre">_handle</span></code> is a local variable, it lives in a stack frame and also dies with the stack frame.
+Yes, the reference to our handle has been passed to open62541, but CFFI doesn’t really care about that. After the
+function <code class="docutils literal notranslate"><span class="pre">read_data_type_attribute_async</span></code> stack frame was deallocated there is no longer a owner of the reference
+of <cite>_handle</cite> in Python. The Python garbage collector will kick in and as there is no longer an owner for the callback
+handle, CFFI will free the memory on the heap.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_data_type_attribute_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="n">UaNodeId</span><span class="p">,</span>
+                                   <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;UaClient&#39;</span><span class="p">,</span> <span class="n">UaUInt32</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">],</span> <span class="kc">None</span><span class="p">]):</span>
+    <span class="n">req_id</span> <span class="o">=</span> <span class="n">UaUInt32</span><span class="p">()</span>
+    <span class="n">_handle</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">UA_Client_readDataTypeAttribute_async</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ua_client</span><span class="p">,</span>
+                                                            <span class="n">node_id</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span>
+                                                            <span class="n">lib</span><span class="o">.</span><span class="n">python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback</span><span class="p">,</span>
+                                                            <span class="n">_handle</span><span class="p">,</span>
+                                                            <span class="n">req_id</span><span class="o">.</span><span class="n">_ptr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ClientServiceResult</span><span class="o">.</span><span class="n">AsyncResponse</span><span class="p">(</span><span class="n">UaStatusCode</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">status_code</span><span class="p">),</span> <span class="n">req_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When the wrapper function <code class="docutils literal notranslate"><span class="pre">lib.python_wrapper_UA_ClientAsyncBrowseCallback</span></code> will call our callback, it will encounter
+a segmentation fault.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@staticmethod</span>
+   <span class="nd">@ffi</span><span class="o">.</span><span class="n">def_extern</span><span class="p">()</span>
+   <span class="k">def</span> <span class="nf">python_wrapper_UA_ClientAsyncBrowseCallback</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="n">request_id</span><span class="p">,</span> <span class="n">wr</span><span class="p">):</span>
+       <span class="n">ffi</span><span class="o">.</span><span class="n">from_handle</span><span class="p">(</span><span class="n">fun</span><span class="p">)(</span><span class="n">UaClient</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">client</span><span class="p">),</span> <span class="n">UaUInt32</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">request_id</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                            <span class="n">UaBrowseResponse</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">wr</span><span class="p">,</span> <span class="n">is_pointer</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>So how can we address this? By making sure there is still an owner of the memory alive by the time
+<code class="docutils literal notranslate"><span class="pre">python_wrapper_UA_ClientAsyncBrowseCallback</span></code> is called!
+There are different ways how this can be achieved. The following example illustrates two of them. On one hand this time
+we return <code class="docutils literal notranslate"><span class="pre">_handle</span></code> in the result of the functon.
+As long as the wrappy(o6) user stores it in a variable and keeps it alive, the callback can be called without any
+issues. But this is not very intuitive and probably would cause some frustration with users.
+Therefore we decided to also store a reference to the memory which is owned by <code class="docutils literal notranslate"><span class="pre">_handle</span></code> in a global list
+(<code class="docutils literal notranslate"><span class="pre">_ClientCallback._callbacks</span></code>) which acts as a kind of shelter for all references that might have lost their home.
+Now, even if the wrappy(o6) user is heartless and abandons the poor result, the owner of the callback handle
+still has a place to live and we are safe from segfaults.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_data_type_attribute_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="n">UaNodeId</span><span class="p">,</span>
+                                      <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;UaClient&#39;</span><span class="p">,</span> <span class="n">UaUInt32</span><span class="p">,</span> <span class="n">UaNodeId</span><span class="p">],</span> <span class="kc">None</span><span class="p">]):</span>
+       <span class="n">req_id</span> <span class="o">=</span> <span class="n">UaUInt32</span><span class="p">()</span>
+       <span class="n">_handle</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new_handle</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+       <span class="n">_ClientCallback</span><span class="o">.</span><span class="n">_callbacks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_handle</span><span class="p">)</span>
+       <span class="n">status_code</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">UA_Client_readDataTypeAttribute_async</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ua_client</span><span class="p">,</span>
+                                                               <span class="n">node_id</span><span class="o">.</span><span class="n">_val</span><span class="p">,</span>
+                                                               <span class="n">lib</span><span class="o">.</span><span class="n">python_wrapper_UA_ClientAsyncReadDataTypeAttributeCallback</span><span class="p">,</span>
+                                                               <span class="n">_handle</span><span class="p">,</span>
+                                                               <span class="n">req_id</span><span class="o">.</span><span class="n">_ptr</span><span class="p">)</span>
+       <span class="k">return</span> <span class="n">ClientServiceResult</span><span class="o">.</span><span class="n">AsyncResponse</span><span class="p">(</span><span class="n">UaStatusCode</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">status_code</span><span class="p">),</span> <span class="n">req_id</span><span class="p">,</span> <span class="n">_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So when working with CFFI always ask yourself this one question: Is it guaranteed that the owner of the memory is still
+alive by the time it is dereferenced?
+If not, be so kind and built some shelters. Once the references are no longer needed developers should also think about
+throwing them out of the shelter to make room for new owners, life is rough as a reference and there is only so much
+memory!
+Let the garbage collector lead them to the afterlife.</p>
+</div>
+<div class="section" id="open-issues">
+<h2>Open issues<a class="headerlink" href="#open-issues" title="Permalink to this headline">¶</a></h2>
+<p>Currently there are still a lot of open issues which need to be addressed in order to ensure a satisfying usability and
+stability of wrappy(o6):</p>
+<ul class="simple">
+<li><p>Tests are still very lacking. There are currently only tests for the UaClient and they are not semantically sound.
+So there is definitely a need for tests for the UaClient, UaServer and UaTypes.</p></li>
+<li><p>The current handling of callbacks / function pointers has some major issues / restrictions. A reimplementation or
+adaptions to improve usability should be considered. Please refer to the <a class="reference internal" href="#module-ua_client"><span class="std std-ref">Callbacks</span></a> for additional
+information.</p></li>
+<li><p>Custom data types are not yet supported. Please find a draft / outline of a possible implementation strategy in the
+chapter <a class="reference internal" href="#custom-data-types"><span class="std std-ref">Custom Data Types</span></a>.</p></li>
+<li><p>Historizing is not supported yet</p></li>
+<li><p>Pub/sub is not supported yet</p></li>
+<li><p>The Build script has not been tested under systems other than Ubuntu 18.04/20.04</p></li>
+<li><p>When building the amalgamated files of open62541 it is impossible to specify the desired version of open62541.
+Unfortunately wrappy(o6) requires all used function signatures and types to be stable (There is no way
+around that). We guarantee this by providing the whole open62541 project in version open62541-1.2 with our
+repository. So the amalgamated files will be build in the context of this old version of the project and will hence
+match the definitions used for cffi.
+Besides updating wrappy(o6) together with each new open62541 release, we do not see a convenient solution for this
+problem. Maybe following developers do.</p></li>
+<li><p>The documentation needs to be improved to smoothen the experience for new users (e.g. a user guide leading through
+the provided examples as well as additional example)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UaServer</span></code> (as well as <code class="docutils literal notranslate"><span class="pre">UaClient</span></code>) are not available as UaTypes with accessible fields (e.g. due to opaque type
+definitions in open62541).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UaClientConfig</span></code> and <code class="docutils literal notranslate"><span class="pre">UaServerConfig</span></code> are still missing some fields for lower level configurations</p>
+<ul>
+<li><p>There are functions available in open62541 (open62541/plugins/include/open62541/server_config_default.h) for
+building a UA_ServerConfig from a basic default config. They easily could be wrapped as methods of
+<code class="docutils literal notranslate"><span class="pre">UaServerConfig</span></code> and as such provide an comfortable way to further customize the server’s configurations.</p></li>
+</ul>
+</li>
+<li><p>The behavior of double pointers (e.g. <code class="docutils literal notranslate"><span class="pre">UA_Variant**</span></code>) as UaLists of pointers is not yet tested extensively.
+<code class="docutils literal notranslate"><span class="pre">UaList</span></code> could be improved for a more intuitive and coherent handling. See example_list_cast for an introduction
+on UaList.</p></li>
+<li><p>As mentioned above in <a class="reference internal" href="#memory-management"><span class="std std-ref">Memory Management</span></a> the whole issue is a bit tricky. The user still
+has to use some workarounds (see e.g. example_list_cast.py). A more stable solution should be found.
+One option might be to internally maintain a global list which holds references to the UaType objects currently
+in use to keep their memory alive. Similar to garbage collection many edge cases as well as performance issues
+have to be considered if doing so.</p></li>
+<li><p>Type handling could further be improved</p>
+<ul>
+<li><p>by expanding “type guessing”</p></li>
+<li><p>by refining the methods typehints and documentation</p></li>
+<li><p>allow Python values as well as UaTypes for primitive input types where possible (already done in a few rather
+arbitrary cases)</p></li>
+<li><p>filling variables of UaTypes could be improved, e.g. via additional __init__ parameters / pseudo constructor
+methods / builder pattern</p></li>
+<li><p>implicitly applying functions which are explicit in open62541 (see e.g. <code class="docutils literal notranslate"><span class="pre">setScalar</span></code> and <code class="docutils literal notranslate"><span class="pre">setArray</span></code> handling
+in UaVariant data setter)</p></li>
+<li><p>struct fields in UA_Types which are supposed to hold arrays should in the wrapping UaType be implemented with
+UaList type instead of the array’s base type. (This should be no problem since <code class="docutils literal notranslate"><span class="pre">_value</span></code> of a UaList is the
+same c type as the lists base type.)</p></li>
+<li><p>by providing a generic deep copy method for UaTypes</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Stella Maidorn, Daniel Nier, Christian Lange.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
