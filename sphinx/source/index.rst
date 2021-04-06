@@ -63,6 +63,13 @@ UaType
    :members:
    :special-members: __init__
 
+**Wrappy(o6) import dependency schema**
+
+To avoid cyclic imports, the following diagram provides insight about the structure of interdependence between wrappy(o6)'s modules.
+
+.. image:: dependencies.png
+    :alt: module interdependence of wrappy(o6)
+
 Callbacks
 -----------
 .. automodule:: ua_client
